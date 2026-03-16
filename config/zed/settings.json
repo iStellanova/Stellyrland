@@ -1,0 +1,51 @@
+// Zed settings
+//
+// For information on how to configure Zed, see the Zed
+// documentation: https://zed.dev/docs/configuring-zed
+//
+// To see all of Zed's default settings without changing your
+// custom settings, run `zed: open default settings` from the
+// command palette (cmd-shift-p / ctrl-shift-p)
+{
+  "agent_servers": {
+    "gemini": {
+      "type": "registry"
+    }
+  },
+  "edit_predictions": {
+    "provider": "copilot"
+  },
+  "format_on_save": "off",
+  "buffer_font_family": "JetBrainsMono Nerd Font Mono",
+  "base_keymap": "JetBrains",
+  "session": {
+    "trust_all_worktrees": true,
+  },
+  "vim_mode": false,
+  "buffer_font_weight": 300.0,
+  "ui_font_weight": 300.0,
+  "ui_font_family": "JetBrainsMono Nerd Font Propo",
+  "buffer_line_height": "comfortable",
+  "project_panel": {
+    "entry_spacing": "comfortable",
+    "hide_gitignore": true,
+    "default_width": 200.0,
+  },
+  "icon_theme": "Zed (Default)",
+  "telemetry": {
+    "diagnostics": true,
+    "metrics": false,
+  },
+  "ui_font_size": 19.0,
+  "buffer_font_size": 18.0,
+  "theme": {
+    "mode": "dark",
+    "light": "Matugen Light",
+    "dark": "Matugen Dark",
+  },
+  "languages": {
+    "YAML": {
+      "format_on_save": "off",
+    },
+  },
+}

@@ -1,0 +1,4 @@
+source ~/zshrc/envs
+source ~/zshrc/init
+source ~/zshrc/aliases
+source ~/zshrc/functions
