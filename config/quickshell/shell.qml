@@ -4,6 +4,7 @@ import Quickshell.Io
 import Quickshell.Hyprland
 import QtQuick
 import "components" as Components
+import "services" as Services
 
 // QuickShell entry point — orchestrates all windows
 Scope {
@@ -59,9 +60,98 @@ Scope {
         }
     }
 
+    // ── Calendar Popup ────────────────────────────
+    CalendarPopup {
+        id: cal
+        screen: Services.MonitorService.primaryScreen
+        open: root.calVisible
+        xOffset: root.calX
+        onCloseRequested: root.calVisible = false
+    }
+
+    // ── Wifi Popup ────────────────────────────────
+    WifiPopup {
+        id: wifiMenu
+        screen: Services.MonitorService.primaryScreen
+        open: root.wifiVisible
+        xOffset: root.wifiX
+        onCloseRequested: root.wifiVisible = false
+    }
+
+    // ── RAM Popup ─────────────────────────────────
+    RamPopup {
+        id: ramMenu
+        screen: Services.MonitorService.primaryScreen
+        open: root.ramVisible
+        xOffset: root.ramX
+        onCloseRequested: root.ramVisible = false
+    }
+
+    // ── CPU Popup ─────────────────────────────────
+    CpuPopup {
+        id: cpuMenu
+        screen: Services.MonitorService.primaryScreen
+        open: root.cpuVisible
+        xOffset: root.cpuX
+        onCloseRequested: root.cpuVisible = false
+    }
+
+    // ── Temp Popup ─────────────────────────────────
+    TempPopup {
+        id: tempMenu
+        screen: Services.MonitorService.primaryScreen
+        open: root.tempVisible
+        xOffset: root.tempX
+        onCloseRequested: root.tempVisible = false
+    }
+
+    MediaPopup {
+        id: mediaMenu
+        screen: Services.MonitorService.primaryScreen
+        open: root.mediaVisible
+        xOffset: root.mediaX
+        onCloseRequested: root.mediaVisible = false
+    }
+
+    // ── Control Center Popup ─────────────────────────────────
+    ControlCenter {
+        id: cc
+        screen: Services.MonitorService.primaryScreen
+        visible: root.ccVisible
+        onCloseRequested: root.ccVisible = false
+    }
+
+    // ── Notification Center Popup ────────────────────────────
+    NotificationCenter {
+        id: nc
+        screen: Services.MonitorService.primaryScreen
+        visible: root.ncVisible
+        onCloseRequested: root.ncVisible = false
+    }
+
+
+    AppLauncher {
+        id: al
+        screen: Services.MonitorService.primaryScreen
+        visible: root.alVisible
+        onCloseRequested: root.alVisible = false
+    }
+
+    NotificationPopup { 
+        screen: Services.MonitorService.primaryScreen
+    }
+
+    Components.TrayMenu {
+        id: trayMenu
+        visible: false
+        menuHandle: null
+    }
+
     // ── Top Bar ──────────────────────────────────────────────
+    // Defined AFTER popups so it stays on top on the same layer (Top)
     Bar {
         id: topBar
+        screen: Services.MonitorService.primaryScreen
         trayMenu: trayMenu
 
         onToggleControlCenter: (x) => {
@@ -119,91 +209,5 @@ Scope {
             root.mediaX = x
             root.mediaVisible = target
         }
-    }
-
-    // ── Control Center Popup ─────────────────────────────────
-    ControlCenter {
-        id: cc
-        screen: topBar.screen
-        visible: root.ccVisible
-        onCloseRequested: root.ccVisible = false
-    }
-
-    // ── Notification Center Popup ────────────────────────────
-    NotificationCenter {
-        id: nc
-        screen: topBar.screen
-        visible: root.ncVisible
-        onCloseRequested: root.ncVisible = false
-    }
-
-    // ── Calendar Popup ────────────────────────────
-    CalendarPopup {
-        id: cal
-        screen: topBar.screen
-        open: root.calVisible
-        xOffset: root.calX
-        onCloseRequested: root.calVisible = false
-    }
-
-    // ── Wifi Popup ────────────────────────────────
-    WifiPopup {
-        id: wifiMenu
-        screen: topBar.screen
-        open: root.wifiVisible
-        xOffset: root.wifiX
-        onCloseRequested: root.wifiVisible = false
-    }
-
-    // ── RAM Popup ─────────────────────────────────
-    RamPopup {
-        id: ramMenu
-        screen: topBar.screen
-        open: root.ramVisible
-        xOffset: root.ramX
-        onCloseRequested: root.ramVisible = false
-    }
-
-    // ── CPU Popup ─────────────────────────────────
-    CpuPopup {
-        id: cpuMenu
-        screen: topBar.screen
-        open: root.cpuVisible
-        xOffset: root.cpuX
-        onCloseRequested: root.cpuVisible = false
-    }
-
-    // ── Temp Popup ─────────────────────────────────
-    TempPopup {
-        id: tempMenu
-        screen: topBar.screen
-        open: root.tempVisible
-        xOffset: root.tempX
-        onCloseRequested: root.tempVisible = false
-    }
-
-    MediaPopup {
-        id: mediaMenu
-        screen: topBar.screen
-        open: root.mediaVisible
-        xOffset: root.mediaX
-        onCloseRequested: root.mediaVisible = false
-    }
-
-    AppLauncher {
-        id: al
-        screen: topBar.screen
-        visible: root.alVisible
-        onCloseRequested: root.alVisible = false
-    }
-
-    NotificationPopup { 
-        screen: topBar.screen
-    }
-
-    Components.TrayMenu {
-        id: trayMenu
-        visible: false
-        menuHandle: null
     }
 }

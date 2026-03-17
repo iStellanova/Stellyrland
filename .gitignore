@@ -1,0 +1,9 @@
+# Ignore a specific file
+# colors.conf
+
+# Ignore a directory
+# node_modules/
+
+# Ignore by extension
+# *.log
+# *.pyc

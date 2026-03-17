@@ -1,4 +1,5 @@
 import Quickshell
+import Quickshell.Wayland._WlrLayerShell 0.0
 import QtQuick
 import QtQuick.Layouts
 import "services" as Services
@@ -6,6 +7,7 @@ import "components" as Components
 
 PanelWindow {
     id: popupWindow
+    WlrLayershell.layer: WlrLayer.Top
 
     implicitWidth: 390
     implicitHeight: mainColumn.contentHeight

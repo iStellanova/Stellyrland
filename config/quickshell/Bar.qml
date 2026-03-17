@@ -1,4 +1,5 @@
 import Quickshell
+import Quickshell.Wayland._WlrLayerShell 0.0
 import Quickshell.Hyprland
 import Quickshell.Services.Mpris
 import Quickshell.Services.Pipewire
@@ -10,6 +11,9 @@ import "components" as Components
 
 PanelWindow {
     id: bar
+    screen: Services.MonitorService.primaryScreen
+    WlrLayershell.layer: WlrLayer.Overlay
+    visible: !Services.ShellData.hasFullscreen
     property var trayMenu
     property var activeWorkspaceButton: null
 
@@ -138,10 +142,12 @@ PanelWindow {
                 }
 
                 // Cava
-                Components.ShadowText {
-                    text: Services.ShellData.cavaOutput
-                    color: Services.Colors.mainText
-                    visible: text.length > 0
+                Components.CavaVisualizer {
+                    Layout.preferredWidth: 80
+                    Layout.preferredHeight: 20
+                    color: "white"
+                    barOpacity: 1.0
+                    visible: Services.ShellData.cavaData.length > 0
                     Layout.leftMargin: 10
                     Layout.rightMargin: 10
                 }

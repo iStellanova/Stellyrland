@@ -10,6 +10,7 @@ import "." as Components
 PanelWindow {
     id: root
 
+    WlrLayershell.layer: WlrLayer.Top
     WlrLayershell.namespace: "quickshell-tray"
 
     property var menuHandle // QsMenuHandle

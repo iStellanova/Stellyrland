@@ -4,14 +4,10 @@ import QtQuick.Controls
 import Qt5Compat.GraphicalEffects
 import "../services" as Services
 
-Rectangle {
+Item {
     id: root
     implicitWidth: 310
     implicitHeight: 200
-    radius: 12
-    color: Qt.rgba(1, 1, 1, 0.05)
-    border.width: 1
-    border.color: Qt.rgba(1, 1, 1, 0.1)
 
     GridView {
         id: grid

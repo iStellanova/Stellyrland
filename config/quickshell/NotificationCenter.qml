@@ -1,4 +1,5 @@
 import Quickshell
+import Quickshell.Wayland._WlrLayerShell 0.0
 import Quickshell.Io as Io
 import QtQuick
 import QtQuick.Layouts
@@ -9,6 +10,7 @@ import "components" as Components
 
 PanelWindow {
     id: ncWindow
+    WlrLayershell.layer: WlrLayer.Top
 
     signal closeRequested()
 

@@ -14,6 +14,7 @@ PanelWindow {
     property real xOffset: 0
     readonly property real windowWidth: 330
     
+    WlrLayershell.layer: WlrLayer.Top
     WlrLayershell.namespace: "quickshell-popups"
 
 
@@ -26,7 +27,7 @@ PanelWindow {
         NumberAnimation { duration: Services.Colors.animDuration; easing.type: Easing.OutCubic }
     }
     
-    margins.top: open ? Services.Colors.popupMargin : Services.Colors.popupHideOffset
+    margins.top: open ? 10 : -10
     visible: open || calContent.opacity > 0
 
     Timer {
