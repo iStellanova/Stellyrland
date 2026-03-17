@@ -15,6 +15,7 @@ PanelWindow {
     property real xOffset: 0
     readonly property real windowWidth: 330
     
+    WlrLayershell.layer: WlrLayer.Top
     WlrLayershell.namespace: "quickshell-popups"
 
     property bool hasMouseEntered: false
@@ -28,7 +29,7 @@ PanelWindow {
         NumberAnimation { duration: Services.Colors.animDuration; easing.type: Easing.OutCubic }
     }
     
-    margins.top: open ? Services.Colors.popupMargin : Services.Colors.popupHideOffset
+    margins.top: open ? 10 : -10
     visible: open || mediaContent.opacity > 0
 
     Timer {
@@ -72,6 +73,12 @@ PanelWindow {
         opacity: mediaWindow.open ? 1.0 : 0.0
         Behavior on opacity {
             NumberAnimation { duration: Services.Colors.animDuration; easing.type: Easing.OutCubic }
+        }
+
+        Components.CavaVisualizer {
+            anchors.fill: parent
+            anchors.margins: 10
+            visible: Services.Music.player !== null
         }
 
         ColumnLayout {

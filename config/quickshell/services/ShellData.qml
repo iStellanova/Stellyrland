@@ -4,6 +4,7 @@ import Quickshell
 import Quickshell.Io
 import Quickshell.Hyprland
 import Quickshell.Services.Pipewire
+import Quickshell.Bluetooth
 import QtQuick
 
 Singleton {
@@ -23,7 +24,7 @@ Singleton {
 
     // ── Toggle states ────────────────────────────────────────
     property bool wifiOn: false
-    property bool btOn: false
+    property bool btOn: Bluetooth.defaultAdapter ? Bluetooth.defaultAdapter.enabled : false
     property bool dndOn: NotificationService.dndActive
     property bool vpnOn: false
     property var wifiNetworks: []
@@ -38,7 +39,7 @@ Singleton {
 
 
     // ── Cava ─────────────────────────────────────────────────
-    property string cavaOutput: ""
+    property var cavaData: []
 
     // ── Package updates ──────────────────────────────────────
     property string pacmanUpdates: ""
@@ -46,6 +47,8 @@ Singleton {
 
     // ── Temperature / Global State ───────────────────────────
     property int temperature: 0
+    property bool hasFullscreen: (Hyprland.focusedWorkspace && Hyprland.focusedWorkspace.hasFullscreen) || 
+                                 (Hyprland.activeToplevel && Hyprland.activeToplevel.fullscreen) || false
     
     // ── Window Title (Native & Reactive) ────────────────────
     property string windowTitle: Hyprland.activeToplevel ? Hyprland.activeToplevel.title : ""
@@ -68,95 +71,43 @@ Singleton {
         objects: [Pipewire.defaultAudioSink]
     }
 
-    // ── CPU Polling (Inlined) ───────────────────────────────
+    // ── System Stats (Consolidated Streaming) ────────────────
     Process {
-        id: cpuProc
-        command: ["bash", "-c", "grep 'cpu ' /proc/stat | awk '{idle=$5; total=$2+$3+$4+$5+$6+$7+$8; print int(100 - idle*100/total)}'"]
+        id: statsProc
+        command: ["bash", root.scriptsDir + "/stats.sh"]
         running: true
-        stdout: StdioCollector {
-            onStreamFinished: {
-                let v = parseInt(this.text.trim())
-                let perc = isNaN(v) ? 0 : v
-                root.cpuUsage = perc
-                
-                // Maintain a history of 60 points
-                let history = root.cpuHistory.slice()
-                history.push(perc)
-                if (history.length > 60) history.shift()
-                root.cpuHistory = history
-            }
-        }
-    }
+        stdout: SplitParser {
+            onRead: data => {
+                try {
+                    let stats = JSON.parse(data)
+                    root.cpuUsage = stats.cpu
+                    root.ramPerc = stats.ram_perc
+                    root.ramUsage = stats.ram_gb + "GB"
+                    root.gpuUsage = stats.gpu
+                    root.temperature = stats.temp
 
-    // ── RAM Polling (Inlined) ───────────────────────────────
-    Process {
-        id: ramProc
-        command: ["bash", "-c", "free -b | awk '/^Mem/ { printf \"%s\\n%.0f\", $3/1024/1024/1024, $3/$2 * 100 }'"]
-        running: true
-        stdout: StdioCollector {
-            onStreamFinished: {
-                let parts = this.text.trim().split("\n")
-                if (parts.length >= 1) root.ramUsage = parseFloat(parts[0]).toFixed(2) + "GB"
-                if (parts.length >= 2) {
-                    let perc = parseInt(parts[1])
-                    root.ramPerc = perc
-                    
-                    // Maintain a history of 60 points (5 minutes at 5s)
-                    let history = root.ramHistory.slice() 
-                    history.push(perc)
-                    if (history.length > 60) history.shift()
-                    root.ramHistory = history
+                    // Update Histories
+                    let cpuH = root.cpuHistory.slice()
+                    cpuH.push(stats.cpu)
+                    if (cpuH.length > 60) cpuH.shift()
+                    root.cpuHistory = cpuH
+
+                    let ramH = root.ramHistory.slice()
+                    ramH.push(stats.ram_perc)
+                    if (ramH.length > 60) ramH.shift()
+                    root.ramHistory = ramH
+
+                    let tempH = root.tempHistory.slice()
+                    tempH.push(stats.temp)
+                    if (tempH.length > 60) tempH.shift()
+                    root.tempHistory = tempH
+                } catch (e) {
+                    console.error("Failed to parse stats JSON:", data)
                 }
             }
         }
     }
 
-    // ── GPU Polling (Inlined) ───────────────────────────────
-    Process {
-        id: gpuProc
-        command: ["bash", "-c", "if command -v nvidia-smi &> /dev/null; then nvidia-smi --query-gpu=utilization.gpu --format=csv,noheader,nounits | awk '{print $1}'; elif ls /sys/class/drm/card*/device/gpu_busy_percent &> /dev/null; then cat /sys/class/drm/card*/device/gpu_busy_percent | head -n1; else echo 0; fi"]
-        running: true
-        stdout: StdioCollector {
-            onStreamFinished: {
-                let v = parseInt(this.text.trim())
-                root.gpuUsage = isNaN(v) ? 0 : v
-            }
-        }
-    }
-
-    // ── Temperature (Inlined) ──────────────────────────────
-    Process {
-        id: tempProc
-        command: ["bash", "-c", "cat /sys/class/hwmon/hwmon5/temp1_input 2>/dev/null | awk '{printf \"%d\", $1/1000}'"]
-        running: true
-        stdout: StdioCollector {
-            onStreamFinished: {
-                let v = parseInt(this.text.trim())
-                let temp = isNaN(v) ? 0 : v
-                root.temperature = temp
-                
-                // Maintain a history of 60 points
-                let history = root.tempHistory.slice()
-                history.push(temp)
-                if (history.length > 60) history.shift()
-                root.tempHistory = history
-            }
-        }
-    }
-    
-    // ── Consolidate 5s Polling ─────────────────────────────
-    Timer {
-        interval: 5000
-        running: true
-        repeat: true
-        triggeredOnStart: true
-        onTriggered: {
-            cpuProc.running = true
-            ramProc.running = true
-            gpuProc.running = true
-            tempProc.running = true
-        }
-    }
 
     // ── Network Monitoring (Consolidated Reactive) ─────────
     Process {
@@ -251,40 +202,58 @@ Singleton {
         // or relies on the desktop environment's polkit agent for passwords if needed.
         _runOneShot(["nmcli", "dev", "wifi", "connect", ssid])
     }
+    // ── Uptime (Optimized Native Read) ──────────────────────
+    FileView {
+        id: uptimeFile
+        path: "/proc/uptime"
+    }
 
-    // ── Bluetooth status (Inlined) ──────────────────────────
-    Process {
-        id: btProc
-        command: ["bash", "-c", "state=$(rfkill list bluetooth | grep -c 'yes'); if [ \"$state\" -gt 0 ]; then echo false; else echo true; fi"]
+    Timer {
+        interval: 60000 // Update every minute
         running: true
-        stdout: StdioCollector {
-            onStreamFinished: root.btOn = this.text.trim() === "true"
+        repeat: true
+        triggeredOnStart: true
+        onTriggered: {
+            let content = uptimeFile.text().trim().split(" ")[0]
+            let seconds = parseFloat(content)
+            if (!isNaN(seconds)) {
+                let d = Math.floor(seconds / (24 * 3600))
+                let s = seconds % (24 * 3600)
+                let h = Math.floor(s / 3600)
+                s %= 3600
+                let m = Math.floor(s / 60)
+                
+                let res = ""
+                if (d > 0) res += d + "d "
+                if (h > 0) res += h + "h "
+                if (m > 0 || res === "") res += m + "m"
+                root.uptime = res.trim()
+            }
         }
     }
-    Timer { interval: 3000; running: true; repeat: true; onTriggered: btProc.running = true }
 
 
+    // ── Distro / User (Optimized Native / Single Fork) ──────
+    FileView {
+        id: osReleaseFile
+        path: "/etc/os-release"
+    }
 
-    // ── Uptime (Inlined) ────────────────────────────────────
-    Process {
-        id: uptimeProc
-        command: ["bash", "-c", "uptime -p | sed 's/^up //; s/ years\\?/y/g; s/ weeks\\?/w/g; s/ days\\?/d/g; s/ hours\\?/h/g; s/ minutes\\?/m/g'"]
+    Timer {
         running: true
-        stdout: StdioCollector {
-            onStreamFinished: root.uptime = this.text.trim()
+        repeat: false
+        triggeredOnStart: true
+        onTriggered: {
+            let lines = osReleaseFile.text().split("\n")
+            for (let line of lines) {
+                if (line.startsWith("NAME=")) {
+                    root.distroName = line.substring(5).replace(/"/g, "")
+                    break
+                }
+            }
         }
     }
-    Timer { interval: 60000; running: true; repeat: true; onTriggered: uptimeProc.running = true }
 
-    // ── Distro / User (Fast internal commands) ──────────────
-    Process {
-        id: distroProc
-        command: ["bash", "-c", "grep '^NAME' /etc/os-release | cut -d= -f2 | tr -d '\"'"]
-        running: true
-        stdout: StdioCollector {
-            onStreamFinished: root.distroName = this.text.trim()
-        }
-    }
 
     Process {
         id: userProc
@@ -396,32 +365,23 @@ Singleton {
     Timer { interval: 900000; running: true; repeat: true; onTriggered: weatherProc.running = true }
 
 
-    // ── Update Counters (Inlined) ──────────────────────────
+    // ── Update Counters (Consolidated Fork) ────────────────
     Process {
-        id: pacmanProc
-        command: ["bash", "-c", "checkupdates 2>/dev/null | wc -l"]
+        id: updateProc
+        command: ["bash", root.scriptsDir + "/updates.sh"]
         running: true
         stdout: StdioCollector {
             onStreamFinished: {
-                let t = this.text.trim()
-                root.pacmanUpdates = (t === "0") ? "" : t
+                let parts = this.text.trim().split(" ")
+                if (parts.length >= 2) {
+                    root.pacmanUpdates = (parts[0] === "0") ? "" : parts[0]
+                    root.aurUpdates = (parts[1] === "0") ? "" : parts[1]
+                }
             }
         }
     }
-    Timer { interval: 3600000; running: true; repeat: true; onTriggered: pacmanProc.running = true }
+    Timer { interval: 3600000; running: true; repeat: true; onTriggered: updateProc.running = true }
 
-    Process {
-        id: aurProc
-        command: ["bash", "-c", "yay -Qua 2>/dev/null | wc -l"]
-        running: true
-        stdout: StdioCollector {
-            onStreamFinished: {
-                let t = this.text.trim()
-                root.aurUpdates = (t === "0") ? "" : t
-            }
-        }
-    }
-    Timer { interval: 3600000; running: true; repeat: true; onTriggered: aurProc.running = true }
 
     // ── Cava (Streaming) ───────────────────────────────────
     Process {
@@ -429,13 +389,16 @@ Singleton {
         command: ["bash", root.scriptsDir + "/cava.sh"]
         running: true
         stdout: SplitParser {
-            onRead: data => root.cavaOutput = data
+            onRead: data => {
+                if (!data) return
+                let parts = data.split(";").filter(x => x.length > 0)
+                root.cavaData = parts.map(x => parseInt(x))
+            }
         }
     }
 
     // ── Dedicated Toggle Actions (Inlined) ─────────────────
     Process { id: wifiToggle; command: ["bash", "-c", "state=$(nmcli radio wifi); if [ \"$state\" = \"enabled\" ]; then nmcli radio wifi off; else nmcli radio wifi on; fi"]; running: false }
-    Process { id: btToggle; command: ["bash", "-c", "state=$(rfkill list bluetooth | grep -c 'yes'); if [ \"$state\" -gt 0 ]; then rfkill unblock bluetooth; else rfkill block bluetooth; fi"]; running: false }
     Process { id: dndToggle; command: ["true"]; running: false }
     Process { id: vpnToggle; command: ["bash", "-c", "if nmcli device show proton0 2>/dev/null | grep -q 'STATE.*connected'; then protonvpn disconnect; else protonvpn connect; fi"]; running: false }
 
@@ -464,8 +427,14 @@ Singleton {
     }
 
     function toggleBt() {
-        root.btOn = !root.btOn
-        btToggle.running = true
+        if (root.btOn) {
+            if (Bluetooth.defaultAdapter) Bluetooth.defaultAdapter.enabled = false
+            _runOneShot(["rfkill", "block", "bluetooth"])
+        } else {
+            _runOneShot(["rfkill", "unblock", "bluetooth"])
+            // Nudge the native service to enable it once unblocked
+            if (Bluetooth.defaultAdapter) Bluetooth.defaultAdapter.enabled = true
+        }
     }
 
     function toggleDnd() {

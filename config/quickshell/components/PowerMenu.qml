@@ -2,14 +2,10 @@ import QtQuick
 import QtQuick.Layouts
 import "../services" as Services
 
-Rectangle {
+Item {
     id: root
     implicitWidth: 310
     implicitHeight: 70
-    radius: 14
-    color: Qt.rgba(1, 1, 1, 0.05)
-    border.width: 1
-    border.color: Qt.rgba(1, 1, 1, 0.1)
 
     property var window: null
 

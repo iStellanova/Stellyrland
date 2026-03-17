@@ -10,7 +10,7 @@ Text {
     font.pixelSize: Colors.fontSize
     font.weight: Font.DemiBold
     
-    layer.enabled: true
+    layer.enabled: root.text !== ""
     layer.effect: DropShadow {
         transparentBorder: true
         color: Qt.rgba(0, 0, 0, 0.6)
