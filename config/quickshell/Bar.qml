@@ -13,9 +13,10 @@ PanelWindow {
     id: bar
     screen: Services.MonitorService.primaryScreen
     WlrLayershell.layer: WlrLayer.Overlay
-    visible: !Services.ShellData.hasFullscreen
+    visible: !Services.ShellData.hasFullscreen && !logoutVisible
     property var trayMenu
     property var activeWorkspaceButton: null
+    property bool logoutVisible: false
 
     anchors {
         top: true
@@ -42,6 +43,7 @@ PanelWindow {
     signal toggleCpuMenu(real xPos)
     signal toggleTempMenu(real xPos)
     signal toggleMediaMenu(real xPos)
+    signal toggleUpdatesMenu(real xPos)
 
     // ── Bar background ──────────────────────────────────────
     Rectangle {
@@ -310,6 +312,12 @@ PanelWindow {
 
                 // Pacman updates
                 Components.BarModule {
+                    id: pacmanMod
+                    interactive: true
+                    onClicked: {
+                        let pos = pacmanMod.mapToItem(null, pacmanMod.width / 2, 0)
+                        bar.toggleUpdatesMenu(pos.x)
+                    }
                     icon: "󰮯"
                     value: Services.ShellData.pacmanUpdates
                     visible: value.length > 0
@@ -317,6 +325,12 @@ PanelWindow {
 
                 // AUR updates
                 Components.BarModule {
+                    id: aurMod
+                    interactive: true
+                    onClicked: {
+                        let pos = aurMod.mapToItem(null, aurMod.width / 2, 0)
+                        bar.toggleUpdatesMenu(pos.x)
+                    }
                     icon: "󰣇"
                     value: Services.ShellData.aurUpdates
                     visible: value.length > 0

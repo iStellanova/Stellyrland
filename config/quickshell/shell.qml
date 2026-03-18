@@ -20,6 +20,9 @@ Scope {
     property bool cpuVisible: false
     property bool tempVisible: false
     property bool mediaVisible: false
+    property bool updatesVisible: false
+    property bool wallpaperVisible: false
+    property bool logoutVisible: false
     
     property real ccX: 0
     property real ncX: 0
@@ -29,6 +32,7 @@ Scope {
     property real cpuX: 0
     property real tempX: 0
     property real mediaX: 0
+    property real updatesX: 0
 
     function closeAllPopups() {
         root.ccVisible = false
@@ -40,6 +44,9 @@ Scope {
         root.cpuVisible = false
         root.tempVisible = false
         root.mediaVisible = false
+        root.updatesVisible = false
+        root.wallpaperVisible = false
+        root.logoutVisible = false
         trayMenu.menuHandle = null
     }
 
@@ -57,6 +64,18 @@ Scope {
             let target = !root.alVisible
             root.closeAllPopups()
             root.alVisible = target
+        }
+
+        function toggleWallpaperSelector() {
+            let target = !root.wallpaperVisible
+            root.closeAllPopups()
+            root.wallpaperVisible = target
+        }
+
+        function toggleLogout() {
+            let target = !root.logoutVisible
+            root.closeAllPopups()
+            root.logoutVisible = target
         }
     }
 
@@ -113,6 +132,14 @@ Scope {
         onCloseRequested: root.mediaVisible = false
     }
 
+    UpdatesPopup {
+        id: updatesMenu
+        screen: Services.MonitorService.primaryScreen
+        open: root.updatesVisible
+        xOffset: root.updatesX
+        onCloseRequested: root.updatesVisible = false
+    }
+
     // ── Control Center Popup ─────────────────────────────────
     ControlCenter {
         id: cc
@@ -137,6 +164,13 @@ Scope {
         onCloseRequested: root.alVisible = false
     }
 
+    WallpaperPopup {
+        id: wp
+        screen: Services.MonitorService.primaryScreen
+        visible: root.wallpaperVisible
+        onCloseRequested: root.wallpaperVisible = false
+    }
+
     NotificationPopup { 
         screen: Services.MonitorService.primaryScreen
     }
@@ -153,6 +187,7 @@ Scope {
         id: topBar
         screen: Services.MonitorService.primaryScreen
         trayMenu: trayMenu
+        logoutVisible: lp.visible
 
         onToggleControlCenter: (x) => {
             let target = !root.ccVisible
@@ -209,5 +244,20 @@ Scope {
             root.mediaX = x
             root.mediaVisible = target
         }
+
+        onToggleUpdatesMenu: (x) => {
+            let target = !root.updatesVisible
+            root.closeAllPopups()
+            root.updatesX = x
+            root.updatesVisible = target
+        }
+    }
+
+    // Defined LAST so it stays on top of everything
+    LogoutPopup {
+        id: lp
+        screen: Services.MonitorService.primaryScreen
+        open: root.logoutVisible
+        onCloseRequested: root.logoutVisible = false
     }
 }

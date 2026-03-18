@@ -49,6 +49,7 @@ decman.pacman.packages |= {
 decman.pacman.packages |= {
     "docker",               # Docker.
     "docker-compose",       # Docker Compose Tool.
+    "dnsmasq",              # For VM Networking.
     "smartmontools",        # Storage Health Tool.
     "snap-pac",             # Pacman Snapper Integration.
     "cliphist",             # Clipboard Manager.
@@ -155,10 +156,12 @@ decman.pacman.packages |= {
     "nicotine+",            # P2P Network Manager.
     "obs-studio",           # OBS Studio Recording.
     "pavucontrol",          # Pulseaudio Volume Control.
+    "qemu-full",            # QEMU VM.
     "resources",            # System Resource Manager.
     "sushi",                # Quick Look for Nautilus.
     "telegram-desktop",     # Telegram App.
     "transmission-gtk",     # Bittorrent Client.
+    "virt-manager",         # Virtual Manager.
     "zed",                  # GUI Text Editor.
 }
 
@@ -234,8 +237,6 @@ decman.aur.packages |= {
     "starc-appimage",       # Story Architect, Writing App.
     "stoat-desktop-git",    # Alternative Discord Client.
     "vesktop",              # Discord Client.
-    "vmware-keymaps",       # VMware Keymaps.
-    "vmware-workstation",   # VMware Workstation.
     "warehouse-git",        # Flatpak Manager.
     "xclicker",             # Autoclicker.
     "zen-browser-bin",      # Zen Browser.
