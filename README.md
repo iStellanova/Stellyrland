@@ -2,7 +2,7 @@
 
 Declarative Arch Linux system configuration for `stellanova@stellarhost`.
 
-Managed via [decman](https://github.com/kiviktnm/decman) — packages and dotfiles are defined in a single `source.py`, deployed with 'decman'.
+Managed via [decman](https://github.com/kiviktnm/decman) — packages and dotfiles are defined in a single `source.py`, deployed with `decman sync`. The desktop shell is [Quickshell](https://quickshell.outfoxxed.me/).
 
 ---
 
@@ -28,7 +28,7 @@ cd ~/decfiles
 decman sync
 ```
 
-`decman sync` will install declared packages and configurations.
+`decman` will install declared packages and configurations.
 
 ---
 
@@ -39,15 +39,16 @@ Theming is driven by [matugen](https://github.com/InioX/matugen) — wallpaper c
 **Pipeline:**
 
 1. Colors set through selected wallpaper and matugen.
-2. Matugen distributes color profiles across quickshell and applications.
+2. Matugen distributes color profiles across Quickshell and applications.
 
 > **Note:** If matugen runs non-interactively (e.g. from a script), pass `--source-color-index 0` to suppress the color picker prompt (required since matugen 4.0.0).
 
 ---
 
-## Known Issues
+## Misc
 
-- The `custom/pkg-aur` Waybar widget runs `yay -Qua` on an interval. **Do not set this interval below ~3600 seconds** — polling too frequently will get your IP rate-limited by the AUR.
+- `colors.json` — snapshot of the current matugen-generated color palette.
+- `etc/coolercontrol/` — fan and pump control profiles managed alongside dotfiles.
 
 ---
 
@@ -59,6 +60,7 @@ Theming is driven by [matugen](https://github.com/InioX/matugen) — wallpaper c
 | OS | Arch Linux x86_64 |
 | Kernel | Linux zen |
 | WM | Hyprland (Wayland) |
+| Shell | Quickshell |
 | CPU | AMD Ryzen 9 9950X3D |
 | GPU | AMD Radeon RX 7900 XTX |
 | RAM | 64 GiB |
