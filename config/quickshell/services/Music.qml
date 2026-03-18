@@ -20,7 +20,18 @@ Singleton {
         return false;
     }
 
+    property MprisPlayer manualPlayer: null
+    
+    // Reset manual player if it's no longer in the players list
+    onPlayersChanged: {
+        if (manualPlayer && !players.includes(manualPlayer)) {
+            manualPlayer = null;
+        }
+    }
+
     property MprisPlayer player: {
+        if (manualPlayer && players.includes(manualPlayer)) return manualPlayer;
+        
         if (!players || players.length === 0) return null;
         
         // 1. Search for a playing PREFERRED player

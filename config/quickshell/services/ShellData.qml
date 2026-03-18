@@ -6,6 +6,7 @@ import Quickshell.Hyprland
 import Quickshell.Services.Pipewire
 import Quickshell.Bluetooth
 import QtQuick
+import "."
 
 Singleton {
     id: root
@@ -18,7 +19,10 @@ Singleton {
     property var ramHistory: []
     property int gpuUsage: 0
     property var tempHistory: []
-
+    property int temperature: 0
+    property bool hasFullscreen: (Hyprland.focusedWorkspace && Hyprland.focusedWorkspace.hasFullscreen && (Hyprland.focusedWorkspace.monitor && Hyprland.focusedWorkspace.monitor.name === MonitorService.targetName)) || 
+                                 (Hyprland.activeToplevel && Hyprland.activeToplevel.fullscreen && (Hyprland.activeToplevel.workspace && Hyprland.activeToplevel.workspace.monitor && Hyprland.activeToplevel.workspace.monitor.name === MonitorService.targetName)) || false
+    
     // ── Network ──────────────────────────────────────────────
     property string netSsid: "Offline"
 
@@ -44,11 +48,9 @@ Singleton {
     // ── Package updates ──────────────────────────────────────
     property string pacmanUpdates: ""
     property string aurUpdates: ""
+    property var pacmanUpdateList: []
+    property var aurUpdateList: []
 
-    // ── Temperature / Global State ───────────────────────────
-    property int temperature: 0
-    property bool hasFullscreen: (Hyprland.focusedWorkspace && Hyprland.focusedWorkspace.hasFullscreen) || 
-                                 (Hyprland.activeToplevel && Hyprland.activeToplevel.fullscreen) || false
     
     // ── Window Title (Native & Reactive) ────────────────────
     property string windowTitle: Hyprland.activeToplevel ? Hyprland.activeToplevel.title : ""
@@ -365,22 +367,47 @@ Singleton {
     Timer { interval: 900000; running: true; repeat: true; onTriggered: weatherProc.running = true }
 
 
-    // ── Update Counters (Consolidated Fork) ────────────────
+    // ── Update Service (Consolidated) ──────────────────────
+    function refreshUpdateLists() {
+        updateListProc.running = true
+    }
+
     Process {
-        id: updateProc
-        command: ["bash", root.scriptsDir + "/updates.sh"]
+        id: updateListProc
+        command: ["bash", root.scriptsDir + "/get_update_list.sh"]
         running: true
         stdout: StdioCollector {
             onStreamFinished: {
-                let parts = this.text.trim().split(" ")
-                if (parts.length >= 2) {
-                    root.pacmanUpdates = (parts[0] === "0") ? "" : parts[0]
-                    root.aurUpdates = (parts[1] === "0") ? "" : parts[1]
+                let raw = this.text.trim()
+                let lines = raw.length > 0 ? raw.split("\n") : []
+                let pacman = []
+                let aur = []
+                for (let line of lines) {
+                    if (!line) continue
+                    let parts = line.split("|")
+                    if (parts.length < 3) continue
+                    
+                    if (parts[0] === "counts") {
+                        root.pacmanUpdates = (parts[1] === "0") ? "" : parts[1]
+                        root.aurUpdates = (parts[2] === "0") ? "" : parts[2]
+                        continue
+                    }
+                    
+                    if (parts.length < 4) continue
+                    let item = {
+                        name: parts[1],
+                        old: parts[2],
+                        new: parts[3]
+                    }
+                    if (parts[0] === "pacman") pacman.push(item)
+                    else if (parts[0] === "aur") aur.push(item)
                 }
+                root.pacmanUpdateList = pacman
+                root.aurUpdateList = aur
             }
         }
     }
-    Timer { interval: 3600000; running: true; repeat: true; onTriggered: updateProc.running = true }
+    Timer { interval: 3600000; running: true; repeat: true; onTriggered: updateListProc.running = true }
 
 
     // ── Cava (Streaming) ───────────────────────────────────
