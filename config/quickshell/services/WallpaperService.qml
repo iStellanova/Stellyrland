@@ -7,7 +7,7 @@ import QtQuick
 Singleton {
     id: root
 
-    property string wallpaperDir: "/home/stellanova/Pictures/wallpapers"
+    property string wallpaperDir: Quickshell.env("HOME") + "/Pictures/wallpapers"
     property var wallpapers: []
 
     function setWallpaper(path) {

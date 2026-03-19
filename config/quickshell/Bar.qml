@@ -35,15 +35,18 @@ PanelWindow {
     color: "transparent"
 
     // ── Signals for popup toggling ───────────────────────────
-    signal toggleControlCenter(real xPos)
-    signal toggleNotificationCenter(real xPos)
+    signal toggleControlCenter()
+    signal toggleNotificationCenter()
     signal toggleCalendar(real xPos)
     signal toggleWifiMenu(real xPos)
     signal toggleRamMenu(real xPos)
     signal toggleCpuMenu(real xPos)
+    signal toggleGpuMenu(real xPos)
     signal toggleTempMenu(real xPos)
     signal toggleMediaMenu(real xPos)
     signal toggleUpdatesMenu(real xPos)
+    signal toggleMicMenu(real xPos)
+    signal toggleVolumeMenu(real xPos)
 
     // ── Bar background ──────────────────────────────────────
     Rectangle {
@@ -58,11 +61,11 @@ PanelWindow {
             anchors.left: parent.left
             height: parent.height
             width: leftRow.implicitWidth + 24
-            radius: 14
+            radius: Services.Colors.radiusNormal
             clip: true
 
             Behavior on width {
-                NumberAnimation { duration: 80; easing.type: Easing.OutCubic }
+                NumberAnimation { duration: Services.Colors.animFast; easing.type: Easing.OutCubic }
             }
             color: Services.Colors.bg
             border.width: 1
@@ -74,7 +77,7 @@ PanelWindow {
                 anchors.verticalCenter: parent.verticalCenter
                 z: 1
                 height: 26
-                radius: 8
+                radius: Services.Colors.radiusSmall
                 color: Qt.rgba(Services.Colors.primary.r, Services.Colors.primary.g, Services.Colors.primary.b, 0.12)
                 border.width: 1
                 border.color: Qt.rgba(Services.Colors.primary.r, Services.Colors.primary.g, Services.Colors.primary.b, 0.05)
@@ -83,15 +86,15 @@ PanelWindow {
                 
                 // Fade in/out when we have a target (e.g. focus moves to/from this monitor)
                 opacity: targetButton && targetButton.visible ? 1.0 : 0.0
-                Behavior on opacity { NumberAnimation { duration: 250; easing.type: Easing.OutCubic } }
+                Behavior on opacity { NumberAnimation { duration: Services.Colors.animSlow; easing.type: Easing.OutCubic } }
                 
                 // Direct relative positioning
                 // Direct relative positioning
                 x: targetButton ? leftRow.x + targetButton.x : 0
                 width: targetButton ? targetButton.width : 0
 
-                Behavior on x { NumberAnimation { duration: 250; easing.type: Easing.OutCubic } }
-                Behavior on width { NumberAnimation { duration: 250; easing.type: Easing.OutCubic } }
+                Behavior on x { NumberAnimation { duration: Services.Colors.animSlow; easing.type: Easing.OutCubic } }
+                Behavior on width { NumberAnimation { duration: Services.Colors.animSlow; easing.type: Easing.OutCubic } }
             }
 
             RowLayout {
@@ -100,7 +103,7 @@ PanelWindow {
                 anchors.left: parent.left
                 anchors.leftMargin: 12
                 anchors.verticalCenter: parent.verticalCenter
-                spacing: 6
+                spacing: Services.Colors.spacingSmall
 
                 // Control Center button
                 Components.BarButton {
@@ -109,9 +112,9 @@ PanelWindow {
                     fontSize: Services.Colors.fontSizeLarge
                     textColor: Services.Colors.primary
                     bgColor: Qt.rgba(Services.Colors.primary.r, Services.Colors.primary.g, Services.Colors.primary.b, 0.15)
+                    active: Services.ShellData.ccVisible
                     onClicked: {
-                        let pos = archButton.mapToItem(null, archButton.width / 2, 0)
-                        bar.toggleControlCenter(pos.x)
+                        bar.toggleControlCenter()
                     }
                 }
 
@@ -183,19 +186,20 @@ PanelWindow {
             anchors.horizontalCenter: parent.horizontalCenter
             height: parent.height
             width: mprisRow.implicitWidth + 30
-            radius: 18
+            radius: Services.Colors.radiusNormal
             clip: true
             Behavior on width {
-                NumberAnimation { duration: 80; easing.type: Easing.OutCubic }
+                NumberAnimation { duration: Services.Colors.animFast; easing.type: Easing.OutCubic }
             }
-            color: mprisMouse.containsMouse ? Qt.rgba(Services.Colors.primary.r, Services.Colors.primary.g, Services.Colors.primary.b, 0.1) : Services.Colors.bg
+            property bool isHighlighted: mprisMouse.containsMouse || Services.ShellData.mediaVisible
+            color: isHighlighted ? Qt.rgba(Services.Colors.primary.r, Services.Colors.primary.g, Services.Colors.primary.b, 0.1) : Services.Colors.bg
             border.width: 1
-            border.color: mprisMouse.containsMouse ? Services.Colors.primary : Services.Colors.border
+            border.color: isHighlighted ? Services.Colors.primary : Services.Colors.border
             
-            scale: mprisMouse.pressed ? 0.95 : 1.0
-            Behavior on color { ColorAnimation { duration: 80 } }
-            Behavior on border.color { ColorAnimation { duration: 80 } }
-            Behavior on scale { NumberAnimation { duration: 100; easing.type: Easing.OutCubic } }
+            scale: mprisMouse.pressed || isHighlighted ? 0.95 : 1.0
+            Behavior on color { ColorAnimation { duration: Services.Colors.animFast } }
+            Behavior on border.color { ColorAnimation { duration: Services.Colors.animFast } }
+            Behavior on scale { NumberAnimation { duration: Services.Colors.animFast; easing.type: Easing.OutCubic } }
             
             visible: {
                 let p = Services.Music.player
@@ -205,7 +209,7 @@ PanelWindow {
             RowLayout {
                 id: mprisRow
                 anchors.centerIn: parent
-                spacing: 8
+                spacing: Services.Colors.spacingNormal
 
                 Components.ShadowText {
                     text: {
@@ -214,7 +218,7 @@ PanelWindow {
                         return p.playbackState === MprisPlaybackState.Playing ? "▶" : "⏸"
                     }
                     font.pixelSize: Services.Colors.fontSizeSmall
-                    color: mprisMouse.containsMouse ? Services.Colors.primary : Services.Colors.mainText
+                    color: mprisBubble.isHighlighted ? Services.Colors.primary : Services.Colors.mainText
                 }
 
                 Components.ShadowText {
@@ -223,10 +227,11 @@ PanelWindow {
                         if (!p) return ""
                         let t = p.trackTitle || "Unknown Track"
                         let a = p.trackArtist || "Unknown Artist"
-                        let display = a.length > 0 ? (t + " - " + a) : t
-                        return display.length > 20 ? display.substring(0, 20) + "…" : display
+                        return a.length > 0 ? (t + " - " + a) : t
                     }
-                    color: mprisMouse.containsMouse ? Services.Colors.primary : Services.Colors.mainText
+                    Layout.maximumWidth: 450
+                    elide: Text.ElideRight
+                    color: mprisBubble.isHighlighted ? Services.Colors.primary : Services.Colors.mainText
                 }
             }
 
@@ -250,10 +255,10 @@ PanelWindow {
             anchors.right: parent.right
             height: parent.height
             width: rightRow.implicitWidth + 24
-            radius: 14
+            radius: Services.Colors.radiusNormal
             clip: true
             Behavior on width {
-                NumberAnimation { duration: 80; easing.type: Easing.OutCubic }
+                NumberAnimation { duration: Services.Colors.animFast; easing.type: Easing.OutCubic }
             }
             color: Services.Colors.bg
             border.width: 1
@@ -264,18 +269,18 @@ PanelWindow {
                 anchors.right: parent.right
                 anchors.rightMargin: 12
                 anchors.verticalCenter: parent.verticalCenter
-                spacing: 0
+                spacing: Services.Colors.spacingSmall
 
                 // System Tray
                 RowLayout {
-                    spacing: 4
+                    spacing: Services.Colors.spacingSmall
                     Layout.rightMargin: 8
                     Repeater {
                         model: SystemTray.items
                         delegate: Rectangle {
                             id: trayItem
                             implicitWidth: 26; implicitHeight: 26
-                            radius: 6
+                            radius: Services.Colors.radiusSmall
                             color: trayMouse.containsMouse ? Qt.rgba(Services.Colors.mainText.r, Services.Colors.mainText.g, Services.Colors.mainText.b, 0.1) : "transparent"
 
                             Image {
@@ -310,10 +315,25 @@ PanelWindow {
                     }
                 }
 
+                // Microphone usage indicator
+                Components.BarModule {
+                    id: micMod
+                    interactive: true
+                    active: Services.ShellData.micVisible
+                    onClicked: {
+                        let pos = micMod.mapToItem(null, micMod.width / 2, 0)
+                        bar.toggleMicMenu(pos.x)
+                    }
+                    icon: "󰍬"
+                    visible: Services.ShellData.micBusy
+                    Layout.rightMargin: 8
+                }
+
                 // Pacman updates
                 Components.BarModule {
                     id: pacmanMod
                     interactive: true
+                    active: Services.ShellData.updatesVisible
                     onClicked: {
                         let pos = pacmanMod.mapToItem(null, pacmanMod.width / 2, 0)
                         bar.toggleUpdatesMenu(pos.x)
@@ -327,6 +347,7 @@ PanelWindow {
                 Components.BarModule {
                     id: aurMod
                     interactive: true
+                    active: Services.ShellData.updatesVisible
                     onClicked: {
                         let pos = aurMod.mapToItem(null, aurMod.width / 2, 0)
                         bar.toggleUpdatesMenu(pos.x)
@@ -340,6 +361,7 @@ PanelWindow {
                 Components.BarModule {
                     id: tempModule
                     interactive: true
+                    active: Services.ShellData.tempVisible
                     onClicked: {
                         let pos = tempModule.mapToItem(null, tempModule.width / 2, 0)
                         bar.toggleTempMenu(pos.x)
@@ -358,6 +380,7 @@ PanelWindow {
                 Components.BarModule {
                     id: cpuModule
                     interactive: true
+                    active: Services.ShellData.cpuVisible
                     onClicked: {
                         let pos = cpuModule.mapToItem(null, cpuModule.width / 2, 0)
                         bar.toggleCpuMenu(pos.x)
@@ -367,10 +390,25 @@ PanelWindow {
                     Layout.leftMargin: 9
                 }
 
+                // GPU
+                Components.BarModule {
+                    id: gpuModule
+                    interactive: true
+                    active: Services.ShellData.gpuVisible
+                    onClicked: {
+                        let pos = gpuModule.mapToItem(null, gpuModule.width / 2, 0)
+                        bar.toggleGpuMenu(pos.x)
+                    }
+                    icon: "󰢮"
+                    value: Services.ShellData.gpuUsage + "%"
+                    Layout.leftMargin: 9
+                }
+
                 // Memory
                 Components.BarModule {
                     id: ramModule
                     interactive: true
+                    active: Services.ShellData.ramVisible
                     onClicked: {
                         let pos = ramModule.mapToItem(null, ramModule.width / 2, 0)
                         bar.toggleRamMenu(pos.x)
@@ -384,6 +422,7 @@ PanelWindow {
                 Components.BarModule {
                     id: wifiModule
                     interactive: true
+                    active: Services.ShellData.trafficVisible
                     onClicked: {
                         let pos = wifiModule.mapToItem(null, wifiModule.width / 2, 0)
                         bar.toggleWifiMenu(pos.x)
@@ -395,22 +434,43 @@ PanelWindow {
                         : Services.Colors.mainText
                     Layout.leftMargin: 9
                 }
+                
+                // Volume
+                Components.BarModule {
+                    id: volModule
+                    interactive: true
+                    active: Services.ShellData.volumeVisible
+                    onClicked: {
+                        let pos = volModule.mapToItem(null, volModule.width / 2, 0)
+                        bar.toggleVolumeMenu(pos.x)
+                    }
+                    icon: {
+                        if (Services.ShellData.muted) return "󰝟"
+                        let v = Services.ShellData.volume
+                        if (v === 0) return "󰕿"
+                        if (v < 34) return "󰕿"
+                        if (v < 67) return "󰖀"
+                        return "󰕾"
+                    }
+                    Layout.leftMargin: 9
+                }
 
                 // Clock (native SystemClock)
                 Rectangle {
                     id: clockRect
                     implicitWidth: clockText.implicitWidth + 32
                     implicitHeight: 26
-                    radius: 8
-                    scale: clockMouse.pressed ? 0.95 : 1.0
+                    radius: Services.Colors.radiusSmall
+                    property bool isHighlighted: clockMouse.pressed || Services.ShellData.calVisible
+                    scale: isHighlighted ? 0.95 : 1.0
                     color: {
-                        if (clockMouse.pressed) return Qt.rgba(Services.Colors.primary.r, Services.Colors.primary.g, Services.Colors.primary.b, 0.2)
+                        if (isHighlighted) return Qt.rgba(Services.Colors.primary.r, Services.Colors.primary.g, Services.Colors.primary.b, 0.2)
                         if (clockMouse.containsMouse) return Qt.rgba(Services.Colors.primary.r, Services.Colors.primary.g, Services.Colors.primary.b, 0.1)
                         return "transparent"
                     }
 
-                    Behavior on color { ColorAnimation { duration: 80 } }
-                    Behavior on scale { NumberAnimation { duration: 100; easing.type: Easing.OutCubic } }
+                    Behavior on color { ColorAnimation { duration: Services.Colors.animFast } }
+                    Behavior on scale { NumberAnimation { duration: Services.Colors.animFast; easing.type: Easing.OutCubic } }
 
                     SystemClock {
                         id: sysClock
@@ -421,7 +481,7 @@ PanelWindow {
                         id: clockText
                         anchors.centerIn: parent
                         text: Qt.formatDateTime(sysClock.date, "ddd dd MMM   hh:mm AP")
-                        color: clockMouse.containsMouse ? Services.Colors.primary : Services.Colors.mainText
+                        color: (clockMouse.containsMouse || clockRect.isHighlighted) ? Services.Colors.primary : Services.Colors.mainText
                     }
 
                     MouseArea {
@@ -443,9 +503,9 @@ PanelWindow {
                     fontSize: Services.Colors.fontSizeLarge
                     textColor: Services.Colors.primary
                     bgColor: Qt.rgba(Services.Colors.primary.r, Services.Colors.primary.g, Services.Colors.primary.b, 0.15)
+                    active: Services.ShellData.ncVisible
                     onClicked: {
-                        let pos = notifButton.mapToItem(null, notifButton.width / 2, 0)
-                        bar.toggleNotificationCenter(pos.x)
+                        bar.toggleNotificationCenter()
                     }
                 }
             }

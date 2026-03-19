@@ -59,7 +59,7 @@ PanelWindow {
     }
 
     Behavior on margins.top {
-        NumberAnimation { duration: Services.Colors.animDuration; easing.type: Easing.OutCubic }
+        NumberAnimation { duration: Services.Colors.animNormal; easing.type: Easing.OutCubic }
     }
 
     margins.top: open ? Services.Colors.popupMargin : Services.Colors.popupHideOffset
@@ -74,7 +74,7 @@ PanelWindow {
 
     Rectangle {
         id: contentRect
-        radius: 14
+        radius: Services.Colors.radiusNormal
         color: Services.Colors.bg
         border.width: 1
         border.color: Services.Colors.border
@@ -82,7 +82,7 @@ PanelWindow {
         
         opacity: root.open ? 1.0 : 0.0
         Behavior on opacity {
-            NumberAnimation { duration: Services.Colors.animDuration; easing.type: Easing.OutCubic }
+            NumberAnimation { duration: Services.Colors.animNormal; easing.type: Easing.OutCubic }
         }
 
         implicitWidth: Math.max(200, contentCol.implicitWidth + 16)
@@ -97,7 +97,7 @@ PanelWindow {
             id: contentCol
             anchors.fill: parent
             anchors.margins: 8
-            spacing: 2
+            spacing: Services.Colors.spacingSmall
 
             Repeater {
                 model: opener.children

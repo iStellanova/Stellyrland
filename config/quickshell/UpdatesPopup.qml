@@ -18,6 +18,7 @@ PanelWindow {
     WlrLayershell.namespace: "quickshell-popups"
 
     property bool hasMouseEntered: false
+    property bool pinned: false
     property var combinedModel: []
     function updateModel() {
         let combined = []
@@ -48,7 +49,7 @@ PanelWindow {
     }
     
     Behavior on margins.top {
-        NumberAnimation { duration: Services.Colors.animDuration; easing.type: Easing.OutCubic }
+        NumberAnimation { duration: Services.Colors.animNormal; easing.type: Easing.OutCubic }
     }
     
     margins.top: open ? 10 : -10
@@ -57,7 +58,7 @@ PanelWindow {
     Timer {
         id: closeTimer
         interval: Services.Colors.autoCloseInterval
-        running: updatesWindow.visible && hasMouseEntered && !updatesHover.hovered
+        running: updatesWindow.visible && hasMouseEntered && !updatesHover.hovered && !pinned
         repeat: true
         onTriggered: updatesWindow.closeRequested()
     }
@@ -86,7 +87,7 @@ PanelWindow {
     Rectangle {
         id: updatesContent
         anchors.fill: parent
-        radius: 20
+        radius: Services.Colors.radiusLarge
         color: Services.Colors.bg
         border.width: 1
         border.color: Services.Colors.border
@@ -94,7 +95,7 @@ PanelWindow {
 
         opacity: updatesWindow.open ? 1.0 : 0.0
         Behavior on opacity {
-            NumberAnimation { duration: Services.Colors.animDuration; easing.type: Easing.OutCubic }
+            NumberAnimation { duration: Services.Colors.animNormal; easing.type: Easing.OutCubic }
         }
 
         ColumnLayout {
@@ -103,7 +104,7 @@ PanelWindow {
             anchors.right: parent.right
             anchors.top: parent.top
             anchors.margins: 16
-            spacing: 12
+            spacing: Services.Colors.spacingLarge
 
             RowLayout {
                 Layout.fillWidth: true
@@ -115,8 +116,14 @@ PanelWindow {
                     Layout.alignment: Qt.AlignLeft
                 }
                 
+                
                 Item { Layout.fillWidth: true }
                 
+                Components.PinButton {
+                    pinned: updatesWindow.pinned
+                    onToggled: updatesWindow.pinned = !updatesWindow.pinned
+                }
+
                 Components.ShadowText {
                     text: (Services.ShellData.pacmanUpdateList.length + Services.ShellData.aurUpdateList.length) + " Pending"
                     color: Services.Colors.mainText
@@ -132,7 +139,7 @@ PanelWindow {
             
             ColumnLayout {
                 Layout.fillWidth: true
-                spacing: 4
+                spacing: Services.Colors.spacingSmall
                 visible: Services.ShellData.pacmanUpdateList.length > 0 || Services.ShellData.aurUpdateList.length > 0
 
                 // Combined List View
@@ -141,13 +148,13 @@ PanelWindow {
                     Layout.fillWidth: true
                     implicitHeight: Math.min(contentHeight, 500)
                     clip: true
-                    spacing: 2
+                    spacing: Services.Colors.spacingSmall
                     model: updatesWindow.combinedModel
 
                     delegate: Rectangle {
                         width: ListView.view.width
                         height: 38
-                        radius: 8
+                        radius: Services.Colors.radiusSmall
                         color: itemHover.hovered ? Qt.rgba(Services.Colors.surface.r, Services.Colors.surface.g, Services.Colors.surface.b, 0.5) : "transparent"
                         
                         HoverHandler { id: itemHover }
@@ -156,7 +163,7 @@ PanelWindow {
                             anchors.fill: parent
                             anchors.leftMargin: 8
                             anchors.rightMargin: 8
-                            spacing: 8
+                            spacing: Services.Colors.spacingNormal
 
                             Components.ShadowText {
                                 text: modelData.isAur ? "󰣇" : "󰮯"
@@ -191,7 +198,7 @@ PanelWindow {
                 opacity: 0.6
                 visible: Services.ShellData.pacmanUpdateList.length === 0 && Services.ShellData.aurUpdateList.length === 0
                 Layout.alignment: Qt.AlignCenter
-                Layout.margins: 24
+                Layout.margins: Services.Colors.spacingXLarge
             }
         }
     }

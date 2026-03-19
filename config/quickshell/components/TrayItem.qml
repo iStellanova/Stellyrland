@@ -14,14 +14,14 @@ Rectangle {
 
     implicitWidth: 200
     implicitHeight: isSeparator ? 10 : 32
-    radius: 6
+    radius: Services.Colors.radiusSmall
     color: (!isSeparator && entryMouse.containsMouse && entry && (entry.enabled !== false)) ? Qt.rgba(1, 1, 1, 0.08) : "transparent"
 
     RowLayout {
         anchors.fill: parent
         anchors.leftMargin: 8
         anchors.rightMargin: 8
-        spacing: 8
+        spacing: Services.Colors.spacingNormal
         visible: !root.isSeparator
 
         // Checkmark

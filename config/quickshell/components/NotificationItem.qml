@@ -44,7 +44,7 @@ Rectangle {
     implicitHeight: mainLayout.implicitHeight + 24
     height: implicitHeight
     
-    radius: 12
+    radius: Services.Colors.radiusNormal
     
     color: {
         let base = root.urgency === 2 ? Qt.rgba(Services.Colors.error.r, Services.Colors.error.g, Services.Colors.error.b, 0.05) : Services.Colors.bg
@@ -56,8 +56,8 @@ Rectangle {
     border.color: root.urgency === 2 ? Services.Colors.error : Services.Colors.border
 
     scale: mouseArea.pressed ? 0.98 : 1.0
-    Behavior on scale { NumberAnimation { duration: 100; easing.type: Easing.OutBack } }
-    Behavior on color { ColorAnimation { duration: 150 } }
+    Behavior on scale { NumberAnimation { duration: Services.Colors.animFast; easing.type: Easing.OutBack } }
+    Behavior on color { ColorAnimation { duration: Services.Colors.animNormal } }
 
     MouseArea {
         id: mouseArea
@@ -83,16 +83,16 @@ Rectangle {
             top: parent.top; left: parent.left; right: parent.right
             margins: 12
         }
-        spacing: 8
+        spacing: Services.Colors.spacingNormal
 
         RowLayout {
             Layout.fillWidth: true
-            spacing: 12
+            spacing: Services.Colors.spacingLarge
 
             // Icon
             Rectangle {
                 Layout.preferredWidth: 48; Layout.preferredHeight: 48
-                radius: 8
+                radius: Services.Colors.radiusSmall
                 color: Qt.rgba(1, 1, 1, 0.1)
                 visible: root.iconSource.length > 0
                 
@@ -145,13 +145,13 @@ Rectangle {
 
             ColumnLayout {
                 Layout.fillWidth: true
-                spacing: 2
+                spacing: Services.Colors.spacingSmall
 
                 Row {
                     id: headerRow
                     Layout.fillWidth: true
                     width: parent.width
-                    spacing: 6
+                    spacing: Services.Colors.spacingSmall
 
                     ShadowText {
                         id: summaryText
@@ -217,7 +217,7 @@ Rectangle {
         Flow {
             Layout.fillWidth: true
             layoutDirection: Qt.RightToLeft
-            spacing: 8
+            spacing: Services.Colors.spacingNormal
             visible: !!(root.actions && root.actions.length > 0)
 
             Repeater {
@@ -225,7 +225,7 @@ Rectangle {
                 delegate: Rectangle {
                     width: actionText.contentWidth + 16
                     height: 24
-                    radius: 6
+                    radius: Services.Colors.radiusSmall
                     color: actionMouse.containsMouse ? Services.Colors.border : Qt.rgba(1, 1, 1, 0.05)
                     
                     ShadowText {
@@ -258,7 +258,7 @@ Rectangle {
             margins: 8
         }
         z: 20
-        radius: 12
+        radius: Services.Colors.radiusNormal
         color: closeMouse.containsMouse ? Qt.rgba(1, 1, 1, 0.1) : "transparent"
         visible: hoverHandler.hovered || closeMouse.containsMouse
         
@@ -307,13 +307,13 @@ Rectangle {
         anchors.verticalCenter: parent.verticalCenter
         width: 4
         height: Math.max(0, parent.height - 24)
-        radius: 2
+        radius: Services.Colors.radiusSmall
         color: Qt.rgba(1, 1, 1, 0.1)
         z: 10
         visible: root.showProgress
         
         opacity: root._wasClicked ? 0.0 : 1.0
-        Behavior on opacity { NumberAnimation { duration: 300 } }
+        Behavior on opacity { NumberAnimation { duration: Services.Colors.animSlow } }
         
         Rectangle {
             id: progressFill
@@ -322,7 +322,7 @@ Rectangle {
             anchors.bottom: parent.bottom
             height: 0
             color: Services.Colors.primary
-            radius: 2
+            radius: Services.Colors.radiusSmall
             
             NumberAnimation {
                 id: progressAnim

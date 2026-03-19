@@ -70,6 +70,7 @@ decman.pacman.packages |= {
     "hypridle",                         # Hyprland Idle Utility.
     "hyprland",                         # Wayland Compositor.
     "hyprlock",                         # Lock Screen.
+    "hyprpicker",                       # Hyprland Color Picker.
     "hyprpolkitagent",                  # Hyprland Dependency.
     "hyprshot",                         # Hyprland Screenshotter.
     "xdg-desktop-portal-gtk",           # Hyprland Dependency for Open File Dialogues.
@@ -261,6 +262,7 @@ decman.files["/home/stellanova/.config/hypr/looknfeel.conf"] = File(source_file=
 decman.files["/home/stellanova/.config/hypr/rules.conf"] = File(source_file="./config/hypr/rules.conf", owner="stellanova")
 decman.files["/home/stellanova/.config/hypr/hyprlock.conf"] = File(source_file="./config/hypr/hyprlock.conf", owner="stellanova")
 decman.files["/home/stellanova/.config/hypr/hyprtoolkit.conf"] = File(source_file="./config/hypr/hyprtoolkit.conf", owner="stellanova")
+decman.files["/home/stellanova/.config/hypr/hypridle.conf"] = File(source_file="./config/hypr/hypridle.conf", owner="stellanova")
 decman.directories["/home/stellanova/.config/hypr/Scripts"] = Directory(source_directory="./config/hypr/Scripts", owner="stellanova", permissions=0o755)
 
 # --- Terminal ---

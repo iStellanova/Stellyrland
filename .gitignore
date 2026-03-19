@@ -1,6 +1,6 @@
 # Ignore a specific file
 # colors.conf
-dotfiles.txt
+quicklog.txt
 
 # Ignore a directory
 # node_modules/

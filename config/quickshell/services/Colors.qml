@@ -30,11 +30,24 @@ Singleton {
     readonly property int fontSizeSmall: 12
     readonly property int fontSizeLarge: 18
 
-    // ── Animation & Layout ──────────────────────────────────
-    readonly property int animDuration: 300
+    // ── Animation ──────────────────────────────────────────
+    readonly property int animFast: 100
+    readonly property int animNormal: 150
+    readonly property int animSlow: 250
+
+    // ── Layout ──────────────────────────────────────────────
+    readonly property int spacingSmall: 4
+    readonly property int spacingNormal: 8
+    readonly property int spacingLarge: 12
+    readonly property int spacingXLarge: 16
+    
+    readonly property int radiusSmall: 8
+    readonly property int radiusNormal: 12
+    readonly property int radiusLarge: 20
+
     readonly property int popupMargin: 8
     readonly property int popupHideOffset: -10
-    readonly property int autoCloseInterval: 800
+    readonly property int autoCloseInterval: 1200
 
     // ── Derived aliases ───────────────────────────────────────
     readonly property color text:    mainText
@@ -51,7 +64,6 @@ Singleton {
         watchChanges: true
 
         onFileChanged: {
-            console.log("Colors.json changed, reloading...")
             this.reload()
             reloadTimer.restart()
         }
@@ -73,7 +85,6 @@ Singleton {
             if (raw && raw.length > 0) {
                 let parsed = JSON.parse(raw)
                 root.colors = parsed
-                console.log("Successfully parsed " + Object.keys(parsed).length + " colors from JSON")
             }
         } catch (e) {
             console.warn("Failed to parse colors.json: " + e)
