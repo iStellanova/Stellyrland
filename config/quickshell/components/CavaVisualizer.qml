@@ -14,7 +14,7 @@ Item {
     Row {
         id: row
         anchors.fill: parent
-        spacing: 4
+        spacing: Services.Colors.spacingSmall
         opacity: root.barOpacity
 
         Repeater {
@@ -23,7 +23,7 @@ Item {
                 width: root.cavaValues.length > 0 ? (row.width - (root.cavaValues.length - 1) * row.spacing) / root.cavaValues.length : 0
                 height: Math.max(4, (modelData / 7.0) * row.height)
                 anchors.bottom: parent.bottom
-                radius: 2 // Rectangular with slightly rounded corners
+                radius: Services.Colors.radiusSmall // Rectangular with slightly rounded corners
                 
                 gradient: Gradient {
                     GradientStop { position: 0.0; color: "transparent" }
@@ -32,7 +32,7 @@ Item {
                 
                 Behavior on height {
                     NumberAnimation {
-                        duration: 180
+                        duration: Services.Colors.animNormal
                         easing.type: Easing.OutCubic
                     }
                 }

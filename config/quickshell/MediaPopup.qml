@@ -19,6 +19,7 @@ PanelWindow {
     WlrLayershell.namespace: "quickshell-popups"
 
     property bool hasMouseEntered: false
+    property bool pinned: false
     property var activePlayerButton: null
     onVisibleChanged: {
         if (!visible) {
@@ -27,7 +28,7 @@ PanelWindow {
     }
     
     Behavior on margins.top {
-        NumberAnimation { duration: Services.Colors.animDuration; easing.type: Easing.OutCubic }
+        NumberAnimation { duration: Services.Colors.animNormal; easing.type: Easing.OutCubic }
     }
     
     margins.top: open ? 10 : -10
@@ -36,7 +37,7 @@ PanelWindow {
     Timer {
         id: closeTimer
         interval: Services.Colors.autoCloseInterval
-        running: mediaWindow.visible && hasMouseEntered && !mediaHover.hovered
+        running: mediaWindow.visible && hasMouseEntered && !mediaHover.hovered && !pinned
         repeat: true
         onTriggered: mediaWindow.closeRequested()
     }
@@ -65,7 +66,7 @@ PanelWindow {
     Rectangle {
         id: mediaContent
         anchors.fill: parent
-        radius: 20
+        radius: Services.Colors.radiusLarge
         color: Services.Colors.bg
         border.width: 1
         border.color: Services.Colors.border
@@ -73,7 +74,7 @@ PanelWindow {
 
         opacity: mediaWindow.open ? 1.0 : 0.0
         Behavior on opacity {
-            NumberAnimation { duration: Services.Colors.animDuration; easing.type: Easing.OutCubic }
+            NumberAnimation { duration: Services.Colors.animNormal; easing.type: Easing.OutCubic }
         }
 
         Components.CavaVisualizer {
@@ -92,7 +93,7 @@ PanelWindow {
             clip: true
 
             Behavior on height {
-                NumberAnimation { duration: 100; easing.type: Easing.OutCubic }
+                NumberAnimation { duration: Services.Colors.animFast; easing.type: Easing.OutCubic }
             }
 
             ColumnLayout {
@@ -100,7 +101,7 @@ PanelWindow {
                 anchors.left: parent.left
                 anchors.right: parent.right
                 anchors.top: parent.top
-                spacing: 12
+                spacing: Services.Colors.spacingLarge
 
                 Item {
                     id: selectorContainer
@@ -111,14 +112,14 @@ PanelWindow {
                     clip: true
 
                     Behavior on width {
-                        NumberAnimation { duration: 80; easing.type: Easing.OutCubic }
+                        NumberAnimation { duration: Services.Colors.animFast; easing.type: Easing.OutCubic }
                     }
 
                     Rectangle {
                         id: playerSelectionBox
                         anchors.verticalCenter: parent.verticalCenter
                         height: 26
-                        radius: 8
+                        radius: Services.Colors.radiusSmall
                         color: Qt.rgba(Services.Colors.primary.r, Services.Colors.primary.g, Services.Colors.primary.b, 0.12)
                         border.width: 1
                         border.color: Qt.rgba(Services.Colors.primary.r, Services.Colors.primary.g, Services.Colors.primary.b, 0.05)
@@ -126,19 +127,19 @@ PanelWindow {
                         property var targetButton: mediaWindow.activePlayerButton
                         
                         opacity: targetButton ? 1.0 : 0.0
-                        Behavior on opacity { NumberAnimation { duration: 150; easing.type: Easing.OutCubic } }
+                        Behavior on opacity { NumberAnimation { duration: Services.Colors.animNormal; easing.type: Easing.OutCubic } }
                         
                         x: targetButton ? selectorRow.x + targetButton.x : 0
                         width: targetButton ? targetButton.width : 0
 
-                        Behavior on x { NumberAnimation { duration: 150; easing.type: Easing.OutCubic } }
-                        Behavior on width { NumberAnimation { duration: 150; easing.type: Easing.OutCubic } }
+                        Behavior on x { NumberAnimation { duration: Services.Colors.animNormal; easing.type: Easing.OutCubic } }
+                        Behavior on width { NumberAnimation { duration: Services.Colors.animNormal; easing.type: Easing.OutCubic } }
                     }
 
                     RowLayout {
                         id: selectorRow
                         anchors.verticalCenter: parent.verticalCenter
-                        spacing: 6
+                        spacing: Services.Colors.spacingSmall
                         
                         Repeater {
                             model: Services.Music.players
@@ -148,7 +149,7 @@ PanelWindow {
                                 required property var modelData
                                 Layout.preferredWidth: 32
                                 Layout.preferredHeight: 26
-                                radius: 8
+                                radius: Services.Colors.radiusSmall
                                 
                                 readonly property bool isSelected: Services.Music.player === modelData
                                 
@@ -160,8 +161,8 @@ PanelWindow {
                                 
                                 scale: btnMouse.pressed ? 0.95 : 1.0
                                 
-                                Behavior on color { ColorAnimation { duration: 80 } }
-                                Behavior on scale { NumberAnimation { duration: 100; easing.type: Easing.OutCubic } }
+                                Behavior on color { ColorAnimation { duration: Services.Colors.animFast } }
+                                Behavior on scale { NumberAnimation { duration: Services.Colors.animFast; easing.type: Easing.OutCubic } }
 
                                 function updateSelected() {
                                     if (isSelected) {
@@ -225,8 +226,14 @@ PanelWindow {
                         Layout.alignment: Qt.AlignLeft
                     }
                     
+                    
                     Item { Layout.fillWidth: true }
                     
+                    Components.PinButton {
+                        pinned: mediaWindow.pinned
+                        onToggled: mediaWindow.pinned = !mediaWindow.pinned
+                    }
+
                     Components.ShadowText {
                         text: {
                             let p = Services.Music.player
@@ -256,7 +263,7 @@ PanelWindow {
                     color: Services.Colors.dim
                     font.pixelSize: 12
                     Layout.alignment: Qt.AlignCenter
-                    Layout.margins: 40
+                    Layout.margins: Services.Colors.spacingXLarge
                     visible: Services.Music.player === null
                 }
             }

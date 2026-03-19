@@ -27,6 +27,9 @@ PanelWindow {
     
     // Optional additional text (like the % in RAM graph)
     property string subValue: "" 
+    property bool pinned: false
+
+    default property alias extraContent: extraContentContainer.data
 
     property bool hasMouseEntered: false
     onVisibleChanged: {
@@ -36,7 +39,7 @@ PanelWindow {
     }
     
     Behavior on margins.top {
-        NumberAnimation { duration: Services.Colors.animDuration; easing.type: Easing.OutCubic }
+        NumberAnimation { duration: Services.Colors.animNormal; easing.type: Easing.OutCubic }
     }
     
     margins.top: open ? 10 : -10
@@ -45,7 +48,7 @@ PanelWindow {
     Timer {
         id: closeTimer
         interval: Services.Colors.autoCloseInterval
-        running: window.visible && hasMouseEntered && !hover.hovered
+        running: window.visible && hasMouseEntered && !hover.hovered && !pinned
         repeat: true
         onTriggered: window.closeRequested()
     }
@@ -74,7 +77,7 @@ PanelWindow {
     Rectangle {
         id: content
         anchors.fill: parent
-        radius: 20
+        radius: Services.Colors.radiusLarge
         color: Services.Colors.bg
         border.width: 1
         border.color: Services.Colors.border
@@ -82,7 +85,7 @@ PanelWindow {
 
         opacity: window.open ? 1.0 : 0.0
         Behavior on opacity {
-            NumberAnimation { duration: Services.Colors.animDuration; easing.type: Easing.OutCubic }
+            NumberAnimation { duration: Services.Colors.animNormal; easing.type: Easing.OutCubic }
         }
 
         ColumnLayout {
@@ -91,7 +94,7 @@ PanelWindow {
             anchors.right: parent.right
             anchors.top: parent.top
             anchors.margins: 14
-            spacing: 12
+            spacing: Services.Colors.spacingLarge
 
             RowLayout {
                 Layout.fillWidth: true
@@ -105,6 +108,11 @@ PanelWindow {
                 
                 Item { Layout.fillWidth: true }
                 
+                Components.PinButton {
+                    pinned: window.pinned
+                    onToggled: window.pinned = !window.pinned
+                }
+
                 Components.ShadowText {
                     text: window.currentValue
                     font.pixelSize: Services.Colors.fontSizeLarge
@@ -130,7 +138,7 @@ PanelWindow {
                     anchors.top: parent.top
                     anchors.bottom: parent.bottom
                     width: 30
-                    spacing: 0
+                    spacing: Services.Colors.spacingSmall
                     z: 2
                     
                     Repeater {
@@ -222,6 +230,14 @@ PanelWindow {
                     font.bold: true
                     font.pixelSize: 10
                 }
+            }
+
+            // Extra Content Section
+            ColumnLayout {
+                id: extraContentContainer
+                Layout.fillWidth: true
+                spacing: Services.Colors.spacingSmall
+                visible: extraContentContainer.children.length > 0
             }
         }
     }

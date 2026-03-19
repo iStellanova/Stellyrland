@@ -92,13 +92,13 @@ PanelWindow {
         transitions: [
             Transition {
                 from: "closed"; to: "open"
-                NumberAnimation { target: contentRoot; property: "opacity"; duration: 300; easing.type: Easing.OutCubic }
-                NumberAnimation { target: menuContainer; property: "scale"; duration: 400; easing.type: Easing.OutBack }
+                NumberAnimation { target: contentRoot; property: "opacity"; duration: Services.Colors.animSlow; easing.type: Easing.OutCubic }
+                NumberAnimation { target: menuContainer; property: "scale"; duration: Services.Colors.animSlow; easing.type: Easing.OutBack }
             },
             Transition {
                 from: "open"; to: "closed"
-                NumberAnimation { target: contentRoot; property: "opacity"; duration: 50 }
-                NumberAnimation { target: menuContainer; property: "scale"; duration: 60 }
+                NumberAnimation { target: contentRoot; property: "opacity"; duration: Services.Colors.animFast }
+                NumberAnimation { target: menuContainer; property: "scale"; duration: Services.Colors.animFast }
             }
         ]
 
@@ -154,7 +154,7 @@ PanelWindow {
                         id: btn
                         implicitWidth: 140
                         implicitHeight: 140
-                        radius: 24
+                        radius: Services.Colors.radiusLarge
                         
                         property bool isSelected: logoutWindow.currentIndex === index
                         
@@ -171,13 +171,13 @@ PanelWindow {
                         
                         scale: isSelected ? 1.15 : 1.0
 
-                        Behavior on scale { NumberAnimation { duration: 250; easing.type: Easing.OutBack } }
-                        Behavior on color { ColorAnimation { duration: 200 } }
-                        Behavior on border.color { ColorAnimation { duration: 200 } }
+                        Behavior on scale { NumberAnimation { duration: Services.Colors.animSlow; easing.type: Easing.OutBack } }
+                        Behavior on color { ColorAnimation { duration: Services.Colors.animNormal } }
+                        Behavior on border.color { ColorAnimation { duration: Services.Colors.animNormal } }
 
                         ColumnLayout {
                             anchors.centerIn: parent
-                            spacing: 8
+                            spacing: Services.Colors.spacingNormal
 
                             Components.ShadowText {
                                 Layout.alignment: Qt.AlignHCenter
@@ -187,7 +187,7 @@ PanelWindow {
                                 font.family: Services.Colors.fontFamily
                                 color: isSelected ? modelData.color : Services.Colors.mainText
                                 
-                                Behavior on color { ColorAnimation { duration: 200 } }
+                                Behavior on color { ColorAnimation { duration: Services.Colors.animNormal } }
                             }
 
                             Components.ShadowText {
@@ -198,7 +198,7 @@ PanelWindow {
                                 font.weight: Font.DemiBold
                                 color: isSelected ? modelData.color : Services.Colors.dim
                                 
-                                Behavior on color { ColorAnimation { duration: 200 } }
+                                Behavior on color { ColorAnimation { duration: Services.Colors.animNormal } }
                             }
                         }
 

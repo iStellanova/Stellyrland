@@ -13,7 +13,7 @@ Rectangle {
 
     implicitWidth: 80
     implicitHeight: 70
-    radius: 12
+    radius: Services.Colors.radiusNormal
     color: {
         if (mouseArea.containsMouse) {
             return active ? Qt.rgba(accent.r, accent.g, accent.b, 0.18)
@@ -29,7 +29,7 @@ Rectangle {
 
     ColumnLayout {
         anchors.centerIn: parent
-        spacing: 5
+        spacing: Services.Colors.spacingSmall
 
         ShadowText {
             Layout.alignment: Qt.AlignHCenter
@@ -57,5 +57,5 @@ Rectangle {
         onClicked: root.onToggle()
     }
 
-    Behavior on color { ColorAnimation { duration: 80 } }
+    Behavior on color { ColorAnimation { duration: Services.Colors.animFast } }
 }

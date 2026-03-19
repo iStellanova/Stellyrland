@@ -56,24 +56,24 @@ Item {
     // Transitions
     Transition {
         id: slideRightEnter
-        NumberAnimation { property: "x"; from: calendarStack.width; to: 0; duration: 250; easing.type: Easing.OutCubic }
-        NumberAnimation { property: "opacity"; from: 0; to: 1; duration: 200 }
+        NumberAnimation { property: "x"; from: calendarStack.width; to: 0; duration: Services.Colors.animSlow; easing.type: Easing.OutCubic }
+        NumberAnimation { property: "opacity"; from: 0; to: 1; duration: Services.Colors.animNormal }
     }
     Transition {
         id: slideRightExit
-        NumberAnimation { property: "x"; from: 0; to: -calendarStack.width; duration: 250; easing.type: Easing.OutCubic }
-        NumberAnimation { property: "opacity"; from: 1; to: 0; duration: 200 }
+        NumberAnimation { property: "x"; from: 0; to: -calendarStack.width; duration: Services.Colors.animSlow; easing.type: Easing.OutCubic }
+        NumberAnimation { property: "opacity"; from: 1; to: 0; duration: Services.Colors.animNormal }
     }
 
     Transition {
         id: slideLeftEnter
-        NumberAnimation { property: "x"; from: -calendarStack.width; to: 0; duration: 250; easing.type: Easing.OutCubic }
-        NumberAnimation { property: "opacity"; from: 0; to: 1; duration: 200 }
+        NumberAnimation { property: "x"; from: -calendarStack.width; to: 0; duration: Services.Colors.animSlow; easing.type: Easing.OutCubic }
+        NumberAnimation { property: "opacity"; from: 0; to: 1; duration: Services.Colors.animNormal }
     }
     Transition {
         id: slideLeftExit
-        NumberAnimation { property: "x"; from: 0; to: calendarStack.width; duration: 250; easing.type: Easing.OutCubic }
-        NumberAnimation { property: "opacity"; from: 1; to: 0; duration: 200 }
+        NumberAnimation { property: "x"; from: 0; to: calendarStack.width; duration: Services.Colors.animSlow; easing.type: Easing.OutCubic }
+        NumberAnimation { property: "opacity"; from: 1; to: 0; duration: Services.Colors.animNormal }
     }
 
     ColumnLayout {
@@ -81,7 +81,7 @@ Item {
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.top: parent.top
-        spacing: 12
+        spacing: Services.Colors.spacingLarge
 
         // Header
         RowLayout {
@@ -99,7 +99,7 @@ Item {
 
             Rectangle {
                 implicitWidth: 24; implicitHeight: 24
-                radius: 6
+                radius: Services.Colors.radiusSmall
                 color: prevMouseArea.containsMouse ? Qt.rgba(1, 1, 1, 0.1) : "transparent"
 
                 ShadowText {
@@ -121,7 +121,7 @@ Item {
 
             Rectangle {
                 implicitWidth: 24; implicitHeight: 24
-                radius: 6
+                radius: Services.Colors.radiusSmall
                 color: nextMouseArea.containsMouse ? Qt.rgba(1, 1, 1, 0.1) : "transparent"
 
                 ShadowText {
@@ -214,7 +214,7 @@ Item {
                         
                         Layout.fillWidth: true
                         implicitHeight: 28
-                        radius: 8
+                        radius: Services.Colors.radiusSmall
                         
                         property bool isToday: modelData !== "" && 
                                               parseInt(modelData) === root.todayDate && 

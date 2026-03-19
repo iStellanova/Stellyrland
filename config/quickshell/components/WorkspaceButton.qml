@@ -11,7 +11,7 @@ Rectangle {
     required property var onActivate
 
     implicitWidth: 32; implicitHeight: 26
-    radius: 8
+    radius: Services.Colors.radiusSmall
 
     // Background color with fade-in/out for focus and hover states
     color: {
@@ -21,7 +21,7 @@ Rectangle {
         return Qt.rgba(0, 0, 0, 0.15)
     }
 
-    Behavior on color { ColorAnimation { duration: 200 } }
+    Behavior on color { ColorAnimation { duration: Services.Colors.animNormal } }
 
     ShadowText {
         anchors.centerIn: parent

@@ -80,13 +80,13 @@ PanelWindow {
 
     ColumnLayout {
         anchors.fill: parent
-        spacing: 12
+        spacing: Services.Colors.spacingLarge
 
         Rectangle {
             id: rootContainer
             Layout.fillWidth: true
             Layout.fillHeight: true
-            radius: 20
+            radius: Services.Colors.radiusLarge
             color: Services.Colors.bg
             border.width: 2
             border.color: Services.Colors.border
@@ -108,7 +108,7 @@ PanelWindow {
                 anchors.bottomMargin: 8 
                 anchors.leftMargin: 8
                 anchors.rightMargin: 8
-                spacing: 8
+                spacing: Services.Colors.spacingNormal
 
                 Item {
                     id: listWrapper
@@ -121,24 +121,24 @@ PanelWindow {
                         id: notifList
                         anchors.fill: parent
                         model: notifModel
-                        spacing: 8
+                        spacing: Services.Colors.spacingNormal
                         clip: false 
                         interactive: true
                         ScrollBar.vertical: ScrollBar { }
 
                         // Managed transitions
                         add: Transition {
-                            NumberAnimation { property: "opacity"; from: 0; to: 1.0; duration: 250 }
-                            NumberAnimation { property: "x"; from: 100; to: 0; duration: 300; easing.type: Easing.OutCubic }
+                            NumberAnimation { property: "opacity"; from: 0; to: 1.0; duration: Services.Colors.animSlow }
+                            NumberAnimation { property: "x"; from: 100; to: 0; duration: Services.Colors.animSlow; easing.type: Easing.OutCubic }
                         }
                         
                         remove: Transition {
-                            NumberAnimation { property: "opacity"; to: 0; duration: 200 }
-                            NumberAnimation { property: "x"; to: 400; duration: 250; easing.type: Easing.InCubic }
+                            NumberAnimation { property: "opacity"; to: 0; duration: Services.Colors.animNormal }
+                            NumberAnimation { property: "x"; to: 400; duration: Services.Colors.animSlow; easing.type: Easing.InCubic }
                         }
 
                         displaced: Transition {
-                            NumberAnimation { property: "y"; duration: Services.Colors.animDuration; easing.type: Easing.OutCubic }
+                            NumberAnimation { property: "y"; duration: Services.Colors.animNormal; easing.type: Easing.OutCubic }
                         }
 
                         delegate: Components.NotificationItem {
@@ -187,7 +187,7 @@ PanelWindow {
             // Layout.fillWidth override to prevent expansion
             Layout.fillWidth: false
             
-            radius: 12
+            radius: Services.Colors.radiusNormal
             color: Services.Colors.primaryContainer
             opacity: (notifModel.count > 0 && !isClearing) ? 0.9 : 0
             border.width: 1
@@ -195,14 +195,14 @@ PanelWindow {
             visible: opacity > 0
             clip: true
 
-            Behavior on Layout.preferredHeight { NumberAnimation { duration: Services.Colors.animDuration; easing.type: Easing.OutCubic } }
-            Behavior on color { ColorAnimation { duration: 200 } }
-            Behavior on opacity { NumberAnimation { duration: Services.Colors.animDuration; easing.type: Easing.OutCubic } }
+            Behavior on Layout.preferredHeight { NumberAnimation { duration: Services.Colors.animNormal; easing.type: Easing.OutCubic } }
+            Behavior on color { ColorAnimation { duration: Services.Colors.animNormal } }
+            Behavior on opacity { NumberAnimation { duration: Services.Colors.animNormal; easing.type: Easing.OutCubic } }
 
             RowLayout {
                 id: clearRow
                 anchors.centerIn: parent
-                spacing: 8
+                spacing: Services.Colors.spacingNormal
 
                 Components.ShadowText {
                     text: "󰎟 Clear All"

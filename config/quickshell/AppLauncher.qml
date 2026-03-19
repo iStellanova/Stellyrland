@@ -34,7 +34,7 @@ FloatingWindow {
     Rectangle {
         id: container
         anchors.fill: parent
-        radius: 16
+        radius: Services.Colors.radiusNormal
         color: Services.Colors.bg
         border.width: 1
         border.color: Services.Colors.border
@@ -46,11 +46,11 @@ FloatingWindow {
         ColumnLayout {
             anchors.fill: parent
             anchors.margins: 20
-            spacing: 15
+            spacing: Services.Colors.spacingXLarge
 
             // Search Header
             RowLayout {
-                spacing: 12
+                spacing: Services.Colors.spacingLarge
                 Layout.fillWidth: true
 
                 Components.ShadowText {
@@ -111,7 +111,7 @@ FloatingWindow {
                 Layout.fillHeight: true
                 clip: true
                 model: Services.AppService.filteredApps
-                spacing: 4
+                spacing: Services.Colors.spacingSmall
                 currentIndex: 0
                 
                 onModelChanged: currentIndex = 0
@@ -140,7 +140,7 @@ FloatingWindow {
 
                 highlight: Rectangle {
                     z: 2
-                    radius: 10
+                    radius: Services.Colors.radiusSmall
                     color: Qt.rgba(Services.Colors.primary.r, Services.Colors.primary.g, Services.Colors.primary.b, 0.25)
                     border.width: 1
                     border.color: Qt.rgba(Services.Colors.primary.r, Services.Colors.primary.g, Services.Colors.primary.b, 0.4)
@@ -151,7 +151,7 @@ FloatingWindow {
                         anchors.verticalCenter: parent.verticalCenter
                         width: 4
                         height: parent.height - 24
-                        radius: 2
+                        radius: Services.Colors.radiusSmall
                         color: Services.Colors.primary
                     }
                 }
@@ -173,8 +173,8 @@ FloatingWindow {
 
                     SequentialAnimation {
                         id: launchAnimation
-                        NumberAnimation { target: contentRect; property: "scale"; to: 0.95; duration: 50; easing.type: Easing.OutQuad }
-                        NumberAnimation { target: contentRect; property: "scale"; to: 1.0; duration: 150; easing.type: Easing.OutBack }
+                        NumberAnimation { target: contentRect; property: "scale"; to: 0.95; duration: Services.Colors.animFast; easing.type: Easing.OutQuad }
+                        NumberAnimation { target: contentRect; property: "scale"; to: 1.0; duration: Services.Colors.animNormal; easing.type: Easing.OutBack }
                         ScriptAction { 
                             script: {
                                 Services.AppService.launch(modelData.exec);
@@ -187,23 +187,23 @@ FloatingWindow {
                         id: contentRect
                         anchors.fill: parent
                         anchors.margins: 2
-                        radius: 10
+                        radius: Services.Colors.radiusSmall
                         color: "transparent"
                         
                         RowLayout {
                             anchors.fill: parent
                             anchors.leftMargin: 18
                             anchors.rightMargin: 12
-                            spacing: 12
+                            spacing: Services.Colors.spacingLarge
 
                             // App Icon
                             Rectangle {
                                 width: 34; height: 34
-                                radius: 8
+                                radius: Services.Colors.radiusSmall
                                 color: Qt.rgba(1, 1, 1, 0.08)
                                 scale: isCurrent ? 1.1 : 1.0
                                 
-                                Behavior on scale { NumberAnimation { duration: 250; easing.type: Easing.OutBack } }
+                                Behavior on scale { NumberAnimation { duration: Services.Colors.animSlow; easing.type: Easing.OutBack } }
                                 
                                 Image {
                                     anchors.fill: parent
@@ -222,7 +222,7 @@ FloatingWindow {
                                 color: isCurrent ? Services.Colors.primary : Services.Colors.mainText
                                 Layout.fillWidth: true
                                 
-                                Behavior on color { ColorAnimation { duration: 200 } }
+                                Behavior on color { ColorAnimation { duration: Services.Colors.animNormal } }
                             }
                             
                             Components.ShadowText {
@@ -232,7 +232,7 @@ FloatingWindow {
                                 color: Services.Colors.primary
                                 opacity: isCurrent ? 0.7 : 0
                                 
-                                Behavior on opacity { NumberAnimation { duration: 200 } }
+                                Behavior on opacity { NumberAnimation { duration: Services.Colors.animNormal } }
                             }
                         }
                     }

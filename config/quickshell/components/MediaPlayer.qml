@@ -16,7 +16,7 @@ Rectangle {
     Layout.preferredHeight: playerCol.implicitHeight + (framed ? 28 : 0)
     implicitHeight: Layout.preferredHeight 
     
-    radius: 18
+    radius: Services.Colors.radiusNormal
     color: framed ? Qt.rgba(1, 1, 1, 0.05) : "transparent"
     border.width: framed ? 1 : 0
     border.color: Qt.rgba(1, 1, 1, 0.1)
@@ -96,18 +96,18 @@ Rectangle {
             margins: root.framed ? 14 : 0
             rightMargin: root.framed ? 16 : 0
         }
-        spacing: 12
+        spacing: Services.Colors.spacingLarge
 
         // ── Top row: art + title/artist + fav button ─────────
         RowLayout {
-            spacing: 12
+            spacing: Services.Colors.spacingLarge
             Layout.fillWidth: true
 
             // Album art
             Rectangle {
                 id: artContainer
                 implicitWidth: 48; implicitHeight: 48
-                radius: 12
+                radius: Services.Colors.radiusNormal
                 color: Qt.rgba(Services.Colors.primary.r, Services.Colors.primary.g, Services.Colors.primary.b, 0.12)
                 border.width: 1
                 border.color: Services.Colors.border
@@ -144,7 +144,7 @@ Rectangle {
 
             // Title + artist
             ColumnLayout {
-                spacing: 2
+                spacing: Services.Colors.spacingSmall
                 Layout.fillWidth: true
 
                 ShadowText {
@@ -192,13 +192,13 @@ Rectangle {
                 y: progressSlider.topPadding + progressSlider.availableHeight / 2 - height / 2
                 implicitWidth: 200; implicitHeight: 4
                 width: progressSlider.availableWidth; height: implicitHeight
-                radius: 99
+                radius: Services.Colors.radiusLarge
                 color: Qt.rgba(1, 1, 1, 0.15) // Brighter background track
 
                 // Played part
                 Rectangle {
                     width: progressSlider.visualPosition * parent.width
-                    height: parent.height; radius: 99
+                    height: parent.height; radius: Services.Colors.radiusLarge
                     color: Services.Colors.primary
                 }
             }
@@ -207,13 +207,13 @@ Rectangle {
                 x: progressSlider.leftPadding + progressSlider.visualPosition * (progressSlider.availableWidth - width)
                 y: progressSlider.topPadding + progressSlider.availableHeight / 2 - height / 2
                 implicitWidth: 12; implicitHeight: 12
-                radius: 99
+                radius: Services.Colors.radiusLarge
                 color: "white"
                 
                 layer.enabled: true
                 layer.effect: DropShadow {
                     color: Qt.rgba(0, 0, 0, 0.5)
-                    radius: 4
+                    radius: Services.Colors.radiusSmall
                     samples: 9
                 }
             }
@@ -232,11 +232,11 @@ Rectangle {
         // ── Playback controls ────────────────────────────────
         RowLayout {
             Layout.alignment: Qt.AlignHCenter
-            spacing: 24
+            spacing: Services.Colors.spacingXLarge
 
             // Previous
             Rectangle {
-                implicitWidth: 28; implicitHeight: 28; radius: 6
+                implicitWidth: 28; implicitHeight: 28; radius: Services.Colors.radiusSmall
                 color: prevMouse.containsMouse ? Qt.rgba(1, 1, 1, 0.05) : "transparent"
                 ShadowText {
                     anchors.centerIn: parent; text: "󰒮"
@@ -253,7 +253,7 @@ Rectangle {
 
             // Play/Pause
             Rectangle {
-                implicitWidth: 32; implicitHeight: 32; radius: 99
+                implicitWidth: 32; implicitHeight: 32; radius: Services.Colors.radiusLarge
                 color: root.player && root.player.playbackState === MprisPlaybackState.Playing
                        ? Services.Colors.primary : Services.Colors.primary
 
@@ -271,7 +271,7 @@ Rectangle {
 
             // Next
             Rectangle {
-                implicitWidth: 28; implicitHeight: 28; radius: 6
+                implicitWidth: 28; implicitHeight: 28; radius: Services.Colors.radiusSmall
                 color: nextMouse.containsMouse ? Qt.rgba(1, 1, 1, 0.05) : "transparent"
                 ShadowText {
                     anchors.centerIn: parent; text: "󰒭"
@@ -289,7 +289,7 @@ Rectangle {
 
         // ── Per-player volume ────────────────────────────────
         RowLayout {
-            spacing: 10
+            spacing: Services.Colors.spacingNormal
             Layout.fillWidth: true
             visible: root.player !== null && root.player.volumeSupported
 
@@ -310,11 +310,11 @@ Rectangle {
                     y: volSlider.topPadding + volSlider.availableHeight / 2 - height / 2
                     implicitWidth: 200; implicitHeight: 14
                     width: volSlider.availableWidth; height: implicitHeight
-                    radius: 99; color: Services.Colors.border
+                    radius: Services.Colors.radiusLarge; color: Services.Colors.border
 
                     Rectangle {
                         width: volSlider.visualPosition * parent.width
-                        height: parent.height; radius: 99
+                        height: parent.height; radius: Services.Colors.radiusLarge
                         color: Services.Colors.primary
                     }
                 }
@@ -322,7 +322,7 @@ Rectangle {
                 handle: Rectangle {
                     x: volSlider.leftPadding + volSlider.visualPosition * (volSlider.availableWidth - width)
                     y: volSlider.topPadding + volSlider.availableHeight / 2 - height / 2
-                    implicitWidth: 14; implicitHeight: 14; radius: 99; color: "white"
+                    implicitWidth: 14; implicitHeight: 14; radius: Services.Colors.radiusLarge; color: "white"
                 }
 
                 onMoved: if (root.player) root.player.volume = volSlider.value

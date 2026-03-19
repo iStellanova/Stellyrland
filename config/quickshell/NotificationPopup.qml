@@ -91,7 +91,7 @@ PanelWindow {
         width: parent.width
         height: contentHeight
         interactive: false
-        spacing: 12
+        spacing: Services.Colors.spacingLarge
         model: stableToasts
 
         delegate: Item {
@@ -109,8 +109,8 @@ PanelWindow {
                 opacity: delegateRoot.isClosing ? 0 : 1.0
                 x: delegateRoot.isClosing ? 450 : 0
 
-                Behavior on opacity { NumberAnimation { duration: 200 } }
-                Behavior on x { NumberAnimation { duration: 250; easing.type: Easing.OutCubic } }
+                Behavior on opacity { NumberAnimation { duration: Services.Colors.animNormal } }
+                Behavior on x { NumberAnimation { duration: Services.Colors.animSlow; easing.type: Easing.OutCubic } }
 
                 appName: model.appName
                 summary: model.summary

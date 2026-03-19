@@ -12,12 +12,12 @@ RowLayout {
     signal valueMoved(real value)
     signal iconClicked()
 
-    spacing: 10
+    spacing: Services.Colors.spacingNormal
 
     Rectangle {
         implicitWidth: 24; implicitHeight: 24
         color: "transparent"
-        radius: 4
+        radius: Services.Colors.radiusSmall
 
         ShadowText {
             anchors.centerIn: parent
@@ -58,13 +58,13 @@ RowLayout {
             y: slider.topPadding + slider.availableHeight / 2 - height / 2
             implicitWidth: 200; implicitHeight: 14
             width: slider.availableWidth; height: implicitHeight
-            radius: 99
+            radius: Services.Colors.radiusLarge
             color: Services.Colors.border
 
             Rectangle {
                 width: slider.visualPosition * parent.width
                 height: parent.height
-                radius: 99
+                radius: Services.Colors.radiusLarge
                 color: Services.Colors.primary
             }
         }
@@ -73,15 +73,14 @@ RowLayout {
             x: slider.leftPadding + slider.visualPosition * (slider.availableWidth - width)
             y: slider.topPadding + slider.availableHeight / 2 - height / 2
             implicitWidth: 14; implicitHeight: 14
-            radius: 99
+            radius: Services.Colors.radiusLarge
             color: "white"
         }
 
         onMoved: root.valueMoved(slider.value)
 
-        MouseArea {
-            anchors.fill: parent
-            acceptedButtons: Qt.NoButton
+        WheelHandler {
+            acceptedDevices: PointerDevice.Mouse | PointerDevice.TouchPad
             onWheel: (wheel) => {
                 let step = wheel.angleDelta.y > 0 ? 5 : -5
                 let newVal = Math.max(0, Math.min(100, slider.value + step))

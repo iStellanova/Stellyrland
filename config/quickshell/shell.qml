@@ -11,42 +11,46 @@ Scope {
     id: root
 
     // ── State ────────────────────────────────────────────────
-    property bool ccVisible: false
-    property bool ncVisible: false
-    property bool alVisible: false
-    property bool calVisible: false
-    property bool wifiVisible: false
-    property bool ramVisible: false
-    property bool cpuVisible: false
-    property bool tempVisible: false
-    property bool mediaVisible: false
-    property bool updatesVisible: false
-    property bool wallpaperVisible: false
-    property bool logoutVisible: false
+    // Visibility is managed directly via Services.ShellData
     
-    property real ccX: 0
-    property real ncX: 0
     property real calX: 0
-    property real wifiX: 0
+    property real trafficX: 0
     property real ramX: 0
     property real cpuX: 0
+    property real gpuX: 0
     property real tempX: 0
     property real mediaX: 0
     property real updatesX: 0
+    property real micX: 0
+    property real volumeX: 0
 
     function closeAllPopups() {
-        root.ccVisible = false
-        root.ncVisible = false
-        root.alVisible = false
-        root.calVisible = false
-        root.wifiVisible = false
-        root.ramVisible = false
-        root.cpuVisible = false
-        root.tempVisible = false
-        root.mediaVisible = false
-        root.updatesVisible = false
-        root.wallpaperVisible = false
-        root.logoutVisible = false
+        // List of pinnable popups and their visibility property names in ShellData
+        let pinnable = [
+            { component: cal, prop: "calVisible" },
+            { component: trafficMenu, prop: "trafficVisible" },
+            { component: ramMenu, prop: "ramVisible" },
+            { component: cpuMenu, prop: "cpuVisible" },
+            { component: gpuMenu, prop: "gpuVisible" },
+            { component: tempMenu, prop: "tempVisible" },
+            { component: mediaMenu, prop: "mediaVisible" },
+            { component: updatesMenu, prop: "updatesVisible" },
+            { component: micMenu, prop: "micVisible" },
+            { component: volumeMenu, prop: "volumeVisible" }
+        ]
+
+        pinnable.forEach(p => {
+            if (!p.component.pinned) Services.ShellData[p.prop] = false
+        })
+        
+        // Non-pinnable ones always close
+        Services.ShellData.ccVisible = false
+        Services.ShellData.ncVisible = false
+        Services.ShellData.alVisible = false
+        Services.ShellData.wallpaperVisible = false
+        Services.ShellData.logoutVisible = false
+        Services.ShellData.screenshotVisible = false
+
         trayMenu.menuHandle = null
     }
 
@@ -61,21 +65,32 @@ Scope {
     IpcHandler {
         target: "shell"
         function toggleLauncher() {
-            let target = !root.alVisible
+            let target = !Services.ShellData.alVisible
             root.closeAllPopups()
-            root.alVisible = target
+            Services.ShellData.alVisible = target
         }
 
         function toggleWallpaperSelector() {
-            let target = !root.wallpaperVisible
+            let target = !Services.ShellData.wallpaperVisible
             root.closeAllPopups()
-            root.wallpaperVisible = target
+            Services.ShellData.wallpaperVisible = target
         }
 
         function toggleLogout() {
-            let target = !root.logoutVisible
+            let target = !Services.ShellData.logoutVisible
             root.closeAllPopups()
-            root.logoutVisible = target
+            Services.ShellData.logoutVisible = target
+        }
+        
+        function toggleScreenshot() {
+            let target = !Services.ShellData.screenshotVisible
+            root.closeAllPopups()
+            Services.ShellData.screenshotVisible = target
+        }
+
+        function triggerDelayedScreenshot() {
+            Services.ShellData.screenshotNoTimer = true
+            Services.ShellData.screenshotVisible = true
         }
     }
 
@@ -83,96 +98,128 @@ Scope {
     CalendarPopup {
         id: cal
         screen: Services.MonitorService.primaryScreen
-        open: root.calVisible
+        open: Services.ShellData.calVisible
         xOffset: root.calX
-        onCloseRequested: root.calVisible = false
+        onCloseRequested: Services.ShellData.calVisible = false
     }
 
-    // ── Wifi Popup ────────────────────────────────
-    WifiPopup {
-        id: wifiMenu
+    // ── Traffic Popup ────────────────────────────────
+    TrafficPopup {
+        id: trafficMenu
         screen: Services.MonitorService.primaryScreen
-        open: root.wifiVisible
-        xOffset: root.wifiX
-        onCloseRequested: root.wifiVisible = false
+        open: Services.ShellData.trafficVisible
+        xOffset: root.trafficX
+        onCloseRequested: Services.ShellData.trafficVisible = false
     }
 
     // ── RAM Popup ─────────────────────────────────
     RamPopup {
         id: ramMenu
         screen: Services.MonitorService.primaryScreen
-        open: root.ramVisible
+        open: Services.ShellData.ramVisible
         xOffset: root.ramX
-        onCloseRequested: root.ramVisible = false
+        onCloseRequested: Services.ShellData.ramVisible = false
     }
 
     // ── CPU Popup ─────────────────────────────────
     CpuPopup {
         id: cpuMenu
         screen: Services.MonitorService.primaryScreen
-        open: root.cpuVisible
+        open: Services.ShellData.cpuVisible
         xOffset: root.cpuX
-        onCloseRequested: root.cpuVisible = false
+        onCloseRequested: Services.ShellData.cpuVisible = false
+    }
+
+    // ── GPU Popup ─────────────────────────────────
+    GpuPopup {
+        id: gpuMenu
+        screen: Services.MonitorService.primaryScreen
+        open: Services.ShellData.gpuVisible
+        xOffset: root.gpuX
+        onCloseRequested: Services.ShellData.gpuVisible = false
     }
 
     // ── Temp Popup ─────────────────────────────────
     TempPopup {
         id: tempMenu
         screen: Services.MonitorService.primaryScreen
-        open: root.tempVisible
+        open: Services.ShellData.tempVisible
         xOffset: root.tempX
-        onCloseRequested: root.tempVisible = false
+        onCloseRequested: Services.ShellData.tempVisible = false
     }
 
     MediaPopup {
         id: mediaMenu
         screen: Services.MonitorService.primaryScreen
-        open: root.mediaVisible
+        open: Services.ShellData.mediaVisible
         xOffset: root.mediaX
-        onCloseRequested: root.mediaVisible = false
+        onCloseRequested: Services.ShellData.mediaVisible = false
     }
 
     UpdatesPopup {
         id: updatesMenu
         screen: Services.MonitorService.primaryScreen
-        open: root.updatesVisible
+        open: Services.ShellData.updatesVisible
         xOffset: root.updatesX
-        onCloseRequested: root.updatesVisible = false
+        onCloseRequested: Services.ShellData.updatesVisible = false
+    }
+
+    MicPopup {
+        id: micMenu
+        screen: Services.MonitorService.primaryScreen
+        open: Services.ShellData.micVisible
+        xOffset: root.micX
+        onCloseRequested: Services.ShellData.micVisible = false
+    }
+    
+    VolumePopup {
+        id: volumeMenu
+        screen: Services.MonitorService.primaryScreen
+        open: Services.ShellData.volumeVisible
+        xOffset: root.volumeX
+        onCloseRequested: Services.ShellData.volumeVisible = false
     }
 
     // ── Control Center Popup ─────────────────────────────────
     ControlCenter {
         id: cc
         screen: Services.MonitorService.primaryScreen
-        visible: root.ccVisible
-        onCloseRequested: root.ccVisible = false
+        visible: Services.ShellData.ccVisible
+        onCloseRequested: Services.ShellData.ccVisible = false
     }
 
     // ── Notification Center Popup ────────────────────────────
     NotificationCenter {
         id: nc
         screen: Services.MonitorService.primaryScreen
-        visible: root.ncVisible
-        onCloseRequested: root.ncVisible = false
+        visible: Services.ShellData.ncVisible
+        onCloseRequested: Services.ShellData.ncVisible = false
     }
 
 
     AppLauncher {
         id: al
         screen: Services.MonitorService.primaryScreen
-        visible: root.alVisible
-        onCloseRequested: root.alVisible = false
+        visible: Services.ShellData.alVisible
+        onCloseRequested: Services.ShellData.alVisible = false
     }
 
     WallpaperPopup {
         id: wp
         screen: Services.MonitorService.primaryScreen
-        visible: root.wallpaperVisible
-        onCloseRequested: root.wallpaperVisible = false
+        visible: Services.ShellData.wallpaperVisible
+        onCloseRequested: Services.ShellData.wallpaperVisible = false
     }
 
     NotificationPopup { 
         screen: Services.MonitorService.primaryScreen
+    }
+
+    ScreenshotMenu {
+        id: sm
+        screen: Services.MonitorService.primaryScreen
+        open: Services.ShellData.screenshotVisible
+        onCloseRequested: Services.ShellData.screenshotVisible = false
     }
 
     Components.TrayMenu {
@@ -189,67 +236,86 @@ Scope {
         trayMenu: trayMenu
         logoutVisible: lp.visible
 
-        onToggleControlCenter: (x) => {
-            let target = !root.ccVisible
+        onToggleMicMenu: (x) => {
+            let target = !Services.ShellData.micVisible
             root.closeAllPopups()
-            root.ccX = x
-            root.ccVisible = target
+            root.micX = x
+            Services.ShellData.micVisible = target
         }
 
-        onToggleNotificationCenter: (x) => {
-            let target = !root.ncVisible
+        onToggleControlCenter: () => {
+            let target = !Services.ShellData.ccVisible
             root.closeAllPopups()
-            root.ncX = x
-            root.ncVisible = target
+            Services.ShellData.ccVisible = target
+        }
+
+        onToggleNotificationCenter: () => {
+            let target = !Services.ShellData.ncVisible
+            root.closeAllPopups()
+            Services.ShellData.ncVisible = target
         }
 
         onToggleCalendar: (x) => {
-            let target = !root.calVisible
+            let target = !Services.ShellData.calVisible
             root.closeAllPopups()
             root.calX = x
-            root.calVisible = target
+            Services.ShellData.calVisible = target
         }
 
         onToggleWifiMenu: (x) => {
-            let target = !root.wifiVisible
+            let target = !Services.ShellData.trafficVisible
             root.closeAllPopups()
-            root.wifiX = x
-            root.wifiVisible = target
+            root.trafficX = x
+            Services.ShellData.trafficVisible = target
         }
 
         onToggleRamMenu: (x) => {
-            let target = !root.ramVisible
+            let target = !Services.ShellData.ramVisible
             root.closeAllPopups()
             root.ramX = x
-            root.ramVisible = target
+            Services.ShellData.ramVisible = target
         }
 
         onToggleCpuMenu: (x) => {
-            let target = !root.cpuVisible
+            let target = !Services.ShellData.cpuVisible
             root.closeAllPopups()
             root.cpuX = x
-            root.cpuVisible = target
+            Services.ShellData.cpuVisible = target
+        }
+
+        onToggleGpuMenu: (x) => {
+            let target = !Services.ShellData.gpuVisible
+            root.closeAllPopups()
+            root.gpuX = x
+            Services.ShellData.gpuVisible = target
         }
 
         onToggleTempMenu: (x) => {
-            let target = !root.tempVisible
+            let target = !Services.ShellData.tempVisible
             root.closeAllPopups()
             root.tempX = x
-            root.tempVisible = target
+            Services.ShellData.tempVisible = target
         }
 
         onToggleMediaMenu: (x) => {
-            let target = !root.mediaVisible
+            let target = !Services.ShellData.mediaVisible
             root.closeAllPopups()
             root.mediaX = x
-            root.mediaVisible = target
+            Services.ShellData.mediaVisible = target
         }
 
         onToggleUpdatesMenu: (x) => {
-            let target = !root.updatesVisible
+            let target = !Services.ShellData.updatesVisible
             root.closeAllPopups()
             root.updatesX = x
-            root.updatesVisible = target
+            Services.ShellData.updatesVisible = target
+        }
+
+        onToggleVolumeMenu: (x) => {
+            let target = !Services.ShellData.volumeVisible
+            root.closeAllPopups()
+            root.volumeX = x
+            Services.ShellData.volumeVisible = target
         }
     }
 
@@ -257,7 +323,7 @@ Scope {
     LogoutPopup {
         id: lp
         screen: Services.MonitorService.primaryScreen
-        open: root.logoutVisible
-        onCloseRequested: root.logoutVisible = false
+        open: Services.ShellData.logoutVisible
+        onCloseRequested: Services.ShellData.logoutVisible = false
     }
 }

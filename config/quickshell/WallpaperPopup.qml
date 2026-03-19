@@ -76,7 +76,7 @@ PanelWindow {
                     maskSource: Rectangle {
                         width: root.width * 0.4
                         height: root.height * 0.5
-                        radius: 24
+                        radius: Services.Colors.radiusLarge
                     }
                 }
 
@@ -102,7 +102,7 @@ PanelWindow {
                     color: "transparent"
                     border.width: 4
                     border.color: Services.Colors.primary
-                    radius: 24
+                    radius: Services.Colors.radiusLarge
                     visible: PathView.iconScale > 0.9
                 }
 

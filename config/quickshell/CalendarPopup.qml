@@ -19,12 +19,13 @@ PanelWindow {
 
 
     property bool hasMouseEntered: false
+    property bool pinned: false
     onVisibleChanged: if (!visible) {
         hasMouseEntered = false
     }
     
     Behavior on margins.top {
-        NumberAnimation { duration: Services.Colors.animDuration; easing.type: Easing.OutCubic }
+        NumberAnimation { duration: Services.Colors.animNormal; easing.type: Easing.OutCubic }
     }
     
     margins.top: open ? 10 : -10
@@ -33,7 +34,7 @@ PanelWindow {
     Timer {
         id: closeTimer
         interval: Services.Colors.autoCloseInterval
-        running: calWindow.visible && hasMouseEntered && !calHover.hovered
+        running: calWindow.visible && hasMouseEntered && !calHover.hovered && !pinned
         repeat: true
         onTriggered: calWindow.closeRequested()
     }
@@ -62,7 +63,7 @@ PanelWindow {
     Rectangle {
         id: calContent
         anchors.fill: parent
-        radius: 20
+        radius: Services.Colors.radiusLarge
         color: Services.Colors.bg
         border.width: 1
         border.color: Services.Colors.border
@@ -70,7 +71,7 @@ PanelWindow {
 
         opacity: calWindow.open ? 1.0 : 0.0
         Behavior on opacity {
-            NumberAnimation { duration: Services.Colors.animDuration; easing.type: Easing.OutCubic }
+            NumberAnimation { duration: Services.Colors.animNormal; easing.type: Easing.OutCubic }
         }
 
         ColumnLayout {
@@ -79,7 +80,28 @@ PanelWindow {
             anchors.right: parent.right
             anchors.top: parent.top
             anchors.margins: 14
-            spacing: 12
+            spacing: Services.Colors.spacingLarge
+
+            RowLayout {
+                Layout.fillWidth: true
+                Components.ShadowText {
+                    text: "Calendar"
+                    font.pixelSize: 13
+                    font.bold: true
+                    color: Services.Colors.primary
+                }
+                Item { Layout.fillWidth: true }
+                Components.PinButton {
+                    pinned: calWindow.pinned
+                    onToggled: calWindow.pinned = !calWindow.pinned
+                }
+            }
+
+            Rectangle {
+                Layout.fillWidth: true
+                height: 1
+                color: Services.Colors.border
+            }
 
             Components.CalendarWidget {
                 id: calendarLayout

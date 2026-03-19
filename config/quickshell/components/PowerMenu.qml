@@ -12,7 +12,7 @@ Item {
     RowLayout {
         anchors.fill: parent
         anchors.margins: 10
-        spacing: 8
+        spacing: Services.Colors.spacingNormal
 
         PowerButton {
             icon: "󰌾"
@@ -64,7 +64,7 @@ Item {
         signal clicked()
 
         implicitHeight: 50
-        radius: 10
+        radius: Services.Colors.radiusSmall
         color: (active || btnMouse.containsMouse) ? Qt.rgba(accent.r, accent.g, accent.b, active ? (0.15 * pulseFactor) : 0.15) : "transparent"
         border.width: 1
         border.color: (active || btnMouse.containsMouse) ? Qt.rgba(accent.r, accent.g, accent.b, active ? (0.35 * pulseFactor) : 0.35) : Qt.rgba(1, 1, 1, 0.1)
@@ -73,15 +73,15 @@ Item {
         SequentialAnimation on pulseFactor {
             running: active
             loops: Animation.Infinite
-            NumberAnimation { from: 1.0; to: 1.6; duration: 1200; easing.type: Easing.InOutSine }
-            NumberAnimation { from: 1.6; to: 1.0; duration: 1200; easing.type: Easing.InOutSine }
+            NumberAnimation { from: 1.0; to: 1.6; duration: Services.Colors.animSlow; easing.type: Easing.InOutSine }
+            NumberAnimation { from: 1.6; to: 1.0; duration: Services.Colors.animSlow; easing.type: Easing.InOutSine }
         }
 
         onActiveChanged: if (!active) pulseFactor = 1.0
 
         ColumnLayout {
             anchors.centerIn: parent
-            spacing: 2
+            spacing: Services.Colors.spacingSmall
 
             ShadowText {
                 Layout.alignment: Qt.AlignHCenter
@@ -109,8 +109,8 @@ Item {
             onClicked: parent.clicked()
         }
 
-        Behavior on color { enabled: !active; ColorAnimation { duration: 150 } }
-        Behavior on border.color { enabled: !active; ColorAnimation { duration: 150 } }
-        Behavior on scale { NumberAnimation { duration: 150; easing.type: Easing.OutCubic } }
+        Behavior on color { enabled: !active; ColorAnimation { duration: Services.Colors.animNormal } }
+        Behavior on border.color { enabled: !active; ColorAnimation { duration: Services.Colors.animNormal } }
+        Behavior on scale { NumberAnimation { duration: Services.Colors.animNormal; easing.type: Easing.OutCubic } }
     }
 }

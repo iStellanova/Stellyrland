@@ -2,7 +2,7 @@
 
 Declarative Arch Linux system configuration for `stellanova@stellarhost`.
 
-Managed via [decman](https://github.com/kiviktnm/decman) — packages and dotfiles are defined in a single `source.py`, deployed with `decman sync`. The desktop shell is [Quickshell](https://quickshell.outfoxxed.me/).
+Managed via [decman](https://github.com/kiviktnm/decman) — packages and dotfiles are defined in a single `source.py`, deployed with `decman`. The desktop shell is [Quickshell](https://quickshell.outfoxxed.me/).
 
 ---
 
