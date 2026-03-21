@@ -89,7 +89,6 @@ PanelWindow {
                 Behavior on opacity { NumberAnimation { duration: Services.Colors.animSlow; easing.type: Easing.OutCubic } }
                 
                 // Direct relative positioning
-                // Direct relative positioning
                 x: targetButton ? leftRow.x + targetButton.x : 0
                 width: targetButton ? targetButton.width : 0
 
@@ -143,14 +142,26 @@ PanelWindow {
 
                         onIsFocusedChanged: updateFocused()
                         Component.onCompleted: updateFocused()
+
+                        onHoverStarted: (x, y) => {
+                            wsPreview.workspaceId = modelData.id
+                            wsPreview.xOffset = x
+                            wsPreview.open = true
+                        }
+                        onHoverEnded: wsPreview.open = false
                     }
+                }
+
+                Components.WorkspacePreview {
+                    id: wsPreview
+                    open: false
                 }
 
                 // Cava
                 Components.CavaVisualizer {
                     Layout.preferredWidth: 80
                     Layout.preferredHeight: 20
-                    color: "white"
+                    color: Services.Colors.mainText
                     barOpacity: 1.0
                     visible: Services.ShellData.cavaData.length > 0
                     Layout.leftMargin: 10
@@ -303,7 +314,6 @@ PanelWindow {
                                         var menu = modelData.menu;
                                         if (menu) {
                                             var pos = trayItem.mapToItem(null, 0, 0);
-                                            trayMenu.screen = bar.screen;
                                             trayMenu.xOffset = pos.x + (trayItem.width / 2) - 100; // Center menu (width 200)
                                             trayMenu.menuHandle = menu;
                                             trayMenu.visible = true;

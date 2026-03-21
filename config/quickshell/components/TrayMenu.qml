@@ -102,7 +102,7 @@ PanelWindow {
             Repeater {
                 model: opener.children
 
-                delegate: Components.TrayItem {
+                delegate: Components.TrayMenuItem {
                     entry: modelData
                     Layout.fillWidth: true
                     onTriggered: root.menuHandle = null

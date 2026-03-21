@@ -4,8 +4,51 @@
 declare -A prev_total
 declare -A prev_idle
 
+# Configuration
+INTERVAL="${1:-5}"
+NET_INTERFACE="${NET_INTERFACE:-}"
+
+# Initial sensor detection and path caching
+GPU_CARD=""
+GPU_TEMP_PATH=""
+GPU_VRAM_USED_PATH=""
+GPU_VRAM_TOTAL_PATH=""
+CPU_TEMP_PATH=""
+CPU_FREQ_PATH="/sys/devices/system/cpu/cpufreq/policy0/scaling_cur_freq"
+
+# Detect GPU
+if ! command -v nvidia-smi &> /dev/null; then
+  max_vram=0
+  for card in /sys/class/drm/card[0-9]*; do
+    if [ -r "$card/device/gpu_busy_percent" ]; then
+      current_vram=$(cat "$card/device/mem_info_vram_total" 2>/dev/null || echo 0)
+      if [ "$current_vram" -gt "$max_vram" ]; then
+        max_vram=$current_vram
+        GPU_CARD="$card"
+      fi
+    fi
+  done
+  [ -z "$GPU_CARD" ] && [ -r /sys/class/drm/card0/device/gpu_busy_percent ] && GPU_CARD="/sys/class/drm/card0"
+  
+  if [ -n "$GPU_CARD" ]; then
+    GPU_TEMP_PATH=$(ls "$GPU_CARD"/device/hwmon/hwmon*/temp1_input 2>/dev/null | head -n1)
+    GPU_VRAM_USED_PATH="$GPU_CARD/device/mem_info_vram_used"
+    GPU_VRAM_TOTAL_PATH="$GPU_CARD/device/mem_info_vram_total"
+  fi
+fi
+
+# Detect CPU Temperature sensor
+for hwmon in /sys/class/hwmon/hwmon*; do
+  if [ -f "$hwmon/name" ]; then
+    name=$(cat "$hwmon/name")
+    if [[ "$name" == "k10temp" || "$name" == "coretemp" ]]; then
+      [ -f "$hwmon/temp1_input" ] && CPU_TEMP_PATH="$hwmon/temp1_input"
+      break
+    fi
+  fi
+done
+
 get_cpu() {
-  local core_counts=0
   local core_usages=()
   local total_usage=0
 
@@ -42,23 +85,26 @@ get_cpu() {
     prev_idle[$name]=$idle
   done < /proc/stat
 
-  # Format core_usages as JSON array
   local cores_json=$(printf ", %s" "${core_usages[@]}")
   cores_json="[${cores_json:2}]"
-  
   echo "\"cpu\": $total_usage, \"cpu_cores\": $cores_json"
 }
 
 get_cpu_speed() {
-  local mhz=$(awk '/cpu MHz/ {sum+=$4; count++} END {print sum/count}' /proc/cpuinfo)
-  local ghz=$(awk "BEGIN {printf \"%.2f\", $mhz/1000}")
+  local mhz=0
+  mhz=$(awk '{sum+=$1; n++} END {if(n>0) print sum/n; else print 0}' /sys/devices/system/cpu/cpufreq/policy*/scaling_cur_freq 2>/dev/null)
+  
+  if [ "$mhz" = "0" ]; then
+    mhz=$(awk '/cpu MHz/ {sum+=$4; count++} END {if (count>0) print sum/count; else print 0}' /proc/cpuinfo)
+    # /proc/cpuinfo provides actual MHz, scaling_cur_freq provides kHz
+    mhz=$((mhz * 1000))
+  fi
+  
+  local ghz=$(awk "BEGIN {printf \"%.2f\", $mhz/1000000}")
   echo "\"cpu_speed\": \"$ghz GHz\""
 }
 
 get_ram_data() {
-  # Returns: used_bytes total_bytes available_bytes free_bytes cached_bytes
-  # free -b columns: total used free shared buff/cache available
-  # Note: buff/cache is $6, available is $7
   free -b | awk '/^Mem/ {print $3 " " $2 " " $7 " " $4 " " $6}'
 }
 
@@ -71,25 +117,14 @@ get_gpu_info() {
   if command -v nvidia-smi &> /dev/null; then
     local data=$(nvidia-smi --query-gpu=utilization.gpu,temperature.gpu,memory.used,memory.total --format=csv,noheader,nounits | head -n1)
     IFS=', ' read -r usage temp vram_used vram_total <<< "$data"
-  else
-    # Fallback to sysfs (AMD/Intel)
-    if [ -r /sys/class/drm/card1/device/gpu_busy_percent ]; then
-      read -r usage < /sys/class/drm/card1/device/gpu_busy_percent
-    fi
-    
-    # Temperature
-    local temp_path=$(ls /sys/class/drm/card1/device/hwmon/hwmon*/temp1_input 2>/dev/null | head -n1)
-    if [ -n "$temp_path" ]; then
-      read -r raw_temp < "$temp_path"
-      temp=$((raw_temp / 1000))
-    fi
-
-    # VRAM
-    if [ -r /sys/class/drm/card1/device/mem_info_vram_used ]; then
-      read -r vram_used < /sys/class/drm/card1/device/mem_info_vram_used
-      read -r vram_total < /sys/class/drm/card1/device/mem_info_vram_total
-      # Convert bytes to MiB for consistency with nvidia-smi if possible, or just GiB later
-    fi
+    # Convert MiB to Bytes for consistency if needed, but the GB calculation expects bytes
+    vram_used=$((vram_used * 1024 * 1024))
+    vram_total=$((vram_total * 1024 * 1024))
+  elif [ -n "$GPU_CARD" ]; then
+    [ -r "$GPU_CARD/device/gpu_busy_percent" ] && read -r usage < "$GPU_CARD/device/gpu_busy_percent"
+    [ -n "$GPU_TEMP_PATH" ] && read -r raw_temp < "$GPU_TEMP_PATH" && temp=$((raw_temp / 1000))
+    [ -r "$GPU_VRAM_USED_PATH" ] && read -r vram_used < "$GPU_VRAM_USED_PATH"
+    [ -r "$GPU_VRAM_TOTAL_PATH" ] && read -r vram_total < "$GPU_VRAM_TOTAL_PATH"
   fi
 
   local vram_used_gb=$(awk "BEGIN {printf \"%.2f\", $vram_used/1024/1024/1024}")
@@ -99,22 +134,20 @@ get_gpu_info() {
 }
 
 get_temp() {
-  if [ -f /sys/class/hwmon/hwmon5/temp1_input ]; then
-    cat /sys/class/hwmon/hwmon5/temp1_input | awk '{print int($1/1000)}'
+  if [ -n "$CPU_TEMP_PATH" ]; then
+    read -r raw_temp < "$CPU_TEMP_PATH"
+    echo $((raw_temp / 1000))
   else
     echo 0
   fi
 }
 
 get_net() {
-  local interface="wlan0"
+  local interface="$NET_INTERFACE"
   if [ ! -d "/sys/class/net/$interface" ]; then
     interface=$(ls /sys/class/net | grep -vE 'lo|tun|br|docker|vbox|proton' | head -n1)
   fi
-  if [ -z "$interface" ]; then
-    echo "0 0"
-    return
-  fi
+  [ -z "$interface" ] && echo "0 0" && return
   awk "\$1 ~ \"$interface\" {print \$2 \" \" \$10}" /proc/net/dev
 }
 
@@ -130,7 +163,6 @@ while true; do
   temp=$(get_temp)
   read -r rx_curr tx_curr < <(get_net)
   
-  # RAM Formatting
   if [ "$ram_total" -ne 0 ]; then
     ram_perc=$((100 * ram_used / ram_total))
     ram_gb=$(awk "BEGIN {printf \"%.2f\", $ram_used/1024/1024/1024}")
@@ -138,20 +170,15 @@ while true; do
     ram_free_gb=$(awk "BEGIN {printf \"%.2f\", $ram_free/1024/1024/1024}")
     ram_cached_gb=$(awk "BEGIN {printf \"%.2f\", $ram_cached/1024/1024/1024}")
   else
-    ram_perc=0
-    ram_gb="0.00"
-    ram_avail_gb="0.00"
-    ram_free_gb="0.00"
-    ram_cached_gb="0.00"
+    ram_perc=0; ram_gb="0.00"; ram_avail_gb="0.00"; ram_free_gb="0.00"; ram_cached_gb="0.00"
   fi
 
-  # Network Rates
-  rx_kbps=$(awk "BEGIN {printf \"%.1f\", ($rx_curr - $rx_prev) / 5 / 1024}")
-  tx_kbps=$(awk "BEGIN {printf \"%.1f\", ($tx_curr - $tx_prev) / 5 / 1024}")
+  rx_kbps=$(awk "BEGIN {printf \"%.1f\", ($rx_curr - $rx_prev) / $INTERVAL / 1024}")
+  tx_kbps=$(awk "BEGIN {printf \"%.1f\", ($tx_curr - $tx_prev) / $INTERVAL / 1024}")
   
   echo "{$cpu_info, $cpu_speed, \"ram_perc\": $ram_perc, \"ram_gb\": \"$ram_gb\", \"ram_avail\": \"$ram_avail_gb\", \"ram_free\": \"$ram_free_gb\", \"ram_cached\": \"$ram_cached_gb\", $gpu_info, \"temp\": $temp, \"rx_kbps\": $rx_kbps, \"tx_kbps\": $tx_kbps}"
   
   rx_prev=$rx_curr
   tx_prev=$tx_curr
-  sleep 5
+  sleep "$INTERVAL"
 done

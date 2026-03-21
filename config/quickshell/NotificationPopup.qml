@@ -121,7 +121,7 @@ PanelWindow {
                 pid: model.pid
                 urgency: model.urgency
 
-                showProgress: true
+                showProgress: Services.ConfigService.notifShowTimer
                 progressDuration: (model.expireTimeout > 0) ? model.expireTimeout : Services.NotificationService.defaultTimeout
                 isPaused: card.mouseAreaHovered
 

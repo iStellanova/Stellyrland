@@ -13,6 +13,28 @@ Before first sync, bootstrap the following:
 - [`decman`](https://github.com/kiviktnm/decman) (AUR)
 - Decman will handle all packages on its own.
 
+### Quickshell Shell
+
+The following must be present for the shell to function fully. Most are
+declared as packages in `source.py` — this table documents their purpose
+for reference.
+
+| Package | Source | Purpose |
+|---|---|---|
+| [`quickshell`](https://quickshell.outfoxxed.me/) | AUR | Shell framework |
+| `hyprland` | AUR | Compositor; required for IPC, workspace, and app launching |
+| `hyprlock` | AUR | Screen locker (`lock()`) |
+| `hypridle` | AUR | Idle inhibitor toggle |
+| `matugen` | AUR | Wallpaper-driven theming pipeline |
+| `ffmpeg` | extra | Video wallpaper frame extraction |
+| `networkmanager` | extra | WiFi scanning, VPN state detection |
+| `pipewire-pulse` | extra | App volume control fallback (`pactl`) |
+| `pacman-contrib` | extra | `checkupdates` for pacman update count |
+| `yay` | AUR | AUR update count (`yay -Qua`) |
+| `rfkill` | core | Bluetooth hardware toggle |
+| `python` | core | Safe config file writes |
+| `jq` | extra | App volume JSON parsing |
+| `nerd-fonts` | AUR | Icon glyphs throughout the UI (JetBrains Mono Nerd Font Propo) |
 ---
 
 ## Bootstrap

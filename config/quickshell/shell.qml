@@ -3,6 +3,7 @@ import Quickshell
 import Quickshell.Io
 import Quickshell.Hyprland
 import QtQuick
+import QtQml
 import "components" as Components
 import "services" as Services
 
@@ -13,33 +14,23 @@ Scope {
     // ── State ────────────────────────────────────────────────
     // Visibility is managed directly via Services.ShellData
     
-    property real calX: 0
-    property real trafficX: 0
-    property real ramX: 0
-    property real cpuX: 0
-    property real gpuX: 0
-    property real tempX: 0
-    property real mediaX: 0
-    property real updatesX: 0
-    property real micX: 0
-    property real volumeX: 0
+    property var popupOffsets: ({})
+
+    property var pinnablePopups: [
+        { component: cal, prop: "calVisible" },
+        { component: trafficMenu, prop: "trafficVisible" },
+        { component: ramMenu, prop: "ramVisible" },
+        { component: cpuMenu, prop: "cpuVisible" },
+        { component: gpuMenu, prop: "gpuVisible" },
+        { component: tempMenu, prop: "tempVisible" },
+        { component: mediaMenu, prop: "mediaVisible" },
+        { component: updatesMenu, prop: "updatesVisible" },
+        { component: micMenu, prop: "micVisible" },
+        { component: volumeMenu, prop: "volumeVisible" }
+    ]
 
     function closeAllPopups() {
-        // List of pinnable popups and their visibility property names in ShellData
-        let pinnable = [
-            { component: cal, prop: "calVisible" },
-            { component: trafficMenu, prop: "trafficVisible" },
-            { component: ramMenu, prop: "ramVisible" },
-            { component: cpuMenu, prop: "cpuVisible" },
-            { component: gpuMenu, prop: "gpuVisible" },
-            { component: tempMenu, prop: "tempVisible" },
-            { component: mediaMenu, prop: "mediaVisible" },
-            { component: updatesMenu, prop: "updatesVisible" },
-            { component: micMenu, prop: "micVisible" },
-            { component: volumeMenu, prop: "volumeVisible" }
-        ]
-
-        pinnable.forEach(p => {
+        pinnablePopups.forEach(p => {
             if (!p.component.pinned) Services.ShellData[p.prop] = false
         })
         
@@ -50,8 +41,21 @@ Scope {
         Services.ShellData.wallpaperVisible = false
         Services.ShellData.logoutVisible = false
         Services.ShellData.screenshotVisible = false
+        Services.ShellData.settingsVisible = false
 
         trayMenu.menuHandle = null
+    }
+
+    function togglePopup(prop, x) {
+        let target = !Services.ShellData[prop]
+        closeAllPopups()
+        if (x !== undefined) {
+            let next = {}
+            for (let k in popupOffsets) next[k] = popupOffsets[k]
+            next[prop] = x
+            popupOffsets = next
+        }
+        Services.ShellData[prop] = target
     }
 
     // Close all popups when workspace changes
@@ -65,32 +69,23 @@ Scope {
     IpcHandler {
         target: "shell"
         function toggleLauncher() {
-            let target = !Services.ShellData.alVisible
-            root.closeAllPopups()
-            Services.ShellData.alVisible = target
+            root.togglePopup("alVisible")
         }
 
         function toggleWallpaperSelector() {
-            let target = !Services.ShellData.wallpaperVisible
-            root.closeAllPopups()
-            Services.ShellData.wallpaperVisible = target
+            root.togglePopup("wallpaperVisible")
         }
 
         function toggleLogout() {
-            let target = !Services.ShellData.logoutVisible
-            root.closeAllPopups()
-            Services.ShellData.logoutVisible = target
+            root.togglePopup("logoutVisible")
         }
         
         function toggleScreenshot() {
-            let target = !Services.ShellData.screenshotVisible
-            root.closeAllPopups()
-            Services.ShellData.screenshotVisible = target
+            root.togglePopup("screenshotVisible")
         }
 
         function triggerDelayedScreenshot() {
-            Services.ShellData.screenshotNoTimer = true
-            Services.ShellData.screenshotVisible = true
+            sm.triggerNoTimer()
         }
     }
 
@@ -99,7 +94,7 @@ Scope {
         id: cal
         screen: Services.MonitorService.primaryScreen
         open: Services.ShellData.calVisible
-        xOffset: root.calX
+        xOffset: root.popupOffsets["calVisible"] ?? 0
         onCloseRequested: Services.ShellData.calVisible = false
     }
 
@@ -108,7 +103,7 @@ Scope {
         id: trafficMenu
         screen: Services.MonitorService.primaryScreen
         open: Services.ShellData.trafficVisible
-        xOffset: root.trafficX
+        xOffset: root.popupOffsets["trafficVisible"] ?? 0
         onCloseRequested: Services.ShellData.trafficVisible = false
     }
 
@@ -117,7 +112,7 @@ Scope {
         id: ramMenu
         screen: Services.MonitorService.primaryScreen
         open: Services.ShellData.ramVisible
-        xOffset: root.ramX
+        xOffset: root.popupOffsets["ramVisible"] ?? 0
         onCloseRequested: Services.ShellData.ramVisible = false
     }
 
@@ -126,7 +121,7 @@ Scope {
         id: cpuMenu
         screen: Services.MonitorService.primaryScreen
         open: Services.ShellData.cpuVisible
-        xOffset: root.cpuX
+        xOffset: root.popupOffsets["cpuVisible"] ?? 0
         onCloseRequested: Services.ShellData.cpuVisible = false
     }
 
@@ -135,7 +130,7 @@ Scope {
         id: gpuMenu
         screen: Services.MonitorService.primaryScreen
         open: Services.ShellData.gpuVisible
-        xOffset: root.gpuX
+        xOffset: root.popupOffsets["gpuVisible"] ?? 0
         onCloseRequested: Services.ShellData.gpuVisible = false
     }
 
@@ -144,7 +139,7 @@ Scope {
         id: tempMenu
         screen: Services.MonitorService.primaryScreen
         open: Services.ShellData.tempVisible
-        xOffset: root.tempX
+        xOffset: root.popupOffsets["tempVisible"] ?? 0
         onCloseRequested: Services.ShellData.tempVisible = false
     }
 
@@ -152,7 +147,7 @@ Scope {
         id: mediaMenu
         screen: Services.MonitorService.primaryScreen
         open: Services.ShellData.mediaVisible
-        xOffset: root.mediaX
+        xOffset: root.popupOffsets["mediaVisible"] ?? 0
         onCloseRequested: Services.ShellData.mediaVisible = false
     }
 
@@ -160,7 +155,7 @@ Scope {
         id: updatesMenu
         screen: Services.MonitorService.primaryScreen
         open: Services.ShellData.updatesVisible
-        xOffset: root.updatesX
+        xOffset: root.popupOffsets["updatesVisible"] ?? 0
         onCloseRequested: Services.ShellData.updatesVisible = false
     }
 
@@ -168,7 +163,7 @@ Scope {
         id: micMenu
         screen: Services.MonitorService.primaryScreen
         open: Services.ShellData.micVisible
-        xOffset: root.micX
+        xOffset: root.popupOffsets["micVisible"] ?? 0
         onCloseRequested: Services.ShellData.micVisible = false
     }
     
@@ -176,7 +171,7 @@ Scope {
         id: volumeMenu
         screen: Services.MonitorService.primaryScreen
         open: Services.ShellData.volumeVisible
-        xOffset: root.volumeX
+        xOffset: root.popupOffsets["volumeVisible"] ?? 0
         onCloseRequested: Services.ShellData.volumeVisible = false
     }
 
@@ -211,6 +206,33 @@ Scope {
         onCloseRequested: Services.ShellData.wallpaperVisible = false
     }
 
+    SettingsPopup {
+        id: sp
+        screen: Services.MonitorService.primaryScreen
+        visible: Services.ShellData.settingsVisible
+        onCloseRequested: Services.ShellData.settingsVisible = false
+    }
+
+    Instantiator {
+        id: wallInstantiator
+        model: Quickshell.screens
+        delegate: WallpaperBackground {
+            screen: modelData
+        }
+    }
+
+    Connections {
+        target: Services.WallpaperService
+        function onWallpaperChanged(path, isVideo, framePath) {
+            for (let i = 0; i < wallInstantiator.count; i++) {
+                let obj = wallInstantiator.objectAt(i)
+                if (obj) {
+                    obj.transitionTo(path, isVideo, framePath)
+                }
+            }
+        }
+    }
+
     NotificationPopup { 
         screen: Services.MonitorService.primaryScreen
     }
@@ -236,87 +258,18 @@ Scope {
         trayMenu: trayMenu
         logoutVisible: lp.visible
 
-        onToggleMicMenu: (x) => {
-            let target = !Services.ShellData.micVisible
-            root.closeAllPopups()
-            root.micX = x
-            Services.ShellData.micVisible = target
-        }
-
-        onToggleControlCenter: () => {
-            let target = !Services.ShellData.ccVisible
-            root.closeAllPopups()
-            Services.ShellData.ccVisible = target
-        }
-
-        onToggleNotificationCenter: () => {
-            let target = !Services.ShellData.ncVisible
-            root.closeAllPopups()
-            Services.ShellData.ncVisible = target
-        }
-
-        onToggleCalendar: (x) => {
-            let target = !Services.ShellData.calVisible
-            root.closeAllPopups()
-            root.calX = x
-            Services.ShellData.calVisible = target
-        }
-
-        onToggleWifiMenu: (x) => {
-            let target = !Services.ShellData.trafficVisible
-            root.closeAllPopups()
-            root.trafficX = x
-            Services.ShellData.trafficVisible = target
-        }
-
-        onToggleRamMenu: (x) => {
-            let target = !Services.ShellData.ramVisible
-            root.closeAllPopups()
-            root.ramX = x
-            Services.ShellData.ramVisible = target
-        }
-
-        onToggleCpuMenu: (x) => {
-            let target = !Services.ShellData.cpuVisible
-            root.closeAllPopups()
-            root.cpuX = x
-            Services.ShellData.cpuVisible = target
-        }
-
-        onToggleGpuMenu: (x) => {
-            let target = !Services.ShellData.gpuVisible
-            root.closeAllPopups()
-            root.gpuX = x
-            Services.ShellData.gpuVisible = target
-        }
-
-        onToggleTempMenu: (x) => {
-            let target = !Services.ShellData.tempVisible
-            root.closeAllPopups()
-            root.tempX = x
-            Services.ShellData.tempVisible = target
-        }
-
-        onToggleMediaMenu: (x) => {
-            let target = !Services.ShellData.mediaVisible
-            root.closeAllPopups()
-            root.mediaX = x
-            Services.ShellData.mediaVisible = target
-        }
-
-        onToggleUpdatesMenu: (x) => {
-            let target = !Services.ShellData.updatesVisible
-            root.closeAllPopups()
-            root.updatesX = x
-            Services.ShellData.updatesVisible = target
-        }
-
-        onToggleVolumeMenu: (x) => {
-            let target = !Services.ShellData.volumeVisible
-            root.closeAllPopups()
-            root.volumeX = x
-            Services.ShellData.volumeVisible = target
-        }
+        onToggleMicMenu: (x) => root.togglePopup("micVisible", x)
+        onToggleControlCenter: () => root.togglePopup("ccVisible")
+        onToggleNotificationCenter: () => root.togglePopup("ncVisible")
+        onToggleCalendar: (x) => root.togglePopup("calVisible", x)
+        onToggleWifiMenu: (x) => root.togglePopup("trafficVisible", x)
+        onToggleRamMenu: (x) => root.togglePopup("ramVisible", x)
+        onToggleCpuMenu: (x) => root.togglePopup("cpuVisible", x)
+        onToggleGpuMenu: (x) => root.togglePopup("gpuVisible", x)
+        onToggleTempMenu: (x) => root.togglePopup("tempVisible", x)
+        onToggleMediaMenu: (x) => root.togglePopup("mediaVisible", x)
+        onToggleUpdatesMenu: (x) => root.togglePopup("updatesVisible", x)
+        onToggleVolumeMenu: (x) => root.togglePopup("volumeVisible", x)
     }
 
     // Defined LAST so it stays on top of everything

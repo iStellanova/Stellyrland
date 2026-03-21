@@ -32,11 +32,33 @@ Rectangle {
         color: Services.Colors.mainText
     }
 
+    signal hoverStarted(int x, int y)
+    signal hoverEnded()
+
+    Timer {
+        id: hoverTimer
+        interval: Services.Colors.animExtraSlow
+        repeat: false
+        onTriggered: {
+            // Map the center of the button to the bar coordinate system
+            let pos = root.mapToItem(null, root.width / 2, root.height)
+            root.hoverStarted(pos.x, pos.y)
+        }
+    }
+
     MouseArea {
         id: mainMouse
         anchors.fill: parent
         cursorShape: Qt.PointingHandCursor
         hoverEnabled: true
         onClicked: root.onActivate()
+        onContainsMouseChanged: {
+            if (containsMouse) {
+                hoverTimer.start()
+            } else {
+                hoverTimer.stop()
+                root.hoverEnded()
+            }
+        }
     }
 }

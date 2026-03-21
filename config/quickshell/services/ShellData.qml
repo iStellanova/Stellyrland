@@ -33,8 +33,13 @@ Singleton {
     property var rxHistory: []
     property real txRate: 0.0
     property var txHistory: []
-    property bool hasFullscreen: (Hyprland.focusedWorkspace && Hyprland.focusedWorkspace.hasFullscreen && (Hyprland.focusedWorkspace.monitor && Hyprland.focusedWorkspace.monitor.name === MonitorService.targetName)) || 
-                                 (Hyprland.activeToplevel && Hyprland.activeToplevel.fullscreen && (Hyprland.activeToplevel.workspace && Hyprland.activeToplevel.workspace.monitor && Hyprland.activeToplevel.workspace.monitor.name === MonitorService.targetName)) || false
+    property bool hasFullscreen: {
+        let fw = Hyprland.focusedWorkspace
+        if (fw && fw.hasFullscreen && fw.monitor && fw.monitor.name === MonitorService.targetName) return true
+        let at = Hyprland.activeToplevel
+        if (at && at.fullscreen && at.workspace && at.workspace.monitor && at.workspace.monitor.name === MonitorService.targetName) return true
+        return false
+    }
     
     // ── Network ──────────────────────────────────────────────
     property string netSsid: "Offline"
@@ -44,9 +49,28 @@ Singleton {
     property bool btOn: Bluetooth.defaultAdapter ? Bluetooth.defaultAdapter.enabled : false
     property bool dndOn: NotificationService.dndActive
     property bool vpnOn: false
+    Component.onCompleted: {
+        let p = procFactory.createObject(root, { command: ["sh", "-c", "ip link show " + ConfigService.vpnInterface + " 2>/dev/null || nmcli connection show --active | grep -i " + ConfigService.vpnInterface] })
+        let collector = Qt.createQmlObject('import Quickshell.Io 1.0; StdioCollector {}', p)
+        collector.streamFinished.connect(() => { root.vpnOn = collector.text.trim().length > 0 })
+        p.stdout = collector
+        p.running = true
+    }
     property bool idleOn: false
-    property bool micBusy: false
-    property var micApps: []
+    property var micApps: {
+        let nodes = Pipewire.nodes.values
+        let apps = []
+        for (let i = 0; i < nodes.length; i++) {
+            let node = nodes[i]
+            if (node.properties["media.class"] === "Stream/Input/Audio" && 
+                !(node.properties["node.name"] || "").includes("cava")) {
+                let name = node.properties["application.name"] || node.properties["node.name"] || "Unknown"
+                if (!apps.includes(name)) apps.push(name)
+            }
+        }
+        return apps
+    }
+    property bool micBusy: micApps.length > 0
     property var wifiNetworks: []
     property var btDevices: []
     property alias appVolumesModel: appVolumesModel
@@ -56,15 +80,66 @@ Singleton {
     // ── System info ──────────────────────────────────────────
     property string uptime: "0m"
     property string distroName: "Linux"
-    property string username: "user"
+    property string username: Quickshell.env("USER") || Quickshell.env("LOGNAME") || "user"
 
-    readonly property string shellVersion: "0.2.1"
+    property string shellVersion: "..."
     readonly property string configTitle: "Stellyrland"
-    readonly property string configVersion: "1.0"
+    readonly property string configVersion: "1.0.5"
     readonly property string shellAuthor: "stellanova"
 
+    // ── Version Detection ─────────────────────────────────────
+    Process {
+        id: versionProc
+        command: ["quickshell", "--version"]
+        running: true
+        stdout: StdioCollector {
+            onStreamFinished: {
+                let line = this.text.split("\n")[0]
+                let parts = line.split(" ")
+                if (parts.length > 1) {
+                    root.shellVersion = parts[1].replace(",", "").trim()
+                }
+            }
+        }
+    }
+
     // ── Weather ──────────────────────────────────────────────
+    property real latitude: ConfigService.weatherLat
+    property real longitude: ConfigService.weatherLon
+    property real detectedLat: 0.0
+    property real detectedLon: 0.0
+    property bool locationDetected: false
+    
+    // Final coordinates used for fetching
+    readonly property real currentLat: (latitude !== 0.0) ? latitude : detectedLat
+    readonly property real currentLon: (longitude !== 0.0) ? longitude : detectedLon
+    
     property string weather: "..."
+    
+    // Detection logic
+    Process {
+        id: locationProc
+        command: ["curl", "-sm", "5", "http://ip-api.com/json"]
+        running: latitude === 0.0 && longitude === 0.0
+        stdout: StdioCollector {
+            onStreamFinished: {
+                try {
+                    let data = JSON.parse(this.text.trim())
+                    if (data.status === "success") {
+                        root.detectedLat = data.lat
+                        root.detectedLon = data.lon
+                        root.locationDetected = true
+                        weatherProc.running = true
+                    }
+                } catch (e) {
+                    console.error("Failed to detect location:", e)
+                }
+            }
+        }
+    }
+
+    onCurrentLatChanged: if (currentLat !== 0.0) weatherProc.running = true
+    onCurrentLonChanged: if (currentLon !== 0.0) weatherProc.running = true
 
 
     // ── Cava ─────────────────────────────────────────────────
@@ -93,26 +168,8 @@ Singleton {
     property bool wallpaperVisible: false
     property bool logoutVisible: false
     property bool screenshotVisible: false
-    property bool screenshotNoTimer: false
+    property bool settingsVisible: false
 
-    function closeAllPopups() {
-        root.ccVisible = false
-        root.ncVisible = false
-        root.alVisible = false
-        root.calVisible = false
-        root.trafficVisible = false
-        root.ramVisible = false
-        root.cpuVisible = false
-        root.gpuVisible = false
-        root.tempVisible = false
-        root.mediaVisible = false
-        root.updatesVisible = false
-        root.micVisible = false
-        root.volumeVisible = false
-        root.wallpaperVisible = false
-        root.logoutVisible = false
-        root.screenshotVisible = false
-    }
 
     
     // ── Window Title (Native & Reactive) ────────────────────
@@ -154,8 +211,9 @@ Singleton {
     // ── System Stats (Consolidated Streaming) ────────────────
     Process {
         id: statsProc
-        command: ["bash", root.scriptsDir + "/stats.sh"]
+        command: ["bash", root.scriptsDir + "/stats.sh", ConfigService.pollStats.toString()]
         running: true
+        onCommandChanged: if (running) { running = false; running = true }
         stdout: SplitParser {
             onRead: data => {
                 try {
@@ -215,7 +273,7 @@ Singleton {
                 let states = parts[0].trim().split("\n")
                 
                 root.wifiOn = states.some(s => s.startsWith("wlan0:connected"))
-                root.vpnOn = states.some(s => s.includes("proton") && s.includes(":connected"))
+                root.vpnOn = states.some(s => s.includes(ConfigService.vpnInterface) && s.includes(":connected"))
                 
                 if (parts.length > 1) {
                     let ssid = parts[1].trim()
@@ -269,7 +327,7 @@ Singleton {
     function connectWifi(ssid) {
         // Run a simple connect command; this assumes the connection is known or open,
         // or relies on the desktop environment's polkit agent for passwords if needed.
-        _runOneShot(["nmcli", "dev", "wifi", "connect", ssid])
+        runCommand(["nmcli", "dev", "wifi", "connect", ssid])
     }
 
     // ── Bluetooth Monitoring ──────────────────────────────
@@ -301,13 +359,13 @@ Singleton {
     }
 
     function connectBt(address) {
-        _runOneShot(["bluetoothctl", "connect", address])
+        runCommand(["bluetoothctl", "connect", address])
         // Refresh after a short delay to catch the state change
         refreshTimer.restart()
     }
 
     function disconnectBt(address) {
-        _runOneShot(["bluetoothctl", "disconnect", address])
+        runCommand(["bluetoothctl", "disconnect", address])
         refreshTimer.restart()
     }
 
@@ -324,7 +382,7 @@ Singleton {
     }
 
     Timer {
-        interval: 60000 // Update every minute
+        interval: ConfigService.pollUptime
         running: true
         repeat: true
         triggeredOnStart: true
@@ -370,14 +428,6 @@ Singleton {
     }
 
 
-    Process {
-        id: userProc
-        command: ["whoami"]
-        running: true
-        stdout: StdioCollector {
-            onStreamFinished: root.username = this.text.trim()
-        }
-    }
 
     // ── Weather (Open-Meteo) ──────────────────────────────
     property var hourlyWeather: []
@@ -407,9 +457,9 @@ Singleton {
 
     Process {
         id: weatherProc
-        // Using hardcoded coordinates for the weather API
-        command: ["bash", "-c", "curl -sm 5 'https://api.open-meteo.com/v1/forecast?latitude=41.08&longitude=-85.14&current_weather=true&hourly=temperature_2m,weathercode&daily=temperature_2m_max,temperature_2m_min&temperature_unit=fahrenheit&forecast_days=2'"]
-        running: true
+        // Using configurable coordinates for the weather API
+        command: ["bash", "-c", "curl -sm 5 'https://api.open-meteo.com/v1/forecast?latitude=" + root.currentLat + "&longitude=" + root.currentLon + "&current_weather=true&hourly=temperature_2m,weathercode&daily=temperature_2m_max,temperature_2m_min&temperature_unit=fahrenheit&forecast_days=2'"]
+        running: (root.currentLat !== 0.0 && root.currentLon !== 0.0)
         stdout: StdioCollector {
             onStreamFinished: {
                 let text = this.text.trim();
@@ -476,7 +526,7 @@ Singleton {
             }
         }
     }
-    Timer { interval: 900000; running: true; repeat: true; onTriggered: weatherProc.running = true }
+    Timer { interval: ConfigService.pollWeather; running: true; repeat: true; onTriggered: weatherProc.running = true }
 
 
     // ── Update Service (Consolidated) ──────────────────────
@@ -519,7 +569,7 @@ Singleton {
             }
         }
     }
-    Timer { interval: 3600000; running: true; repeat: true; onTriggered: updateListProc.running = true }
+    Timer { interval: ConfigService.pollUpdates; running: true; repeat: true; onTriggered: updateListProc.running = true }
 
 
     // ── Cava (Streaming) ───────────────────────────────────
@@ -537,46 +587,9 @@ Singleton {
     }
 
     // ── Dedicated Toggle Actions (Inlined) ─────────────────
-    // Toggles are now handled via _runOneShot for better robustness
+    // Toggles are now handled via runCommand for better robustness
 
-    Process {
-        id: idleInitCheck
-        command: ["bash", "-c", "pgrep -x hypridle > /dev/null && echo true || echo false"]
-        running: true
-        stdout: StdioCollector {
-            onStreamFinished: root.idleOn = (this.text.trim() === "true")
-        }
-    }
 
-    Timer {
-        interval: 5000
-        running: true
-        repeat: true
-        onTriggered: idleInitCheck.running = true
-    }
-
-    // ── Microphone Usage Monitoring (Reactive) ─────────────
-    Process {
-        id: micBusyMonitor
-        command: ["bash", "-c", "pactl subscribe | grep --line-buffered 'source-output'"]
-        running: true
-        stdout: SplitParser {
-            onRead: data => micBusyCheck.running = true
-        }
-    }
-
-    Process {
-        id: micBusyCheck
-        command: ["bash", "-c", "pactl list source-outputs | awk '/application.name =/ {print $3}' | tr -d '\"' | grep -v 'cava'"]
-        running: true
-        stdout: StdioCollector {
-            onStreamFinished: {
-                let apps = this.text.trim().split("\n").filter(x => x.length > 0)
-                root.micApps = apps
-                root.micBusy = apps.length > 0
-            }
-        }
-    }
     // ── App Volume Monitoring (Stable ListModel) ────────
     Process {
         id: appVolumeProc
@@ -656,11 +669,10 @@ Singleton {
         }
     }
 
-    Timer {
-        interval: 2000
-        running: true
-        repeat: true
-        onTriggered: appVolumeProc.running = true
+    Connections {
+        target: Pipewire.nodes
+        function onAdded() { appVolumeProc.running = true }
+        function onRemoved() { appVolumeProc.running = true }
     }
 
     // ── Volume Actions (Native) ───────────────────────────
@@ -733,7 +745,7 @@ Singleton {
         repeat: false
         onTriggered: {
             for (let id in _pendingAppVolUpdates) {
-                _runOneShot(["pactl", "set-sink-input-volume", id.toString(), _pendingAppVolUpdates[id] + "%"])
+                runCommand(["pactl", "set-sink-input-volume", id.toString(), _pendingAppVolUpdates[id] + "%"])
             }
             root._pendingAppVolUpdates = {}
         }
@@ -763,14 +775,14 @@ Singleton {
         if (targetNode && targetNode.audio) {
             targetNode.audio.muted = !targetNode.audio.muted
         } else {
-            _runOneShot(["pactl", "set-sink-input-mute", id.toString(), "toggle"])
+            runCommand(["pactl", "set-sink-input-mute", id.toString(), "toggle"])
         }
         appVolumeProc.running = true
     }
 
     function toggleWifi() {
         root.wifiOn = !root.wifiOn
-        _runOneShot(["bash", "-c", "state=$(nmcli radio wifi); if [ \"$state\" = \"enabled\" ]; then nmcli radio wifi off; else nmcli radio wifi on; fi"])
+        runCommand(["bash", "-c", "state=$(nmcli radio wifi); if [ \"$state\" = \"enabled\" ]; then nmcli radio wifi off; else nmcli radio wifi on; fi"])
         if (root.wifiOn) {
             refreshWifi()
         } else {
@@ -781,10 +793,10 @@ Singleton {
     function toggleBt() {
         if (root.btOn) {
             if (Bluetooth.defaultAdapter) Bluetooth.defaultAdapter.enabled = false
-            _runOneShot(["rfkill", "block", "bluetooth"])
+            runCommand(["rfkill", "block", "bluetooth"])
             root.btDevices = []
         } else {
-            _runOneShot(["rfkill", "unblock", "bluetooth"])
+            runCommand(["rfkill", "unblock", "bluetooth"])
             // Nudge the native service to enable it once unblocked
             if (Bluetooth.defaultAdapter) Bluetooth.defaultAdapter.enabled = true
             refreshBt()
@@ -795,14 +807,24 @@ Singleton {
         NotificationService.dndActive = !NotificationService.dndActive
     }
 
+    Process {
+        id: idleCheckProc
+        command: ["pgrep", "-x", "hypridle"]
+        onExited: (code) => {
+            root.idleOn = (code === 0)
+        }
+    }
+    Timer { interval: ConfigService.pollIdle; running: true; repeat: true; onTriggered: idleCheckProc.running = true }
+
     function toggleIdle() {
         if (root.idleOn) {
-            _runOneShot(["killall", "hypridle"])
-            root.idleOn = false
+            runCommand(["killall", "hypridle"])
         } else {
-            _runOneShot(["hyprctl", "dispatch", "exec", "hypridle"])
-            root.idleOn = true
+            runCommand(["hyprctl", "dispatch", "exec", "hypridle"])
         }
+        
+        // Small delay then re-check
+        Qt.callLater(() => { idleCheckProc.running = true })
     }
 
     function toggleMic() {
@@ -813,10 +835,28 @@ Singleton {
 
     function toggleVpn() {
         root.vpnOn = !root.vpnOn // Optimistic update
-        _runOneShot(["bash", "-c", "if nmcli device show proton0 2>/dev/null | grep -q 'STATE.*connected'; then protonvpn disconnect; else protonvpn connect; fi"])
-        // No verifyTimer needed as nmcli monitor will pick up the change reactively
+        runCommand(["bash", "-c", "if nmcli device show " + ConfigService.vpnInterface + " 2>/dev/null | grep -q 'STATE.*connected'; then " + ConfigService.vpnDisconnectCmd + "; else " + ConfigService.vpnConnectCmd + "; fi"])
+        vpnRefreshTimer.restart()
     }
 
+    Timer {
+        id: vpnRefreshTimer
+        interval: 3000
+        repeat: true
+        property int count: 0
+        onTriggered: {
+            networkInit.running = true
+            count++
+            // Poll at 3s, 6s, 9s, and a final check at 15s
+            if (count === 3) {
+                interval = 6000
+            } else if (count >= 4) {
+                stop()
+                count = 0
+                interval = 3000
+            }
+        }
+    }
     // ── Notifications (Native Reactive) ─────────────────────
     property var notifications: NotificationService.history
 
@@ -851,17 +891,17 @@ Singleton {
         }
     }
 
-    function lock() { root.powerCountdown = 0; _runOneShot(["hyprlock"]) }
-    function logout() { root.powerCountdown = 0; _runOneShot(["hyprctl", "dispatch", "exit"]) }
-    function suspend() { root.powerCountdown = 0; _runOneShot(["systemctl", "suspend"]) }
-    function reboot() { _runOneShot(["systemctl", "reboot"]) }
-    function shutdown() { _runOneShot(["systemctl", "poweroff"]) }
+    function lock() { root.powerCountdown = 0; runCommand([ConfigService.lockCmd]) }
+    function logout() { root.powerCountdown = 0; runCommand(["hyprctl", "dispatch", "exit"]) }
+    function suspend() { root.powerCountdown = 0; runCommand(["systemctl", "suspend"]) }
+    function reboot() { runCommand(["systemctl", "reboot"]) }
+    function shutdown() { runCommand(["systemctl", "poweroff"]) }
 
     function refreshWeather() {
         weatherProc.running = true
     }
 
-    function _runOneShot(cmd) {
+    function runCommand(cmd) {
         let proc = oneshotFactory.createObject(root, { command: cmd });
         proc.running = true;
     }

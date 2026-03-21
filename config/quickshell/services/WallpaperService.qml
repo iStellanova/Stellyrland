@@ -7,27 +7,52 @@ import QtQuick
 Singleton {
     id: root
 
-    property string wallpaperDir: Quickshell.env("HOME") + "/Pictures/wallpapers"
-    property var wallpapers: []
+    property string wallpaperDir: ConfigService.wallpaperDir
+    property var wallpapers: []  // Array of { path: "file://...", isVideo: bool }
+    property string currentWallpaper: ""  // Track current wallpaper for transitions
+    property bool currentIsVideo: false
+
+    readonly property var videoExtensions: ["mp4", "mkv", "webm", "mov"]
+    readonly property var imageExtensions: ["jpg", "jpeg", "png", "webp"]
+
+    signal wallpaperChanged(string path, bool isVideo, string framePath)
+
+    function isVideoFile(filename) {
+        let ext = filename.split('.').pop().toLowerCase()
+        return videoExtensions.indexOf(ext) >= 0
+    }
+
+    function isWallpaperFile(filename) {
+        let ext = filename.split('.').pop().toLowerCase()
+        return imageExtensions.indexOf(ext) >= 0 || videoExtensions.indexOf(ext) >= 0
+    }
 
     function setWallpaper(path) {
-        let transitions = ["left", "right", "top", "bottom", "wipe", "wave", "grow", "center", "outer"]
-        let type = transitions[Math.floor(Math.random() * transitions.length)]
-        let posX = Math.random().toFixed(2)
-        let posY = Math.random().toFixed(2)
+        let ext = path.split('.').pop().toLowerCase()
+        let isVideo = videoExtensions.indexOf(ext) >= 0
 
-        let cmd = "swww img '" + path + "' --transition-type " + type + " --transition-pos " + posX + "," + posY + " --transition-step 255 --transition-fps 60; " +
-                  "matugen image '" + path + "' --source-color-index 0; " +
-                  "sleep 1; " +
-                  "pkill -SIGUSR2 cava; " +
-                  "pkill -SIGUSR1 kitty"
-        setThemeProc.command = ["bash", "-c", cmd]
+        currentWallpaper = path
+        currentIsVideo = isVideo
+        
+        let name = path.split('/').pop()
+        let home = Quickshell.env("HOME")
+        let framePath = "file://" + home + "/.cache/quickshell/wallpapers/" + name + ".png"
+
+        // Trigger extraction and theme generation IMMEDIATELY
+        root.finalizeTheming(path)
+
+        root.wallpaperChanged("file://" + path, isVideo, isVideo ? framePath : "")
+    }
+
+    function finalizeTheming(path) {
+        let scriptPath = Quickshell.shellDir + "/scripts/switchwall.sh"
+        setThemeProc.command = ["bash", scriptPath, path]
         setThemeProc.running = true
     }
 
     Process {
         id: setThemeProc
-        command: ["true"]
+        command: []
         running: false
     }
 
@@ -38,22 +63,64 @@ Singleton {
         stdout: StdioCollector {
             onStreamFinished: {
                 let lines = this.text.trim().split("\n")
-                let filtered = []
+                let entries = []
+                let home = Quickshell.env("HOME")
                 for (let line of lines) {
-                    let lowered = line.toLowerCase()
-                    if (lowered.endsWith(".jpg") || lowered.endsWith(".jpeg") || lowered.endsWith(".png") || lowered.endsWith(".webp")) {
-                        filtered.push("file://" + root.wallpaperDir + "/" + line)
+                    if (root.isWallpaperFile(line)) {
+                        let isVideo = root.isVideoFile(line)
+                        entries.push({
+                            path: "file://" + root.wallpaperDir + "/" + line,
+                            isVideo: isVideo,
+                            framePath: isVideo ? ("file://" + home + "/.cache/quickshell/wallpapers/" + line + ".png") : ""
+                        })
                     }
                 }
-                root.wallpapers = filtered
+                root.wallpapers = entries
+                
+                if (root.currentWallpaper === "" && entries.length > 0) {
+                    let startupMode = ConfigService.wallpaperStartup
+                    let wallToSet = ""
+                    if (startupMode === "random") {
+                        let randomIndex = Math.floor(Math.random() * entries.length);
+                        wallToSet = entries[randomIndex].path.replace("file://", "")
+                    } else {
+                        wallToSet = entries[0].path.replace("file://", "")
+                    }
+                    root.setWallpaper(wallToSet)
+                }
             }
         }
     }
 
-    // Refresh every now and then or on demand if needed
     function refresh() {
         listProc.running = true
+        batchGenProc.command = ["bash", Quickshell.shellDir + "/scripts/switchwall.sh", "--all", root.wallpaperDir]
+        batchGenProc.running = true
+    }
+
+    Process {
+        id: batchGenProc
+        command: []
+        running: false
     }
 
     Component.onCompleted: refresh()
+
+    Timer {
+        id: rotationTimer
+        interval: ConfigService.wallpaperRotateMinutes * 60000
+        running: ConfigService.wallpaperRotateMinutes > 0 && root.wallpapers.length > 0
+        repeat: true
+        onTriggered: {
+            if (root.wallpapers.length > 1) {
+                let randomIndex = Math.floor(Math.random() * root.wallpapers.length);
+                let randomWallpaper = root.wallpapers[randomIndex].path.replace("file://", "")
+                if (randomWallpaper === root.currentWallpaper) {
+                    randomIndex = (randomIndex + 1) % root.wallpapers.length
+                    randomWallpaper = root.wallpapers[randomIndex].path.replace("file://", "")
+                }
+                root.setWallpaper(randomWallpaper)
+            }
+        }
+    }
 }
