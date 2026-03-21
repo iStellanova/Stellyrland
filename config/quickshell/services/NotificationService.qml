@@ -12,8 +12,8 @@ Singleton {
     ListModel { id: notifModel }
     property alias notifications: notifModel
     
-    property int maxHistory: 20
-    property int toastLimit: 5
+    property int maxHistory: ConfigService.notifMaxHistory
+    property int toastLimit: ConfigService.notifToastLimit
     property int defaultTimeout: 6000
     property int dismissCooldown: 2000
     property bool dndActive: false
@@ -159,7 +159,7 @@ Singleton {
             if (existingIdx === -1 && (nid === "" || parseInt(nid) >= 1000000)) {
                 for (let i = 0; i < notifModel.count; i++) {
                     let item = notifModel.get(i)
-                    if (item.appName === a && item.summary === s) { existingIdx = i; break }
+                    if (item.appName === a && item.summary === s && item.body === b) { existingIdx = i; break }
                 }
             }
 
@@ -460,26 +460,19 @@ Singleton {
     }
 
     function _runOneShot(cmd) {
-        if (oneShotProc.running) oneShotProc.terminate()
-        oneShotProc.command = cmd
-        oneShotProc.running = true
+        let proc = procFactory.createObject(root, { command: cmd })
+        proc.running = true
     }
 
     function _runFocus(cmd) {
-        if (focusProc.running) focusProc.terminate()
-        focusProc.command = cmd
-        focusProc.running = true
+        let proc = procFactory.createObject(root, { command: cmd })
+        proc.running = true
     }
 
-    Process {
-        id: oneShotProc
-        command: ["true"]
-        running: false
-    }
-
-    Process {
-        id: focusProc
-        command: ["true"]
-        running: false
+    Component {
+        id: procFactory
+        Process {
+            onRunningChanged: if (!running) this.destroy()
+        }
     }
 }

@@ -4,6 +4,7 @@ import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
 import Qt5Compat.GraphicalEffects
+import QtMultimedia
 import "services" as Services
 import "components" as Components
 
@@ -61,11 +62,15 @@ PanelWindow {
         }
 
         delegate: Item {
+            id: delegateItem
             width: root.width * 0.4
             height: root.height * 0.5
             z: PathView.isCurrentItem ? 10 : 1
             scale: PathView.iconScale
             opacity: PathView.iconOpacity
+
+            property bool isCurrent: PathView.isCurrentItem
+            property bool isVideo: modelData.isVideo
 
             Item {
                 anchors.fill: parent
@@ -80,44 +85,109 @@ PanelWindow {
                     }
                 }
 
+                // ── Static image preview ──
                 Image {
                     id: img
                     anchors.fill: parent
-                    source: modelData
+                    source: delegateItem.isVideo ? modelData.framePath : modelData.path
                     fillMode: Image.PreserveAspectCrop
                     asynchronous: true
-                    sourceSize: Qt.size(1920, 1080)
+                    sourceSize: Qt.size(960, 540) // Downscale for carousel efficiency
+                    visible: true
+                    cache: true
+                }
+
+                // ── Animated video preview ──
+                Item {
+                    id: videoContainer
+                    anchors.fill: parent
+                    visible: delegateItem.isVideo && delegateItem.isCurrent
+
+                    MediaPlayer {
+                        id: videoPlayer
+                        source: delegateItem.isVideo ? modelData.path : ""
+                        videoOutput: videoOutput
+                        loops: MediaPlayer.Infinite
+                        
+                        audioOutput: AudioOutput {
+                            muted: true
+                        }
+                    }
+
+                    VideoOutput {
+                        id: videoOutput
+                        anchors.fill: parent
+                        fillMode: VideoOutput.PreserveAspectCrop
+                    }
+
+                    // Auto-play when this is the current item and visible
+                    Connections {
+                        target: delegateItem
+                        function onIsCurrentChanged() {
+                            if (delegateItem.isCurrent && delegateItem.isVideo && root.visible) {
+                                videoPlayer.play()
+                            } else {
+                                videoPlayer.pause()
+                            }
+                        }
+                    }
+
+                    Connections {
+                        target: root
+                        function onVisibleChanged() {
+                            if (root.visible && delegateItem.isCurrent && delegateItem.isVideo) {
+                                videoPlayer.play()
+                            } else {
+                                videoPlayer.pause()
+                            }
+                        }
+                    }
+
+                    Component.onCompleted: {
+                        if (delegateItem.isCurrent && delegateItem.isVideo && root.visible) {
+                            videoPlayer.play()
+                        }
+                    }
                 }
 
                 FastBlur {
-                    anchors.fill: img
-                    source: img
-                    radius: PathView.iconBlur
+                    anchors.fill: parent
+                    source: (delegateItem.isVideo && delegateItem.isCurrent) ? videoOutput : img
+                    radius: delegateItem.PathView.iconBlur
                     visible: radius > 0
                 }
                 
-                // Active indicator (optional, but keep it subtle)
+                // Active indicator
                 Rectangle {
                     anchors.fill: parent
                     color: "transparent"
                     border.width: 4
                     border.color: Services.Colors.primary
                     radius: Services.Colors.radiusLarge
-                    visible: PathView.iconScale > 0.9
+                    visible: delegateItem.PathView.iconScale > 0.9
                 }
 
-                // Title label for current item (text only)
-                Components.ShadowText {
-                    anchors.bottom: parent.bottom
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    anchors.bottomMargin: 30
-                    visible: PathView.iconScale > 0.95
-                    text: modelData.split('/').pop().split('.')[0]
-                    color: "white"
-                    font.pixelSize: 28
-                    font.weight: Font.Bold
-                    font.family: Services.Colors.fontFamily
+                // ── Video badge ──
+                Rectangle {
+                    visible: delegateItem.isVideo && delegateItem.PathView.iconScale > 0.5
+                    anchors.top: parent.top
+                    anchors.right: parent.right
+                    anchors.topMargin: 12
+                    anchors.rightMargin: 12
+                    width: 36
+                    height: 36
+                    radius: 18
+                    color: Qt.rgba(0, 0, 0, 0.6)
+
+                    Text {
+                        anchors.centerIn: parent
+                        text: "▶"
+                        color: "white"
+                        font.pixelSize: 16
+                    }
                 }
+
+
             }
 
             MouseArea {
@@ -133,8 +203,9 @@ PanelWindow {
         }
         
         function applyWallpaper() {
-            let wallpaper = view.model[view.currentIndex].replace("file://", "")
-            Services.WallpaperService.setWallpaper(wallpaper)
+            let entry = view.model[view.currentIndex]
+            let wallpaperPath = entry.path.replace("file://", "")
+            Services.WallpaperService.setWallpaper(wallpaperPath)
             root.closeRequested()
         }
 
@@ -146,13 +217,13 @@ PanelWindow {
                     view.incrementCurrentIndex()
                 }
                 event.accepted = true
-            } else if (event.key === Qt.Key_Right) {
+            } else if (event.key === Qt.Key_Right || event.key === Qt.Key_D) {
                 view.incrementCurrentIndex()
                 event.accepted = true
-            } else if (event.key === Qt.Key_Left) {
+            } else if (event.key === Qt.Key_Left || event.key === Qt.Key_A) {
                 view.decrementCurrentIndex()
                 event.accepted = true
-            } else if (event.key === Qt.Key_Return || event.key === Qt.Key_Enter) {
+            } else if (event.key === Qt.Key_Return || event.key === Qt.Key_Enter || event.key === Qt.Key_S) {
                 applyWallpaper()
                 event.accepted = true
             } else if (event.key === Qt.Key_Escape) {

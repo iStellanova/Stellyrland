@@ -92,13 +92,18 @@ Singleton {
     }
 
     function launch(exec) {
-        launchProc.command = ["bash", "-c", exec + " & disown"];
-        launchProc.running = true;
+        if (!exec) return;
+        // Prepend hyprctl for cleaner detaching on Hyprland
+        let cmd = ["hyprctl", "dispatch", "exec", exec];
+        let proc = oneshotFactory.createObject(root, { command: cmd });
+        proc.running = true;
     }
 
-    Process {
-        id: launchProc
-        command: ["true"]
-        running: false
+    Component {
+        id: oneshotFactory
+        Process {
+            onRunningChanged: if (!running) this.destroy()
+        }
     }
+
 }

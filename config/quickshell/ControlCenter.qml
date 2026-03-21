@@ -880,7 +880,9 @@ PanelWindow {
                                 Image {
                                     id: avatarImage
                                     anchors.fill: parent
-                                    source: "face.png"
+                                    source: (Services.ConfigService.shellAvatar.startsWith("/") || Services.ConfigService.shellAvatar.startsWith("http")) 
+                                            ? Services.ConfigService.shellAvatar 
+                                            : Quickshell.shellDir + "/" + Services.ConfigService.shellAvatar
                                     fillMode: Image.PreserveAspectCrop
                                     asynchronous: true
                                     sourceSize: Qt.size(76, 76)
@@ -919,6 +921,41 @@ PanelWindow {
                     }
 
                     Item { Layout.fillWidth: true }
+
+                    // Settings button
+                    Rectangle {
+                        Layout.alignment: Qt.AlignVCenter
+                        implicitWidth: 28; implicitHeight: 28
+                        radius: Services.Colors.radiusSmall
+                        color: settingsMouse.containsMouse ? Qt.rgba(Services.Colors.primary.r, Services.Colors.primary.g, Services.Colors.primary.b, 0.12) : "transparent"
+                        border.width: 1
+                        border.color: settingsMouse.containsMouse ? Qt.rgba(Services.Colors.primary.r, Services.Colors.primary.g, Services.Colors.primary.b, 0.35) : Services.Colors.border
+                        opacity: footerHover.hovered ? 1.0 : 0.0
+
+                        Behavior on opacity {
+                            NumberAnimation { duration: Services.Colors.animFast }
+                        }
+
+                        Components.ShadowText {
+                            anchors.centerIn: parent
+                            text: "󰒓"
+                            font.pixelSize: 15
+                            font.family: Services.Colors.fontFamily
+                            font.weight: Font.DemiBold
+                            color: settingsMouse.containsMouse ? Services.Colors.primary : Services.Colors.dim
+                        }
+
+                        MouseArea {
+                            id: settingsMouse
+                            anchors.fill: parent
+                            cursorShape: Qt.PointingHandCursor
+                            hoverEnabled: true
+                            onClicked: {
+                                Services.ShellData.settingsVisible = !Services.ShellData.settingsVisible
+                                if (Services.ShellData.settingsVisible) ccWindow.closeRequested()
+                            }
+                        }
+                    }
 
                     // Info button
                     Rectangle {

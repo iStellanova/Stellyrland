@@ -21,20 +21,24 @@ PanelWindow {
     property var delayValues: [0, 3, 5]
     property var delayLabels: ["0s", "3s", "5s"]
     property bool isCapturing: false
-    property bool noTimer: Services.ShellData.screenshotNoTimer
+    property bool noTimer: false
 
+    function triggerNoTimer() {
+        noTimer = true
+        Services.ShellData.screenshotVisible = true
+    }
     function takeScreenshot(mode) {
         isCapturing = true
         let cmd = `sleep 0.3; hyprshot -m ${mode} -o ~/Pictures/Screenshots; kill -9 $(cat /tmp/qs_hyprpicker.pid) 2>/dev/null || killall hyprpicker 2>/dev/null`
         screenshotWindow.closeRequested()
-        Services.ShellData._runOneShot(["bash", "-c", cmd])
+        Services.ShellData.runCommand(["bash", "-c", cmd])
     }
 
     function pickColor() {
         isCapturing = true
         let cmd = `sleep 0.3; hyprpicker -a; kill -9 $(cat /tmp/qs_hyprpicker.pid) 2>/dev/null || killall hyprpicker 2>/dev/null`
         screenshotWindow.closeRequested()
-        Services.ShellData._runOneShot(["bash", "-c", cmd])
+        Services.ShellData.runCommand(["bash", "-c", cmd])
     }
 
     function startTimerSequence() {
@@ -42,7 +46,7 @@ PanelWindow {
         isCapturing = true
         let cmd = `kill -9 $(cat /tmp/qs_hyprpicker.pid) 2>/dev/null || killall hyprpicker 2>/dev/null; sleep ${currentDelay}; hyprpicker -r -z & echo $! > /tmp/qs_hyprpicker.pid; sleep 0.2; quickshell ipc call shell triggerDelayedScreenshot`
         screenshotWindow.closeRequested()
-        Services.ShellData._runOneShot(["bash", "-c", cmd])
+        Services.ShellData.runCommand(["bash", "-c", cmd])
     }
 
     onOpenChanged: {
@@ -52,11 +56,11 @@ PanelWindow {
             focusTimer.start();
         } else {
             focusTimer.stop();
-            if (Services.ShellData.screenshotNoTimer) {
-                Services.ShellData.screenshotNoTimer = false;
+            if (noTimer) {
+                noTimer = false;
             }
             if (!isCapturing) {
-                Services.ShellData._runOneShot(["bash", "-c", "kill -9 $(cat /tmp/qs_hyprpicker.pid) 2>/dev/null || killall hyprpicker 2>/dev/null"])
+                Services.ShellData.runCommand(["bash", "-c", "kill -9 $(cat /tmp/qs_hyprpicker.pid) 2>/dev/null || killall hyprpicker 2>/dev/null"])
             }
         }
     }

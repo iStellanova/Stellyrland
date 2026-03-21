@@ -190,6 +190,9 @@ PanelWindow {
                                         if (status === Image.Ready) {
                                             parent.color = "transparent"
                                             parent.border.width = 0
+                                        } else if (status === Image.Error) {
+                                            // Ensure it stays hidden on error so the letter fallback shows
+                                            visible = false
                                         }
                                     }
                                 }

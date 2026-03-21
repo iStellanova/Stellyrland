@@ -83,7 +83,6 @@ decman.pacman.packages |= {
     "matugen",              # Theme Color Generator.
     "nwg-displays",         # NWG Display Manager for Hyprland.
     "nwg-look",             # NWG Look, an App for Display Configuration.
-    "swww",                 # Wallpaper Engine.
     "kvantum",              # QT Themer.
     "kvantum-qt5",          # Kvantum, but for Older QT.
     "wl-clip-persist",      # Wayland Clipboard Persistence even when Programs Exit.
@@ -237,7 +236,6 @@ decman.aur.packages |= {
     "r2modman-bin",         # Unity Mod Manager.
     "starc-appimage",       # Story Architect, Writing App.
     "stoat-desktop-git",    # Alternative Discord Client.
-    "vesktop",              # Discord Client.
     "warehouse-git",        # Flatpak Manager.
     "xclicker",             # Autoclicker.
     "zen-browser-bin",      # Zen Browser.
