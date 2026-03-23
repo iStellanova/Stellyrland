@@ -38,7 +38,6 @@ Scope {
         // Non-pinnable ones always close
         Services.ShellData.ccVisible = false
         Services.ShellData.ncVisible = false
-        Services.ShellData.alVisible = false
         Services.ShellData.wallpaperVisible = false
         Services.ShellData.logoutVisible = false
         Services.ShellData.screenshotVisible = false
@@ -71,10 +70,6 @@ Scope {
 
     IpcHandler {
         target: "shell"
-        function toggleLauncher() {
-            root.togglePopup("alVisible")
-        }
-
         function toggleWallpaperSelector() {
             root.togglePopup("wallpaperVisible")
         }
@@ -185,36 +180,6 @@ Scope {
         xOffset: root.popupOffsets["volumeVisible"] ?? 0
         onCloseRequested: Services.ShellData.volumeVisible = false
     }
-    // ── App Launcher (Dual-Window Architecture) ─────────────────
-    // The launcher is split into two windows for better Wayland support:
-    // 1. A full-screen scrim for click-outside detection.
-    // 2. A centered vertical strip for the UI with localized blur.
-    
-    PanelWindow {
-        id: launcherScrim
-        visible: Services.ShellData.alVisible
-        implicitWidth: screen.width
-        implicitHeight: screen.height
-        anchors {
-            top: true; bottom: true; left: true; right: true
-        }
-        WlrLayershell.layer: WlrLayer.Top
-        WlrLayershell.keyboardFocus: WlrKeyboardFocus.None
-        color: "transparent"
-        
-        MouseArea {
-            anchors.fill: parent
-            onPressed: Services.ShellData.alVisible = false
-        }
-    }
-
-    AppLauncher {
-        id: al
-        screen: Services.MonitorService.primaryScreen
-        open: Services.ShellData.alVisible
-        onCloseRequested: Services.ShellData.alVisible = false
-    }
- 
     // ── Control Center Popup ─────────────────────────────────
     ControlCenter {
         id: cc
