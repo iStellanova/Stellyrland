@@ -20,7 +20,11 @@ FNR == 1 {
         # Clean up exec (remove %f, %u, etc)
         gsub(/ %[fFuUinkKvV]/, "", exec)
         
-        # Escape quotes for JSON
+        # Escape backslashes and quotes for JSON
+        gsub(/\\/, "\\\\", name)
+        gsub(/\\/, "\\\\", exec)
+        gsub(/\\/, "\\\\", icon)
+        gsub(/\\/, "\\\\", pc)
         gsub(/"/, "\\\"", name)
         gsub(/"/, "\\\"", exec)
         gsub(/"/, "\\\"", icon)
@@ -54,7 +58,11 @@ skip_file { next }
 in_entry && !skip_app {
     if ($1 == "Name" && !name) name = substr($0, length($1) + 2)
     else if ($1 == "Exec" && !exec) exec = substr($0, length($1) + 2)
-    else if ($1 == "Icon" && !icon) icon = substr($0, length($1) + 2)
+    else if ($1 == "Icon" && !icon) {
+        icon = substr($0, length($1) + 2)
+        # Handle known icon mismatches
+        if (icon == "roblox") icon = "org.vinegarhq.Sober"
+    }
     else if ($1 == "Categories" && !cats) cats = substr($0, length($1) + 2)
 }
 
@@ -64,6 +72,11 @@ END {
         split(cats, cat_arr, ";")
         pc = (cat_arr[1] == "" ? "Other" : cat_arr[1])
         gsub(/ %[fFuUinkKvV]/, "", exec)
+        # Escape backslashes and quotes for JSON
+        gsub(/\\/, "\\\\", name)
+        gsub(/\\/, "\\\\", exec)
+        gsub(/\\/, "\\\\", icon)
+        gsub(/\\/, "\\\\", pc)
         gsub(/"/, "\\\"", name)
         gsub(/"/, "\\\"", exec)
         gsub(/"/, "\\\"", icon)

@@ -392,7 +392,7 @@ Singleton {
         if (!item) return
         
         if (item.pid > 0) {
-            root._runFocus(["hyprctl", "dispatch", "focuswindow", "pid:" + item.pid])
+            root._runCommand(["hyprctl", "dispatch", "focuswindow", "pid:" + item.pid])
         } else {
             // Try focusing by originalAppName first, then stylized appName
             let app = item.originalAppName || item.appName || ""
@@ -401,7 +401,7 @@ Singleton {
                 let escapedApp = app.replace(/'/g, "'\\''")
                 // Try focusing by class name (case insensitive fuzzy match)
                 let cmd = "hyprctl dispatch focuswindow 'class:^(?i).*" + escapedApp + ".*$'"
-                root._runFocus(["sh", "-c", cmd])
+                root._runCommand(["sh", "-c", cmd])
             }
         }
     }
@@ -439,7 +439,7 @@ Singleton {
                 }
 
                 if (desktopEntry && desktopEntry.length > 0) {
-                    root._runOneShot(["gtk-launch", desktopEntry])
+                    root._runCommand(["gtk-launch", desktopEntry])
                 }
             }
             
@@ -459,12 +459,7 @@ Singleton {
         onTriggered: root.dismissNotificationByInternalId(iid)
     }
 
-    function _runOneShot(cmd) {
-        let proc = procFactory.createObject(root, { command: cmd })
-        proc.running = true
-    }
-
-    function _runFocus(cmd) {
+    function _runCommand(cmd) {
         let proc = procFactory.createObject(root, { command: cmd })
         proc.running = true
     }

@@ -8,6 +8,11 @@ import Qt5Compat.GraphicalEffects
 // Final Zero-Handover Wallpaper Background (Explicit Flip-Flop)
 PanelWindow {
     id: root
+    
+    signal clicked()
+
+    implicitWidth: screen.width
+    implicitHeight: screen.height
     anchors {
         left: true
         right: true
@@ -43,6 +48,9 @@ PanelWindow {
     // Layer B State
     property string pathB: ""
     property bool isVideoB: false
+
+    readonly property var transitionTypes: ["wipeLeft", "wipeRight", "wipeUp", "wipeDown", "circleGrow", "circleShrink"]
+
 
     Item {
         id: layerA
@@ -103,7 +111,9 @@ PanelWindow {
                 x: -containerA.x; y: -containerA.y
                 fillMode: Image.PreserveAspectCrop
                 visible: !root.isVideoA
-                source: root.pathA
+                source: root.isVideoA ? "" : root.pathA
+                sourceSize: Qt.size(root.width, root.height)
+                cache: false
             }
         }
     }
@@ -167,7 +177,9 @@ PanelWindow {
                 x: -containerB.x; y: -containerB.y
                 fillMode: Image.PreserveAspectCrop
                 visible: !root.isVideoB
-                source: root.pathB
+                source: root.isVideoB ? "" : root.pathB
+                sourceSize: Qt.size(root.width, root.height)
+                cache: false
             }
         }
     }
@@ -175,8 +187,7 @@ PanelWindow {
     function proceedWithWipe() {
         if (!root.isTransitioning || wipeInAnim.running) return
         
-        let types = ["wipeLeft", "wipeRight", "wipeUp", "wipeDown", "circleGrow", "circleShrink"]
-        root.transitionType = types[Math.floor(Math.random() * types.length)]
+        root.transitionType = transitionTypes[Math.floor(Math.random() * transitionTypes.length)]
 
         wipeInAnim.start()
         backupTimer.stop()
@@ -195,14 +206,22 @@ PanelWindow {
             // Swap active layer
             let oldActive = root.activeLayer
             root.activeLayer = (oldActive === 0) ? 1 : 0
-            
-            // Now that the new layer is active and z:0 (bottom), we can safely hide the old one
+
             root.isTransitioning = false
             root.wipeProgress = 0.0
-            
-            // Stop the old player (which is now hidden on top)
-            if (oldActive === 0) playerA.stop()
-            else playerB.stop()
+
+            if (oldActive === 0) {
+                playerA.stop()
+                playerA.source = ""
+                root.isVideoA = false
+                root.pathA = ""
+            } else {
+                playerB.stop()
+                playerB.source = ""
+                root.isVideoB = false
+                root.pathB = ""
+            }
+            gc() // ← nudge Qt's GC to actually free the pipeline
         }
     }
 
@@ -214,8 +233,8 @@ PanelWindow {
 
         if (root.pathA === "" && root.pathB === "") {
             // Initial load into Layer A
-            root.pathA = path
             root.isVideoA = isVideo
+            root.pathA = path
             root.activeLayer = 0
             if (isVideo) { playerA.source = path; playerA.play() }
             return
@@ -226,20 +245,30 @@ PanelWindow {
 
         if (root.activeLayer === 0) {
             // Layer A is active (bottom). Prepare Layer B (top).
-            root.pathB = path
             root.isVideoB = isVideo
+            root.pathB = path
             playerB.stop()
             if (isVideo) { playerB.source = path; playerB.play() }
             else { Qt.callLater(() => proceedWithWipe()) }
         } else {
             // Layer B is active (bottom). Prepare Layer A (top).
-            root.pathA = path
             root.isVideoA = isVideo
+            root.pathA = path
             playerA.stop()
             if (isVideo) { playerA.source = path; playerA.play() }
             else { Qt.callLater(() => proceedWithWipe()) }
         }
         
         backupTimer.restart()
+    }
+
+    MouseArea {
+        anchors.fill: parent
+        z: -1
+        propagateComposedEvents: true
+        onPressed: (mouse) => {
+            root.clicked()
+            mouse.accepted = false
+        }
     }
 }

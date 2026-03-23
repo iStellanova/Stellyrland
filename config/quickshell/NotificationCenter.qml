@@ -14,23 +14,24 @@ PanelWindow {
 
     signal closeRequested()
 
-    property bool hasMouseEntered: false
-    onVisibleChanged: if (!visible) hasMouseEntered = false
+    property bool open: false
+    visible: open || rootContainer.opacity > 0 || ncTranslate.x < 350
+
+    onVisibleChanged: if (!visible) { }
 
     Timer {
         id: closeTimer
         interval: Services.Colors.autoCloseInterval
-        running: ncWindow.visible && hasMouseEntered && !ncHover.hovered
+        running: ncWindow.visible && ncWindow.open && !ncHover.hovered
         repeat: true
         onTriggered: ncWindow.closeRequested()
     }
 
     HoverHandler {
         id: ncHover
-        onHoveredChanged: if (hovered) hasMouseEntered = true
     }
 
-    implicitWidth: 340
+    implicitWidth: 400
     exclusiveZone: 0
 
     anchors {
@@ -42,7 +43,7 @@ PanelWindow {
     margins {
         top: 8
         bottom: 8
-        right: 12
+        right: 0
     }
 
     color: "transparent"
@@ -84,16 +85,33 @@ PanelWindow {
 
         Rectangle {
             id: rootContainer
-            Layout.fillWidth: true
+            width: 340
             Layout.fillHeight: true
+            anchors.right: parent.right
+            anchors.rightMargin: 12
             radius: Services.Colors.radiusLarge
             color: Services.Colors.bg
             border.width: 2
             border.color: Services.Colors.border
             clip: true
 
+            opacity: ncWindow.open ? 1.0 : 0.0
+            
+            transform: Translate {
+                id: ncTranslate
+                x: ncWindow.open ? 0 : 350
+                Behavior on x {
+                    NumberAnimation { duration: Services.Colors.animSlow; easing.type: Easing.OutExpo }
+                }
+            }
+
+            Behavior on opacity {
+                NumberAnimation { duration: Services.Colors.animSlow; easing.type: Easing.OutExpo }
+            }
+        
+
             // Premium rounded corner clipping
-            layer.enabled: true
+            layer.enabled: ncWindow.open
             layer.effect: OpacityMask {
                 maskSource: Rectangle {
                     width: rootContainer.width

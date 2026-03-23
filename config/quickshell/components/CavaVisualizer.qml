@@ -30,12 +30,7 @@ Item {
                     GradientStop { position: 1.0; color: root.color }
                 }
                 
-                Behavior on height {
-                    NumberAnimation {
-                        duration: Services.Colors.animNormal
-                        easing.type: Easing.OutCubic
-                    }
-                }
+
             }
         }
     }

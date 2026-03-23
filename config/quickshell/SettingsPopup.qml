@@ -8,7 +8,8 @@ import "components" as Components
 FloatingWindow {
     id: root
 
-    property bool active: false
+    property bool open: false
+    visible: open || container.opacity > 0
     property string activeTab: "wallpaper"
     signal closeRequested()
 
@@ -132,6 +133,11 @@ FloatingWindow {
         border.width: 1
         border.color: Services.Colors.border
         clip: true
+
+        opacity: root.open ? 1.0 : 0.0
+        Behavior on opacity {
+            NumberAnimation { duration: Services.Colors.animNormal; easing.type: Easing.OutCubic }
+        }
 
         ColumnLayout {
             anchors.fill: parent
@@ -284,14 +290,14 @@ FloatingWindow {
                                 Layout.fillWidth: true
                                 from: 0; to: 1440
                                 value: editingSettings.wallpaper ? editingSettings.wallpaper.rotation_interval_minutes : 30
-                                onValueModified: { editingSettings.wallpaper.rotation_interval_minutes = value; root.refreshSettings() }
+                                onValueChanged: { if (editingSettings.wallpaper && editingSettings.wallpaper.rotation_interval_minutes !== value) { editingSettings.wallpaper.rotation_interval_minutes = value; root.refreshSettings() } }
                             }
 
                             Components.ShadowText { text: "Wallpaper Directory"; font.pixelSize: 12; color: Services.Colors.mainText }
                             StyledTextField {
                                 Layout.fillWidth: true
                                 text: editingSettings.wallpaper ? editingSettings.wallpaper.directory : ""
-                                onTextEdited: { editingSettings.wallpaper.directory = text; root.refreshSettings() }
+                                onTextEdited: { if (!editingSettings.wallpaper) editingSettings.wallpaper = {}; editingSettings.wallpaper.directory = text; root.refreshSettings() }
                             }
                         }
                     }
@@ -309,7 +315,7 @@ FloatingWindow {
                             StyledTextField {
                                 Layout.fillWidth: true
                                 text: editingSettings.network ? editingSettings.network.interface : ""
-                                onTextEdited: { editingSettings.network.interface = text; root.refreshSettings() }
+                                onTextEdited: { if (!editingSettings.network) editingSettings.network = {}; editingSettings.network.interface = text; root.refreshSettings() }
                             }
 
                             Rectangle { Layout.fillWidth: true; height: 1; color: Services.Colors.border; Layout.topMargin: 8; Layout.bottomMargin: 8 }
@@ -351,13 +357,13 @@ FloatingWindow {
                             StyledSpinBox { 
                                 Layout.fillWidth: true; from: 5; to: 100
                                 value: editingSettings.notifications ? editingSettings.notifications.max_history : 20
-                                onValueModified: { editingSettings.notifications.max_history = value; root.refreshSettings() } 
+                                onValueChanged: { if (editingSettings.notifications && editingSettings.notifications.max_history !== value) { editingSettings.notifications.max_history = value; root.refreshSettings() } }
                             }
                             Components.ShadowText { text: "Max Toasts"; font.pixelSize: 12; color: Services.Colors.mainText }
                             StyledSpinBox { 
                                 Layout.fillWidth: true; from: 1; to: 10
                                 value: editingSettings.notifications ? editingSettings.notifications.toast_limit : 5
-                                onValueModified: { editingSettings.notifications.toast_limit = value; root.refreshSettings() } 
+                                onValueChanged: { if (editingSettings.notifications && editingSettings.notifications.toast_limit !== value) { editingSettings.notifications.toast_limit = value; root.refreshSettings() } }
                             }
                             CheckBox {
                                 text: "Show Notification Timer"
@@ -390,7 +396,7 @@ FloatingWindow {
                                     StyledTextField {
                                         Layout.fillWidth: true
                                         text: editingSettings.weather ? editingSettings.weather.latitude : ""
-                                        onTextEdited: { editingSettings.weather.latitude = parseFloat(text) || 0; root.refreshSettings() }
+                                        onTextEdited: { if (!editingSettings.weather) editingSettings.weather = {}; editingSettings.weather.latitude = parseFloat(text) || 0; root.refreshSettings() }
                                     }
                                 }
                                 ColumnLayout {
@@ -399,16 +405,30 @@ FloatingWindow {
                                     StyledTextField {
                                         Layout.fillWidth: true
                                         text: editingSettings.weather ? editingSettings.weather.longitude : ""
-                                        onTextEdited: { editingSettings.weather.longitude = parseFloat(text) || 0; root.refreshSettings() }
+                                        onTextEdited: { if (!editingSettings.weather) editingSettings.weather = {}; editingSettings.weather.longitude = parseFloat(text) || 0; root.refreshSettings() }
                                     }
                                 }
                             }
+                            
+                            CheckBox {
+                                text: "Use Celsius for Weather"
+                                checked: (editingSettings.weather && editingSettings.weather.celsius) || false
+                                onToggled: { if (editingSettings.weather) { editingSettings.weather.celsius = checked; root.refreshSettings() } }
+                                contentItem: Components.ShadowText {
+                                    text: parent.text
+                                    font.pixelSize: 12
+                                    color: Services.Colors.mainText
+                                    leftPadding: parent.indicator.width + parent.spacing
+                                    verticalAlignment: Text.AlignVCenter
+                                }
+                            }
+
                             Components.ShadowText { text: "Polling Interval (minutes)"; font.pixelSize: 12; color: Services.Colors.mainText }
                             StyledSpinBox {
                                 Layout.fillWidth: true
                                 from: 1; to: 60
                                 value: editingSettings.weather ? Math.round(editingSettings.weather.polling_interval_ms / 60000) : 15
-                                onValueModified: { editingSettings.weather.polling_interval_ms = value * 60000; root.refreshSettings() }
+                                onValueChanged: { if (editingSettings.weather && Math.round(editingSettings.weather.polling_interval_ms / 60000) !== value) { editingSettings.weather.polling_interval_ms = value * 60000; root.refreshSettings() } }
                             }
                         }
                     }
@@ -425,25 +445,25 @@ FloatingWindow {
                                 StyledSpinBox {
                                     Layout.fillWidth: true; from: 1; to: 240
                                     value: editingSettings.polling ? Math.round(editingSettings.polling.updates_interval_ms / 60000) : 60
-                                    onValueModified: { editingSettings.polling.updates_interval_ms = value * 60000; root.refreshSettings() }
+                                    onValueChanged: { if (editingSettings.polling && Math.round(editingSettings.polling.updates_interval_ms / 60000) !== value) { editingSettings.polling.updates_interval_ms = value * 60000; root.refreshSettings() } }
                                 }
                                 Components.ShadowText { text: "Uptime Polling (seconds)"; font.pixelSize: 12; color: Services.Colors.mainText }
                                 StyledSpinBox {
                                     Layout.fillWidth: true; from: 1; to: 300
                                     value: editingSettings.polling ? Math.round(editingSettings.polling.uptime_interval_ms / 1000) : 60
-                                    onValueModified: { editingSettings.polling.uptime_interval_ms = value * 1000; root.refreshSettings() }
+                                    onValueChanged: { if (editingSettings.polling && Math.round(editingSettings.polling.uptime_interval_ms / 1000) !== value) { editingSettings.polling.uptime_interval_ms = value * 1000; root.refreshSettings() } }
                                 }
                                 Components.ShadowText { text: "Idle Check (seconds)"; font.pixelSize: 12; color: Services.Colors.mainText }
                                 StyledSpinBox {
                                     Layout.fillWidth: true; from: 1; to: 60
                                     value: editingSettings.polling ? Math.round(editingSettings.polling.idle_check_interval_ms / 1000) : 2
-                                    onValueModified: { editingSettings.polling.idle_check_interval_ms = value * 1000; root.refreshSettings() }
+                                    onValueChanged: { if (editingSettings.polling && Math.round(editingSettings.polling.idle_check_interval_ms / 1000) !== value) { editingSettings.polling.idle_check_interval_ms = value * 1000; root.refreshSettings() } }
                                 }
                                 Components.ShadowText { text: "Stats Polling (seconds)"; font.pixelSize: 12; color: Services.Colors.mainText }
                                 StyledSpinBox {
                                     Layout.fillWidth: true; from: 1; to: 60
                                     value: editingSettings.polling ? (editingSettings.polling.stats_interval_s || 5) : 5
-                                    onValueModified: { editingSettings.polling.stats_interval_s = value; root.refreshSettings() }
+                                    onValueChanged: { if (editingSettings.polling && editingSettings.polling.stats_interval_s !== value) { editingSettings.polling.stats_interval_s = value; root.refreshSettings() } }
                                 }
                             }
                         }
@@ -460,25 +480,25 @@ FloatingWindow {
                                 StyledSpinBox {
                                     Layout.fillWidth: true; from: 0; to: 1000
                                     value: editingSettings.animation ? editingSettings.animation.fast : 100
-                                    onValueModified: { editingSettings.animation.fast = value; root.refreshSettings() }
+                                    onValueChanged: { if (editingSettings.animation && editingSettings.animation.fast !== value) { editingSettings.animation.fast = value; root.refreshSettings() } }
                                 }
                                 Components.ShadowText { text: "Normal (ms)"; font.pixelSize: 12; color: Services.Colors.mainText }
                                 StyledSpinBox {
                                     Layout.fillWidth: true; from: 0; to: 1000
                                     value: editingSettings.animation ? editingSettings.animation.normal : 150
-                                    onValueModified: { editingSettings.animation.normal = value; root.refreshSettings() }
+                                    onValueChanged: { if (editingSettings.animation && editingSettings.animation.normal !== value) { editingSettings.animation.normal = value; root.refreshSettings() } }
                                 }
                                 Components.ShadowText { text: "Slow (ms)"; font.pixelSize: 12; color: Services.Colors.mainText }
                                 StyledSpinBox {
                                     Layout.fillWidth: true; from: 0; to: 1000
                                     value: editingSettings.animation ? editingSettings.animation.slow : 250
-                                    onValueModified: { editingSettings.animation.slow = value; root.refreshSettings() }
+                                    onValueChanged: { if (editingSettings.animation && editingSettings.animation.slow !== value) { editingSettings.animation.slow = value; root.refreshSettings() } }
                                 }
                                 Components.ShadowText { text: "Extra Slow (ms)"; font.pixelSize: 12; color: Services.Colors.mainText }
                                 StyledSpinBox {
                                     Layout.fillWidth: true; from: 0; to: 2000
                                     value: editingSettings.animation ? editingSettings.animation.extra_slow : 500
-                                    onValueModified: { editingSettings.animation.extra_slow = value; root.refreshSettings() }
+                                    onValueChanged: { if (editingSettings.animation && editingSettings.animation.extra_slow !== value) { editingSettings.animation.extra_slow = value; root.refreshSettings() } }
                                 }
                             }
                         }
@@ -597,6 +617,14 @@ FloatingWindow {
                     anchors.margins: 20
                     spacing: 15
 
+                    Components.ShadowText {
+                        text: "󰑐 Shell will restart to apply changes"
+                        font.pixelSize: 11
+                        color: Services.Colors.dim
+                        visible: true
+                        Layout.alignment: Qt.AlignVCenter
+                    }
+
                     Item { Layout.fillWidth: true }
 
                     // Custom Cancel Button
@@ -646,9 +674,9 @@ FloatingWindow {
                             hoverEnabled: true
                             cursorShape: Qt.PointingHandCursor
                             onClicked: {
-                                Services.ConfigService.save(editingSettings)
-                                root.closeRequested()
-                            }
+                            Services.ConfigService.save(editingSettings, true)
+                            root.closeRequested()
+                        }
                         }
                     }
                 }

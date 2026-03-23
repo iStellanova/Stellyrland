@@ -1,47 +1,96 @@
 import Quickshell
+import Quickshell.Wayland._WlrLayerShell 0.0
 import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
 import "services" as Services
 import "components" as Components
 
-FloatingWindow {
+PanelWindow {
     id: root
 
-    property bool active: false
+    // ── Architecture Note ─────────────────────────────────────
+    // This launcher uses a Dual-Window system:
+    // 1. AppLauncher (This): A 600px wide vertical strip for localized blur.
+    //    The UI slides vertically WITHIN this strip for smooth animation.
+    // 2. launcherScrim (in shell.qml): A full-screen transparent window
+    //    that handles closing when clicking 'outside' the launcher.
+    // ──────────────────────────────────────────────────────────
+
     signal closeRequested()
+    property bool open: false
+    
+    WlrLayershell.layer: WlrLayer.Overlay
+    WlrLayershell.keyboardFocus: WlrKeyboardFocus.OnDemand
+    WlrLayershell.namespace: "quickshell-popups"
 
     implicitWidth: 600
-    implicitHeight: 450
+    implicitHeight: screen.height
     
-    property bool mouseActive: true
-    
-    color: "transparent"
-    
-    // Handle focus
-    onActiveChanged: if (active) searchInput.forceActiveFocus()
+    margins.left: (screen.width - 600) / 2
+    margins.top: 0
 
-    onVisibleChanged: {
-        if (visible) {
+    visible: open || container.opacity > 0
+    
+    // Internal state for sliding with a more premium Exponential easing
+    property real slideY: open ? (root.height - 450) / 2 : root.height
+    Behavior on slideY { 
+        NumberAnimation { 
+            duration: Services.Colors.animSlow
+            easing.type: Easing.OutExpo 
+        } 
+    }
+
+    Behavior on visible {
+        PropertyAnimation { duration: 0 }
+    }
+
+    property bool mouseActive: true
+    color: "transparent"
+
+    onOpenChanged: {
+        if (open) {
             // Ensure search is focused when opened
             searchInput.forceActiveFocus();
+            // Start at index 0 (the first app)
+            appList.currentIndex = 0;
+            // Ensure we scroll to the top to see the Recent Apps header
+            scrollTimer.restart();
         } else {
             searchInput.text = "";
             Services.AppService.searchQuery = "";
         }
     }
 
+    Timer {
+        id: scrollTimer
+        interval: 10
+        onTriggered: appList.positionViewAtBeginning()
+    }
+
     Rectangle {
         id: container
-        anchors.fill: parent
-        radius: Services.Colors.radiusNormal
+        x: 0
+        y: root.slideY
+        width: 600
+        height: 450
+        radius: Services.Colors.radiusLarge
         color: Services.Colors.bg
-        border.width: 1
+        border.width: 1.5
         border.color: Services.Colors.border
         
-        layer.enabled: true
-        // Glassmorphism effect via opacity and gradient
-        opacity: 0.98
+        // Prevent clicks within the launcher but outside items from reaching the scrim
+        MouseArea {
+            anchors.fill: parent
+            onPressed: (mouse) => mouse.accepted = true
+        }
+        
+        layer.enabled: root.open
+        // Glassmorphism effect via opacity
+        opacity: root.open ? 0.98 : 0.0
+        Behavior on opacity {
+            NumberAnimation { duration: Services.Colors.animNormal; easing.type: Easing.OutCubic }
+        }
 
         ColumnLayout {
             anchors.fill: parent
@@ -114,6 +163,28 @@ FloatingWindow {
                 spacing: Services.Colors.spacingSmall
                 currentIndex: 0
                 
+                header: Component {
+                    ColumnLayout {
+                        width: appList.width
+                        spacing: Services.Colors.spacingXLarge
+                        visible: searchInput.text === "" && Services.AppService.recentApps.length > 0
+                        
+                        // Recent Apps Grid
+                        Components.RecentAppsGrid {
+                            onAppLaunched: root.closeRequested()
+                        }
+
+                        Rectangle {
+                            Layout.fillWidth: true
+                            height: 1
+                            color: Services.Colors.border
+                            visible: Services.AppService.isCategorized && Services.AppService.recentApps.length > 0
+                        }
+                        
+                        Item { height: 4; Layout.fillWidth: true }
+                    }
+                }
+
                 onModelChanged: currentIndex = 0
 
                 section.property: Services.AppService.isCategorized ? "name" : ""
@@ -197,22 +268,18 @@ FloatingWindow {
                             spacing: Services.Colors.spacingLarge
 
                             // App Icon
-                            Rectangle {
+                            Components.AppIcon {
                                 width: 34; height: 34
                                 radius: Services.Colors.radiusSmall
-                                color: Qt.rgba(1, 1, 1, 0.08)
+                                iconBgColor: Qt.rgba(1, 1, 1, 0.08)
+                                fallbackBgColor: Qt.rgba(1, 1, 1, 0.08)
+                                fallbackBorderWidth: 0
                                 scale: isCurrent ? 1.1 : 1.0
+                                iconName: modelData.icon
+                                fallbackText: modelData.name
+                                imageMargins: 4
                                 
                                 Behavior on scale { NumberAnimation { duration: Services.Colors.animSlow; easing.type: Easing.OutBack } }
-                                
-                                Image {
-                                    anchors.fill: parent
-                                    anchors.margins: 4
-                                    source: modelData.icon.startsWith("/") ? ("file://" + modelData.icon) : ("image://icon/" + modelData.icon)
-                                    fillMode: Image.PreserveAspectFit
-                                    asynchronous: true
-                                    sourceSize: Qt.size(52, 52)
-                                }
                             }
 
                             Components.ShadowText {
@@ -246,15 +313,16 @@ FloatingWindow {
                 }
             }
 
-            // Global mouse movement detector
-            MouseArea {
-                anchors.fill: parent
-                propagateComposedEvents: true
-                hoverEnabled: true
-                z: -1 // Behind everything
-                onPositionChanged: {
-                    if (!root.mouseActive) root.mouseActive = true
-                }
+        }
+
+        // Global mouse movement detector
+        MouseArea {
+            anchors.fill: parent
+            propagateComposedEvents: true
+            hoverEnabled: true
+            z: -1 // Behind everything
+            onPositionChanged: {
+                if (!root.mouseActive) root.mouseActive = true
             }
         }
     }

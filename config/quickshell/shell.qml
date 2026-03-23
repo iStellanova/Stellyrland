@@ -1,5 +1,6 @@
 //@ pragma UseQApplication
 import Quickshell
+import Quickshell.Wayland._WlrLayerShell 0.0
 import Quickshell.Io
 import Quickshell.Hyprland
 import QtQuick
@@ -42,16 +43,18 @@ Scope {
         Services.ShellData.logoutVisible = false
         Services.ShellData.screenshotVisible = false
         Services.ShellData.settingsVisible = false
+        Services.ShellData.shortcutsVisible = false
+        Services.ShellData.overviewVisible = false
 
         trayMenu.menuHandle = null
     }
+
 
     function togglePopup(prop, x) {
         let target = !Services.ShellData[prop]
         closeAllPopups()
         if (x !== undefined) {
-            let next = {}
-            for (let k in popupOffsets) next[k] = popupOffsets[k]
+            let next = Object.assign({}, popupOffsets)
             next[prop] = x
             popupOffsets = next
         }
@@ -82,6 +85,14 @@ Scope {
         
         function toggleScreenshot() {
             root.togglePopup("screenshotVisible")
+        }
+
+        function toggleShortcuts() {
+            root.togglePopup("shortcutsVisible")
+        }
+
+        function toggleOverview() {
+            root.togglePopup("overviewVisible")
         }
 
         function triggerDelayedScreenshot() {
@@ -174,12 +185,41 @@ Scope {
         xOffset: root.popupOffsets["volumeVisible"] ?? 0
         onCloseRequested: Services.ShellData.volumeVisible = false
     }
+    // ── App Launcher (Dual-Window Architecture) ─────────────────
+    // The launcher is split into two windows for better Wayland support:
+    // 1. A full-screen scrim for click-outside detection.
+    // 2. A centered vertical strip for the UI with localized blur.
+    
+    PanelWindow {
+        id: launcherScrim
+        visible: Services.ShellData.alVisible
+        implicitWidth: screen.width
+        implicitHeight: screen.height
+        anchors {
+            top: true; bottom: true; left: true; right: true
+        }
+        WlrLayershell.layer: WlrLayer.Top
+        WlrLayershell.keyboardFocus: WlrKeyboardFocus.None
+        color: "transparent"
+        
+        MouseArea {
+            anchors.fill: parent
+            onPressed: Services.ShellData.alVisible = false
+        }
+    }
 
+    AppLauncher {
+        id: al
+        screen: Services.MonitorService.primaryScreen
+        open: Services.ShellData.alVisible
+        onCloseRequested: Services.ShellData.alVisible = false
+    }
+ 
     // ── Control Center Popup ─────────────────────────────────
     ControlCenter {
         id: cc
         screen: Services.MonitorService.primaryScreen
-        visible: Services.ShellData.ccVisible
+        open: Services.ShellData.ccVisible
         onCloseRequested: Services.ShellData.ccVisible = false
     }
 
@@ -187,29 +227,21 @@ Scope {
     NotificationCenter {
         id: nc
         screen: Services.MonitorService.primaryScreen
-        visible: Services.ShellData.ncVisible
+        open: Services.ShellData.ncVisible
         onCloseRequested: Services.ShellData.ncVisible = false
-    }
-
-
-    AppLauncher {
-        id: al
-        screen: Services.MonitorService.primaryScreen
-        visible: Services.ShellData.alVisible
-        onCloseRequested: Services.ShellData.alVisible = false
     }
 
     WallpaperPopup {
         id: wp
         screen: Services.MonitorService.primaryScreen
-        visible: Services.ShellData.wallpaperVisible
+        open: Services.ShellData.wallpaperVisible
         onCloseRequested: Services.ShellData.wallpaperVisible = false
     }
 
     SettingsPopup {
         id: sp
         screen: Services.MonitorService.primaryScreen
-        visible: Services.ShellData.settingsVisible
+        open: Services.ShellData.settingsVisible
         onCloseRequested: Services.ShellData.settingsVisible = false
     }
 
@@ -218,6 +250,7 @@ Scope {
         model: Quickshell.screens
         delegate: WallpaperBackground {
             screen: modelData
+            onClicked: root.closeAllPopups()
         }
     }
 
@@ -246,8 +279,14 @@ Scope {
 
     Components.TrayMenu {
         id: trayMenu
-        visible: false
         menuHandle: null
+    }
+
+    ShortcutPopup {
+        id: sp_cheat
+        screen: Services.MonitorService.primaryScreen
+        open: Services.ShellData.shortcutsVisible
+        onCloseRequested: Services.ShellData.shortcutsVisible = false
     }
 
     // ── Top Bar ──────────────────────────────────────────────
@@ -278,5 +317,11 @@ Scope {
         screen: Services.MonitorService.primaryScreen
         open: Services.ShellData.logoutVisible
         onCloseRequested: Services.ShellData.logoutVisible = false
+    }
+
+    Components.OverviewMenu {
+        id: om
+        open: Services.ShellData.overviewVisible
+        onCloseRequested: Services.ShellData.overviewVisible = false
     }
 }

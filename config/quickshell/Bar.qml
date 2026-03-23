@@ -25,13 +25,13 @@ PanelWindow {
     }
 
     margins {
-        top: 12
-        left: 12
-        right: 12
+        top: 15
+        left: 15
+        right: 15
     }
 
     implicitHeight: 42
-    exclusiveZone: 42  // adjusted to account for Hyprland gaps (54 - 12)
+    exclusiveZone: 42  // Height of the bar; margin is added by Quickshell/Hyprland for the total reserved space.
     color: "transparent"
 
     // ── Signals for popup toggling ───────────────────────────
@@ -171,12 +171,18 @@ PanelWindow {
                 Item {
                     id: titleContainer
                     Layout.maximumWidth: 350
-                    property real targetWidth: titleText.text.length > 0 ? Math.min(titleText.implicitWidth, 350) : 0
+                    property real targetWidth: hiddenTitleMetric.text.length > 0 ? Math.min(hiddenTitleMetric.implicitWidth, 350) : 0
                     Layout.preferredWidth: targetWidth
                     implicitHeight: titleText.implicitHeight
                     clip: true
                     Layout.leftMargin: targetWidth > 0 ? 5 : 0
                     visible: targetWidth > 0 || width > 0
+
+                    Components.ShadowText {
+                        id: hiddenTitleMetric
+                        text: Services.ShellData.windowTitle
+                        visible: false
+                    }
 
                     Components.ShadowText {
                         id: titleText
@@ -335,7 +341,7 @@ PanelWindow {
                         bar.toggleMicMenu(pos.x)
                     }
                     icon: "󰍬"
-                    visible: Services.ShellData.micBusy
+                    visible: Services.AudioService.micBusy
                     Layout.rightMargin: 8
                 }
 
@@ -437,9 +443,9 @@ PanelWindow {
                         let pos = wifiModule.mapToItem(null, wifiModule.width / 2, 0)
                         bar.toggleWifiMenu(pos.x)
                     }
-                    icon: Services.ShellData.netSsid === "Offline" ? "󰖪" : "󰤨"
-                    value: Services.ShellData.netSsid !== "Offline" ? Services.ShellData.netSsid : ""
-                    textColor: Services.ShellData.netSsid === "Offline"
+                    icon: Services.NetworkService.netSsid === "Offline" ? "󰖪" : "󰤨"
+                    value: Services.NetworkService.netSsid !== "Offline" ? Services.NetworkService.netSsid : ""
+                    textColor: Services.NetworkService.netSsid === "Offline"
                         ? Qt.rgba(Services.Colors.mainText.r, Services.Colors.mainText.g, Services.Colors.mainText.b, 0.35)
                         : Services.Colors.mainText
                     Layout.leftMargin: 9
@@ -455,8 +461,8 @@ PanelWindow {
                         bar.toggleVolumeMenu(pos.x)
                     }
                     icon: {
-                        if (Services.ShellData.muted) return "󰝟"
-                        let v = Services.ShellData.volume
+                        if (Services.AudioService.muted) return "󰝟"
+                        let v = Services.AudioService.volume
                         if (v === 0) return "󰕿"
                         if (v < 34) return "󰕿"
                         if (v < 67) return "󰖀"

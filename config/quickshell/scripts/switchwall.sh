@@ -14,11 +14,19 @@ is_video() {
 extract_frame() {
     local video="$1"
     ffmpeg -y -i "$video" -ss 00:00:01 -vframes 1 "$FRAME" >/dev/null 2>&1
+    if [[ $? -ne 0 ]]; then
+        echo "Error: Failed to extract frame from $video" >&2
+        return 1
+    fi
 }
 
 apply_theme() {
     local image="$1"
     matugen image "$image" --source-color-index 0 --mode dark >/dev/null 2>&1
+    
+    # Reload cava to pick up new colors
+    killall -USR1 cava >/dev/null 2>&1
+    kill -SIGUSR1 $(pgrep -x kitty) 2>/dev/null
 }
 
 # --- Main ---

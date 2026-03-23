@@ -101,7 +101,7 @@ PanelWindow {
                 }
 
                 Components.ShadowText {
-                    text: Services.ShellData.micApps.length
+                    text: Services.AudioService.micApps.length
                     font.pixelSize: 11
                     color: Services.Colors.dim
                 }
@@ -118,7 +118,7 @@ PanelWindow {
                 spacing: Services.Colors.spacingSmall
                 
                 Repeater {
-                    model: Services.ShellData.micApps
+                    model: Services.AudioService.micApps
                     delegate: RowLayout {
                         Layout.fillWidth: true
                         spacing: Services.Colors.spacingNormal
@@ -141,7 +141,7 @@ PanelWindow {
                 
                 Components.ShadowText {
                     text: "No applications active"
-                    visible: Services.ShellData.micApps.length === 0
+                    visible: Services.AudioService.micApps.length === 0
                     font.pixelSize: 11
                     color: Services.Colors.dim
                     Layout.alignment: Qt.AlignHCenter

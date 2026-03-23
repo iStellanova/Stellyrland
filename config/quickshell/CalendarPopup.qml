@@ -82,30 +82,11 @@ PanelWindow {
             anchors.margins: 14
             spacing: Services.Colors.spacingLarge
 
-            RowLayout {
-                Layout.fillWidth: true
-                Components.ShadowText {
-                    text: "Calendar"
-                    font.pixelSize: 13
-                    font.bold: true
-                    color: Services.Colors.primary
-                }
-                Item { Layout.fillWidth: true }
-                Components.PinButton {
-                    pinned: calWindow.pinned
-                    onToggled: calWindow.pinned = !calWindow.pinned
-                }
-            }
-
-            Rectangle {
-                Layout.fillWidth: true
-                height: 1
-                color: Services.Colors.border
-            }
-
             Components.CalendarWidget {
                 id: calendarLayout
                 Layout.fillWidth: true
+                pinned: calWindow.pinned
+                onPinToggled: calWindow.pinned = !calWindow.pinned
             }
         }
     }

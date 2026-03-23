@@ -7,7 +7,20 @@ import QtQuick
 Singleton {
     id: root
 
-    property var players: Mpris.players.values
+    property var players: []
+    
+    function updatePlayers() {
+        players = Mpris.players.values
+    }
+
+    Connections {
+        target: Mpris.players
+        function onModelReset() { updatePlayers() }
+        function onRowsInserted() { updatePlayers() }
+        function onRowsRemoved() { updatePlayers() }
+    }
+
+    Component.onCompleted: updatePlayers()
     
     readonly property var preferredPlayers: ["spotify", "amberol", "lollypop", "vlc", "mpv", "strawberry", "rhythmbox", "cmus", "audacious"]
 

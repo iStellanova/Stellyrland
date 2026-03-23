@@ -11,7 +11,7 @@ Components.BaseStatPopup {
 
     ColumnLayout {
         Layout.fillWidth: true
-        spacing: Services.Colors.spacingMedium
+        spacing: Services.Colors.spacingNormal
 
         Rectangle {
             Layout.fillWidth: true

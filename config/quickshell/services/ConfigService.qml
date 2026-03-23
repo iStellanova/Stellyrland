@@ -8,6 +8,7 @@ Singleton {
     id: root
 
     property var settings: ({})
+    property bool _shouldReload: false
 
     FileView {
         id: configFile
@@ -22,11 +23,7 @@ Singleton {
         }
     }
 
-    Process {
-        id: saveProc
-        command: []
-        running: false
-    }
+
 
     Timer {
         id: reloadTimer
@@ -45,13 +42,17 @@ Singleton {
         }
     }
 
-    function save(newSettings) {
+    function save(newSettings, reloadAtEnd = false) {
         try {
+            _shouldReload = reloadAtEnd
             let content = JSON.stringify(newSettings, null, 4)
-            // Use python3 to safely write the file, avoiding shell injection risks
-            saveProc.command = ["python3", "-c", "import sys; f=open(sys.argv[1], 'w'); f.write(sys.argv[2]); f.close()", configFile.path, content]
-            saveProc.running = true
+            configFile.setText(content)
             root.settings = newSettings // Optimistic update
+            
+            if (_shouldReload) {
+                _shouldReload = false
+                Quickshell.reload(false)
+            }
         } catch (e) {
             console.error("Failed to save config.json: " + e)
         }
@@ -84,6 +85,8 @@ Singleton {
     // --- Weather ---
     readonly property real weatherLat: get("weather", "latitude", 0.0)
     readonly property real weatherLon: get("weather", "longitude", 0.0)
+    readonly property bool weatherCelsius: get("weather", "celsius", false)
+    readonly property bool weatherHour24: get("weather", "hour24", false)
     readonly property int pollWeather: get("weather", "polling_interval_ms", 900000)
 
     // --- Polling ---

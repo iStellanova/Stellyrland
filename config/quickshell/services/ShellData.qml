@@ -3,8 +3,6 @@ pragma Singleton
 import Quickshell
 import Quickshell.Io
 import Quickshell.Hyprland
-import Quickshell.Services.Pipewire
-import Quickshell.Bluetooth
 import QtQuick
 import "."
 
@@ -13,7 +11,7 @@ Singleton {
 
     // ── System stats (polled via /proc reads) ────────────────
     property int cpuUsage: 0
-    property var cpuHistory: []
+    property var cpuHistory: [0]
     property var cpuCoreUsages: []
     property string cpuSpeed: "0.00 GHz"
     property string ramUsage: "0GiB"
@@ -21,18 +19,18 @@ Singleton {
     property string ramAvailable: "0GiB"
     property string ramFree: "0GiB"
     property string ramCached: "0GiB"
-    property var ramHistory: []
+    property var ramHistory: [0]
     property int gpuUsage: 0
     property int gpuTemp: 0
     property string gpuVramUsed: "0GiB"
     property string gpuVramTotal: "0GiB"
-    property var gpuHistory: []
-    property var tempHistory: []
+    property var gpuHistory: [0]
+    property var tempHistory: [0]
     property int temperature: 0
     property real rxRate: 0.0
-    property var rxHistory: []
+    property var rxHistory: [0]
     property real txRate: 0.0
-    property var txHistory: []
+    property var txHistory: [0]
     property bool hasFullscreen: {
         let fw = Hyprland.focusedWorkspace
         if (fw && fw.hasFullscreen && fw.monitor && fw.monitor.name === MonitorService.targetName) return true
@@ -41,42 +39,6 @@ Singleton {
         return false
     }
     
-    // ── Network ──────────────────────────────────────────────
-    property string netSsid: "Offline"
-
-    // ── Toggle states ────────────────────────────────────────
-    property bool wifiOn: false
-    property bool btOn: Bluetooth.defaultAdapter ? Bluetooth.defaultAdapter.enabled : false
-    property bool dndOn: NotificationService.dndActive
-    property bool vpnOn: false
-    Component.onCompleted: {
-        let p = procFactory.createObject(root, { command: ["sh", "-c", "ip link show " + ConfigService.vpnInterface + " 2>/dev/null || nmcli connection show --active | grep -i " + ConfigService.vpnInterface] })
-        let collector = Qt.createQmlObject('import Quickshell.Io 1.0; StdioCollector {}', p)
-        collector.streamFinished.connect(() => { root.vpnOn = collector.text.trim().length > 0 })
-        p.stdout = collector
-        p.running = true
-    }
-    property bool idleOn: false
-    property var micApps: {
-        let nodes = Pipewire.nodes.values
-        let apps = []
-        for (let i = 0; i < nodes.length; i++) {
-            let node = nodes[i]
-            if (node.properties["media.class"] === "Stream/Input/Audio" && 
-                !(node.properties["node.name"] || "").includes("cava")) {
-                let name = node.properties["application.name"] || node.properties["node.name"] || "Unknown"
-                if (!apps.includes(name)) apps.push(name)
-            }
-        }
-        return apps
-    }
-    property bool micBusy: micApps.length > 0
-    property var wifiNetworks: []
-    property var btDevices: []
-    property alias appVolumesModel: appVolumesModel
-    ListModel { id: appVolumesModel }
-    property var _appVolBusyMap: ({}) 
-
     // ── System info ──────────────────────────────────────────
     property string uptime: "0m"
     property string distroName: "Linux"
@@ -86,7 +48,6 @@ Singleton {
     readonly property string configTitle: "Stellyrland"
     readonly property string configVersion: "1.0.5"
     readonly property string shellAuthor: "stellanova"
-
     // ── Version Detection ─────────────────────────────────────
     Process {
         id: versionProc
@@ -102,6 +63,7 @@ Singleton {
             }
         }
     }
+
 
     // ── Weather ──────────────────────────────────────────────
     property real latitude: ConfigService.weatherLat
@@ -119,28 +81,52 @@ Singleton {
     // Detection logic
     Process {
         id: locationProc
-        command: ["curl", "-sm", "5", "http://ip-api.com/json"]
+        // Using ipapi.co over HTTPS which is more reliable than HTTP ip-api.com
+        command: ["curl", "-sm", "5", "https://ipapi.co/json/"]
         running: latitude === 0.0 && longitude === 0.0
         stdout: StdioCollector {
             onStreamFinished: {
+                let text = this.text.trim();
+                if (text === "") {
+                    console.warn("Location detection returned empty response");
+                    return;
+                }
+                
                 try {
-                    let data = JSON.parse(this.text.trim())
-                    if (data.status === "success") {
-                        root.detectedLat = data.lat
-                        root.detectedLon = data.lon
+                    let data = JSON.parse(text)
+                    if (data.latitude && data.longitude) {
+                        root.detectedLat = data.latitude
+                        root.detectedLon = data.longitude
                         root.locationDetected = true
-                        weatherProc.running = true
+                        console.log("Detected location: " + root.detectedLat + ", " + root.detectedLon)
+                    } else {
+                        console.warn("Location detection failed: " + text)
                     }
                 } catch (e) {
-                    console.error("Failed to detect location:", e)
+                    console.error("Failed to parse location response: " + e + "\nResponse: " + text)
                 }
             }
         }
     }
 
-    onCurrentLatChanged: if (currentLat !== 0.0) weatherProc.running = true
-    onCurrentLonChanged: if (currentLon !== 0.0) weatherProc.running = true
+    onCurrentLatChanged: weatherTriggerTimer.restart()
+    onCurrentLonChanged: weatherTriggerTimer.restart()
 
+    Connections {
+        target: ConfigService
+        function onWeatherCelsiusChanged() { weatherTriggerTimer.restart() }
+    }
+
+    Timer {
+        id: weatherTriggerTimer
+        interval: 100
+        onTriggered: if (currentLat !== 0.0 && currentLon !== 0.0) weatherProc.running = true
+    }
+
+
+    // ── Toggles ──────────────────────────────────────────────
+    property bool dndOn: NotificationService.dndActive
+    property bool idleOn: false
 
     // ── Cava ─────────────────────────────────────────────────
     property var cavaData: []
@@ -169,36 +155,20 @@ Singleton {
     property bool logoutVisible: false
     property bool screenshotVisible: false
     property bool settingsVisible: false
+    property bool shortcutsVisible: false
+    property bool overviewVisible: false
 
 
     
     // ── Window Title (Native & Reactive) ────────────────────
     property string windowTitle: Hyprland.activeToplevel ? Hyprland.activeToplevel.title : ""
     
-    // Volume and Microphone linked directly to Pipewire
-    property alias volume: volumeWrapper.volume
-    property alias muted: volumeWrapper.muted
-    property alias micMuted: micWrapper.muted
-    property bool micOn: !micMuted
+
 
     // ── Script / Cache Paths ─────────────────────────────────
     readonly property string scriptsDir: Quickshell.shellDir + "/scripts"
 
-    // ── Simple Volume Wrapper ────────────────────────────────
-    QtObject {
-        id: volumeWrapper
-        property int volume: Pipewire.defaultAudioSink && Pipewire.defaultAudioSink.audio ? Math.round(Pipewire.defaultAudioSink.audio.volume * 100) : 0
-        property bool muted: Pipewire.defaultAudioSink && Pipewire.defaultAudioSink.audio ? Pipewire.defaultAudioSink.audio.muted : false
-    }
 
-    QtObject {
-        id: micWrapper
-        property bool muted: Pipewire.defaultAudioSource && Pipewire.defaultAudioSource.audio ? Pipewire.defaultAudioSource.audio.muted : true
-    }
-
-    PwObjectTracker {
-        objects: [Pipewire.defaultAudioSink, Pipewire.defaultAudioSource, ...Pipewire.nodes.values]
-    }
 
     // ── Helper: Update History List ──────────────────────────
     function _updateHistory(history, newValue, maxLen = 60) {
@@ -213,7 +183,6 @@ Singleton {
         id: statsProc
         command: ["bash", root.scriptsDir + "/stats.sh", ConfigService.pollStats.toString()]
         running: true
-        onCommandChanged: if (running) { running = false; running = true }
         stdout: SplitParser {
             onRead: data => {
                 try {
@@ -248,146 +217,38 @@ Singleton {
         }
     }
 
-
-    // ── Network Monitoring (Consolidated Reactive) ─────────
+    // ── Hyprland Keybinds ─────────────────────────────────────
+    property var hyprlandBinds: []
     Process {
-        id: networkMonitor
-        command: ["bash", "-c", "nmcli monitor"]
-        running: true
-        stdout: SplitParser {
-            onRead: data => {
-                if (data.includes("connectivity is now") || data.includes("wlan0") || data.includes("proton")) {
-                    networkInit.running = true
-                }
-            }
-        }
-    }
-
-    Process {
-        id: networkInit
-        command: ["bash", "-c", "nmcli -t -f DEVICE,STATE dev; echo '---'; nmcli -t -f ACTIVE,SSID dev wifi | grep '^yes' | cut -d: -f2"]
+        id: hyprBindsProc
+        command: ["python3", root.scriptsDir + "/get_hyprland_binds.py"]
         running: true
         stdout: StdioCollector {
             onStreamFinished: {
-                let parts = this.text.trim().split("---")
-                let states = parts[0].trim().split("\n")
-                
-                root.wifiOn = states.some(s => s.startsWith("wlan0:connected"))
-                root.vpnOn = states.some(s => s.includes(ConfigService.vpnInterface) && s.includes(":connected"))
-                
-                if (parts.length > 1) {
-                    let ssid = parts[1].trim()
-                    root.netSsid = ssid.length > 0 ? ssid : "Offline"
-                } else {
-                    root.netSsid = "Offline"
+                try {
+                    root.hyprlandBinds = JSON.parse(this.text.trim())
+                } catch (e) {
+                    console.error("Failed to parse hyprland binds:", e)
                 }
             }
         }
     }
 
-    Process {
-        id: wifiScanProc
-        command: ["bash", "-c", "nmcli -t -f SSID,SIGNAL,SECURITY dev wifi list --rescan yes"]
-        running: false
-        stdout: StdioCollector {
-            onStreamFinished: {
-                let lines = this.text.trim().split("\n")
-                let networks = []
-                let seen = new Set()
-                for (let line of lines) {
-                    if (!line) continue
-                    
-                    // Match everything up to the last two colons
-                    // NMCLI format: SSID:SIGNAL:SECURITY
-                    let match = line.match(/^(.*?):([^:]*):([^:]*)$/)
-                    if (!match) continue
-                    
-                    let ssid = match[1].replace(/\\:/g, ":").replace(/\\\\/g, "\\")
-                    let signal = parseInt(match[2])
-                    let security = match[3]
-                    
-                    if (ssid === "" || seen.has(ssid)) continue
-                    seen.add(ssid)
-                    
-                    networks.push({
-                        ssid: ssid,
-                        signal: isNaN(signal) ? 0 : signal,
-                        security: security
-                    })
-                }
-                root.wifiNetworks = networks
-            }
-        }
+    function refreshHyprBinds() {
+        hyprBindsProc.running = false
+        hyprBindsProc.running = true
     }
 
-    function refreshWifi() {
-        wifiScanProc.running = true
-    }
+    // Refresh binds when shortcuts are shown
+    onShortcutsVisibleChanged: if (shortcutsVisible) refreshHyprBinds()
 
-    function connectWifi(ssid) {
-        // Run a simple connect command; this assumes the connection is known or open,
-        // or relies on the desktop environment's polkit agent for passwords if needed.
-        runCommand(["nmcli", "dev", "wifi", "connect", ssid])
-    }
 
-    // ── Bluetooth Monitoring ──────────────────────────────
-    Process {
-        id: btDevicesProc
-        command: ["bash", "-c", "all=$(bluetoothctl devices); connected=$(bluetoothctl devices Connected); if [ -z \"$all\" ]; then exit 0; fi; echo \"$all\" | while read -r line; do addr=$(echo \"$line\" | cut -d' ' -f2); name=$(echo \"$line\" | cut -d' ' -f3-); if echo \"$connected\" | grep -q \"$addr\"; then echo \"connected|$addr|$name\"; else echo \"paired|$addr|$name\"; fi; done"]
-        running: false
-        stdout: StdioCollector {
-            onStreamFinished: {
-                let lines = this.text.trim().split("\n")
-                let devices = []
-                for (let line of lines) {
-                    if (!line) continue
-                    let parts = line.split("|")
-                    if (parts.length < 3) continue
-                    devices.push({
-                        connected: parts[0] === "connected",
-                        address: parts[1],
-                        name: parts[2]
-                    })
-                }
-                root.btDevices = devices
-            }
-        }
-    }
-
-    function refreshBt() {
-        btDevicesProc.running = true
-    }
-
-    function connectBt(address) {
-        runCommand(["bluetoothctl", "connect", address])
-        // Refresh after a short delay to catch the state change
-        refreshTimer.restart()
-    }
-
-    function disconnectBt(address) {
-        runCommand(["bluetoothctl", "disconnect", address])
-        refreshTimer.restart()
-    }
-
-    Timer {
-        id: refreshTimer
-        interval: 2000
-        repeat: false
-        onTriggered: refreshBt()
-    }
     // ── Uptime (Optimized Native Read) ──────────────────────
     FileView {
         id: uptimeFile
         path: "/proc/uptime"
-    }
-
-    Timer {
-        interval: ConfigService.pollUptime
-        running: true
-        repeat: true
-        triggeredOnStart: true
-        onTriggered: {
-            let content = uptimeFile.text().trim().split(" ")[0]
+        onTextChanged: {
+            let content = text().trim().split(" ")[0]
             let seconds = parseFloat(content)
             if (!isNaN(seconds)) {
                 let d = Math.floor(seconds / (24 * 3600))
@@ -405,19 +266,22 @@ Singleton {
         }
     }
 
+    Timer {
+        interval: ConfigService.pollUptime
+        running: true
+        repeat: true
+        triggeredOnStart: true
+        onTriggered: uptimeFile.reload()
+    }
+
 
     // ── Distro / User (Optimized Native / Single Fork) ──────
     FileView {
         id: osReleaseFile
         path: "/etc/os-release"
-    }
-
-    Timer {
-        running: true
-        repeat: false
-        triggeredOnStart: true
-        onTriggered: {
-            let lines = osReleaseFile.text().split("\n")
+        onTextChanged: {
+            if (!text()) return
+            let lines = text().split("\n")
             for (let line of lines) {
                 if (line.startsWith("NAME=")) {
                     root.distroName = line.substring(5).replace(/"/g, "")
@@ -458,7 +322,17 @@ Singleton {
     Process {
         id: weatherProc
         // Using configurable coordinates for the weather API
-        command: ["bash", "-c", "curl -sm 5 'https://api.open-meteo.com/v1/forecast?latitude=" + root.currentLat + "&longitude=" + root.currentLon + "&current_weather=true&hourly=temperature_2m,weathercode&daily=temperature_2m_max,temperature_2m_min&temperature_unit=fahrenheit&forecast_days=2'"]
+        command: [
+            "curl", "-sm", "5", "-G",
+            "https://api.open-meteo.com/v1/forecast",
+            "-d", "latitude=" + root.currentLat,
+            "-d", "longitude=" + root.currentLon,
+            "-d", "current_weather=true",
+            "-d", "hourly=temperature_2m,weathercode",
+            "-d", "daily=temperature_2m_max,temperature_2m_min",
+            "-d", "temperature_unit=" + (ConfigService.weatherCelsius ? "celsius" : "fahrenheit"),
+            "-d", "forecast_days=2"
+        ]
         running: (root.currentLat !== 0.0 && root.currentLon !== 0.0)
         stdout: StdioCollector {
             onStreamFinished: {
@@ -507,12 +381,19 @@ Singleton {
                         for (let i = startIndex; i < Math.min(startIndex + 24, times.length); i++) {
                             let t = new Date(times[i]);
                             let hours = t.getHours();
-                            let ampm = hours >= 12 ? "PM" : "AM";
-                            let displayHour = hours % 12;
-                            if (displayHour === 0) displayHour = 12;
+                            let timeStr = "";
+                            
+                            if (ConfigService.weatherHour24) {
+                                timeStr = hours.toString().padStart(2, '0') + ":00";
+                            } else {
+                                let ampm = hours >= 12 ? "PM" : "AM";
+                                let displayHour = hours % 12;
+                                if (displayHour === 0) displayHour = 12;
+                                timeStr = displayHour + ampm;
+                            }
                             
                             hourlyData.push({
-                                time: displayHour + ampm,
+                                time: timeStr,
                                 temp: Math.round(temps[i]) + "°",
                                 icon: root.getWeatherIcon(codes[i])
                             });
@@ -586,221 +467,10 @@ Singleton {
         }
     }
 
-    // ── Dedicated Toggle Actions (Inlined) ─────────────────
     // Toggles are now handled via runCommand for better robustness
-
-
-    // ── App Volume Monitoring (Stable ListModel) ────────
-    Process {
-        id: appVolumeProc
-        command: ["bash", root.scriptsDir + "/get_app_volumes.sh"]
-        running: true
-        stdout: StdioCollector {
-            onStreamFinished: {
-                try {
-                    let newData = JSON.parse(this.text.trim())
-                    let now = Date.now()
-                    
-                    // Synchronize ListModel
-                    let pwNodes = Pipewire.nodes
-                    let seenIds = {}
-                    for (let newItem of newData) {
-                        seenIds[newItem.id] = true
-                        
-                        // Find matching native node for smooth control
-                        // Try matching by ID first (works with our new pw-dump fallback)
-                        let nativeNode = root.getAppNode(newItem.id)
-                        
-                        if (!nativeNode || !nativeNode.audio) {
-                            // Fallback to name matching (for pactl compatibility)
-                            nativeNode = null
-                            let targetName = newItem.name.toLowerCase().trim()
-                            let nodes = pwNodes.values
-                            for (let pwNode of nodes) {
-                                if (!pwNode.audio) continue
-                                let pwName = (pwNode.properties["node.name"] || pwNode.properties["application.name"] || "").toLowerCase().trim()
-                                if (pwName === "") continue
-                                if (pwName === targetName || (targetName !== "unknown" && (pwName.includes(targetName) || targetName.includes(pwName)))) {
-                                    nativeNode = pwNode
-                                    break
-                                }
-                            }
-                        }
-                        
-                        let busySince = root._appVolBusyMap[newItem.id] || 0
-                        let isBusy = (now - busySince < 3000)
-                        
-                        // Find existing index
-                        let idx = -1
-                        for (let i = 0; i < appVolumesModel.count; i++) {
-                            if (appVolumesModel.get(i).id === newItem.id) {
-                                idx = i; break
-                            }
-                        }
-                        
-                        if (idx !== -1) {
-                            // Update existing
-                            let props = {
-                                name: newItem.name,
-                                icon: newItem.icon,
-                                pwId: nativeNode ? nativeNode.id : -1 // Store native node ID
-                            }
-                            if (!isBusy) {
-                                props.volume = newItem.volume
-                                props.muted = newItem.muted
-                            }
-                            appVolumesModel.set(idx, props)
-                        } else {
-                            // Add new
-                            newItem.pwId = nativeNode ? nativeNode.id : -1
-                            appVolumesModel.append(newItem)
-                        }
-                    }
-                    
-                    // Remove old
-                    for (let i = appVolumesModel.count - 1; i >= 0; i--) {
-                        if (!seenIds[appVolumesModel.get(i).id]) {
-                            appVolumesModel.remove(i)
-                        }
-                    }
-                } catch (e) {
-                }
-            }
-        }
-    }
-
-    Connections {
-        target: Pipewire.nodes
-        function onAdded() { appVolumeProc.running = true }
-        function onRemoved() { appVolumeProc.running = true }
-    }
-
-    // ── Volume Actions (Native) ───────────────────────────
-    function setVolume(v) {
-        if (Pipewire.defaultAudioSink && Pipewire.defaultAudioSink.audio) {
-            Pipewire.defaultAudioSink.audio.volume = v / 100
-        }
-    }
-
-    function toggleMute() {
-        if (Pipewire.defaultAudioSink && Pipewire.defaultAudioSink.audio) {
-            Pipewire.defaultAudioSink.audio.muted = !Pipewire.defaultAudioSink.audio.muted
-        }
-    }
-
-    function getAppNode(id) {
-        if (id === -1) return null
-        let nodes = Pipewire.nodes.values
-        for (let i = 0; i < nodes.length; i++) {
-            if (nodes[i].id === id) return nodes[i]
-        }
-        return null
-    }
-
-    function setAppVolume(id, v) {
-        // Mark as busy
-        let map = root._appVolBusyMap
-        map[id] = Date.now()
-        root._appVolBusyMap = map
-        
-        let pwId = -1
-        for (let i = 0; i < appVolumesModel.count; i++) {
-            let item = appVolumesModel.get(i)
-            if (item.id === id) {
-                appVolumesModel.setProperty(i, "volume", v)
-                pwId = item.pwId
-                break
-            }
-        }
-        
-        // Find the native node from the ID
-        let targetNode = null
-        if (pwId !== -1) {
-            let nodes = Pipewire.nodes.values
-            for (let i = 0; i < nodes.length; i++) {
-                if (nodes[i].id === pwId) {
-                    targetNode = nodes[i]
-                    break
-                }
-            }
-        }
-
-        // Use native control if available for zero-latency smoothness
-        if (targetNode && targetNode.audio) {
-            targetNode.audio.volume = v / 100
-        } else {
-            // Fallback to throttled pactl
-            let updates = root._pendingAppVolUpdates
-            updates[id] = v
-            root._pendingAppVolUpdates = updates
-            appVolUpdateTimer.restart()
-        }
-    }
-
-    property var _pendingAppVolUpdates: ({})
-    Timer {
-        id: appVolUpdateTimer
-        interval: 50
-        running: false
-        repeat: false
-        onTriggered: {
-            for (let id in _pendingAppVolUpdates) {
-                runCommand(["pactl", "set-sink-input-volume", id.toString(), _pendingAppVolUpdates[id] + "%"])
-            }
-            root._pendingAppVolUpdates = {}
-        }
-    }
-
-    function toggleAppMute(id) {
-        let pwId = -1
-        for (let i = 0; i < appVolumesModel.count; i++) {
-            let item = appVolumesModel.get(i)
-            if (item.id === id) {
-                pwId = item.pwId
-                break
-            }
-        }
-        
-        let targetNode = null
-        if (pwId !== -1) {
-            let nodes = Pipewire.nodes.values
-            for (let i = 0; i < nodes.length; i++) {
-                if (nodes[i].id === pwId) {
-                    targetNode = nodes[i]
-                    break
-                }
-            }
-        }
-        
-        if (targetNode && targetNode.audio) {
-            targetNode.audio.muted = !targetNode.audio.muted
-        } else {
-            runCommand(["pactl", "set-sink-input-mute", id.toString(), "toggle"])
-        }
-        appVolumeProc.running = true
-    }
-
-    function toggleWifi() {
-        root.wifiOn = !root.wifiOn
-        runCommand(["bash", "-c", "state=$(nmcli radio wifi); if [ \"$state\" = \"enabled\" ]; then nmcli radio wifi off; else nmcli radio wifi on; fi"])
-        if (root.wifiOn) {
-            refreshWifi()
-        } else {
-            root.wifiNetworks = []
-        }
-    }
-
-    function toggleBt() {
-        if (root.btOn) {
-            if (Bluetooth.defaultAdapter) Bluetooth.defaultAdapter.enabled = false
-            runCommand(["rfkill", "block", "bluetooth"])
-            root.btDevices = []
-        } else {
-            runCommand(["rfkill", "unblock", "bluetooth"])
-            // Nudge the native service to enable it once unblocked
-            if (Bluetooth.defaultAdapter) Bluetooth.defaultAdapter.enabled = true
-            refreshBt()
-        }
+    function restartStats() {
+        statsProc.running = false
+        statsProc.running = true
     }
 
     function toggleDnd() {
@@ -810,6 +480,7 @@ Singleton {
     Process {
         id: idleCheckProc
         command: ["pgrep", "-x", "hypridle"]
+        running: true
         onExited: (code) => {
             root.idleOn = (code === 0)
         }
@@ -826,77 +497,12 @@ Singleton {
         // Small delay then re-check
         Qt.callLater(() => { idleCheckProc.running = true })
     }
-
-    function toggleMic() {
-        if (Pipewire.defaultAudioSource && Pipewire.defaultAudioSource.audio) {
-            Pipewire.defaultAudioSource.audio.muted = !Pipewire.defaultAudioSource.audio.muted
-        }
-    }
-
-    function toggleVpn() {
-        root.vpnOn = !root.vpnOn // Optimistic update
-        runCommand(["bash", "-c", "if nmcli device show " + ConfigService.vpnInterface + " 2>/dev/null | grep -q 'STATE.*connected'; then " + ConfigService.vpnDisconnectCmd + "; else " + ConfigService.vpnConnectCmd + "; fi"])
-        vpnRefreshTimer.restart()
-    }
-
-    Timer {
-        id: vpnRefreshTimer
-        interval: 3000
-        repeat: true
-        property int count: 0
-        onTriggered: {
-            networkInit.running = true
-            count++
-            // Poll at 3s, 6s, 9s, and a final check at 15s
-            if (count === 3) {
-                interval = 6000
-            } else if (count >= 4) {
-                stop()
-                count = 0
-                interval = 3000
-            }
-        }
-    }
     // ── Notifications (Native Reactive) ─────────────────────
     property var notifications: NotificationService.history
 
     function clearNotifications() {
         NotificationService.clearHistory()
     }
-
-    property int powerCountdown: 0
-    property string powerActionType: "" // "shutdown" or "reboot"
-
-    Timer {
-        id: powerActionTimer
-        interval: 1000
-        running: root.powerCountdown > 0
-        repeat: true
-        onTriggered: {
-            root.powerCountdown--
-            if (root.powerCountdown === 0) {
-                if (root.powerActionType === "shutdown") root.shutdown()
-                else if (root.powerActionType === "reboot") root.reboot()
-            }
-        }
-    }
-
-    function togglePowerAction(type) {
-        if (root.powerCountdown > 0 && root.powerActionType === type) {
-            root.powerCountdown = 0
-            root.powerActionType = ""
-        } else {
-            root.powerCountdown = 10
-            root.powerActionType = type
-        }
-    }
-
-    function lock() { root.powerCountdown = 0; runCommand([ConfigService.lockCmd]) }
-    function logout() { root.powerCountdown = 0; runCommand(["hyprctl", "dispatch", "exit"]) }
-    function suspend() { root.powerCountdown = 0; runCommand(["systemctl", "suspend"]) }
-    function reboot() { runCommand(["systemctl", "reboot"]) }
-    function shutdown() { runCommand(["systemctl", "poweroff"]) }
-
     function refreshWeather() {
         weatherProc.running = true
     }

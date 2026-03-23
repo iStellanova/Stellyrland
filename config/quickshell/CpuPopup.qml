@@ -10,7 +10,7 @@ Components.BaseStatPopup {
 
     ColumnLayout {
         Layout.fillWidth: true
-        spacing: Services.Colors.spacingMedium
+        spacing: Services.Colors.spacingNormal
 
         Rectangle {
             Layout.fillWidth: true
@@ -30,7 +30,7 @@ Components.BaseStatPopup {
             Item { Layout.fillWidth: true }
             Components.ShadowText {
                 text: Services.ShellData.cpuSpeed
-                font.pixelSize: Services.Colors.fontSizeMedium
+                font.pixelSize: Services.Colors.fontSize
                 font.bold: true
                 color: Services.Colors.primary
             }
