@@ -12,31 +12,34 @@ Singleton {
     property string currentWallpaper: ""  // Track current wallpaper for transitions
     property bool currentIsVideo: false
 
+    readonly property string home: Quickshell.env("HOME")
+    readonly property string shellDir: Quickshell.shellDir
     readonly property var videoExtensions: ["mp4", "mkv", "webm", "mov"]
     readonly property var imageExtensions: ["jpg", "jpeg", "png", "webp"]
 
     signal wallpaperChanged(string path, bool isVideo, string framePath)
 
+    function getExtension(filename) {
+        return filename.split('.').pop().toLowerCase()
+    }
+
     function isVideoFile(filename) {
-        let ext = filename.split('.').pop().toLowerCase()
-        return videoExtensions.indexOf(ext) >= 0
+        return videoExtensions.indexOf(getExtension(filename)) >= 0
     }
 
     function isWallpaperFile(filename) {
-        let ext = filename.split('.').pop().toLowerCase()
+        let ext = getExtension(filename)
         return imageExtensions.indexOf(ext) >= 0 || videoExtensions.indexOf(ext) >= 0
     }
 
     function setWallpaper(path) {
-        let ext = path.split('.').pop().toLowerCase()
-        let isVideo = videoExtensions.indexOf(ext) >= 0
+        let isVideo = isVideoFile(path)
 
         currentWallpaper = path
         currentIsVideo = isVideo
         
         let name = path.split('/').pop()
-        let home = Quickshell.env("HOME")
-        let framePath = "file://" + home + "/.cache/quickshell/wallpapers/" + name + ".png"
+        let framePath = "file://" + root.home + "/.cache/quickshell/wallpapers/" + name + ".png"
 
         // Trigger extraction and theme generation IMMEDIATELY
         root.finalizeTheming(path)
@@ -45,21 +48,25 @@ Singleton {
     }
 
     function finalizeTheming(path) {
-        let scriptPath = Quickshell.shellDir + "/scripts/switchwall.sh"
-        setThemeProc.command = ["bash", scriptPath, path]
-        setThemeProc.running = true
+        setThemeProc.run(["bash", root.shellDir + "/scripts/switchwall.sh", path])
+    }
+
+    function runProcess(proc, cmd) {
+        proc.command = cmd
+        proc.running = true
     }
 
     Process {
         id: setThemeProc
         command: []
         running: false
+        function run(args) { root.runProcess(setThemeProc, args) }
     }
 
     Process {
         id: listProc
-        command: ["ls", root.wallpaperDir]
-        running: true
+        command: ["find", "-L", root.wallpaperDir, "-maxdepth", "1", "-type", "f", "-printf", "%f\n"]
+        running: false
         stdout: StdioCollector {
             onStreamFinished: {
                 let lines = this.text.trim().split("\n")
@@ -94,14 +101,14 @@ Singleton {
 
     function refresh() {
         listProc.running = true
-        batchGenProc.command = ["bash", Quickshell.shellDir + "/scripts/switchwall.sh", "--all", root.wallpaperDir]
-        batchGenProc.running = true
+        batchGenProc.run(["bash", root.shellDir + "/scripts/switchwall.sh", "--all", root.wallpaperDir])
     }
 
     Process {
         id: batchGenProc
         command: []
         running: false
+        function run(args) { root.runProcess(batchGenProc, args) }
     }
 
     Component.onCompleted: refresh()

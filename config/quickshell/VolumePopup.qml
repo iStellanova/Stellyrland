@@ -103,10 +103,10 @@ PanelWindow {
                 }
 
                 Components.ShadowText {
-                    text: Services.ShellData.appVolumesModel.count + " apps"
+                    text: Services.AudioService.appVolumesModel.count + " apps"
                     font.pixelSize: 11
                     color: Services.Colors.dim
-                    visible: Services.ShellData.appVolumesModel.count > 0
+                    visible: Services.AudioService.appVolumesModel.count > 0
                 }
             }
 
@@ -130,10 +130,10 @@ PanelWindow {
 
                 Components.SliderRow {
                     Layout.fillWidth: true
-                    value: Services.ShellData.volume
-                    muted: Services.ShellData.muted
-                    onValueMoved: v => Services.ShellData.setVolume(v)
-                    onIconClicked: Services.ShellData.toggleMute()
+                    value: Services.AudioService.volume
+                    muted: Services.AudioService.muted
+                    onValueMoved: v => Services.AudioService.setVolume(v)
+                    onIconClicked: Services.AudioService.toggleMute()
                 }
             }
 
@@ -141,16 +141,16 @@ PanelWindow {
                 Layout.fillWidth: true
                 height: 1
                 color: Services.Colors.border
-                visible: Services.ShellData.appVolumesModel.count > 0
+                visible: Services.AudioService.appVolumesModel.count > 0
             }
 
             ColumnLayout {
                 Layout.fillWidth: true
                 spacing: Services.Colors.spacingLarge
-                visible: Services.ShellData.appVolumesModel.count > 0
+                visible: Services.AudioService.appVolumesModel.count > 0
 
                 Repeater {
-                    model: Services.ShellData.appVolumesModel
+                    model: Services.AudioService.appVolumesModel
                     delegate: ColumnLayout {
                         Layout.fillWidth: true
                         spacing: Services.Colors.spacingSmall
@@ -160,42 +160,16 @@ PanelWindow {
                             spacing: Services.Colors.spacingNormal
 
                             // Application Icon
-                            Rectangle {
+                            Components.AppIcon {
                                 implicitWidth: 18; implicitHeight: 18
-                                color: Services.Colors.primaryContainer
-                                border.width: 1
-                                border.color: Services.Colors.primary
                                 radius: 4
-                                
-                                Components.ShadowText {
-                                    anchors.centerIn: parent
-                                    text: model.name ? model.name.charAt(0).toUpperCase() : "󰝚"
-                                    font.pixelSize: 10
-                                    font.weight: Font.Bold
-                                    color: Services.Colors.primary
-                                    // This is the baseline, always there but covered if icon is ready
-                                }
-
-                                Image {
-                                    id: appIcon
-                                    anchors.fill: parent
-                                    anchors.margins: 1
-                                    source: model.icon ? "image://icon/" + model.icon : ""
-                                    fillMode: Image.PreserveAspectFit
-                                    asynchronous: true
-                                    visible: status === Image.Ready
-                                    
-                                    // Make sure it covers the background color if it has its own
-                                    onStatusChanged: {
-                                        if (status === Image.Ready) {
-                                            parent.color = "transparent"
-                                            parent.border.width = 0
-                                        } else if (status === Image.Error) {
-                                            // Ensure it stays hidden on error so the letter fallback shows
-                                            visible = false
-                                        }
-                                    }
-                                }
+                                fallbackBgColor: Services.Colors.primaryContainer
+                                fallbackBorderColor: Services.Colors.primary
+                                fallbackBorderWidth: 1
+                                iconBgColor: "transparent"
+                                iconName: model.icon
+                                fallbackText: model.name || "󰝚"
+                                imageMargins: 1
                             }
 
                             Components.ShadowText {
@@ -210,7 +184,7 @@ PanelWindow {
 
                         property var appNode: {
                             let _ = Pipewire.nodes.values
-                            return Services.ShellData.getAppNode(model.pwId)
+                            return Services.AudioService.getAppNode(model.pwId)
                         }
 
                         Components.SliderRow {
@@ -219,11 +193,11 @@ PanelWindow {
                             muted: appNode && appNode.audio ? appNode.audio.muted : model.muted
                             onValueMoved: v => {
                                 if (appNode && appNode.audio) appNode.audio.volume = v / 100
-                                else Services.ShellData.setAppVolume(model.id, v)
+                                else Services.AudioService.setAppVolume(model.id, v)
                             }
                             onIconClicked: {
                                 if (appNode && appNode.audio) appNode.audio.muted = !appNode.audio.muted
-                                else Services.ShellData.toggleAppMute(model.id)
+                                else Services.AudioService.toggleAppMute(model.id)
                             }
                         }
                     }
@@ -232,7 +206,7 @@ PanelWindow {
             
             Components.ShadowText {
                 text: "No applications playing audio"
-                visible: Services.ShellData.appVolumesModel.count === 0
+                visible: Services.AudioService.appVolumesModel.count === 0
                 font.pixelSize: 11
                 color: Services.Colors.dim
                 Layout.alignment: Qt.AlignHCenter

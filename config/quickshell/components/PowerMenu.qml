@@ -17,40 +17,40 @@ Item {
         PowerButton {
             icon: "󰌾"
             label: "Lock"
-            onClicked: { Services.ShellData.lock(); if (root.window) root.window.closeRequested(); }
+            onClicked: { Services.PowerService.lock(); if (root.window) root.window.closeRequested(); }
             Layout.fillWidth: true
         }
 
         PowerButton {
             icon: "󰗽"
             label: "Logout"
-            onClicked: { Services.ShellData.logout(); if (root.window) root.window.closeRequested(); }
+            onClicked: { Services.PowerService.logout(); if (root.window) root.window.closeRequested(); }
             Layout.fillWidth: true
         }
 
         PowerButton {
             icon: "󰒲"
             label: "Sleep"
-            onClicked: { Services.ShellData.suspend(); if (root.window) root.window.closeRequested(); }
+            onClicked: { Services.PowerService.suspend(); if (root.window) root.window.closeRequested(); }
             Layout.fillWidth: true
         }
 
         PowerButton {
             icon: "󰜉"
-            label: (Services.ShellData.powerCountdown > 0 && Services.ShellData.powerActionType === "reboot") 
-                   ? Services.ShellData.powerCountdown + "s" : "Reboot"
-            active: Services.ShellData.powerCountdown > 0 && Services.ShellData.powerActionType === "reboot"
-            onClicked: { Services.ShellData.togglePowerAction("reboot"); }
+            label: (Services.PowerService.powerCountdown > 0 && Services.PowerService.powerActionType === "reboot") 
+                   ? Services.PowerService.powerCountdown + "s" : "Reboot"
+            active: Services.PowerService.powerCountdown > 0 && Services.PowerService.powerActionType === "reboot"
+            onClicked: { Services.PowerService.togglePowerAction("reboot"); }
             Layout.fillWidth: true
         }
 
         PowerButton {
             icon: "󰐥"
-            label: (Services.ShellData.powerCountdown > 0 && Services.ShellData.powerActionType === "shutdown") 
-                   ? Services.ShellData.powerCountdown + "s" : "Power"
+            label: (Services.PowerService.powerCountdown > 0 && Services.PowerService.powerActionType === "shutdown") 
+                   ? Services.PowerService.powerCountdown + "s" : "Power"
             accent: Services.Colors.red
-            active: Services.ShellData.powerCountdown > 0 && Services.ShellData.powerActionType === "shutdown"
-            onClicked: { Services.ShellData.togglePowerAction("shutdown"); }
+            active: Services.PowerService.powerCountdown > 0 && Services.PowerService.powerActionType === "shutdown"
+            onClicked: { Services.PowerService.togglePowerAction("shutdown"); }
             Layout.fillWidth: true
         }
     }

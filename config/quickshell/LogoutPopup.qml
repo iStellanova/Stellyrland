@@ -43,10 +43,10 @@ PanelWindow {
 
     property int currentIndex: 0
     property var actions: [
-        { icon: "󰐥", label: "Shutdown", action: () => Services.ShellData.togglePowerAction("shutdown"), color: Services.Colors.red,     closeOnAction: false },
-        { icon: "󰜉", label: "Reboot",   action: () => Services.ShellData.togglePowerAction("reboot"),   color: Services.Colors.primary, closeOnAction: false },
-        { icon: "󰗽", label: "Logout",   action: () => Services.ShellData.logout(),                color: Services.Colors.primary, closeOnAction: true },
-        { icon: "󰒲", label: "Suspend",  action: () => Services.ShellData.suspend(),               color: Services.Colors.primary, closeOnAction: true }
+        { icon: "󰐥", label: "Shutdown", action: () => Services.PowerService.togglePowerAction("shutdown"), color: Services.Colors.red,     closeOnAction: false },
+        { icon: "󰜉", label: "Reboot",   action: () => Services.PowerService.togglePowerAction("reboot"),   color: Services.Colors.primary, closeOnAction: false },
+        { icon: "󰗽", label: "Logout",   action: () => Services.PowerService.logout(),                color: Services.Colors.primary, closeOnAction: true },
+        { icon: "󰒲", label: "Suspend",  action: () => Services.PowerService.suspend(),               color: Services.Colors.primary, closeOnAction: true }
     ]
 
     Rectangle {
@@ -181,8 +181,8 @@ PanelWindow {
 
                             Components.ShadowText {
                                 Layout.alignment: Qt.AlignHCenter
-                                text: (Services.ShellData.powerCountdown > 0 && Services.ShellData.powerActionType === modelData.label.toLowerCase()) 
-                                       ? Services.ShellData.powerCountdown + "s" : modelData.icon
+                                text: (Services.PowerService.powerCountdown > 0 && Services.PowerService.powerActionType === modelData.label.toLowerCase()) 
+                                       ? Services.PowerService.powerCountdown + "s" : modelData.icon
                                 font.pixelSize: 42
                                 font.family: Services.Colors.fontFamily
                                 color: isSelected ? modelData.color : Services.Colors.mainText

@@ -41,7 +41,7 @@ RowLayout {
         }
     }
 
-    Slider {
+    StyledSlider {
         id: slider
         Layout.fillWidth: true
         from: 0; to: 100
@@ -51,30 +51,6 @@ RowLayout {
         Binding on value {
             value: root.value
             when: !slider.pressed
-        }
-
-        background: Rectangle {
-            x: slider.leftPadding
-            y: slider.topPadding + slider.availableHeight / 2 - height / 2
-            implicitWidth: 200; implicitHeight: 14
-            width: slider.availableWidth; height: implicitHeight
-            radius: Services.Colors.radiusLarge
-            color: Services.Colors.border
-
-            Rectangle {
-                width: slider.visualPosition * parent.width
-                height: parent.height
-                radius: Services.Colors.radiusLarge
-                color: Services.Colors.primary
-            }
-        }
-
-        handle: Rectangle {
-            x: slider.leftPadding + slider.visualPosition * (slider.availableWidth - width)
-            y: slider.topPadding + slider.availableHeight / 2 - height / 2
-            implicitWidth: 14; implicitHeight: 14
-            radius: Services.Colors.radiusLarge
-            color: "white"
         }
 
         onMoved: root.valueMoved(slider.value)

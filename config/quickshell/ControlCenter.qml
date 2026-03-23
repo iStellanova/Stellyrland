@@ -15,39 +15,30 @@ PanelWindow {
     // Visibility is controlled by shell.qml
     signal closeRequested()
 
-    property bool hasMouseEntered: false
-    property bool powerMenuVisible: false
-    property bool showingInfo: false
-    property bool showingWifi: false
-    property bool showingBt: false
-    onVisibleChanged: if (!visible) {
-        hasMouseEntered = false
-        powerMenuVisible = false
-        showingInfo = false
-        showingWifi = false
-        showingBt = false
-    }
+    property bool open: false
+    visible: open || rootContainer.opacity > 0 || ccTranslate.x > -350
 
-    onShowingInfoChanged: if (showingInfo) { powerMenuVisible = false; showingWifi = false; showingBt = false; }
-    onPowerMenuVisibleChanged: if (powerMenuVisible) { showingInfo = false; showingWifi = false; showingBt = false; }
-    onShowingWifiChanged: if (showingWifi) { powerMenuVisible = false; showingInfo = false; showingBt = false; Services.ShellData.refreshWifi(); }
-    onShowingBtChanged: if (showingBt) { powerMenuVisible = false; showingInfo = false; showingWifi = false; Services.ShellData.refreshBt(); }
+    onVisibleChanged: if (!visible) {
+        rootContainer.powerMenuVisible = false
+        rootContainer.showingInfo = false
+        rootContainer.showingWifi = false
+        rootContainer.showingBt = false
+    }
 
     Timer {
         id: closeTimer
         interval: Services.Colors.autoCloseInterval
-        running: ccWindow.visible && hasMouseEntered && !ccHover.hovered
+        running: ccWindow.visible && ccWindow.open && !ccHover.hovered
         repeat: true
         onTriggered: ccWindow.closeRequested()
     }
 
     HoverHandler {
         id: ccHover
-        onHoveredChanged: if (hovered) hasMouseEntered = true
     }
 
     // Window geometry
-    implicitWidth: 330
+    implicitWidth: 400
     implicitHeight: mainCol.implicitHeight + 16
     Behavior on implicitHeight {
         NumberAnimation { duration: Services.Colors.animFast; easing.type: Easing.OutQuart }
@@ -64,7 +55,7 @@ PanelWindow {
 
     margins {
         top: 8
-        left: 12
+        left: 0
     }
 
     color: "transparent"
@@ -73,12 +64,42 @@ PanelWindow {
 
     // ── Root container ───────────────────────────────────────
     Rectangle {
-        anchors.fill: parent
+        id: rootContainer
+        width: 330
+        anchors.top: parent.top
+        anchors.bottom: parent.bottom
+        anchors.left: parent.left
+        anchors.leftMargin: 12
         radius: Services.Colors.radiusLarge
         color: Services.Colors.bg
         border.width: 1
         border.color: Services.Colors.border
         clip: true
+
+        opacity: ccWindow.open ? 1.0 : 0.0
+        
+        transform: Translate {
+            id: ccTranslate
+            x: ccWindow.open ? 0 : -350
+            Behavior on x {
+                NumberAnimation { duration: Services.Colors.animSlow; easing.type: Easing.OutExpo }
+            }
+        }
+
+        Behavior on opacity {
+            NumberAnimation { duration: Services.Colors.animSlow; easing.type: Easing.OutExpo }
+        }
+        
+        // Internal page states moved from root to keep them reactive even when hidden
+        property bool powerMenuVisible: false
+        property bool showingInfo: false
+        property bool showingWifi: false
+        property bool showingBt: false
+
+        onShowingInfoChanged: if (showingInfo) { powerMenuVisible = false; showingWifi = false; showingBt = false; }
+        onPowerMenuVisibleChanged: if (powerMenuVisible) { showingInfo = false; showingWifi = false; showingBt = false; }
+        onShowingWifiChanged: if (showingWifi) { powerMenuVisible = false; showingInfo = false; showingBt = false; Services.NetworkService.refreshWifi(); }
+        onShowingBtChanged: if (showingBt) { powerMenuVisible = false; showingInfo = false; showingWifi = false; }
 
         Flickable {
             anchors.fill: parent
@@ -95,7 +116,7 @@ PanelWindow {
                 Item {
                     id: ccContentStack
                     Layout.fillWidth: true
-                    Layout.preferredHeight: ccWindow.showingInfo ? (infoContent.implicitHeight + (Services.Colors.spacingXLarge * 2)) : ccMainContent.implicitHeight
+                    Layout.preferredHeight: rootContainer.showingInfo ? (infoContent.implicitHeight + (Services.Colors.spacingXLarge * 2)) : ccMainContent.implicitHeight
                     clip: true
 
                     Behavior on Layout.preferredHeight {
@@ -106,7 +127,7 @@ PanelWindow {
                         id: ccMainContent
                         anchors.fill: parent
                         spacing: Services.Colors.spacingLarge
-                        opacity: ccWindow.showingInfo ? 0 : 1
+                        opacity: rootContainer.showingInfo ? 0 : 1
                         visible: opacity > 0
 
                         Behavior on opacity { NumberAnimation { duration: Services.Colors.animFast } }
@@ -177,10 +198,10 @@ PanelWindow {
 
                             Components.TogglePill {
                                 label: "Mic"
-                                icon: Services.ShellData.micMuted ? "󰍭" : "󰍬"
-                                active: Services.ShellData.micMuted
+                                icon: Services.AudioService.micMuted ? "󰍭" : "󰍬"
+                                active: Services.AudioService.micMuted
                                 accent: Services.Colors.red
-                                onToggle: function() { Services.ShellData.toggleMic() }
+                                onToggle: function() { Services.AudioService.toggleMic() }
                                 Layout.fillWidth: true
                             }
 
@@ -196,26 +217,26 @@ PanelWindow {
                             // Bottom row: Wi-Fi, VPN, BT
                             Components.TogglePill {
                                 label: "Wi-Fi"
-                                icon: Services.ShellData.wifiOn ? "󰤨" : "󰤭"
-                                active: ccWindow.showingWifi
-                                onToggle: function() { ccWindow.showingWifi = !ccWindow.showingWifi }
+                                icon: Services.NetworkService.wifiOn ? "󰤨" : "󰤭"
+                                active: rootContainer.showingWifi
+                                onToggle: function() { rootContainer.showingWifi = !rootContainer.showingWifi }
                                 Layout.fillWidth: true
                             }
 
                             Components.TogglePill {
                                 label: "VPN"
                                 icon: "󰖂"
-                                active: Services.ShellData.vpnOn
+                                active: Services.NetworkService.vpnOn
                                 accent: Services.Colors.primary
-                                onToggle: function() { Services.ShellData.toggleVpn() }
+                                onToggle: function() { Services.NetworkService.toggleVpn() }
                                 Layout.fillWidth: true
                             }
 
                             Components.TogglePill {
                                 label: "BT"
                                 icon: "󰂯"
-                                active: ccWindow.showingBt
-                                onToggle: function() { ccWindow.showingBt = !ccWindow.showingBt }
+                                active: rootContainer.showingBt
+                                onToggle: function() { rootContainer.showingBt = !rootContainer.showingBt }
                                 Layout.fillWidth: true
                             }
                         }
@@ -224,9 +245,9 @@ PanelWindow {
                         ColumnLayout {
                             id: wifiExpandable
                             Layout.fillWidth: true
-                            Layout.preferredHeight: ccWindow.showingWifi ? (wifiList.implicitHeight + powerRow.implicitHeight + sep.height + 20) : 0
+                            Layout.preferredHeight: rootContainer.showingWifi ? (wifiList.implicitHeight + powerRow.implicitHeight + sep.height + 20) : 0
                             clip: true
-                            opacity: ccWindow.showingWifi ? 1 : 0
+                            opacity: rootContainer.showingWifi ? 1 : 0
                             visible: opacity > 0
                             Layout.leftMargin: 10
                             Layout.rightMargin: 10
@@ -245,13 +266,13 @@ PanelWindow {
                                     text: "󰤨"
                                     font.pixelSize: 14
                                     color: Services.Colors.primary
-                                    visible: Services.ShellData.wifiOn
+                                    visible: Services.NetworkService.wifiOn
                                 }
                                 Components.ShadowText {
                                     text: "󰤭"
                                     font.pixelSize: 14
                                     color: Services.Colors.dim
-                                    visible: !Services.ShellData.wifiOn
+                                    visible: !Services.NetworkService.wifiOn
                                 }
 
                                 Components.ShadowText {
@@ -263,10 +284,10 @@ PanelWindow {
                                 }
                                 
                                 Components.BarButton {
-                                    text: Services.ShellData.wifiOn ? "ON" : "OFF"
-                                    textColor: Services.ShellData.wifiOn ? Services.Colors.primary : Services.Colors.mainText
+                                    text: Services.NetworkService.wifiOn ? "ON" : "OFF"
+                                    textColor: Services.NetworkService.wifiOn ? Services.Colors.primary : Services.Colors.mainText
                                     bgColor: Qt.rgba(1, 1, 1, 0.1)
-                                    onClicked: Services.ShellData.toggleWifi()
+                                    onClicked: Services.NetworkService.toggleWifi()
                                 }
                             }
 
@@ -286,7 +307,7 @@ PanelWindow {
                                 clip: true
                                 interactive: true // Explicitly enable interaction
                                 spacing: Services.Colors.spacingSmall
-                                model: Services.ShellData.wifiOn ? Services.ShellData.wifiNetworks : []
+                                model: Services.NetworkService.wifiOn ? Services.NetworkService.wifiNetworks : []
 
                                 delegate: Rectangle {
                                     width: wifiList.width
@@ -296,7 +317,7 @@ PanelWindow {
                                     border.width: 1
                                     border.color: netMouse.containsMouse ? Services.Colors.border : "transparent"
 
-                                    property bool isActive: Services.ShellData.netSsid === modelData.ssid
+                                    property bool isActive: Services.NetworkService.netSsid === modelData.ssid
 
                                     RowLayout {
                                         anchors.fill: parent
@@ -339,7 +360,7 @@ PanelWindow {
                                         cursorShape: Qt.PointingHandCursor
                                         onClicked: {
                                             if (!isActive) {
-                                                Services.ShellData.connectWifi(modelData.ssid)
+                                                Services.NetworkService.connectWifi(modelData.ssid)
                                             }
                                         }
                                     }
@@ -347,11 +368,11 @@ PanelWindow {
 
                                 footer: Item {
                                     width: parent.width
-                                    height: contentHeight === 0 ? 40 : 0
-                                    visible: contentHeight === 0
+                                    height: wifiList.count === 0 ? 40 : 0
+                                    visible: wifiList.count === 0
                                     Components.ShadowText {
                                         anchors.centerIn: parent
-                                        text: !Services.ShellData.wifiOn ? "Wi-Fi is off" : "Scanning..."
+                                        text: !Services.NetworkService.wifiOn ? "Wi-Fi is off" : "Scanning..."
                                         color: Services.Colors.dim
                                         font.pixelSize: 10
                                         font.italic: true
@@ -365,9 +386,9 @@ PanelWindow {
                         ColumnLayout {
                             id: btExpandable
                             Layout.fillWidth: true
-                            Layout.preferredHeight: ccWindow.showingBt ? (btList.implicitHeight + btPowerRow.implicitHeight + btSep.height + 20) : 0
+                            Layout.preferredHeight: rootContainer.showingBt ? (btList.implicitHeight + btPowerRow.implicitHeight + btSep.height + 20) : 0
                             clip: true
-                            opacity: ccWindow.showingBt ? 1 : 0
+                            opacity: rootContainer.showingBt ? 1 : 0
                             visible: opacity > 0
                             Layout.leftMargin: 10
                             Layout.rightMargin: 10
@@ -386,13 +407,13 @@ PanelWindow {
                                     text: "󰂯"
                                     font.pixelSize: 14
                                     color: Services.Colors.primary
-                                    visible: Services.ShellData.btOn
+                                    visible: Services.NetworkService.btOn
                                 }
                                 Components.ShadowText {
                                     text: "󰂲"
                                     font.pixelSize: 14
                                     color: Services.Colors.dim
-                                    visible: !Services.ShellData.btOn
+                                    visible: !Services.NetworkService.btOn
                                 }
 
                                 Components.ShadowText {
@@ -404,10 +425,10 @@ PanelWindow {
                                 }
                                 
                                 Components.BarButton {
-                                    text: Services.ShellData.btOn ? "ON" : "OFF"
-                                    textColor: Services.ShellData.btOn ? Services.Colors.primary : Services.Colors.mainText
+                                    text: Services.NetworkService.btOn ? "ON" : "OFF"
+                                    textColor: Services.NetworkService.btOn ? Services.Colors.primary : Services.Colors.mainText
                                     bgColor: Qt.rgba(1, 1, 1, 0.1)
-                                    onClicked: Services.ShellData.toggleBt()
+                                    onClicked: Services.NetworkService.toggleBt()
                                 }
                             }
 
@@ -427,7 +448,7 @@ PanelWindow {
                                 clip: true
                                 interactive: true
                                 spacing: Services.Colors.spacingSmall
-                                model: Services.ShellData.btOn ? Services.ShellData.btDevices : []
+                                model: Services.NetworkService.btOn ? Services.NetworkService.btDevices : []
 
                                 delegate: Rectangle {
                                     width: btList.width
@@ -471,9 +492,9 @@ PanelWindow {
                                         cursorShape: Qt.PointingHandCursor
                                         onClicked: {
                                             if (modelData.connected) {
-                                                Services.ShellData.disconnectBt(modelData.address)
+                                                Services.NetworkService.disconnectBt(modelData.address)
                                             } else {
-                                                Services.ShellData.connectBt(modelData.address)
+                                                Services.NetworkService.connectBt(modelData.address)
                                             }
                                         }
                                     }
@@ -481,11 +502,11 @@ PanelWindow {
 
                                 footer: Item {
                                     width: parent.width
-                                    height: contentHeight === 0 ? 40 : 0
-                                    visible: contentHeight === 0
+                                    height: btList.count === 0 ? 40 : 0
+                                    visible: btList.count === 0
                                     Components.ShadowText {
                                         anchors.centerIn: parent
-                                        text: !Services.ShellData.btOn ? "Bluetooth is off" : "No paired devices"
+                                        text: !Services.NetworkService.btOn ? "Bluetooth is off" : "No paired devices"
                                         color: Services.Colors.dim
                                         font.pixelSize: 10
                                         font.italic: true
@@ -716,7 +737,7 @@ PanelWindow {
                         anchors.top: parent.top
                         anchors.margins: Services.Colors.spacingXLarge
                         spacing: Services.Colors.spacingXLarge
-                        opacity: ccWindow.showingInfo ? 1 : 0
+                        opacity: rootContainer.showingInfo ? 1 : 0
                         visible: opacity > 0
 
                         Behavior on opacity { NumberAnimation { duration: Services.Colors.animFast } }
@@ -745,7 +766,7 @@ PanelWindow {
                                     anchors.fill: parent
                                     hoverEnabled: true
                                     cursorShape: Qt.PointingHandCursor
-                                    onClicked: ccWindow.showingInfo = false
+                                    onClicked: rootContainer.showingInfo = false
                                 }
                             }
                             
@@ -872,7 +893,7 @@ PanelWindow {
                             Item {
                                 anchors.fill: parent
                                 anchors.margins: 2
-                                layer.enabled: true
+                                layer.enabled: ccWindow.open
                                 layer.effect: OpacityMask {
                                     maskSource: maskRect
                                 }
@@ -986,7 +1007,7 @@ PanelWindow {
                             cursorShape: Qt.PointingHandCursor
                             hoverEnabled: true
                             onClicked: {
-                                ccWindow.showingInfo = !ccWindow.showingInfo
+                                rootContainer.showingInfo = !rootContainer.showingInfo
                             }
                         }
                     }
@@ -1015,7 +1036,7 @@ PanelWindow {
                             cursorShape: Qt.PointingHandCursor
                             hoverEnabled: true
                             onClicked: {
-                                ccWindow.powerMenuVisible = !ccWindow.powerMenuVisible
+                                rootContainer.powerMenuVisible = !rootContainer.powerMenuVisible
                             }
                         }
                     }
@@ -1026,10 +1047,10 @@ PanelWindow {
                     id: powerMenu
                     window: ccWindow
                     Layout.fillWidth: true
-                    Layout.preferredHeight: ccWindow.powerMenuVisible ? 80 : 0
-                    opacity: ccWindow.powerMenuVisible ? 1 : 0
+                    Layout.preferredHeight: rootContainer.powerMenuVisible ? 80 : 0
+                    opacity: rootContainer.powerMenuVisible ? 1 : 0
                     visible: opacity > 0
-                    Layout.topMargin: ccWindow.powerMenuVisible ? -4 : -8
+                    Layout.topMargin: rootContainer.powerMenuVisible ? -4 : -8
                     clip: true
 
                     Behavior on Layout.preferredHeight {

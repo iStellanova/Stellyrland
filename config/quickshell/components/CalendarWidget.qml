@@ -8,6 +8,9 @@ Item {
     implicitWidth: layout.implicitWidth
     implicitHeight: layout.implicitHeight
 
+    property bool pinned: false
+    signal pinToggled()
+
     property date currentDate: new Date()
     property int currentMonth: currentDate.getMonth()
     property int currentYear: currentDate.getFullYear()
@@ -96,6 +99,12 @@ Item {
             }
 
             Item { Layout.fillWidth: true }
+
+            PinButton {
+                pinned: root.pinned
+                onToggled: root.pinToggled()
+                Layout.alignment: Qt.AlignVCenter
+            }
 
             Rectangle {
                 implicitWidth: 24; implicitHeight: 24

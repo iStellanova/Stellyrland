@@ -96,8 +96,8 @@ get_cpu_speed() {
   
   if [ "$mhz" = "0" ]; then
     mhz=$(awk '/cpu MHz/ {sum+=$4; count++} END {if (count>0) print sum/count; else print 0}' /proc/cpuinfo)
-    # /proc/cpuinfo provides actual MHz, scaling_cur_freq provides kHz
-    mhz=$((mhz * 1000))
+    # /proc/cpuinfo provides actual MHz, multiply by 1000 for standard kHz used below
+    mhz=$(awk "BEGIN {print $mhz * 1000}")
   fi
   
   local ghz=$(awk "BEGIN {printf \"%.2f\", $mhz/1000000}")

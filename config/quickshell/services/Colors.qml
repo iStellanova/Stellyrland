@@ -10,19 +10,28 @@ Singleton {
     // ── Internal state ────────────────────────────────────────
     property var colors: ({})
 
+    function resolve(keys, fallback) {
+        for (let i = 0; i < keys.length; i++) {
+            let k = keys[i]
+            if (colors[k] !== undefined) return colors[k]
+            if (ConfigService.hardcodedColors[k] !== undefined) return ConfigService.hardcodedColors[k]
+        }
+        return fallback
+    }
+
     // ── Exposed color properties ──────────────────────────────
-    readonly property color primary:          colors.primary          ?? (ConfigService.hardcodedColors.primary          || "#b1c5ff")
-    readonly property color primaryContainer: colors.primaryContainer ?? (ConfigService.hardcodedColors.primaryContainer || "#2f4578")
-    readonly property color secondary:        colors.secondary        ?? (ConfigService.hardcodedColors.secondary        || "#c0c6dc")
-    readonly property color background:       colors.background       ?? (ConfigService.hardcodedColors.background       || "#121318")
-    readonly property color surface:          colors.surface          ?? (ConfigService.hardcodedColors.surface          || "#121318")
-    readonly property color mainText:         colors.onSurface        ?? (colors.onBackground ?? (ConfigService.hardcodedColors.onSurface || (ConfigService.hardcodedColors.onBackground || "#ffffff")))
-    readonly property color onSurface:        colors.onSurface        ?? mainText
-    readonly property color onBackground:     colors.onBackground     ?? mainText
-    readonly property color onPrimary:        colors.onPrimary        ?? (ConfigService.hardcodedColors.onPrimary        || "#162e60")
-    readonly property color success:          colors.tertiaryContainer  ?? (ConfigService.hardcodedColors.tertiaryContainer  || "#50fa7b")
-    readonly property color warning:          ConfigService.hardcodedColors.warning || "#f1fa8c"
-    readonly property color error:            colors.error            ?? (ConfigService.hardcodedColors.error            || "#ff5555")
+    readonly property color primary:          resolve(["primary"], "#b1c5ff")
+    readonly property color primaryContainer: resolve(["primaryContainer"], "#2f4578")
+    readonly property color secondary:        resolve(["secondary"], "#c0c6dc")
+    readonly property color background:       resolve(["background"], "#121318")
+    readonly property color surface:          resolve(["surface"], "#121318")
+    readonly property color mainText:         resolve(["onSurface", "onBackground"], "#ffffff")
+    readonly property color onSurface:        resolve(["onSurface"], mainText)
+    readonly property color onBackground:     resolve(["onBackground"], mainText)
+    readonly property color onPrimary:        resolve(["onPrimary"], "#162e60")
+    readonly property color success:          resolve(["tertiaryContainer"], "#50fa7b")
+    readonly property color warning:          resolve(["warning"], "#f1fa8c")
+    readonly property color error:            resolve(["error"], "#ff5555")
 
     // ── Typography ────────────────────────────────────────────
     readonly property string fontFamily: ConfigService.shellFont

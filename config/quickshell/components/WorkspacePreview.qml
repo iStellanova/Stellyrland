@@ -22,13 +22,20 @@ PanelWindow {
     }
     
     margins.top: 8 // Match other popups
-    margins.left: Math.max(12, Math.min(xOffset - (windowWidth / 2), Services.MonitorService.primaryScreen.width - windowWidth - 12))
+    margins.left: Math.max(12, Math.min(xOffset - (window.implicitWidth / 2), Services.MonitorService.primaryScreen.width - window.implicitWidth - 12))
 
-    readonly property real windowWidth: 320
-    readonly property real aspectRatio: currentMonitor.height / currentMonitor.width || Services.MonitorService.primaryScreen.height / Services.MonitorService.primaryScreen.width
-
-    implicitWidth: windowWidth
-    implicitHeight: Math.round((windowWidth - 24) * aspectRatio + 24)
+    readonly property real maxDimension: 300
+    
+    // Calculate dimensions so the inner workspace representation fits within a 300px bounding box
+    // while maintaining a tight 12px padding on all sides.
+    readonly property real innerW: aspectRatio <= 1.0 ? (maxDimension - 24) : Math.round((maxDimension - 24) / aspectRatio)
+    readonly property real innerH: Math.round(innerW * aspectRatio)
+    
+    implicitWidth: innerW + 24
+    implicitHeight: innerH + 24
+    
+    // Scale the minimap to fill the available space
+    readonly property real previewWidth: innerW
     
     visible: open || content.opacity > 0
     color: "transparent"
@@ -52,6 +59,10 @@ PanelWindow {
         }
         return ({})
     }
+    
+    readonly property real monitorW: currentMonitor.width ? (currentMonitor.transform % 2 === 0 ? currentMonitor.width : currentMonitor.height) : Services.MonitorService.primaryScreen.width
+    readonly property real monitorH: currentMonitor.height ? (currentMonitor.transform % 2 === 0 ? currentMonitor.height : currentMonitor.width) : Services.MonitorService.primaryScreen.height
+    readonly property real aspectRatio: monitorH / monitorW
 
     Process {
         id: dataProc
@@ -80,21 +91,7 @@ PanelWindow {
         }
     }
 
-    // Robust Icon Resolution
-    function getIconName(className) {
-        if (!className) return ""
-        let lower = className.toLowerCase()
-        
-        // Handle common overrides
-        if (lower === "zen") return "zen-browser"
-        if (lower === "spotify") return "spotify-client"
-        if (lower.includes("firefox")) return "firefox"
-        if (lower.includes("librewolf")) return "librewolf"
-        if (lower === "discord") return "discord"
-        
-        // Default to the original class name to preserve case sensitivity
-        return className
-    }
+
 
     Rectangle {
         id: content
@@ -117,15 +114,14 @@ PanelWindow {
             width: parent.width - 24
             
             readonly property var reserved: window.currentMonitor.reserved || [0, 0, 0, 0]
-            readonly property real usableW: window.currentMonitor.width ? (window.currentMonitor.width - reserved[0] - reserved[2]) : Services.MonitorService.primaryScreen.width
-            readonly property real usableH: window.currentMonitor.height ? (window.currentMonitor.height - reserved[1] - reserved[3]) : Services.MonitorService.primaryScreen.height
+            readonly property real usableW: window.monitorW - reserved[0] - reserved[2]
+            readonly property real usableH: window.monitorH - reserved[1] - reserved[3]
             
             height: width * (usableH / usableW)
             
             radius: 4
-            color: "transparent" // Remove ghostly background
-            border.width: 1
-            border.color: Qt.rgba(Services.Colors.border.r, Services.Colors.border.g, Services.Colors.border.b, 0.1)
+            color: "transparent"
+            border.width: 0 // Remove redundant inner border
             clip: true
             visible: window.windows.length > 0
             
@@ -148,38 +144,25 @@ PanelWindow {
                     width: Math.max(modelData.size[0] * scaleX, 4)
                     height: Math.max(modelData.size[1] * scaleY, 4)
                     
-                    radius: 3
-                    color: Services.Colors.primaryContainer
+                    radius: 8
+                    color: !appIcon.isFallback 
+                        ? Qt.rgba(Services.Colors.primary.r, Services.Colors.primary.g, Services.Colors.primary.b, 0.25)
+                        : Qt.rgba(1, 1, 1, 0.15)
                     border.width: 1
-                    border.color: Qt.rgba(Services.Colors.primary.r, Services.Colors.primary.g, Services.Colors.primary.b, 0.4)
+                    border.color: Qt.rgba(1, 1, 1, 0.1)
 
-                    // Fallback letter (Volume Mixer style)
-                    ShadowText {
-                        anchors.centerIn: parent
-                        text: modelData.class ? modelData.class.charAt(0).toUpperCase() : "󰝚"
-                        font.pixelSize: Math.min(parent.height * 0.5, 12)
-                        font.weight: Font.Bold
-                        color: Services.Colors.primary
-                        opacity: 0.8
-                        visible: appIcon.status !== Image.Ready
-                    }
-
-                    Image {
+                    AppIcon {
                         id: appIcon
                         anchors.centerIn: parent
-                        width: Math.min(parent.width * 0.7, 24)
-                        height: Math.min(parent.height * 0.7, 24)
-                        source: modelData.class ? "image://icon/" + window.getIconName(modelData.class) : ""
-                        fillMode: Image.PreserveAspectFit
-                        asynchronous: true
+                        width: Math.min(parent.width * 0.6, 28)
+                        height: Math.min(parent.height * 0.6, 28)
+                        iconName: modelData["class"]
+                        fallbackText: modelData["class"] || modelData.title || "󰝚"
+                        iconBgColor: "transparent"
+                        fallbackBgColor: "transparent"
+                        fallbackBorderWidth: 0
+                        iconBorderWidth: 0
                         opacity: 0.9
-                        visible: status === Image.Ready
-                        
-                        onStatusChanged: {
-                            if (status === Image.Ready) {
-                                parent.color = Qt.rgba(Services.Colors.primary.r, Services.Colors.primary.g, Services.Colors.primary.b, 0.25)
-                            }
-                        }
                     }
                 }
             }

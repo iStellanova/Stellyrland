@@ -39,7 +39,14 @@ fetch_data() {
 # Process each stream and resolve icons/volumes efficiently
 fetch_data | while read -r item; do
     # Extract all relevant fields safely in one jq call
-    eval "$(echo "$item" | jq -r '@sh "id=\(.id); pid=\(.pid // ""); name=\(.name); icon=\(.icon // ""); volume=\(.volume // ""); muted=\(.muted // "")"')"
+    {
+        read -r id
+        read -r pid
+        read -r name
+        read -r icon
+        read -r volume
+        read -r muted
+    } < <(echo "$item" | jq -r '.id, (.pid // ""), .name, (.icon // ""), (.volume // ""), (.muted // "")')
     
     # Cleanup icon and muted status
     [ "$icon" == "null" ] || [ "$icon" == "audio-x-generic" ] && icon=""

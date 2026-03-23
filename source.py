@@ -18,9 +18,7 @@ decman.pacman.packages |= {
     "grub",                 # Bootloader.
     "grub-btrfs",           # BTRFS Grub Loader.
     "gst-plugin-pipewire",  # Pipewire Engine.
-    "linux",                # Linux Packages.
     "linux-firmware",       # Linux Firmware.
-    "linux-headers",        # Linux Headers.
     "linux-zen",            # Zen Linux Kernel.
     "linux-zen-headers",    # Linux Zen Headers.
     "pacman-contrib",       # Pacman Library Utilities.
@@ -261,7 +259,6 @@ decman.files["/home/stellanova/.config/hypr/rules.conf"] = File(source_file="./c
 decman.files["/home/stellanova/.config/hypr/hyprlock.conf"] = File(source_file="./config/hypr/hyprlock.conf", owner="stellanova")
 decman.files["/home/stellanova/.config/hypr/hyprtoolkit.conf"] = File(source_file="./config/hypr/hyprtoolkit.conf", owner="stellanova")
 decman.files["/home/stellanova/.config/hypr/hypridle.conf"] = File(source_file="./config/hypr/hypridle.conf", owner="stellanova")
-decman.directories["/home/stellanova/.config/hypr/Scripts"] = Directory(source_directory="./config/hypr/Scripts", owner="stellanova", permissions=0o755)
 
 # --- Terminal ---
 decman.files["/home/stellanova/.config/kitty/kitty.conf"] = File(source_file="./config/kitty/kitty.conf", owner="stellanova")
