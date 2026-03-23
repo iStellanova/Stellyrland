@@ -1,7 +1,10 @@
 import decman
 from decman import Directory, File
 
-decman.execution_order = ["pacman", "aur", "flatpak", "files", "systemd"]
+# NOTES:
+# Don't forget to add amdgpu.ppfeaturemask=0xffffffff to grub config.
+
+decman.execution_order = ["pacman", "aur", "flatpak", "files"]
 
 # ==========================================
 # PACMAN PACKAGES
@@ -13,7 +16,9 @@ decman.pacman.packages |= {
     "base",                 # Arch Base System.
     "base-devel",           # Base Development Tools.
     "btrfs-progs",          # BTRFS Engine.
+    "cronie",               # OpenRC Timer Daemon.
     "efibootmgr",           # EFI Boot Manager.
+    "elogind",              # OpenRC Login Manager.
     "flatpak",              # Flatpak Apps.
     "grub",                 # Bootloader.
     "grub-btrfs",           # BTRFS Grub Loader.
@@ -27,10 +32,9 @@ decman.pacman.packages |= {
     "pipewire-jack",        # Pipewire Jack System.
     "pipewire-pulse",       # Pipewire Pulseaudio Integration.
     "rsync",                # Copy Utility for Files and Directories.
-    "sddm",                 # Login Greeter.
+    "sddm-openrc",          # Login Greeter.
     "snapper",              # Backup Manager.
     "sof-firmware",         # Audio Support.
-    "uwsm",                 # Universal Wayland Session Manager, bridge for Hyprland.
     "wireplumber",          # Pipewire Dependency to Manage Sound.
     "xorg-server",          # Xorg Window Server.
     "xorg-xwayland",        # Wayland X Compat Layer.
@@ -49,18 +53,17 @@ decman.pacman.packages |= {
     "docker-compose",       # Docker Compose Tool.
     "dnsmasq",              # For VM Networking.
     "smartmontools",        # Storage Health Tool.
-    "snap-pac",             # Pacman Snapper Integration.
     "cliphist",             # Clipboard Manager.
     "ddcutil",              # Monitor Control.
     "impala",               # TUI Wifi Settings.
     "iwd",                  # Internet Connectivity Daemon.
-    "networkmanager",       # Network Management TUI.
+    "networkmanager-openrc",# Network Management TUI.
     "python-pip",           # Python Package Installer.
     "python-pipx",          # Isolated Python App Installer.
     "reflector",            # Mirrorlist Updater.
     "seahorse",             # Keyring Utility.
     "unzip",                # Better Zip Support for File Roller.
-    "zram-generator",       # SystemD Memory Manager.
+    "zram-openrc",       # SystemD Memory Manager.
 }
 
 # --- Hyprland & Wayland ---
@@ -88,7 +91,7 @@ decman.pacman.packages |= {
 
 # --- Drivers ---
 decman.pacman.packages |= {
-    "bluez",                # Bluetooth Driver.
+    "bluez-openrc",         # Bluetooth Driver.
     "bluez-utils",          # Bluetooth Utils for Debugging.
     "ollama-rocm",          # Ollama ROCM Driver for AMD Cards.
     "vulkan-radeon",        # Radeon Vulkan Driver.
@@ -146,7 +149,6 @@ decman.pacman.packages |= {
     "gimp",                 # Graphic Manipulation Tool.
     "imv",                  # Image Viewer.
     "kdenlive",             # Editor for Video Production.
-    "lact",                 # GPU Tuning Utility.
     "liquidctl",            # AIO Control.
     "lollypop",             # GTK Music Player.
     "mpv",                  # Video Player.
@@ -209,7 +211,6 @@ decman.aur.packages |= {
 # --- Icons & Theming ---
 decman.aur.packages |= {
     "colloid-icon-theme-git",   # Icon Theme, Boxy, Mac-Look.
-    "sddm-theme-noctalia-git",  # Noctalia Login Theme.
     "iconic",                   # App Icon Editor.
     "linuxthemestore-git",      # Theme Store, GTK.
 }
@@ -286,25 +287,3 @@ decman.directories["/home/stellanova/zshrc"] = Directory(source_directory="./zsh
 decman.files["/etc/coolercontrol/config.toml"] = File(source_file="./etc/coolercontrol/config.toml")
 decman.files["/etc/coolercontrol/config-ui.json"] = File(source_file="./etc/coolercontrol/config-ui.json")
 decman.files["/etc/coolercontrol/modes.json"] = File(source_file="./etc/coolercontrol/modes.json")
-
-
-
-# ==========================================
-# SYSTEMD SERVICES
-# ==========================================
-decman.systemd.enabled_units |= {
-    "bluetooth.service",                    # Bluetooth.
-    "btrfs-scrub@-.timer",                  # Monthly BTRFS Integrity Check.
-    "coolercontrold.service",               # AIO Controller Daemon.
-    "grub-btrfsd.service",                  # BTRFS Grub Snapshots Daemon.
-    "iwd.service",                          # Internet Connectivity Daemon.
-    "lactd.service",                        # GPU Tuning Daemon.
-    "mprisence.service",                    # Discord Live Music Presence Daemon.
-    "NetworkManager.service",               # Network Management.
-    "NetworkManager-dispatcher.service",    # NetworkManager Dispatcher.
-    "paccache.timer",                       # Paccache cleaner timer.
-    "sddm.service",                         # Login Greeter.
-    "snapper-cleanup.timer",                # Automatic Snapshot Cleanup.
-    "snapper-timeline.timer",               # Automatic BTRFS Snapshots.
-    "reflector.timer",                      # Mirror Update Service.
-}

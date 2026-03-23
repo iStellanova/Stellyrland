@@ -52,7 +52,7 @@ Singleton {
 
     function lock() { root.powerCountdown = 0; runCommand([ConfigService.lockCmd]) }
     function logout() { root.powerCountdown = 0; runCommand(["hyprctl", "dispatch", "exit"]) }
-    function suspend() { root.powerCountdown = 0; runCommand(["systemctl", "suspend"]) }
-    function reboot() { runCommand(["systemctl", "reboot"]) }
-    function shutdown() { runCommand(["systemctl", "poweroff"]) }
+    function suspend()  { root.powerCountdown = 0; runCommand(["loginctl", "suspend"]) }
+    function reboot()   { runCommand(["loginctl", "reboot"]) }
+    function shutdown() { runCommand(["loginctl", "poweroff"]) }
 }

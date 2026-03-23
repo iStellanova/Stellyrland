@@ -140,7 +140,6 @@ Singleton {
     // ── Popup Visibility States ──────────────────────────────
     property bool ccVisible: false
     property bool ncVisible: false
-    property bool alVisible: false
     property bool calVisible: false
     property bool trafficVisible: false
     property bool ramVisible: false
