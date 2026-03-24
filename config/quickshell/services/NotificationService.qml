@@ -81,6 +81,9 @@ Singleton {
         id: server
         
         bodySupported: true
+        bodyMarkupSupported: true
+        bodyHyperlinksSupported: true
+        imageSupported: true
         actionsSupported: true
         persistenceSupported: true
         

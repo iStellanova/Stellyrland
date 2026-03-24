@@ -107,7 +107,7 @@ PanelWindow {
                 // Control Center button
                 Components.BarButton {
                     id: archButton
-                    text: "󰣇"
+                    iconSource: Quickshell.shellDir + "/artixlinux-svgrepo-com.svg"
                     fontSize: Services.Colors.fontSizeLarge
                     textColor: Services.Colors.primary
                     bgColor: Qt.rgba(Services.Colors.primary.r, Services.Colors.primary.g, Services.Colors.primary.b, 0.15)
@@ -368,7 +368,7 @@ PanelWindow {
                         let pos = aurMod.mapToItem(null, aurMod.width / 2, 0)
                         bar.toggleUpdatesMenu(pos.x)
                     }
-                    icon: "󰣇"
+                    iconSource: Quickshell.shellDir + "/artixlinux-svgrepo-com.svg"
                     value: Services.ShellData.aurUpdates
                     visible: value.length > 0
                 }
