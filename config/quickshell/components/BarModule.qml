@@ -1,11 +1,13 @@
 import QtQuick 2.15
 import QtQuick.Layouts
+import Qt5Compat.GraphicalEffects
 import "../services" as Services
 import "." as Components
 
 Rectangle {
     id: root
     property string icon: ""
+    property string iconSource: ""
     property string value: ""
     property color textColor: Services.Colors.mainText
     property color bgColor: "transparent"
@@ -42,11 +44,31 @@ Rectangle {
         anchors.centerIn: parent
         spacing: Services.Colors.spacingSmall
 
+        Item {
+            implicitWidth: iconSource !== "" ? 16 : 0
+            implicitHeight: 16
+            visible: iconSource !== ""
+            
+            Image {
+                id: modIcon
+                anchors.fill: parent
+                source: iconSource
+                sourceSize: Qt.size(32, 32)
+                fillMode: Image.PreserveAspectFit
+            }
+
+            ColorOverlay {
+                anchors.fill: modIcon
+                source: modIcon
+                color: active || (root.interactive && mouseArea.containsMouse) ? Services.Colors.primary : root.textColor
+            }
+        }
+
         Components.ShadowText {
             text: root.icon
             font.pixelSize: Services.Colors.fontSize
             color: active || (root.interactive && mouseArea.containsMouse) ? Services.Colors.primary : root.textColor
-            visible: text.length > 0
+            visible: text.length > 0 && iconSource === ""
         }
 
         Components.ShadowText {

@@ -1,8 +1,9 @@
 import Quickshell
 import Quickshell.Wayland._WlrLayerShell 0.0
-import QtQuick
+import QtQuick 2.15
 import QtQuick.Layouts
 import QtQuick.Controls
+import Qt5Compat.GraphicalEffects
 import "services" as Services
 import "components" as Components
 
@@ -165,11 +166,34 @@ PanelWindow {
                             anchors.rightMargin: 8
                             spacing: Services.Colors.spacingNormal
 
-                            Components.ShadowText {
-                                text: modelData.isAur ? "󰣇" : "󰮯"
-                                color: modelData.isAur ? Services.Colors.primary : Services.Colors.mainText
-                                opacity: modelData.isAur ? 1.0 : 0.7
-                                font.pixelSize: 14
+                            Item {
+                                implicitWidth: 16; implicitHeight: 16
+                                Layout.alignment: Qt.AlignVCenter
+                                
+                                Components.ShadowText {
+                                    anchors.fill: parent
+                                    text: "󰮯"
+                                    color: Services.Colors.mainText
+                                    opacity: 0.7
+                                    font.pixelSize: 14
+                                    visible: !modelData.isAur
+                                }
+
+                                Image {
+                                    id: aurLogo
+                                    anchors.fill: parent
+                                    source: Quickshell.shellDir + "/artixlinux-svgrepo-com.svg"
+                                    sourceSize: Qt.size(32, 32)
+                                    fillMode: Image.PreserveAspectFit
+                                    visible: modelData.isAur
+                                }
+
+                                ColorOverlay {
+                                    anchors.fill: aurLogo
+                                    source: aurLogo
+                                    color: Services.Colors.primary
+                                    visible: aurLogo.visible
+                                }
                             }
 
                             Components.ShadowText {

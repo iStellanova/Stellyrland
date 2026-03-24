@@ -1,11 +1,13 @@
 import QtQuick 2.15
 import QtQuick.Layouts
+import Qt5Compat.GraphicalEffects
 import "../services" as Services
 import "." as Components
 
 Rectangle {
     id: root
     property alias text: btnText.text
+    property string iconSource: ""
     property int fontSize: Services.Colors.fontSize
     property color textColor: Services.Colors.mainText
     property color bgColor: "transparent"
@@ -30,6 +32,24 @@ Rectangle {
         anchors.centerIn: parent
         font.pixelSize: parent.fontSize
         color: parent.textColor
+        visible: text.length > 0 && iconSource === ""
+    }
+
+    Image {
+        id: btnIcon
+        anchors.centerIn: parent
+        source: iconSource
+        width: 18; height: 18
+        sourceSize: Qt.size(36, 36)
+        visible: iconSource !== ""
+        fillMode: Image.PreserveAspectFit
+    }
+
+    ColorOverlay {
+        anchors.fill: btnIcon
+        source: btnIcon
+        color: active || btnMouse.containsMouse ? Services.Colors.primary : root.textColor
+        visible: btnIcon.visible
     }
 
     MouseArea {

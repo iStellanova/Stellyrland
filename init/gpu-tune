@@ -1,5 +1,0 @@
-#!/sbin/openrc-run
-description="AMD GPU tuning"
-start() {
-    bash /usr/local/bin/gpu-tune.sh
-}
