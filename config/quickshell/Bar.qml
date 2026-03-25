@@ -202,21 +202,18 @@ PanelWindow {
             id: mprisBubble
             anchors.horizontalCenter: parent.horizontalCenter
             height: parent.height
-            width: mprisRow.implicitWidth + 30
+            width: mprisRow.implicitWidth + 24
             radius: Services.Colors.radiusNormal
             clip: true
             Behavior on width {
                 NumberAnimation { duration: Services.Colors.animFast; easing.type: Easing.OutCubic }
             }
-            property bool isHighlighted: mprisMouse.containsMouse || Services.ShellData.mediaVisible
-            color: isHighlighted ? Qt.rgba(Services.Colors.primary.r, Services.Colors.primary.g, Services.Colors.primary.b, 0.1) : Services.Colors.bg
-            border.width: 1
-            border.color: isHighlighted ? Services.Colors.primary : Services.Colors.border
             
-            scale: mprisMouse.pressed || isHighlighted ? 0.95 : 1.0
-            Behavior on color { ColorAnimation { duration: Services.Colors.animFast } }
-            Behavior on border.color { ColorAnimation { duration: Services.Colors.animFast } }
-            Behavior on scale { NumberAnimation { duration: Services.Colors.animFast; easing.type: Easing.OutCubic } }
+            color: Services.Colors.bg
+            border.width: 1
+            border.color: Services.Colors.border
+            
+            scale: 1.0
             
             visible: {
                 let p = Services.Music.player
@@ -226,40 +223,129 @@ PanelWindow {
             RowLayout {
                 id: mprisRow
                 anchors.centerIn: parent
-                spacing: Services.Colors.spacingNormal
+                spacing: 8
 
-                Components.ShadowText {
-                    text: {
-                        let p = Services.Music.player
-                        if (!p) return ""
-                        return p.playbackState === MprisPlaybackState.Playing ? "▶" : "⏸"
+                // Media Controls
+                RowLayout {
+                    spacing: 4
+
+                    // Previous track
+                    Rectangle {
+                        implicitWidth: 28; implicitHeight: 26; radius: Services.Colors.radiusSmall
+                        color: prevMouse.pressed ? Qt.rgba(Services.Colors.primary.r, Services.Colors.primary.g, Services.Colors.primary.b, 0.35) 
+                               : (prevMouse.containsMouse ? Qt.rgba(Services.Colors.primary.r, Services.Colors.primary.g, Services.Colors.primary.b, 0.2) : "transparent")
+                        scale: prevMouse.pressed ? 0.95 : 1.0
+                        Behavior on color { ColorAnimation { duration: Services.Colors.animFast } }
+                        Behavior on scale { NumberAnimation { duration: Services.Colors.animFast; easing.type: Easing.OutCubic } }
+
+                        Components.ShadowText {
+                            anchors.centerIn: parent
+                            text: "󰒮"
+                            font.pixelSize: 14
+                            color: prevMouse.containsMouse ? Services.Colors.primary : Services.Colors.mainText
+                        }
+                        MouseArea {
+                            id: prevMouse
+                            anchors.fill: parent
+                            hoverEnabled: true
+                            cursorShape: Qt.PointingHandCursor
+                            onClicked: { if (Services.Music.player) Services.Music.player.previous() }
+                        }
                     }
-                    font.pixelSize: Services.Colors.fontSizeSmall
-                    color: mprisBubble.isHighlighted ? Services.Colors.primary : Services.Colors.mainText
+
+                    // Play/Pause toggle
+                    Rectangle {
+                        implicitWidth: 28; implicitHeight: 26; radius: Services.Colors.radiusSmall
+                        color: playMouse.pressed ? Qt.rgba(Services.Colors.primary.r, Services.Colors.primary.g, Services.Colors.primary.b, 0.35) 
+                               : (playMouse.containsMouse ? Qt.rgba(Services.Colors.primary.r, Services.Colors.primary.g, Services.Colors.primary.b, 0.2) : "transparent")
+                        scale: playMouse.pressed ? 0.95 : 1.0
+                        Behavior on color { ColorAnimation { duration: Services.Colors.animFast } }
+                        Behavior on scale { NumberAnimation { duration: Services.Colors.animFast; easing.type: Easing.OutCubic } }
+
+                        Components.ShadowText {
+                            anchors.centerIn: parent
+                            text: {
+                                let p = Services.Music.player
+                                if (!p) return ""
+                                return p.playbackState === MprisPlaybackState.Playing ? "󰏤" : "󰐊"
+                            }
+                            font.pixelSize: 14
+                            color: playMouse.containsMouse ? Services.Colors.primary : Services.Colors.mainText
+                        }
+                        MouseArea {
+                            id: playMouse
+                            anchors.fill: parent
+                            hoverEnabled: true
+                            cursorShape: Qt.PointingHandCursor
+                            onClicked: { if (Services.Music.player) Services.Music.player.togglePlaying() }
+                        }
+                    }
+
+                    // Next track
+                    Rectangle {
+                        implicitWidth: 28; implicitHeight: 26; radius: Services.Colors.radiusSmall
+                        color: nextMouse.pressed ? Qt.rgba(Services.Colors.primary.r, Services.Colors.primary.g, Services.Colors.primary.b, 0.35) 
+                               : (nextMouse.containsMouse ? Qt.rgba(Services.Colors.primary.r, Services.Colors.primary.g, Services.Colors.primary.b, 0.2) : "transparent")
+                        scale: nextMouse.pressed ? 0.95 : 1.0
+                        Behavior on color { ColorAnimation { duration: Services.Colors.animFast } }
+                        Behavior on scale { NumberAnimation { duration: Services.Colors.animFast; easing.type: Easing.OutCubic } }
+
+                        Components.ShadowText {
+                            anchors.centerIn: parent
+                            text: "󰒭"
+                            font.pixelSize: 14
+                            color: nextMouse.containsMouse ? Services.Colors.primary : Services.Colors.mainText
+                        }
+                        MouseArea {
+                            id: nextMouse
+                            anchors.fill: parent
+                            hoverEnabled: true
+                            cursorShape: Qt.PointingHandCursor
+                            onClicked: { if (Services.Music.player) Services.Music.player.next() }
+                        }
+                    }
                 }
 
-                Components.ShadowText {
-                    text: {
-                        let p = Services.Music.player
-                        if (!p) return ""
-                        let t = p.trackTitle || "Unknown Track"
-                        let a = p.trackArtist || "Unknown Artist"
-                        return a.length > 0 ? (t + " - " + a) : t
+                // Track Information
+                Rectangle {
+                    implicitWidth: trackInfoText.implicitWidth + 12
+                    implicitHeight: 26
+                    radius: Services.Colors.radiusSmall
+                    color: {
+                        if (Services.ShellData.mediaVisible) return Qt.rgba(Services.Colors.primary.r, Services.Colors.primary.g, Services.Colors.primary.b, 0.4)
+                        if (textMouse.pressed) return Qt.rgba(Services.Colors.primary.r, Services.Colors.primary.g, Services.Colors.primary.b, 0.35)
+                        if (textMouse.containsMouse) return Qt.rgba(Services.Colors.primary.r, Services.Colors.primary.g, Services.Colors.primary.b, 0.2)
+                        return "transparent"
                     }
-                    Layout.maximumWidth: 450
-                    elide: Text.ElideRight
-                    color: mprisBubble.isHighlighted ? Services.Colors.primary : Services.Colors.mainText
-                }
-            }
+                    scale: textMouse.pressed || Services.ShellData.mediaVisible ? 0.95 : 1.0
+                    Behavior on color { ColorAnimation { duration: Services.Colors.animFast } }
+                    Behavior on scale { NumberAnimation { duration: Services.Colors.animFast; easing.type: Easing.OutCubic } }
 
-            MouseArea {
-                id: mprisMouse
-                anchors.fill: parent
-                hoverEnabled: true
-                cursorShape: Qt.PointingHandCursor
-                onClicked: {
-                    let pos = mprisBubble.mapToItem(null, mprisBubble.width / 2, 0)
-                    bar.toggleMediaMenu(pos.x)
+                    Components.ShadowText {
+                        id: trackInfoText
+                        anchors.centerIn: parent
+                        text: {
+                            let p = Services.Music.player
+                            if (!p) return ""
+                            let t = p.trackTitle || "Unknown Track"
+                            let a = p.trackArtist || "Unknown Artist"
+                            return a.length > 0 ? (t + " - " + a) : t
+                        }
+                        Layout.maximumWidth: 400
+                        elide: Text.ElideRight
+                        color: (textMouse.containsMouse || Services.ShellData.mediaVisible) ? Services.Colors.primary : Services.Colors.mainText
+                    }
+
+                    MouseArea {
+                        id: textMouse
+                        anchors.fill: parent
+                        hoverEnabled: true
+                        cursorShape: Qt.PointingHandCursor
+                        onClicked: {
+                            let pos = mprisBubble.mapToItem(null, mprisBubble.width / 2, 0)
+                            bar.toggleMediaMenu(pos.x)
+                        }
+                    }
                 }
             }
         }

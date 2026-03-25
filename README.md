@@ -1,8 +1,8 @@
-# decfiles
+# Stellyrland
 
-Declarative Arch Linux system configuration for `stellanova@stellarhost`.
+Declarative Artix Linux system configuration for `stellanova@stellarhost`.
 
-Managed via [decman](https://github.com/kiviktnm/decman) — packages and dotfiles are defined in a single `source.py`, deployed with `decman`. The desktop shell is [Quickshell](https://quickshell.outfoxxed.me/).
+Managed via [decman](https://github.com/kiviktnm/decman) — packages and dotfiles are defined in a modular files, sourced from `source.py` and deployed with `decman`. The desktop shell is [Quickshell](https://quickshell.outfoxxed.me/).
 
 ---
 
@@ -16,7 +16,7 @@ Before first sync, bootstrap the following:
 ### Quickshell Shell
 
 The following must be present for the shell to function fully. Most are
-declared as packages in `source.py` — this table documents their purpose
+declared as packages in the source files — this table documents their purpose
 for reference.
 
 | Package | Source | Purpose |
@@ -30,7 +30,7 @@ for reference.
 | `networkmanager` | extra | WiFi scanning, VPN state detection |
 | `pipewire-pulse` | extra | App volume control fallback (`pactl`) |
 | `pacman-contrib` | extra | `checkupdates` for pacman update count |
-| `yay` | AUR | AUR update count (`yay -Qua`) |
+| `paru` | AUR | AUR update count (`paru -Qua`) |
 | `rfkill` | core | Bluetooth hardware toggle |
 | `python` | core | Safe config file writes |
 | `jq` | extra | App volume JSON parsing |
@@ -41,13 +41,13 @@ for reference.
 
 ```bash
 # 1. Clone the repo
-git clone git@github.com:istellanove/decfiles ~/decfiles
+git clone git@github.com:istellanova/stellyrland ~/stellyrland
 
 # 2. cd in
-cd ~/decfiles
+cd ~/stellyrland
 
 # 3. Sync packages and dotfiles
-decman sync
+decman
 ```
 
 `decman` will install declared packages and configurations.
@@ -79,11 +79,12 @@ Theming is driven by [matugen](https://github.com/InioX/matugen) — wallpaper c
 | | |
 |---|---|
 | Host | `stellanova@stellarhost` |
-| OS | Arch Linux x86_64 |
+| OS | Artix Linux x86_64 |
 | Kernel | Linux zen |
+| Init | OpenRC |
 | WM | Hyprland (Wayland) |
 | Shell | Quickshell |
 | CPU | AMD Ryzen 9 9950X3D |
 | GPU | AMD Radeon RX 7900 XTX |
 | RAM | 64 GiB |
-| Displays | DP-2 (ultrawide, primary) · DP-3 (vertical, secondary) |
+| Displays | 3440x1440 (ultrawide, primary) · 2560x1440 (vertical, secondary) |
