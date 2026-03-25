@@ -31,7 +31,9 @@ if ! command -v nvidia-smi &> /dev/null; then
   [ -z "$GPU_CARD" ] && [ -r /sys/class/drm/card0/device/gpu_busy_percent ] && GPU_CARD="/sys/class/drm/card0"
   
   if [ -n "$GPU_CARD" ]; then
-    GPU_TEMP_PATH=$(ls "$GPU_CARD"/device/hwmon/hwmon*/temp1_input 2>/dev/null | head -n1)
+    for path in "$GPU_CARD"/device/hwmon/hwmon*/temp1_input; do
+      [ -f "$path" ] && GPU_TEMP_PATH="$path" && break
+    done
     GPU_VRAM_USED_PATH="$GPU_CARD/device/mem_info_vram_used"
     GPU_VRAM_TOTAL_PATH="$GPU_CARD/device/mem_info_vram_total"
   fi
@@ -144,8 +146,30 @@ get_temp() {
 
 get_net() {
   local interface="$NET_INTERFACE"
-  if [ ! -d "/sys/class/net/$interface" ]; then
-    interface=$(ls /sys/class/net | grep -vE 'lo|tun|br|docker|vbox|proton' | head -n1)
+  if [ -z "$interface" ] || [ ! -d "/sys/class/net/$interface" ]; then
+    # Try to find an 'up' interface first
+    for iface_path in /sys/class/net/*; do
+      [ -e "$iface_path" ] || continue
+      iface="${iface_path##*/}"
+      # Skip known virtual/local interfaces
+      [[ "$iface" =~ ^(lo|tun|br|docker|vbox|proton|p2p) ]] && continue
+      
+      if [ "$(cat "$iface_path/operstate" 2>/dev/null)" = "up" ]; then
+        interface="$iface"
+        break
+      fi
+    done
+    
+    # Fallback to first non-excluded if none are 'up'
+    if [ -z "$interface" ]; then
+      for iface_path in /sys/class/net/*; do
+        [ -e "$iface_path" ] || continue
+        iface="${iface_path##*/}"
+        [[ "$iface" =~ ^(lo|tun|br|docker|vbox|proton|p2p) ]] && continue
+        interface="$iface"
+        break
+      done
+    fi
   fi
   [ -z "$interface" ] && echo "0 0" && return
   awk "\$1 ~ \"$interface\" {print \$2 \" \" \$10}" /proc/net/dev

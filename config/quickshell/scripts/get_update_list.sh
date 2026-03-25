@@ -5,7 +5,7 @@ p_list=$(checkupdates 2>/dev/null)
 p_count=$(echo "$p_list" | ( [ -z "$p_list" ] && echo 0 || wc -l ) )
 
 # Fetch AUR updates
-a_list=$(yay -Qua 2>/dev/null)
+a_list=$(paru -Qua 2>/dev/null)
 a_count=$(echo "$a_list" | ( [ -z "$a_list" ] && echo 0 || wc -l ) )
 
 # Output counts first

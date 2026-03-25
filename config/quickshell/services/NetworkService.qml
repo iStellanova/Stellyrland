@@ -60,14 +60,19 @@ Singleton {
 
     Process {
         id: networkInit
-        command: ["bash", "-c", "nmcli -t -f DEVICE,STATE dev; echo '---'; nmcli -t -f ACTIVE,SSID dev wifi | grep '^yes' | cut -d: -f2"]
+        command: ["bash", "-c", "nmcli -t -f DEVICE,STATE dev; echo '---'; nmcli -t -f ACTIVE,SSID dev wifi | \\grep '^yes' | cut -d: -f2"]
         running: true
         stdout: StdioCollector {
             onStreamFinished: {
                 let parts = this.text.trim().split("---")
                 let states = parts[0].trim().split("\n")
                 
-                root.wifiOn = states.some(s => s.startsWith(ConfigService.netInterface + ":connected"))
+                root.wifiOn = states.some(s => {
+                    if (!s.includes(":connected")) return false
+                    let iface = s.split(":")[0]
+                    if (ConfigService.netInterface !== "") return iface === ConfigService.netInterface
+                    return iface.startsWith("wl") || iface.startsWith("en") || iface.startsWith("eth")
+                })
                 root.vpnOn = states.some(s => s.includes(ConfigService.vpnInterface) && s.includes(":connected"))
                 
                 if (parts.length > 1) {
