@@ -22,7 +22,7 @@ extract_frame() {
 
 apply_theme() {
     local image="$1"
-    matugen image "$image" --source-color-index 0 --mode dark >/dev/null 2>&1
+    matugen image "$image" --mode dark >/dev/null 2>&1
     
     # Reload cava to pick up new colors
     killall -USR1 cava >/dev/null 2>&1

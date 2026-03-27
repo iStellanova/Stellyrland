@@ -179,16 +179,42 @@ class Directory:
         self.permissions = permissions
 
     def matches(self, src: Path, target: str) -> bool:
-        """Check if target directory exists and basics match."""
+        """Check if target directory and all its recursive contents match the source."""
         tgt = Path(target)
         if not tgt.exists() or not tgt.is_dir():
             return False
 
+        # Metadata check for the directory itself
         stat = tgt.stat()
         if (stat.st_mode & 0o777) != self.permissions:
             return False
         if stat.st_uid != get_uid(self.owner):
             return False
+
+        # Recursive check of all source items
+        for s_item in src.rglob("*"):
+            rel = s_item.relative_to(src)
+            t_item = tgt / rel
+
+            if not t_item.exists():
+                return False
+
+            if s_item.is_dir():
+                if not t_item.is_dir():
+                    return False
+                # Metadata check for subdirectories
+                if t_item.stat().st_uid != get_uid(self.owner):
+                    return False
+            else:
+                if not t_item.is_file():
+                    return False
+                # Content and metadata check for files
+                if t_item.stat().st_size != s_item.stat().st_size:
+                    return False
+                if t_item.stat().st_uid != get_uid(self.owner):
+                    return False
+                if get_hash(s_item) != get_hash(t_item):
+                    return False
 
         return True
 
