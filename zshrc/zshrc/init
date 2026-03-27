@@ -8,7 +8,7 @@ plugins=(
   fast-syntax-highlighting
   copyfile
   copybuffer
-  # ssh-agent
+  ssh-agent
 )
 
 HISTFILE=~/.zsh_history
