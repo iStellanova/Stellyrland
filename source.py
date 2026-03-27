@@ -10,6 +10,10 @@ from decage.plugins import (
     CacheCleanupPlugin, BtrfsMaintenancePlugin, XdgDirsPlugin
 )
 
+# ══════════════════════════════════════════════════════════════════════════
+# Packages
+# ══════════════════════════════════════════════════════════════════════════
+
 # ── System Base ───────────────────────────────────────────────────────────
 _base = {
     "app-admin/sudo",                        # Allows users or groups to run commands as other users
@@ -52,6 +56,7 @@ _cli = {
     "sys-apps/ripgrep",                      # Search tool that combines the usability of ag with the raw speed of grep
     "sys-process/btop",                      # A monitor of resources
     "sys-process/htop",                      # Interactive process viewer
+    "sys-apps/fd",                           # Fast find utility
 }
 
 # ── Desktop / Wayland ────────────────────────────────────────────────────
@@ -75,6 +80,7 @@ _desktop = {
     "gui-libs/hyprcursor",                   # The hyprland cursor format, library and utilities
     "gui-libs/xdg-desktop-portal-hyprland",  # xdg-desktop-portal backend for Hyprland
     "gui-wm/hyprland",                       # A dynamic tiling Wayland compositor that doesn't sacrifice on its looks
+    "gui-apps/hyprlock",                     # Hyprland's lock daemon
     "media-gfx/imv",                         # Minimal image viewer designed for tiling window manager users
     "media-libs/gst-plugins-good",           # Basepack of plugins for GStreamer
     "media-libs/mesa",                       # OpenGL-like graphic library for Linux
@@ -104,6 +110,17 @@ _desktop = {
     "x11-misc/xdg-user-dirs",                # Tool to help manage 'well known' user directories
     "x11-terms/kitty",                       # Fast, feature-rich, GPU-based terminal
     "x11-themes/catppuccin-gtk",             # Soothing pastel theme for GTK
+    "sys-apps/flatpak",                      # Flatpak is a package manager for Linux
+    "acct-group/flatpak",                    # Flatpak group for users
+    "app-crypt/seahorse",                    # GNOME keyring manager
+    "app-misc/ani-cli",                      # CLI Anime Watching
+    "app-misc/cpufetch",                     # CPU information fetcher
+    "dev-python/proton-vpn-network-manager", # ProtonVPN Network Manager
+    "games-action/prismlauncher",            # Prism Launcher
+    "games-util/r2modman-bin",               # R2ModMan
+    "gui-wm/gamescope",                      # Gamescope
+    "media-video/obs-studio",                # Open Broadcaster Software
+    "net-p2p/nicotine+",                     # Nicotine+
 }
 
 # ── Fonts ────────────────────────────────────────────────────────────────
@@ -153,16 +170,16 @@ plugins = {
     "repositories": RepositoryPlugin({"guru", "steam-overlay"}),
     "gsettings": GsettingsPlugin({
         "org.gnome.desktop.interface": {
-            "color-scheme": "prefer-dark",
+            "color-scheme": "default",
             "gtk-theme": "Catppuccin-Frappe-Standard-Blue-Dark",
             "icon-theme": "Colloid-Catppuccin-Dark",
-            "cursor-theme": "Bibata-Modern-Classic",
+            "cursor-theme": "Bibata-Modern-Ice",
             "font-name": "Adwaita Sans 11",
             "document-font-name": "Sans 11",
             "monospace-font-name": "Monospace 11"
         },
         "org.gnome.desktop.wm.preferences": {
-            "button-layout": "appmenu:"
+            "button-layout": "appmenu:close"
         }
     }),
     "openrc": OpenRCPlugin({

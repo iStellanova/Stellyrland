@@ -387,11 +387,22 @@ PanelWindow {
                             color: trayMouse.containsMouse ? Qt.rgba(Services.Colors.mainText.r, Services.Colors.mainText.g, Services.Colors.mainText.b, 0.1) : "transparent"
 
                             Image {
+                                id: trayIcon
                                 anchors.centerIn: parent
-                                source: modelData.icon
+                                source: Services.IconStore.getIconPath(modelData.icon)
                                 width: 18; height: 18
                                 sourceSize: Qt.size(36, 36)
                                 asynchronous: true
+                                visible: status === Image.Ready
+                            }
+                            
+                            // Fallback if image fails or is missing
+                            Components.ShadowText {
+                                anchors.centerIn: parent
+                                text: "󰝚" // generic icon
+                                font.pixelSize: 14
+                                color: Services.Colors.primary
+                                visible: trayIcon.status !== Image.Ready || trayIcon.source.toString() === ""
                             }
 
                             MouseArea {

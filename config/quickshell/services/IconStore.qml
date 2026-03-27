@@ -48,22 +48,47 @@ Singleton {
         indexer.running = true
     }
 
+    function getIndexerCommand() {
+        let home = Quickshell.env("HOME")
+        let baseTheme = root.iconTheme.replace("-Dark","").replace("-Light","")
+        let dirs = [
+            home + "/.local/share/icons/" + root.iconTheme,
+            "/usr/share/icons/" + root.iconTheme,
+            home + "/.local/share/icons/" + baseTheme,
+            "/usr/share/icons/" + baseTheme,
+            home + "/.local/share/icons/hicolor",
+            "/usr/share/icons/hicolor",
+            "/usr/share/pixmaps",
+            home + "/.local/share/icons/Colloid",
+            "/usr/share/icons/Colloid"
+        ]
+        
+        let uniqueDirs = dirs.filter((v, i, a) => a.indexOf(v) === i)
+        let dirList = uniqueDirs.join(" ")
+        
+        return "for d in " + dirList + "; do [ -d \"$d\" ] && find -L \"$d\" -maxdepth 4 \\( -name '*.svg' -o -name '*.png' \\); done | sort -u"
+    }
+
     Process {
         id: indexer
+        command: ["bash", "-c", root.getIndexerCommand()]
         
         // We do a robust, targeted search for app icons in the selected theme and its base.
         // Using a shell loop ensures we handle missing directories gracefully.
-        command: [
-            "bash", "-c", 
-            "for d in " + 
-            "~/.local/share/icons/" + root.iconTheme + "/apps " +
-            "/usr/share/icons/" + root.iconTheme + "/apps " +
-            "~/.local/share/icons/" + root.iconTheme.replace("-Dark","").replace("-Light","") + "/apps " +
-            "/usr/share/icons/" + root.iconTheme.replace("-Dark","").replace("-Light","") + "/apps " +
-            "~/.local/share/icons/Colloid/apps " +
-            "/usr/share/icons/Colloid/apps; " +
-            "do [ -d \"$d\" ] && find -L \"$d\" \\( -name '*.svg' -o -name '*.png' \\); done | sort -u"
-        ]
+        // command: [
+        //     "bash", "-c", 
+        //     "for d in " + 
+        //     "~/.local/share/icons/" + root.iconTheme + " " +
+        //     "/usr/share/icons/" + root.iconTheme + " " +
+        //     "~/.local/share/icons/" + root.iconTheme.replace("-Dark","").replace("-Light","") + " " +
+        //     "/usr/share/icons/" + root.iconTheme.replace("-Dark","").replace("-Light","") + " " +
+        //     "~/.local/share/icons/hicolor " +
+        //     "/usr/share/icons/hicolor " +
+        //     "/usr/share/pixmaps " +
+        //     "~/.local/share/icons/Colloid " +
+        //     "/usr/share/icons/Colloid; " +
+        //     "do [ -d \"$d\" ] && find -L \"$d\" -maxdepth 4 \\( -name '*.svg' -o -name '*.png' \\); done | sort -u"
+        // ]
         
         property var newMap: ({})
 
@@ -72,11 +97,11 @@ Singleton {
                 let path = data.trim()
                 if (!path) return
                 
-                let parts = path.split("/")
-                let filename = parts[parts.length - 1]
+                let lastSlash = path.lastIndexOf("/")
+                let filename = path.substring(lastSlash + 1)
                 let name = filename.substring(0, filename.lastIndexOf("."))
                 let isSymbolic = name.endsWith("-symbolic")
-                let baseName = isSymbolic ? name.replace("-symbolic", "") : name
+                let baseName = isSymbolic ? name.substring(0, name.length - 9) : name
                 
                 let existing = indexer.newMap[baseName]
                 
@@ -84,11 +109,14 @@ Singleton {
                 // 1. Prefer colourful icons over symbolic ones for the same base name.
                 // 2. Prefer SVGs over PNGs.
                 // 3. Prefer the actual iconTheme over fallbacks.
+                // 4. Boost status/panel icons as they are rare and often what's missing.
                 
                 let score = 0
                 if (!isSymbolic) score += 100
                 if (path.endsWith(".svg")) score += 50
                 if (path.includes("/" + root.iconTheme + "/")) score += 200
+                if (path.includes("/status/") || path.includes("/panel/") || path.includes("/devices/")) score += 300
+                if (path.includes("/apps/")) score += 50
                 
                 if (!existing || score > existing.score) {
                     indexer.newMap[baseName] = { path: "file://" + path, score: score }
@@ -114,11 +142,18 @@ Singleton {
     function getIconPath(name) {
         if (!name) return ""
         
-        // Absolute paths
-        if (name.startsWith("/")) return "file://" + name
+        let target = name.toString()
         
-        // Handle overrides first
-        let resolvedName = root.getOverride(name)
+        // Handle image://icon/ protocol by extracting the icon name
+        if (target.startsWith("image://icon/")) {
+            target = target.substring(13)
+        } else if (target.startsWith("/") || target.includes("://")) {
+            // Already a valid full URL or absolute path, return it immediately
+            return target.startsWith("/") ? "file://" + target : target
+        }
+        
+        // Handle overrides
+        let resolvedName = root.getOverride(target)
         
         // Check our theme index
         let themedPath = root.iconMap[resolvedName]
@@ -130,7 +165,8 @@ Singleton {
              if (themedPath) return themedPath
         }
         
-        // Fallback to system provider (will eventually trigger Box fallback if system also fails)
+        // Fallback to system provider. We return the name so Image { source: icon } works
+        // but it will likely still show checkerboard if system also fails.
         return "image://icon/" + resolvedName
     }
 
