@@ -171,7 +171,7 @@ plugins = {
     "gsettings": GsettingsPlugin({
         "org.gnome.desktop.interface": {
             "color-scheme": "default",
-            "gtk-theme": "Catppuccin-Frappe-Standard-Blue-Dark",
+            "gtk-theme": "Catppuccin-Macchiato-Standard-Flamingo-Dark",
             "icon-theme": "Colloid-Catppuccin-Dark",
             "cursor-theme": "Bibata-Modern-Ice",
             "font-name": "Adwaita Sans 11",
