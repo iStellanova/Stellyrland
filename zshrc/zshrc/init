@@ -3,12 +3,12 @@ ZSH_THEME=""
 plugins=(
   git
   sudo
-  archlinux
+  gentoolinux
   zsh-autosuggestions
   fast-syntax-highlighting
   copyfile
   copybuffer
-  ssh-agent
+  # ssh-agent
 )
 
 HISTFILE=~/.zsh_history

@@ -1,8 +1,8 @@
 # Stellyrland
 
-Declarative Artix Linux system configuration for `stellanova@stellarhost`.
+Declarative Gentoo Linux system configuration for `stellanova@stellarhost`.
 
-Managed via [decman](https://github.com/kiviktnm/decman) — packages and dotfiles are defined in a modular files, sourced from `source.py` and deployed with `decman`. The desktop shell is [Quickshell](https://quickshell.outfoxxed.me/).
+Managed via Decage — packages and dotfiles are defined in a modular files, sourced from `source.py` and deployed with `decage -sa`. The desktop shell is [Quickshell](https://quickshell.outfoxxed.me/).
 
 ---
 
@@ -10,8 +10,8 @@ Managed via [decman](https://github.com/kiviktnm/decman) — packages and dotfil
 
 Before first sync, bootstrap the following:
 
-- [`decman`](https://github.com/kiviktnm/decman) (AUR)
-- Decman will handle all packages on its own.
+- Decage
+- Decage will handle all packages on its own.
 
 ### Quickshell Shell
 
@@ -22,19 +22,17 @@ for reference.
 | Package | Source | Purpose |
 |---|---|---|
 | [`quickshell`](https://quickshell.outfoxxed.me/) | AUR | Shell framework |
-| `hyprland` | AUR | Compositor; required for IPC, workspace, and app launching |
-| `hyprlock` | AUR | Screen locker (`lock()`) |
-| `hypridle` | AUR | Idle inhibitor toggle |
-| `matugen` | AUR | Wallpaper-driven theming pipeline |
-| `ffmpeg` | extra | Video wallpaper frame extraction |
-| `networkmanager` | extra | WiFi scanning, VPN state detection |
-| `pipewire-pulse` | extra | App volume control fallback (`pactl`) |
-| `pacman-contrib` | extra | `checkupdates` for pacman update count |
-| `paru` | AUR | AUR update count (`paru -Qua`) |
-| `rfkill` | core | Bluetooth hardware toggle |
-| `python` | core | Safe config file writes |
-| `jq` | extra | App volume JSON parsing |
-| `nerd-fonts` | AUR | Icon glyphs throughout the UI (JetBrains Mono Nerd Font Propo) |
+| `hyprland` | Compositor; required for IPC, workspace, and app launching |
+| `hyprlock` | Screen locker (`lock()`) |
+| `hypridle` | Idle inhibitor toggle |
+| `matugen` | Wallpaper-driven theming pipeline |
+| `ffmpeg` | Video wallpaper frame extraction |
+| `networkmanager` | WiFi scanning, VPN state detection |
+| `pipewire-pulse` | App volume control fallback (`pactl`) |
+| `pacman-contrib` | `checkupdates` for pacman update count |
+| `python` | Safe config file writes |
+| `jq` | App volume JSON parsing |
+| `nerd-fonts` | Icon glyphs throughout the UI (JetBrains Mono Nerd Font Propo) |
 ---
 
 ## Bootstrap
@@ -47,10 +45,10 @@ git clone git@github.com:istellanova/stellyrland ~/stellyrland
 cd ~/stellyrland
 
 # 3. Sync packages and dotfiles
-decman
+decage
 ```
 
-`decman` will install declared packages and configurations.
+`decage` will install declared packages and configurations.
 
 ---
 
@@ -79,8 +77,8 @@ Theming is driven by [matugen](https://github.com/InioX/matugen) — wallpaper c
 | | |
 |---|---|
 | Host | `stellanova@stellarhost` |
-| OS | Artix Linux x86_64 |
-| Kernel | Linux zen |
+| OS | Gentoo Linux x86_64 |
+| Kernel | Gentoo Linux |
 | Init | OpenRC |
 | WM | Hyprland (Wayland) |
 | Shell | Quickshell |
