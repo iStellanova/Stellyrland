@@ -33,7 +33,7 @@
   },
   "icon_theme": "Zed (Default)",
   "telemetry": {
-    "diagnostics": true,
+    "diagnostics": false,
     "metrics": false,
   },
   "ui_font_size": 19.0,
@@ -41,7 +41,7 @@
   "theme": {
     "mode": "dark",
     "light": "Matugen Light",
-    "dark": "Matugen Dark",
+    "dark": "Catppuccin Mocha",
   },
   "languages": {
     "YAML": {

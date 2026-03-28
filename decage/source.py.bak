@@ -3,17 +3,6 @@ source.py — Declarative Portage configuration.
 Optimized with logical grouping like source.py.example.
 """
 
-from decage import USER, HOME, File, Directory
-from decage.plugins import (
-    SyncPlugin, SnapperPlugin, RepositoryPlugin,
-    OpenRCPlugin, GsettingsPlugin, GrubPlugin,
-    CacheCleanupPlugin, BtrfsMaintenancePlugin, XdgDirsPlugin
-)
-
-# ══════════════════════════════════════════════════════════════════════════
-# Packages
-# ══════════════════════════════════════════════════════════════════════════
-
 # ── System Base ───────────────────────────────────────────────────────────
 _base = {
     "app-admin/sudo",                        # Allows users or groups to run commands as other users
@@ -48,7 +37,6 @@ _cli = {
     "app-shells/zoxide",                     # A smarter cd command for your terminal
     "app-shells/zsh",                        # UNIX Shell similar to the Korn shell
     "app-shells/zsh-completions",            # Additional completion definitions for Zsh
-    "app-text/tldr",                         # A collection of man pages rendered in your terminal
     "app-text/tree",                         # Lists directories recursively, and produces an indented listing of files
     "dev-vcs/git",                           # Stupid content tracker: distributed VCS designed for speed and efficiency
     "sys-apps/bat",                          # cat(1) clone with syntax highlighting and Git integration
@@ -56,7 +44,6 @@ _cli = {
     "sys-apps/ripgrep",                      # Search tool that combines the usability of ag with the raw speed of grep
     "sys-process/btop",                      # A monitor of resources
     "sys-process/htop",                      # Interactive process viewer
-    "sys-apps/fd",                           # Fast find utility
 }
 
 # ── Desktop / Wayland ────────────────────────────────────────────────────
@@ -80,7 +67,6 @@ _desktop = {
     "gui-libs/hyprcursor",                   # The hyprland cursor format, library and utilities
     "gui-libs/xdg-desktop-portal-hyprland",  # xdg-desktop-portal backend for Hyprland
     "gui-wm/hyprland",                       # A dynamic tiling Wayland compositor that doesn't sacrifice on its looks
-    "gui-apps/hyprlock",                     # Hyprland's lock daemon
     "media-gfx/imv",                         # Minimal image viewer designed for tiling window manager users
     "media-libs/gst-plugins-good",           # Basepack of plugins for GStreamer
     "media-libs/mesa",                       # OpenGL-like graphic library for Linux
@@ -110,17 +96,6 @@ _desktop = {
     "x11-misc/xdg-user-dirs",                # Tool to help manage 'well known' user directories
     "x11-terms/kitty",                       # Fast, feature-rich, GPU-based terminal
     "x11-themes/catppuccin-gtk",             # Soothing pastel theme for GTK
-    "sys-apps/flatpak",                      # Flatpak is a package manager for Linux
-    "acct-group/flatpak",                    # Flatpak group for users
-    "app-crypt/seahorse",                    # GNOME keyring manager
-    "app-misc/ani-cli",                      # CLI Anime Watching
-    "app-misc/cpufetch",                     # CPU information fetcher
-    "dev-python/proton-vpn-network-manager", # ProtonVPN Network Manager
-    "games-action/prismlauncher",            # Prism Launcher
-    "games-util/r2modman-bin",               # R2ModMan
-    "gui-wm/gamescope",                      # Gamescope
-    "media-video/obs-studio",                # Open Broadcaster Software
-    "net-p2p/nicotine+",                     # Nicotine+
 }
 
 # ── Fonts ────────────────────────────────────────────────────────────────
@@ -143,89 +118,3 @@ _dev = {
 # Final merged set
 # ══════════════════════════════════════════════════════════════════════════
 PACKAGES = _base | _cli | _desktop | _fonts | _dev
-
-# ══════════════════════════════════════════════════════════════════════════
-# Execution Pipeline
-# ══════════════════════════════════════════════════════════════════════════
-execution_order = [
-    "sync",         # emaint sync -A
-    "snapper",      # BTRFS snapshot
-    "repositories", # Enable overlays
-    "portage",      # Emerge install/deselect
-    "files",        # Deploy dotfiles
-    "gsettings",    # Enforce GSettings
-    "xdg",          # XDG directories
-    "openrc",       # Manage services
-    "cache",        # eclean
-    "btrfs",        # Maintenance
-    "grub",         # Bootloader
-]
-
-# ══════════════════════════════════════════════════════════════════════════
-# Plugins
-# ══════════════════════════════════════════════════════════════════════════
-plugins = {
-    "sync": SyncPlugin(),
-    "snapper": SnapperPlugin(),
-    "repositories": RepositoryPlugin({"guru", "steam-overlay"}),
-    "gsettings": GsettingsPlugin({
-        "org.gnome.desktop.interface": {
-            "color-scheme": "default",
-            "gtk-theme": "Catppuccin-Macchiato-Standard-Flamingo-Dark",
-            "icon-theme": "Colloid-Catppuccin-Dark",
-            "cursor-theme": "Bibata-Modern-Ice",
-            "font-name": "Adwaita Sans 11",
-            "document-font-name": "Sans 11",
-            "monospace-font-name": "Monospace 11"
-        },
-        "org.gnome.desktop.wm.preferences": {
-            "button-layout": "appmenu:close"
-        }
-    }),
-    "openrc": OpenRCPlugin({
-        "elogind": "boot",
-        "dbus": "default",
-        "NetworkManager": "default",
-        "netmount": "default",
-        "coolercontrold": "default",
-        "coolercontrol": "default",
-        "local": "default",
-        "lactd": "default",
-        "display-manager": "default",
-    }),
-    "cache": CacheCleanupPlugin(),
-    "btrfs": BtrfsMaintenancePlugin(),
-    "xdg": XdgDirsPlugin(),
-    "grub": GrubPlugin(),
-}
-
-# ══════════════════════════════════════════════════════════════════════════
-# Dotfiles
-# ══════════════════════════════════════════════════════════════════════════
-files = {
-    f"{HOME}/.config/hypr/hyprland.conf":   File(source_file="./config/hypr/hyprland.conf",   owner=USER),
-    f"{HOME}/.config/hypr/keybinds.conf":   File(source_file="./config/hypr/keybinds.conf",   owner=USER),
-    f"{HOME}/.config/hypr/looknfeel.conf":  File(source_file="./config/hypr/looknfeel.conf",  owner=USER),
-    f"{HOME}/.config/hypr/rules.conf":      File(source_file="./config/hypr/rules.conf",      owner=USER),
-    f"{HOME}/.config/hypr/hyprlock.conf":   File(source_file="./config/hypr/hyprlock.conf",   owner=USER),
-    f"{HOME}/.config/hypr/hyprtoolkit.conf":File(source_file="./config/hypr/hyprtoolkit.conf",owner=USER),
-    f"{HOME}/.config/hypr/hypridle.conf":   File(source_file="./config/hypr/hypridle.conf",   owner=USER),
-    f"{HOME}/.config/kitty/kitty.conf":     File(source_file="./config/kitty/kitty.conf",     owner=USER),
-    f"{HOME}/.config/kitty/kittymy.conf":   File(source_file="./config/kitty/kittymy.conf",    owner=USER),
-    f"{HOME}/.config/matugen/config.toml":  File(source_file="./config/matugen/config.toml",  owner=USER),
-    f"{HOME}/.config/btop/btop.conf":       File(source_file="./config/btop/btop.conf",       owner=USER),
-    f"{HOME}/.config/zed/settings.json":    File(source_file="./config/zed/settings.json",    owner=USER),
-    f"{HOME}/.config/cava/config":          File(source_file="./config/cava/config",          owner=USER),
-    f"{HOME}/.zshrc":                       File(source_file="./zshrc/.zshrc",                owner=USER),
-    "/etc/coolercontrol/config.toml":       File(source_file="./etc/coolercontrol/config.toml"),
-    "/etc/coolercontrol/config-ui.json":    File(source_file="./etc/coolercontrol/config-ui.json"),
-    "/etc/coolercontrol/modes.json":        File(source_file="./etc/coolercontrol/modes.json"),
-}
-
-directories = {
-    f"{HOME}/.config/matugen/templates": Directory(source_directory="./config/matugen/templates", owner=USER),
-    f"{HOME}/.config/quickshell":        Directory(source_directory="./config/quickshell",        owner=USER, permissions=0o755),
-    f"{HOME}/.config/fastfetch":         Directory(source_directory="./config/fastfetch",         owner=USER),
-    f"{HOME}/.config/cava/shaders":      Directory(source_directory="./config/cava/shaders",      owner=USER),
-    f"{HOME}/zshrc":                     Directory(source_directory="./zshrc/zshrc",              owner=USER),
-}

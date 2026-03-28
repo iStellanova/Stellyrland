@@ -35,12 +35,22 @@ Rectangle {
 
         // Icon (if any)
         Image {
-            source: (entry && entry.icon) || ""
+            source: Services.IconStore.getIconPath((entry && entry.icon) || "")
             width: 16; height: 16
-            visible: source.toString() !== ""
+            visible: source.toString() !== "" && status === Image.Ready
             Layout.alignment: Qt.AlignVCenter
             asynchronous: true
             sourceSize: Qt.size(32, 32)
+        }
+
+        // Generic icon fallback for menu (if icon name exists but failed to load)
+        Components.ShadowText {
+            text: "󰝚"
+            font.pixelSize: 13
+            color: Services.Colors.primary
+            visible: (entry && entry.icon) && parent.children[1].status !== Image.Ready
+            Layout.alignment: Qt.AlignVCenter
+            Layout.preferredWidth: 16
         }
 
         // Text

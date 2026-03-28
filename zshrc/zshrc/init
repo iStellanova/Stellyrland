@@ -3,7 +3,7 @@ ZSH_THEME=""
 plugins=(
   git
   sudo
-  archlinux
+  gentoolinux
   zsh-autosuggestions
   fast-syntax-highlighting
   copyfile

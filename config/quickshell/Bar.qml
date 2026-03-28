@@ -83,11 +83,11 @@ PanelWindow {
                 border.color: Qt.rgba(Services.Colors.primary.r, Services.Colors.primary.g, Services.Colors.primary.b, 0.05)
 
                 property var targetButton: bar.activeWorkspaceButton
-                
+
                 // Fade in/out when we have a target (e.g. focus moves to/from this monitor)
                 opacity: targetButton && targetButton.visible ? 1.0 : 0.0
                 Behavior on opacity { NumberAnimation { duration: Services.Colors.animSlow; easing.type: Easing.OutCubic } }
-                
+
                 // Direct relative positioning
                 x: targetButton ? leftRow.x + targetButton.x : 0
                 width: targetButton ? targetButton.width : 0
@@ -107,7 +107,7 @@ PanelWindow {
                 // Control Center button
                 Components.BarButton {
                     id: archButton
-                    iconSource: Quickshell.shellDir + "/artixlinux-svgrepo-com.svg"
+                    iconSource: Quickshell.shellDir + "/logo.svg"
                     fontSize: Services.Colors.fontSizeLarge
                     textColor: Services.Colors.primary
                     bgColor: Qt.rgba(Services.Colors.primary.r, Services.Colors.primary.g, Services.Colors.primary.b, 0.15)
@@ -208,13 +208,13 @@ PanelWindow {
             Behavior on width {
                 NumberAnimation { duration: Services.Colors.animFast; easing.type: Easing.OutCubic }
             }
-            
+
             color: Services.Colors.bg
             border.width: 1
             border.color: Services.Colors.border
-            
+
             scale: 1.0
-            
+
             visible: {
                 let p = Services.Music.player
                 return p !== null && p.playbackState !== MprisPlaybackState.Stopped
@@ -232,7 +232,7 @@ PanelWindow {
                     // Previous track
                     Rectangle {
                         implicitWidth: 28; implicitHeight: 26; radius: Services.Colors.radiusSmall
-                        color: prevMouse.pressed ? Qt.rgba(Services.Colors.primary.r, Services.Colors.primary.g, Services.Colors.primary.b, 0.35) 
+                        color: prevMouse.pressed ? Qt.rgba(Services.Colors.primary.r, Services.Colors.primary.g, Services.Colors.primary.b, 0.35)
                                : (prevMouse.containsMouse ? Qt.rgba(Services.Colors.primary.r, Services.Colors.primary.g, Services.Colors.primary.b, 0.2) : "transparent")
                         scale: prevMouse.pressed ? 0.95 : 1.0
                         Behavior on color { ColorAnimation { duration: Services.Colors.animFast } }
@@ -256,7 +256,7 @@ PanelWindow {
                     // Play/Pause toggle
                     Rectangle {
                         implicitWidth: 28; implicitHeight: 26; radius: Services.Colors.radiusSmall
-                        color: playMouse.pressed ? Qt.rgba(Services.Colors.primary.r, Services.Colors.primary.g, Services.Colors.primary.b, 0.35) 
+                        color: playMouse.pressed ? Qt.rgba(Services.Colors.primary.r, Services.Colors.primary.g, Services.Colors.primary.b, 0.35)
                                : (playMouse.containsMouse ? Qt.rgba(Services.Colors.primary.r, Services.Colors.primary.g, Services.Colors.primary.b, 0.2) : "transparent")
                         scale: playMouse.pressed ? 0.95 : 1.0
                         Behavior on color { ColorAnimation { duration: Services.Colors.animFast } }
@@ -284,7 +284,7 @@ PanelWindow {
                     // Next track
                     Rectangle {
                         implicitWidth: 28; implicitHeight: 26; radius: Services.Colors.radiusSmall
-                        color: nextMouse.pressed ? Qt.rgba(Services.Colors.primary.r, Services.Colors.primary.g, Services.Colors.primary.b, 0.35) 
+                        color: nextMouse.pressed ? Qt.rgba(Services.Colors.primary.r, Services.Colors.primary.g, Services.Colors.primary.b, 0.35)
                                : (nextMouse.containsMouse ? Qt.rgba(Services.Colors.primary.r, Services.Colors.primary.g, Services.Colors.primary.b, 0.2) : "transparent")
                         scale: nextMouse.pressed ? 0.95 : 1.0
                         Behavior on color { ColorAnimation { duration: Services.Colors.animFast } }
@@ -387,11 +387,22 @@ PanelWindow {
                             color: trayMouse.containsMouse ? Qt.rgba(Services.Colors.mainText.r, Services.Colors.mainText.g, Services.Colors.mainText.b, 0.1) : "transparent"
 
                             Image {
+                                id: trayIcon
                                 anchors.centerIn: parent
-                                source: modelData.icon
+                                source: Services.IconStore.getIconPath(modelData.icon)
                                 width: 18; height: 18
                                 sourceSize: Qt.size(36, 36)
                                 asynchronous: true
+                                visible: status === Image.Ready
+                            }
+                            
+                            // Fallback if image fails or is missing
+                            Components.ShadowText {
+                                anchors.centerIn: parent
+                                text: "󰝚" // generic icon
+                                font.pixelSize: 14
+                                color: Services.Colors.primary
+                                visible: trayIcon.status !== Image.Ready || trayIcon.source.toString() === ""
                             }
 
                             MouseArea {
@@ -519,7 +530,7 @@ PanelWindow {
                     value: Services.ShellData.ramUsage
                     Layout.leftMargin: 9
                 }
-                
+
                 // Network
                 Components.BarModule {
                     id: wifiModule
@@ -536,7 +547,7 @@ PanelWindow {
                         : Services.Colors.mainText
                     Layout.leftMargin: 9
                 }
-                
+
                 // Volume
                 Components.BarModule {
                     id: volModule
