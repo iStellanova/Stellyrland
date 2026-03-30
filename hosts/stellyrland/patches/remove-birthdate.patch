@@ -1,0 +1,215 @@
+--- a/src/basic/time-util.h
++++ b/src/basic/time-util.h
+@@ -1,7 +1,6 @@
+ /* SPDX-License-Identifier: LGPL-2.1-or-later */
+ #pragma once
+ 
+-#include <limits.h>
+ #include <time.h>
+ 
+ #include "basic-forward.h"
+@@ -182,23 +181,6 @@ int mktime_or_timegm_usec(struct tm *tm, bool utc, usec_t *ret);
+ int localtime_or_gmtime_usec(usec_t t, bool utc, struct tm *ret);
+ 
+-int parse_calendar_date_full(const char *s, bool allow_pre_epoch, usec_t *ret_usec, struct tm *ret_tm);
+-
+-static inline int parse_calendar_date(const char *s, usec_t *ret) {
+-        return parse_calendar_date_full(s, /* allow_pre_epoch= */ false, ret, NULL);
+-}
+-
+-#define BIRTH_DATE_UNSET                        \
+-        (const struct tm) {                     \
+-                .tm_year = INT_MIN,             \
+-        }
+-
+-#define BIRTH_DATE_IS_SET(tm) ((tm).tm_year != INT_MIN)
+-
+-static inline int parse_birth_date(const char *s, struct tm *ret) {
+-        return parse_calendar_date_full(s, /* allow_pre_epoch= */ true, NULL, ret);
+-}
+-
+ uint32_t usec_to_jiffies(usec_t usec);
+ usec_t jiffies_to_usec(uint32_t jiffies);
+--- a/src/basic/time-util.c
++++ b/src/basic/time-util.c
+@@ -1892,49 +1892,3 @@ TimestampStyle timestamp_style_from_string(const char *s) {
+                 return TIMESTAMP_US_UTC;
+         return t;
+ }
+-
+-int parse_calendar_date_full(const char *s, bool allow_pre_epoch, usec_t *ret_usec, struct tm *ret_tm) {
+-        struct tm parsed_tm = {}, copy_tm;
+-        const char *k;
+-        int r;
+-
+-        assert(s);
+-
+-        k = strptime(s, "%Y-%m-%d", &parsed_tm);
+-        if (!k || *k)
+-                return -EINVAL;
+-
+-        copy_tm = parsed_tm;
+-
+-        usec_t usec = USEC_INFINITY;
+-
+-        if (allow_pre_epoch) {
+-                /* For birth dates we use timegm() directly since we need to accept pre-epoch dates.
+-                 * timegm() returns (time_t) -1 both on error and for one second before the epoch.
+-                 * Initialize wday to -1 beforehand: if it remains -1 after the call, it's a genuine
+-                 * error; if timegm() changed it, the date was successfully normalized. */
+-                copy_tm.tm_wday = -1;
+-                if (timegm(&copy_tm) == (time_t) -1 && copy_tm.tm_wday == -1)
+-                        return -EINVAL;
+-        } else {
+-                r = mktime_or_timegm_usec(&copy_tm, /* utc= */ true, &usec);
+-                if (r < 0)
+-                        return r;
+-        }
+-
+-        /* Refuse non-normalized dates, e.g. Feb 30 */
+-        if (copy_tm.tm_mday != parsed_tm.tm_mday ||
+-            copy_tm.tm_mon  != parsed_tm.tm_mon  ||
+-            copy_tm.tm_year != parsed_tm.tm_year)
+-                return -EINVAL;
+-
+-        if (ret_usec)
+-                *ret_usec = usec;
+-        if (ret_tm) {
+-                /* Reset to unset, then fill in only the date fields we parsed and validated */
+-                *ret_tm = BIRTH_DATE_UNSET;
+-                ret_tm->tm_mday = parsed_tm.tm_mday;
+-                ret_tm->tm_mon = parsed_tm.tm_mon;
+-                ret_tm->tm_year = parsed_tm.tm_year;
+-        }
+-
+-        return 0;
+-}
+--- a/src/shared/user-record.h
++++ b/src/shared/user-record.h
+@@ -1,8 +1,6 @@
+ /* SPDX-License-Identifier: LGPL-2.1-or-later */
+ #pragma once
+ 
+-#include <time.h>
+-
+ #include "sd-id128.h"
+ 
+ #include "bitfield.h"
+@@ -268,7 +266,6 @@ typedef struct UserRecord {
+         char *password_hint;
+         char *icon_name;
+         char *location;
+-        struct tm birth_date;
+ 
+         char *blob_directory;
+         Hashmap *blob_manifest;
+--- a/src/shared/user-record.c
++++ b/src/shared/user-record.c
+@@ -46,7 +46,6 @@ UserRecord* user_record_new(void) {
+                         .nice_level = INT_MAX,
+                         .not_before_usec = UINT64_MAX,
+                         .not_after_usec = UINT64_MAX,
+-                        .birth_date = BIRTH_DATE_UNSET,
+                         .locked = -1,
+                         .storage = _USER_STORAGE_INVALID,
+                         .access_mode = MODE_INVALID,
+@@ -418,24 +418,6 @@ static int json_dispatch_filename_or_path(const char *name, sd_json_variant *var
+         return 0;
+ }
+ 
+-static int json_dispatch_birth_date(const char *name, sd_json_variant *variant, sd_json_dispatch_flags_t flags, void *userdata) {
+-        struct tm *ret = ASSERT_PTR(userdata);
+-        const char *s;
+-        int r;
+-
+-        if (sd_json_variant_is_null(variant)) {
+-                *ret = BIRTH_DATE_UNSET;
+-                return 0;
+-        }
+-
+-        if (!sd_json_variant_is_string(variant))
+-                return json_log(variant, flags, SYNTHETIC_ERRNO(EINVAL), "JSON field '%s' is not a string.", strna(name));
+-
+-        s = sd_json_variant_string(variant);
+-
+-        r = parse_birth_date(s, ret);
+-        if (r < 0)
+-                return json_log(variant, flags, r, "JSON field '%s' is not a valid ISO 8601 date (expected YYYY-MM-DD).", strna(name));
+-
+-        return 0;
+-}
+-
+ static int json_dispatch_home_directory(const char *name, sd_json_variant *variant, sd_json_dispatch_flags_t flags, void *userdata) {
+         char **s = userdata;
+         const char *n;
+@@ -1523,7 +1505,6 @@ int user_group_record_mangle(
+                         /* Personally Identifiable Information (PII) - avoid leaking in logs */
+                         "realName",
+                         "location",
+-                        "emailAddress",
+-                        "birthDate")
++                        "emailAddress")
+                 sd_json_variant_sensitive(sd_json_variant_by_key(v, key));
+@@ -1619,7 +1600,6 @@ int user_record_load(UserRecord *h, sd_json_variant *v, UserRecordLoadFlags load
+                         { "emailAddress",            SD_JSON_VARIANT_STRING,   sd_json_dispatch_string,        offsetof(UserRecord, email_address),       SD_JSON_STRICT },
+                         { "iconName",                SD_JSON_VARIANT_STRING,   sd_json_dispatch_string,        offsetof(UserRecord, icon_name),           SD_JSON_STRICT },
+                         { "location",                SD_JSON_VARIANT_STRING,   sd_json_dispatch_string,        offsetof(UserRecord, location),            0              },
+-                        { "birthDate",               SD_JSON_VARIANT_STRING,   json_dispatch_birth_date,       offsetof(UserRecord, birth_date),          0              },
+                         { "disposition",             SD_JSON_VARIANT_STRING,   json_dispatch_user_disposition, offsetof(UserRecord, disposition),         0              },
+--- a/src/shared/user-record-show.c
++++ b/src/shared/user-record-show.c
+@@ -342,8 +342,6 @@ void user_record_show(UserRecord *hr, bool show_full_group_info) {
+                 printf("   Email: %s\n", hr->email_address);
+         if (hr->location)
+                 printf("   Location: %s\n", hr->location);
+-        if (BIRTH_DATE_IS_SET(hr->birth_date))
+-                printf("   Birth Date: %04d-%02d-%02d\n", hr->birth_date.tm_year + 1900, hr->birth_date.tm_mon + 1, hr->birth_date.tm_mday);
+         if (hr->password_hint)
+                 printf("   Passw. Hint: %s\n", hr->password_hint);
+--- a/src/home/homectl.c
++++ b/src/home/homectl.c
+@@ -3945,7 +3945,6 @@ static int help(int argc, char *argv[], void *userdata) {
+                "      --alias=ALIAS            Define alias usernames for this account\n"
+                "      --email-address=EMAIL    Email address for user\n"
+                "      --location=LOCATION      Set location of user on earth\n"
+-               "      --birth-date=[DATE]      Set user birth date (YYYY-MM-DD)\n"
+                "      --icon-name=NAME         Icon name for user\n"
+                "      -d --home-dir=PATH       Home directory\n"
+                "      -u --uid=UID             Numeric UID for user\n"
+@@ -4109,7 +4108,6 @@ static int parse_argv(int argc, char *argv[]) {
+                 ARG_LOCKED,
+                 ARG_SSH_AUTHORIZED_KEYS,
+                 ARG_LOCATION,
+-                ARG_BIRTH_DATE,
+                 ARG_ICON_NAME,
+                 ARG_PASSWORD_HINT,
+                 ARG_NICE,
+@@ -4195,7 +4193,6 @@ static int parse_argv(int argc, char *argv[]) {
+                 { "alias",               required_argument, NULL, ARG_ALIAS               },
+                 { "email-address",       required_argument, NULL, ARG_EMAIL_ADDRESS        },
+                 { "location",            required_argument, NULL, ARG_LOCATION             },
+-                { "birth-date",          required_argument, NULL, ARG_BIRTH_DATE           },
+                 { "password-hint",       required_argument, NULL, ARG_PASSWORD_HINT        },
+                 { "icon-name",           required_argument, NULL, ARG_ICON_NAME            },
+                 { "home-dir",            required_argument, NULL, 'd'                      },
+@@ -4408,22 +4405,6 @@ static int parse_argv(int argc, char *argv[]) {
+                         break;
+                 }
+ 
+-               case ARG_BIRTH_DATE:
+-                       if (isempty(optarg)) {
+-                               r = drop_from_identity("birthDate");
+-                               if (r < 0)
+-                                       return r;
+-                       } else {
+-                               r = parse_birth_date(optarg, /* ret= */ NULL);
+-                               if (r < 0)
+-                                       return log_error_errno(r, "Invalid birth date (expected YYYY-MM-DD): %s", optarg);
+-
+-                               r = parse_string_field(&arg_identity_extra, "birthDate", optarg);
+-                               if (r < 0)
+-                                       return r;
+-                       }
+-                       break;
+-
+                 case ARG_CIFS_SERVICE:
