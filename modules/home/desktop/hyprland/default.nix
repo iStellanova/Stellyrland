@@ -1,21 +1,16 @@
-{ config, pkgs, ... }:
-
 {
   wayland.windowManager.hyprland = {
     enable = true;
     xwayland.enable = true;
+    systemd.enable = true;
 
     settings = {
-      source = [
-        "~/.config/hypr/colors.conf"
-      ];
-
-      ################
-      ### MONITORS ###
-      ################
+      #################
+      ###  MONITORS ###
+      #################
       monitor = [
-        "DP-2, 3440x1440@175, 1440x541, 1, bitdepth, 8, sdrbrightness, 1.2, sdrsaturation, 0.98"
-        "DP-3, 2560x1440@100, 0x0, 1, transform, 1, bitdepth, 8, sdrbrightness, 1.2, sdrsaturation, 0.98"
+        "DP-2, 3440x1440@175, 1440x541, 1, bitdepth, 10, sdrbrightness, 1.2, sdrsaturation, 0.98"
+        "DP-3, 2560x1440@100, 0x0, 1, transform, 1, bitdepth, 10, sdrbrightness, 1.2, sdrsaturation, 0.98"
         ", preferred, auto, 1"
       ];
 
@@ -35,12 +30,11 @@
         "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP DISPLAY"
         "dbus-update-activation-environment --systemd --all"
         "gnome-keyring-daemon --start --components=secrets"
-        "nm-applet"
         "mprisence"
-        "quickshell"
         "udiskie -a -s --file-manager nautilus"
         "wl-paste --type text --watch cliphist store"
         "wl-paste --type image --watch cliphist store"
+        "sleep 1 && systemctl --user start noctalia-shell.service"
       ];
 
       ############################
@@ -52,7 +46,7 @@
         "XCURSOR_THEME, Bibata-Modern-Ice"
         "XCURSOR_SIZE, 16"
         "QT_QPA_PLATFORM, wayland;xcb"
-        "QT_QPA_PLATFORMTHEME, qt6ct"
+        "QT_QPA_PLATFORMTHEME, gtk3"
         "QT_STYLE_OVERRIDE, kvantum"
         "QT_WAYLAND_DISABLE_WINDOWDECORATION, 1"
         "QT_AUTO_SCREEN_SCALE_FACTOR, 1.25"
@@ -85,10 +79,10 @@
       ### LOOK AND FEEL ###
       #####################
       general = {
-        gaps_in = 8;
-        gaps_out = 12;
+        gaps_in = 4;
+        gaps_out = 8;
         border_size = 2;
-        "col.active_border" = "$primary $primary_container 45deg";
+        "col.active_border" = "rgb(8aadf4) rgb(363a4f) 45deg";
         "col.inactive_border" = "rgba(c0c6dc33)";
         resize_on_border = true;
         allow_tearing = false;
@@ -105,7 +99,7 @@
           range = 10;
           render_power = 4;
           sharp = false;
-          color = "$primary_container";
+          color = "rgb(363a4f)";
           color_inactive = "rgba(0,0,0,0)";
         };
 

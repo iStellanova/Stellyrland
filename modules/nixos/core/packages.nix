@@ -1,4 +1,4 @@
-{ config, pkgs, inputs, ... }:
+{ pkgs, ... }:
 
 {
   environment.systemPackages = with pkgs; [
@@ -16,12 +16,11 @@
 
     # --- Development ---
     git                      # Distributed version control system
-    nh                       # Yet another nix helper
     nix-output-monitor       # Pipe your nix-build to nom to get a better output
-    python3Packages.pip      # The PyPA recommended tool for installing Python packages
     python3Packages.uv       # An extremely fast Python package installer and resolver
 
     # --- System Management ---
+    btrfs-assistant          # GUI manager for Btrfs and Snapper
     btrfs-progs              # Userspace utilities for the btrfs filesystem
     coolercontrol.coolercontrol-gui # GUI for viewing and controlling cooling devices
     efibootmgr               # A Linux user-space application to modify the Intel Extensible Firmware Interface (EFI) Boot Manager
@@ -38,8 +37,7 @@
     gsettings-desktop-schemas # Shared GSettings schemas for the desktop, used by various projects
     gvfs                     # Userspace virtual filesystem
     hyprcursor               # The hyprland cursor format, library and utilities
-    hypridle                 # Hyprland's idle daemon
-    hyprlock                 # Hyprland's GPU-accelerated screen locking utility
+    mpvpaper                 # A video wallpaper program for Wayland
     hyprpicker               # A wlroots-compatible color picker
     hyprpolkitagent          # A simple polkit authentication agent for Hyprland
     hyprshot                 # Hyprland screenshot tool
@@ -58,29 +56,29 @@
 
     # --- Graphics & Multimedia ---
     cava                     # Console-based Audio Visualizer for Alsa
+    davinci-resolve          # Professional video editing, color correction, visual effects and audio post-production
     ffmpeg                   # A complete, cross-platform solution to record, convert and stream audio and video
     ffmpegthumbnailer        # A lightweight video thumbnailer that can be used by file managers
     gst_all_1.gst-plugins-base # Base GStreamer plugins
     gst_all_1.gst-plugins-good # Good GStreamer plugins
     imv                      # A command line image viewer for Wayland and X11
     libva-utils              # A collection of tools and tests for VA-API
+    losslesscut-bin          # Lossless video editing.
     mpv                      # A free, open source, and cross-platform media player
     mprisence                # Discord Rich Presence for MPRIS
-    pulseaudio               # Sound server for POSIX and Win32 systems
 
     # --- Applications ---
     ani-cli                  # A cli tool to browse and watch anime
-    cpufetch                 # Simple 64-bit ARM/x86 CPU architecture fetching tool
-    discord                  # All-in-one voice and text chat for gamers
+    blanket                  # Listen to different sounds to improve focus and increase your productivity
     fastfetch                # Like neofetch, but much faster because it's written in C
     flatpak                  # Linux application sandboxing and distribution framework
     gpu-screen-recorder-gtk  # GTK frontend for gpu-screen-recorder
     kitty                    # A modern, hackable, featureful, OpenGL based terminal emulator
     liquidctl                # Cross-platform CLI and Python drivers for AIO liquid coolers and other devices
     lollypop                 # A modern music player for GNOME
-    matugen                  # Material You color generation tool
     nicotine-plus            # A graphical client for the Soulseek file sharing network
     obs-studio               # Free and open source software for video recording and live streaming
+    parabolic                # A fast and simple video downloader for GNOME
     peaclock                 # A colorful clock, timer, and stopwatch for the terminal
     prismlauncher            # A free, open source launcher for Minecraft
     proton-vpn               # Official Proton VPN Linux app
@@ -97,11 +95,14 @@
 
     # --- Monitoring ---
     btop                     # A monitor of resources
-    htop                     # An interactive process viewer
+    resources                # Resource monitor.
 
     # --- Shell & Completions ---
-    zsh                      # Interactive shell
     zsh-completions          # Additional completion definitions for Zsh
+
+    # --- Utilities ---
+    pavucontrol              # PulseAudio Volume Control
+    xdg-utils                # Command line tools that assist applications with different desktop integration tasks
 
     # --- Custom / Git Builds ---
     (python3Packages.buildPythonApplication {

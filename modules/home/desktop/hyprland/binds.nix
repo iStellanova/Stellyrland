@@ -1,26 +1,19 @@
-{ config, ... }:
-
 {
   wayland.windowManager.hyprland.settings = {
     "$mainMod" = "SUPER";
     "$terminal" = "kitty";
     "$fileManager" = "nautilus";
-    "$menu" = "quickshell ipc call shell toggleLauncher";
 
     bind = [
       # Apps
       "$mainMod, Q, exec, $terminal"
       "$mainMod, E, exec, $fileManager --new-window"
       "$mainMod, B, exec, zen-browser"
-      "$mainMod, Space, exec, $menu"
-      "$mainMod, Tab, exec, quickshell ipc call shell toggleWallpaperSelector"
-      "$mainMod, Alt_L, exec, quickshell ipc call shell toggleShortcuts"
-      "$mainMod, O, exec, pkill -9 quickshell && quickshell"
+      "$mainMod, Space, exec, rofi -show drun"
       "$mainMod, B, exec, zeditor"
 
       # Session
-      "$mainMod+Shift, L, exec, hyprlock"
-      "$mainMod+Shift, X, exec, quickshell ipc call shell toggleLogout"
+      "$mainMod+Shift, L, exec, noctalia-shell ipc call lockScreen lock"
 
       # Windows
       "$mainMod, C, killactive"
@@ -30,7 +23,6 @@
       "$mainMod, O, togglesplit"
       "Alt, Return, fullscreen"
       "$mainMod, G, movetoworkspace, +0"
-      "$mainMod+Shift, F, exec, bash /etc/nixos/modules/home/desktop/hyprland/scripts/toggle_layout.sh"
 
       # Focus
       "$mainMod, H, movefocus, l"
@@ -86,15 +78,14 @@
       "$mainMod+SHIFT, S, movetoworkspace, special:magic"
       "$mainMod, F, movetoworkspacesilent, special:minimized"
       "$mainMod, R, togglespecialworkspace, minimized"
-
-      # Overview
-      "$mainMod, D, exec, quickshell ipc call shell toggleOverview"
+      "$mainMod, Tab, exec, noctalia-shell ipc call wallpaper toggle"
+      "$mainMod + Shift, X, exec, noctalia-shell ipc call sessionMenu toggle"
 
       # Clipboard
       "$mainMod, V, exec, kitty --class cliphist-fzf -e sh -c 'cliphist list | fzf --no-scrollbar | cliphist decode | wl-copy'"
 
       # Screenshot
-      ", Print, exec, bash -c 'killall hyprpicker 2>/dev/null; hyprpicker -r -z & echo $! > /tmp/qs_hyprpicker.pid; sleep 0.2; quickshell ipc call shell toggleScreenshot'"
+      ", Print, exec, hyprshot -m region -o ~/Pictures/Screenshots"
       "Shift, Print, exec, hyprshot -m output -o ~/Pictures/Screenshots"
 
       # Alt-Tab
@@ -115,7 +106,7 @@
     ];
 
     bindr = [
-      "SUPER, Super_L, exec, quickshell ipc call shell toggleOverview"
+      "SUPER, Super_L, exec, noctalia-shell ipc call launcher toggle"
     ];
   };
 }

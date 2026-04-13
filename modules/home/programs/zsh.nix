@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ pkgs, ... }:
 
 {
   programs.zsh = {
@@ -29,8 +29,9 @@
       ".." = "cd ..";
       "..." = "cd ../..";
       "...." = "cd ../../..";
-      rebuild = "git -C /etc/nixos add . && nh os switch";
-      upgrade = "git -C /etc/nixos add . && nh os switch --update";
+      rebuild = "(snapper -c home create -c timeline --description \"Before rebuild\" || true) && git -C /etc/nixos add . && nh os switch";
+      upgrade = "(snapper -c home create -c timeline --description \"Before upgrade\" || true) && git -C /etc/nixos add . && nh os switch --update";
+      clean = "nh clean all --keep 5 --keep-since 7d";
       cdn = "cd /etc/nixos/";
     };
 

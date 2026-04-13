@@ -10,6 +10,7 @@
     ../../modules/nixos/services/default.nix
     ../../modules/nixos/services/lact.nix
     ../../modules/nixos/services/openrgb.nix
+    ../../modules/nixos/services/snapper.nix
   ];
 
   networking.hostName = "stellyrland";

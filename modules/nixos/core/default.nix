@@ -1,4 +1,4 @@
-{ config, pkgs, inputs, ... }:
+{ pkgs, inputs, ... }:
 
 {
   # Use GRUB EFI boot loader.
@@ -20,13 +20,18 @@
     "preempt=full"           # Low latency
     "split_lock_detect=off"  # Smooth gaming
     "transparent_hugepage=madvise" # Smart memory usage
+    "amdgpu.dcdebugmask=0x10"
+    "amdgpu.ppfeaturemask=0xffffffff" # GPU tuning
+    "amdgpu.ignore_min_pcap=1"        # Uncap power limits
   ];
 
   # Enable Sched-ext (scx) support
   services.scx.enable = true;
+  services.scx.scheduler = "scx_lavd";
 
   boot.kernelModules = [ "mt7921e" ];
-  boot.initrd.kernelModules = [ "mt7921e" "amdgpu" ];
+  boot.initrd.kernelModules = [ "mt7921e" ];
+  hardware.amdgpu.initrd.enable = true;
 
   # ZRAM Swap
   zramSwap.enable = true;

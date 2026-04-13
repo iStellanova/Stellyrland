@@ -6,6 +6,9 @@
   hardware.graphics = {
     enable = true;
     enable32Bit = true;
+    extraPackages = with pkgs; [
+      rocmPackages.clr
+    ];
   };
 
   services.xserver.videoDrivers = [ "amdgpu" ];
@@ -46,14 +49,15 @@
               }
             }
 
-            layerrule = blur, regreet
-            layerrule = ignorealpha 0.5, regreet
+            layerrule = blur on, match:namespace regreet
+            layerrule = ignore_alpha 0.5, match:namespace regreet
 
             env = XCURSOR_THEME,Bibata-Modern-Ice
             env = XCURSOR_SIZE,16
             env = HYPRCURSOR_THEME,Bibata-Modern-Ice
             env = HYPRCURSOR_SIZE,16
             env = XCURSOR_PATH,${pkgs.bibata-cursors}/share/icons
+            env = HYPRLAND_STARTED_WITH_HYPRLAND_START, 1
             
             exec-once = ${config.programs.hyprland.package}/bin/hyprctl setcursor Bibata-Modern-Ice 16
             exec-once = ${pkgs.swaybg}/bin/swaybg -o \* -i ${wallpaper} -m fill

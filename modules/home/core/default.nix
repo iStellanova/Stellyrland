@@ -1,5 +1,3 @@
-{ config, pkgs, ... }:
-
 {
   home.username = "stellanova";
   home.homeDirectory = "/home/stellanova";
@@ -10,9 +8,5 @@
     settings = {
       include.path = "~/.gitconfig-identity";
     };
-  };
-
-  home.sessionVariables = {
-    FLAKE = "/etc/nixos";
   };
 }

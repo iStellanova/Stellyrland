@@ -1,5 +1,3 @@
-{ config, pkgs, ... }:
-
 {
   programs.kitty = {
     enable = true;
@@ -23,7 +21,7 @@
       bold_italic_font = "auto";
     };
     extraConfig = ''
-      include /home/stellanova/.config/kitty/current-theme.conf
+      include /home/stellanova/.config/kitty/themes/noctalia.conf
     '';
   };
 }

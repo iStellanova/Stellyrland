@@ -1,4 +1,4 @@
-{ inputs, config, pkgs, ... }:
+{ inputs, pkgs, ... }:
 
 {
   home.packages = with pkgs; [
@@ -7,7 +7,7 @@
 
     # --- CLI Utilities ---
     comma                    # Run software without installing it
-    
+
     # --- Wayland Utilities ---
     cliphist                 # Wayland clipboard manager
     wl-clipboard             # Command-line copy/paste utilities for Wayland

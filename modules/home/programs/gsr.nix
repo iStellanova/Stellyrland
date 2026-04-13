@@ -1,5 +1,3 @@
-{ config, pkgs, ... }:
-
 {
   xdg.configFile."gpu-screen-recorder/config".text = ''
     main.advanced_view false
@@ -42,10 +40,10 @@
     replay.start_stop_recording_hotkey 0 0
     replay.time 30
     streaming.custom.container flv
-    streaming.custom.url 
+    streaming.custom.url
     streaming.service twitch
     streaming.start_stop_recording_hotkey 0 0
-    streaming.twitch.key 
-    streaming.youtube.key 
+    streaming.twitch.key
+    streaming.youtube.key
   '';
 }

@@ -1,5 +1,3 @@
-{ config, pkgs, ... }:
-
 {
   xdg.configFile."vesktop/settings.json".text = builtins.toJSON {
     discordBranch = "stable";

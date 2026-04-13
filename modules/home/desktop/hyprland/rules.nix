@@ -1,5 +1,3 @@
-{ ... }:
-
 {
   wayland.windowManager.hyprland.settings = {
     windowrule = [
@@ -12,14 +10,11 @@
       "float on, match:title ^(Open Folder)$"
       "float on, match:title ^(Picture in picture)$"
       "float on, match:title ^(Picture-in-Picture)$"
-      "float on, match:class ^(org\.quickshell)$"
       "center on, match:class ^(xdg-desktop-portal-gtk)$"
       "center on, match:class ^(zenity)$"
       "center on, match:class ^(org.pulseaudio.pavucontrol)$"
       "center on, match:title ^(Open File)$"
       "center on, match:title ^(Open Folder)$"
-      "center on, match:class ^(org\.quickshell)$"
-      "stay_focused on, match:class ^(org\.quickshell)$"
       "size 70% 70%, match:title ^(Select a Wallpaper)$"
       "size 32% 18%, match:title ^(Picture-in-Picture)$"
       "size 70% 50%, match:class ^(xdg-desktop-portal-gtk)$"
@@ -49,21 +44,9 @@
     ];
 
     layerrule = [
-      "blur on, match:namespace quickshell"
-      "blur on, match:namespace notifications"
-      "blur on, match:namespace quickshell-tray"
-      "blur on, match:namespace quickshell-popups"
-      "blur on, match:namespace quickshell-overview"
-      "ignore_alpha 0.05, match:namespace notifications"
-      "ignore_alpha 0.0, match:namespace quickshell"
-      "ignore_alpha 0.0, match:namespace quickshell-tray"
-      "ignore_alpha 0.0, match:namespace quickshell-popups"
-      "ignore_alpha 0.0, match:namespace quickshell-overview"
+      "blur on, match:namespace noctalia-.*"
+      "ignore_alpha 0.5, match:namespace noctalia-.*"
       "animation slide, match:namespace notifications"
-      "no_anim on, match:namespace quickshell"
-      "no_anim on, match:namespace quickshell-popups"
-      "no_anim on, match:namespace quickshell-overview"
-      "no_anim on, match:namespace quickshell-tray"
       "no_anim on, match:namespace wallpaper-transition"
     ];
   };

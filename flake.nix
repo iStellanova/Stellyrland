@@ -3,22 +3,33 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    
+
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
     zen-browser.url = "github:youwen5/zen-browser-flake";
-    quickshell = {
-      url = "git+https://git.outfoxxed.me/outfoxxed/quickshell";
+
+    nix-cachyos-kernel.url = "github:xddxdd/nix-cachyos-kernel";
+
+    noctalia-shell = {
+      url = "github:noctalia-dev/noctalia-shell";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    nix-cachyos-kernel.url = "github:xddxdd/nix-cachyos-kernel";
+    noctalia-nix-monitor = {
+      url = "github:caesar-admin/Noctalia-Nix-Monitor";
+      flake = false;
+    };
+
+    noctalia-plugins = {
+      url = "github:noctalia-dev/noctalia-plugins";
+      flake = false;
+    };
   };
 
-  outputs = { self, nixpkgs, home-manager, nix-cachyos-kernel, ... }@inputs: {
+  outputs = { self, nixpkgs, home-manager, nix-cachyos-kernel, noctalia-shell, noctalia-nix-monitor, noctalia-plugins, ... }@inputs: {
     nixosConfigurations.stellyrland = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       specialArgs = { inherit inputs; };
@@ -32,6 +43,7 @@
             extraSpecialArgs = { inherit inputs; };
             users.stellanova = import ./hosts/stellyrland/home.nix;
             backupFileExtension = "backup";
+            overwriteBackup = true;
           };
         }
       ];
