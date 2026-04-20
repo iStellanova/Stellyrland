@@ -27,9 +27,14 @@
       url = "github:noctalia-dev/noctalia-plugins";
       flake = false;
     };
+
+    qs-hyprview-src = {
+      url = "github:dom0/qs-hyprview";
+      flake = false;
+    };
   };
 
-  outputs = { self, nixpkgs, home-manager, nix-cachyos-kernel, noctalia-shell, noctalia-nix-monitor, noctalia-plugins, ... }@inputs: {
+  outputs = { self, nixpkgs, home-manager, nix-cachyos-kernel, noctalia-shell, noctalia-nix-monitor, noctalia-plugins, qs-hyprview-src, ... }@inputs: {
     nixosConfigurations.stellyrland = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       specialArgs = { inherit inputs; };

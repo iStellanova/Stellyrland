@@ -1,8 +1,8 @@
 { pkgs, ... }:
 
 {
-  # Enable the LACT daemon
-  services.lact.enable = true;
+  # Disable the systemd-based LACT daemon (managed by finit)
+  services.lact.enable = false;
 
   # Manage the configuration file with GPU tuning
   environment.etc."lact/config.yaml".source = let

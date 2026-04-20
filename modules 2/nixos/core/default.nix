@@ -23,25 +23,14 @@
     "amdgpu.dcdebugmask=0x10"
     "amdgpu.ppfeaturemask=0xffffffff" # GPU tuning
     "amdgpu.ignore_min_pcap=1"        # Uncap power limits
+    "init=/sbin/finit"                # Finix Migration
   ];
 
-  # Enable Sched-ext (scx) support
-  services.scx.enable = true;
-  services.scx.scheduler = "scx_lavd";
+  # Sched-ext (scx) - Manual finit migration required
+  services.scx.enable = false;
 
-  boot.kernelModules = [ "mt7921e" ];
-  boot.initrd.kernelModules = [ "mt7921e" ];
-  hardware.amdgpu.initrd.enable = true;
-
-  # ZRAM Swap
-  zramSwap = {
-    enable = true;
-    algorithm = "zstd";
-    priority = 100;
-  };
-
-  # SSD Maintenance
-  services.fstrim.enable = true;
+  # SSD Maintenance - Manual finit migration required
+  services.fstrim.enable = false;
 
   # Set your time zone.
   time.timeZone = "America/Indianapolis";
@@ -67,11 +56,10 @@
     '';
   };
 
-  # NH cleaner
+  # NH cleaner - Systemd-based cleaning disabled for finit
   programs.nh = {
     enable = true;
-    clean.enable = true;
-    clean.extraArgs = "--keep-since 7d --keep 5";
+    clean.enable = false;
     flake = "/etc/nixos";
   };
 

@@ -2,7 +2,7 @@
   wayland.windowManager.hyprland = {
     enable = true;
     xwayland.enable = true;
-    systemd.enable = true;
+    systemd.enable = false;
 
     settings = {
       #################
@@ -26,24 +26,29 @@
       ### AUTOSTART ###
       #################
       "exec-once" = [
-        "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP DISPLAY"
-        "dbus-update-activation-environment --systemd --all"
-        "systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP"
-        "systemctl --user start hyprpolkitagent"
-        "gnome-keyring-daemon --start --components=secrets"
-        "mprisence"
-        "udiskie -a -s --file-manager nautilus"
-        "wl-paste --type text --watch cliphist store"
-        "wl-paste --type image --watch cliphist store"
-        "noctalia-shell"
-        "systemctl --user restart xdg-desktop-portal-hyprland"
-        "qs-hyprview"
+        "dbus-daemon --session --address=unix:path=/run/user/1000/bus --nofork --nopidfile &"
+        "dbus-update-activation-environment --all"
+        "gnome-keyring-daemon --start --components=secrets &"
+        "pipewire &"
+        "pipewire-pulse &"
+        "wireplumber &"
+        "xdg-desktop-portal-hyprland &"
+        "xdg-desktop-portal &"
+        "hyprpolkitagent &"
+        "mprisence &"
+        "udiskie -a -s --file-manager nautilus &"
+        "wl-paste --type text --watch cliphist store &"
+        "wl-paste --type image --watch cliphist store &"
+        "noctalia-shell &"
+        "qs-hyprview &"
       ];
 
       ############################
       ### ENVIRONMENT VARIABLES ##
       ############################
       env = [
+        "DBUS_SESSION_BUS_ADDRESS, unix:path=/run/user/1000/bus"
+        "SSH_AUTH_SOCK, /run/user/1000/keyring/ssh"
         "HYPRCURSOR_THEME, Bibata-Modern-Ice-Hypr"
         "HYPRCURSOR_SIZE, 16"
         "XCURSOR_THEME, Bibata-Modern-Ice"

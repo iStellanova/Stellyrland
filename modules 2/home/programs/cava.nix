@@ -1,0 +1,40 @@
+{ pkgs, ... }:
+
+{
+  home.packages = [ pkgs.cava ];
+
+  xdg.configFile."cava/config" = {
+    text = ''
+      [general]
+      live-config = 1
+
+      [input]
+      method = pulse
+      source = auto
+
+      [output]
+      method = noncurses
+      channels = stereo
+
+      [color]
+      theme = "colors"
+
+      [smoothing]
+      noise_reduction = 77
+    '';
+    onChange = "pkill -USR1 cava || true";
+    force = true;
+  };
+
+  # Shaders - Placeholders (Please restore content if you have backups)
+  xdg.configFile."cava/shaders/bar_spectrum.frag".text = "";
+  xdg.configFile."cava/shaders/eye_of_phi.frag".text = "";
+  xdg.configFile."cava/shaders/northern_lights.frag".text = "";
+  xdg.configFile."cava/shaders/pass_through.vert".text = "";
+  xdg.configFile."cava/shaders/spectrogram.frag".text = "";
+  xdg.configFile."cava/shaders/winamp_line_style_spectrum.frag".text = "";
+
+  # Other themes
+  xdg.configFile."cava/themes/solarized_dark".text = "";
+  xdg.configFile."cava/themes/tricolor".text = "";
+}
