@@ -1,6 +1,6 @@
 # Modular NixOS & Home Manager Configuration
 
-A highly modular, performance-optimized NixOS configuration featuring **Hyprland** and **Noctalia Shell**.
+My highly modular, performance-optimized NixOS configuration featuring **Hyprland** and **Noctalia Shell**.
 
 ## 📂 Project Structure
 
@@ -28,7 +28,6 @@ A highly modular, performance-optimized NixOS configuration featuring **Hyprland
 - **OS:** NixOS (Unstable)
 - **WM:** Hyprland
 - **Shell:** Zsh
-- **Editor:** Zed / Neovim (LazyVim)
 - **Terminal:** Kitty
 - **Bar/Shell:** Noctalia Shell
 - **Theming:** Catppuccin Macchiato (Flamingo)
@@ -58,15 +57,14 @@ nh os switch .
 sudo nixos-rebuild switch --flake .#stellyrland
 ```
 
-## ⌨️ Key Workflows
+## ⌨️ Custom Nix Commands
 - `rebuild`: Snapshots /home, adds all changes to git, and applies configuration.
 - `upgrade`: Similar to rebuild but performs a flake update first.
 - `clean`: Manual trigger for `nh clean`.
-- `nis`: Fuzzy-find files and open them in Neovim.
 
 ## 💻 Hardware
-- **CPU:** AMD Ryzen (Zen 5 Optimized)
-- **GPU:** AMD Radeon (ROCm enabled)
+- **CPU:** AMD Ryzen 9 9950X3D
+- **GPU:** AMD Radeon 7900XTX
 - **Storage:** Btrfs with Zstd compression and Async discard.
 
 ## 📜 Credits & Inspiration
