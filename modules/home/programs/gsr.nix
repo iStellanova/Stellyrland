@@ -1,4 +1,5 @@
 {
+  # GSR configuration
   xdg.configFile."gpu-screen-recorder/config".text = ''
     main.advanced_view false
     main.audio_codec opus

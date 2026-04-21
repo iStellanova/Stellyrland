@@ -1,4 +1,8 @@
 {
+  imports = [
+    ./xdg.nix
+  ];
+
   home.username = "stellanova";
   home.homeDirectory = "/home/stellanova";
   home.stateVersion = "25.11";

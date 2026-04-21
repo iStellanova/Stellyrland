@@ -25,7 +25,6 @@
       nis = "nvim $(fzf --preview=\"bat --color=always {}\")";
       cat = "bat";
       grep = "rg";
-      decedit = "vim ~/dotfiles/source.py";
       man = "tldr";
       ".." = "cd ..";
       "..." = "cd ../..";

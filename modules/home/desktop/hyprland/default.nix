@@ -1,13 +1,16 @@
 {
+  imports = [
+    ./binds.nix
+    ./rules.nix
+  ];
+
   wayland.windowManager.hyprland = {
     enable = true;
     xwayland.enable = true;
     systemd.enable = true;
 
     settings = {
-      #################
-      ###  MONITORS ###
-      #################
+      # --- Monitors ---
       monitor = [
         "DP-2, 3440x1440@175, 1440x541, 1, bitdepth, 8, sdrbrightness, 1.2, sdrsaturation, 0.98"
         "DP-3, 2560x1440@100, 0x0, 1, transform, 1, bitdepth, 8, sdrbrightness, 1.2, sdrsaturation, 0.98"
@@ -22,9 +25,7 @@
         "5, monitor:desc:Samsung Electric Company Odyssey G85SB H1AK500000, persistent:true"
       ];
 
-      #################
-      ### AUTOSTART ###
-      #################
+      # --- Autostart ---
       "exec-once" = [
         "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP DISPLAY"
         "dbus-update-activation-environment --systemd --all"
@@ -40,9 +41,7 @@
         "qs-hyprview"
       ];
 
-      ############################
-      ### ENVIRONMENT VARIABLES ##
-      ############################
+      # --- Environment Variables ---
       env = [
         "HYPRCURSOR_THEME, Bibata-Modern-Ice-Hypr"
         "HYPRCURSOR_SIZE, 16"
@@ -66,9 +65,7 @@
         "PROTON_ENABLE_HDR, 1"
       ];
 
-      #############
-      ### INPUT ###
-      #############
+      # --- Input ---
       input = {
         kb_layout = "us";
         kb_options = "caps:escape";
@@ -78,9 +75,7 @@
         accel_profile = "flat";
       };
 
-      #####################
-      ### LOOK AND FEEL ###
-      #####################
+      # --- Look and Feel ---
       general = {
         gaps_in = 4;
         gaps_out = 8;

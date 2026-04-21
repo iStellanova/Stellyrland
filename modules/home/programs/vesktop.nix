@@ -1,4 +1,5 @@
 {
+  # Vesktop configuration
   xdg.configFile."vesktop/settings.json".text = builtins.toJSON {
     discordBranch = "stable";
     minimizeToTray = true;

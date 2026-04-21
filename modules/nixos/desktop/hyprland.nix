@@ -134,28 +134,12 @@
     '';
   };
 
-  environment.systemPackages = [
-    pkgs.greetd
-    pkgs.regreet
-    pkgs.bibata-cursors
-  ];
-
-  programs.gamescope.enable = true;
-
   xdg.portal = {
     enable = true;
+    xdgOpenUsePortal = true;
     extraPortals = [ 
       pkgs.xdg-desktop-portal-gtk 
-      pkgs.xdg-desktop-portal-hyprland 
     ];
     config.common.default = "*";
   };
-
-  fonts.packages = with pkgs; [
-    nerd-fonts.jetbrains-mono
-    nerd-fonts.noto
-    noto-fonts
-    noto-fonts-cjk-sans
-    noto-fonts-color-emoji
-  ];
 }

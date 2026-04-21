@@ -11,11 +11,6 @@
       rounded_corners = true;
       terminal_sync = true;
       graph_symbol = "braille";
-      graph_symbol_cpu = "default";
-      graph_symbol_gpu = "default";
-      graph_symbol_mem = "default";
-      graph_symbol_net = "default";
-      graph_symbol_proc = "default";
       shown_boxes = "cpu mem net proc";
       update_ms = 2000;
       proc_sorting = "cpu lazy";
@@ -42,15 +37,12 @@
       check_temp = true;
       cpu_sensor = "Auto";
       show_coretemp = true;
-      cpu_core_map = "";
       temp_scale = "celsius";
       base_10_sizes = false;
       show_cpu_freq = true;
       freq_mode = "first";
       clock_format = "%X";
       background_update = true;
-      custom_cpu_name = "";
-      disks_filter = "";
       mem_graphs = true;
       mem_below_net = false;
       zfs_arc_cached = true;
@@ -64,12 +56,10 @@
       show_io_stat = true;
       io_mode = false;
       io_graph_combined = false;
-      io_graph_speeds = "";
       net_download = 100;
       net_upload = 100;
       net_auto = true;
       net_sync = true;
-      net_iface = "";
       base_10_bitrate = "Auto";
       show_battery = true;
       selected_battery = "Auto";
@@ -80,12 +70,6 @@
       rsmi_measure_pcie_speeds = true;
       gpu_mirror_graph = true;
       shown_gpus = "nvidia amd intel";
-      custom_gpu_name0 = "";
-      custom_gpu_name1 = "";
-      custom_gpu_name2 = "";
-      custom_gpu_name3 = "";
-      custom_gpu_name4 = "";
-      custom_gpu_name5 = "";
     };
   };
 }

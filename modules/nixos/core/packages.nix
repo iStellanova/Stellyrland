@@ -13,6 +13,7 @@
     tree                     # A recursive directory listing program that produces a depth indented listing of files
     wget                     # A free software package for retrieving content from web servers
     zoxide                   # A smarter cd command
+    neovim                   # Extensible Vim-based text editor
 
     # --- Development ---
     git                      # Distributed version control system
@@ -36,12 +37,8 @@
     gnome-keyring            # A collection of components in GNOME that store secrets, passwords, keys, certificates
     gsettings-desktop-schemas # Shared GSettings schemas for the desktop, used by various projects
     gvfs                     # Userspace virtual filesystem
-    hyprcursor               # The hyprland cursor format, library and utilities
     linux-wallpaperengine    # Wallpaper Engine for Linux
     mpvpaper                 # A video wallpaper program for Wayland
-    hyprpicker               # A wlroots-compatible color picker
-    hyprpolkitagent          # A simple polkit authentication agent for Hyprland
-    hyprshot                 # Hyprland screenshot tool
     kdePackages.qtstyleplugin-kvantum # SVG-based theme engine for Qt5/Qt6
     libsForQt5.qtstyleplugin-kvantum # SVG-based theme engine for Qt5/Qt6 (Qt5 version)
     libsForQt5.qtwayland     # Wayland support for Qt5
@@ -54,6 +51,18 @@
     xdg-user-dirs            # Tool to help manage "well known" user directories
     xhost                    # Server access control program for X
     xwayland                 # X server for Wayland
+
+    # --- Hyprland Specific ---
+    greetd
+    regreet
+    bibata-cursors
+    hyprcursor
+    hyprpicker
+    hyprpolkitagent
+    hyprshot
+    swaybg
+    xdg-desktop-portal-hyprland
+    xdg-desktop-portal-gtk
 
     # --- Graphics & Multimedia ---
     cava                     # Console-based Audio Visualizer for Alsa
@@ -82,13 +91,15 @@
     parabolic                # A fast and simple video downloader for GNOME
     peaclock                 # A colorful clock, timer, and stopwatch for the terminal
     planify                  # Task manager with Todoist support designed for GNU/Linux
-    prismlauncher            # A free, open source launcher for Minecraft
     proton-vpn               # Official Proton VPN Linux app
-    heroic                   # Open-source launcher for Epic, GOG and Amazon Games
-    protonup-qt              # Install and manage GE-Proton, Luxtorpeda & more for Steam and Lutris
-    r2modman                 # A simple and easy to use mod manager for several games
     vesktop                  # Custom Discord desktop app
     zed-editor               # A high-performance, multiplayer code editor from the creators of Atom and Tree-sitter
+
+    # --- Gaming ---
+    heroic                   # Open-source launcher for Epic, GOG and Amazon Games
+    prismlauncher            # A free, open source launcher for Minecraft
+    protonup-qt              # Install and manage GE-Proton, Luxtorpeda & more for Steam and Lutris
+    r2modman                 # A simple and easy to use mod manager for several games
 
     # --- File Management ---
     file-roller              # Archive manager for the GNOME desktop

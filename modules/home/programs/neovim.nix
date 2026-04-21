@@ -17,6 +17,5 @@
     ];
   };
 
-  # Symlink the nvim configuration from the nix store
   xdg.configFile."nvim".source = ./nvim;
 }

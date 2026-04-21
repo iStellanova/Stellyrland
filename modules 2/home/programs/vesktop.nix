@@ -1,9 +1,0 @@
-{
-  xdg.configFile."vesktop/settings.json".text = builtins.toJSON {
-    discordBranch = "stable";
-    minimizeToTray = true;
-    arRPC = true;
-    splashColor = "rgb(202, 211, 245)";
-    splashBackground = "rgb(24, 25, 38)";
-  };
-}

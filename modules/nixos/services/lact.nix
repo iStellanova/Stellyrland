@@ -36,7 +36,7 @@
           power_cap = 402.0;
           performance_level = "auto";
           min_core_clock = 500;
-          max_core_clock = 2900;
+          max_core_clock = 3000;
           max_memory_clock = 1250;
           voltage_offset = 0;
           power_profile_mode_index = 0;
@@ -66,7 +66,7 @@
               power_cap = 402.0;
               performance_level = "auto";
               min_core_clock = 500;
-              max_core_clock = 2900;
+              max_core_clock = 3000;
               max_memory_clock = 1250;
               voltage_offset = 0;
               power_profile_mode_index = 0;

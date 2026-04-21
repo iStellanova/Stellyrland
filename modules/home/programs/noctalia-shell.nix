@@ -1,4 +1,4 @@
-{ inputs, pkgs, lib, ... }:
+{ inputs, pkgs, ... }:
 
 {
   imports = [
@@ -15,7 +15,6 @@
   programs.noctalia-shell = {
     enable = true;
     systemd.enable = false;
-    # settings = { ... }; // Removed to allow local management
   };
 
   # Link ONLY the nixos-monitor plugin so it is available to Noctalia.
@@ -25,7 +24,4 @@
     source = inputs.noctalia-nix-monitor;
     force = true;
   };
-
-  # Note: All other files (settings.json, plugins.json, colors.json, templates/)
-  # are no longer managed by Nix/Home Manager and can be managed by Noctalia locally.
 }
