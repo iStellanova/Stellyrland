@@ -62,7 +62,7 @@ function_uid = "02ba5ea0-89cc-4085-808f-c3b1cc97963b"
 uid = "0e2d7e57-668a-47f3-b703-265b5a520488"
 name = "Main"
 p_type = "Graph"
-speed_profile = [[0.0, 0], [25.0, 20], [45.0, 45], [65.0, 52], [80.0, 75], [95.0, 100]]
+speed_profile = [[0.0, 0], [25.0, 20], [45.0, 45], [65.0, 70], [80.0, 100]]
 temp_source = { temp_name = "temp1", device_uid = "c1c4f573af5adb37f4b2b21c38e7ab00131dec4e073a10af87799b5e930fee88" }
 temp_min = 0.0
 temp_max = 95.0
