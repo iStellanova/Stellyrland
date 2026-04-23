@@ -32,10 +32,10 @@ in
           command = let
             wallpaper = ../../../assets/login-wallpaper.png;
             greetdHyprConfig = pkgs.writeText "greetd-hyprland.conf" ''
-              monitor=DP-2, 3440x1440@175, 1440x541, 1, bitdepth, 8, sdrbrightness, 1.2, sdrsaturation, 0.98
-              monitor=DP-3, 2560x1440@100, 0x0, 1, transform, 1, bitdepth, 8, sdrbrightness, 1.2, sdrsaturation, 0.98
+              monitor=DP-2, 3440x1440@175, 1440x541, 1, bitdepth, 10, sdrbrightness, 1.2, sdrsaturation, 0.98
+              monitor=DP-3, 2560x1440@100, 0x0, 1, transform, 1, bitdepth, 10, sdrbrightness, 1.2, sdrsaturation, 0.98
               monitor=, preferred, auto, 1
-              
+
               misc {
                 disable_hyprland_logo = true
                 disable_splash_rendering = true
@@ -62,7 +62,7 @@ in
               env = HYPRCURSOR_SIZE,16
               env = XCURSOR_PATH,${pkgs.bibata-cursors}/share/icons
               env = HYPRLAND_STARTED_WITH_HYPRLAND_START, 1
-              
+
               exec-once = ${config.programs.hyprland.package}/bin/hyprctl setcursor Bibata-Modern-Ice 16
               exec-once = ${pkgs.swaybg}/bin/swaybg -o \* -i ${wallpaper} -m fill
               exec-once = ${pkgs.regreet}/bin/regreet; ${config.programs.hyprland.package}/bin/hyprctl dispatch exit
@@ -137,8 +137,8 @@ in
 
         settings = {
           monitor = [
-            "DP-2, 3440x1440@175, 1440x541, 1, bitdepth, 8, sdrbrightness, 1.2, sdrsaturation, 0.98"
-            "DP-3, 2560x1440@100, 0x0, 1, transform, 1, bitdepth, 8, sdrbrightness, 1.2, sdrsaturation, 0.98"
+            "DP-2, 3440x1440@175, 1440x541, 1, bitdepth, 10, sdrbrightness, 1.2, sdrsaturation, 0.98"
+            "DP-3, 2560x1440@100, 0x0, 1, transform, 1, bitdepth, 10, sdrbrightness, 1.2, sdrsaturation, 0.98"
             ", preferred, auto, 1"
           ];
 
