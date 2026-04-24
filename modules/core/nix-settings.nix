@@ -25,6 +25,7 @@
 
     environment.systemPackages = with pkgs; [
       nix-output-monitor # Pipeline your nix-build to nom to get a better output
+      nvd                # Diff tool for nix packages
     ];
 
     environment.variables = {
@@ -36,9 +37,7 @@
 
     home-manager.users.stellanova.programs.zsh.shellAliases = {
       # Nix-specific maintenance
-      rebuild = "(snapper -c home create -c timeline --description \"Before rebuild\" || true) && git -C /etc/nixos add . && nh os switch";
-      upgrade = "(snapper -c home create -c timeline --description \"Before upgrade\" || true)  && flatpak update && git -C /etc/nixos add . && nh os switch --update";
-      clean = "nh clean all --keep 20";
+      clean = "nh clean all --keep 20 --optimise";
       cdn = "cd /etc/nixos/";
 
       # Scratch profile aliases
@@ -46,7 +45,23 @@
       nix-clear = "rm -rf ~/.local/state/nix/profiles/scratch && nh clean all --keep 20";
     };
 
-    home-manager.users.stellanova.programs.zsh.initExtra = ''
+    home-manager.users.stellanova.programs.zsh.initContent = ''
+      rebuild() {
+        if [[ "$1" == "check" ]]; then
+          git -C /etc/nixos add . && nh os build --diff always
+        else
+          (snapper -c home create -c timeline --description "Before rebuild" || true) && git -C /etc/nixos add . && nh os switch
+        fi
+      }
+
+      upgrade() {
+        if [[ "$1" == "check" ]]; then
+          git -C /etc/nixos add . && nh os build --update --diff always
+        else
+          (snapper -c home create -c timeline --description "Before upgrade" || true) && flatpak update && git -C /etc/nixos add . && nh os switch --update
+        fi
+      }
+
       nix-add() { local profile="$HOME/.local/state/nix/profiles/scratch"; nix profile add --profile "$profile" nixpkgs#$1; }
       nix-remove() {
         if [[ ! -d ~/.local/state/nix/profiles/scratch ]]; then echo "Scratch profile doesn't exist"; return 1; fi
