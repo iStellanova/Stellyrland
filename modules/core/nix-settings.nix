@@ -52,6 +52,7 @@
       # Nix-specific maintenance
       clean = "nh clean all --keep 20 --optimise";
       cdn = "cd /etc/nixos/";
+      nixinfo = "nh os info";
 
       # Scratch profile aliases
       nix-list = "nix profile list --profile ~/.local/state/nix/profiles/scratch";
