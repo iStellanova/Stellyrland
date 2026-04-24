@@ -23,6 +23,19 @@
       flake = "/etc/nixos";
     };
 
+    # Support for dynamically linked executables
+    programs.nix-ld.enable = true;
+    programs.nix-ld.libraries = with pkgs; [
+      stdenv.cc.cc
+      zlib
+      fuse3
+      icu
+      nss
+      openssl
+      curl
+      expat
+    ];
+
     environment.systemPackages = with pkgs; [
       nix-output-monitor # Pipeline your nix-build to nom to get a better output
       nvd                # Diff tool for nix packages
