@@ -7,12 +7,12 @@
   aspects = {
     core = {
       enable = true;
-      packages.enable = true;
       nix-settings.enable = true;
       users.enable = true;
       hardware.enable = true;
       boot.enable = true;
       fonts.enable = true;
+      storage.enable = true;
       services-base.enable = true;
       xdg.enable = true;
     };
@@ -23,9 +23,14 @@
     };
 
     programs = {
-      common.enable = true;
+      cli.enable = true;
+      aesthetic.enable = true;
+      media.enable = true;
+      utils.enable = true;
+      network.enable = true;
+      browser.enable = true;
       gaming.enable = true;
-      ssh.enable = true;
+      git.enable = true;
       zsh.enable = true;
       neovim.enable = true;
       vesktop.enable = true;
@@ -43,11 +48,10 @@
     };
 
     services = {
-      common.enable = true;
+      desktop-services.enable = true;
       coolercontrol.enable = true;
       lact.enable = true;
       openrgb.enable = true;
-      snapper.enable = true;
     };
   };
 

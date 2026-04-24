@@ -17,11 +17,14 @@
           nil
           shellcheck
           gcc
-          unzip
         ];
       };
 
       xdg.configFile."nvim".source = ./nvim;
+      
+      programs.zsh.shellAliases = lib.mkIf config.aspects.programs.cli.enable {
+        nis = "nvim $(fzf --preview=\"bat --color=always {}\")";
+      };
     };
   };
 }

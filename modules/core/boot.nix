@@ -4,6 +4,8 @@
   options.aspects.core.boot.enable = lib.mkEnableOption "Core boot settings" // { default = true; };
 
   config = lib.mkIf config.aspects.core.boot.enable {
+    environment.systemPackages = [ pkgs.efibootmgr ];
+
     # Use GRUB EFI boot loader.
     boot.loader.grub = {
       enable = true;

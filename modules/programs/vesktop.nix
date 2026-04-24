@@ -1,9 +1,11 @@
-{ config, lib, ... }:
+{ config, lib, pkgs, ... }:
 
 {
   options.aspects.programs.vesktop.enable = lib.mkEnableOption "Vesktop Discord client";
 
   config = lib.mkIf config.aspects.programs.vesktop.enable {
+    environment.systemPackages = [ pkgs.vesktop ];
+
     home-manager.users.stellanova = {
       # Vesktop configuration
       xdg.configFile."vesktop/settings.json".text = builtins.toJSON {

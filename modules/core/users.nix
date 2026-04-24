@@ -10,6 +10,5 @@
       extraGroups = [ "wheel" "storage" "disk" "video" "render" "networkmanager" ];
     };
 
-    programs.zsh.enable = true;
   };
 }

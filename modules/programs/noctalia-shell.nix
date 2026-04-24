@@ -9,13 +9,6 @@
         inputs.noctalia-shell.homeModules.default
       ];
 
-      # These dependencies are still needed for the nix-monitor plugin
-      home.packages = with pkgs; [
-        nh
-        jq
-        curl
-      ];
-
       programs.noctalia-shell = {
         enable = true;
         systemd.enable = false;

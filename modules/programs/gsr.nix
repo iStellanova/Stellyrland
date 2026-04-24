@@ -1,9 +1,10 @@
-{ config, lib, ... }:
+{ config, lib, pkgs, ... }:
 {
   options.aspects.programs.gsr.enable = lib.mkEnableOption "GPU Screen Recorder";
   
   config = lib.mkIf config.aspects.programs.gsr.enable {
     programs.gpu-screen-recorder.enable = true;
+    environment.systemPackages = [ pkgs.gpu-screen-recorder-gtk ];
     home-manager.users.stellanova = {
       # GSR configuration
       xdg.configFile."gpu-screen-recorder/config".text = ''

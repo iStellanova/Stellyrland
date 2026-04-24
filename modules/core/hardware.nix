@@ -1,9 +1,11 @@
-{ config, lib, ... }:
+{ config, lib, pkgs, ... }:
 
 {
   options.aspects.core.hardware.enable = lib.mkEnableOption "Core hardware settings" // { default = true; };
 
   config = lib.mkIf config.aspects.core.hardware.enable {
+    environment.systemPackages = [ pkgs.usbutils ];
+
     hardware.enableRedistributableFirmware = true;
     hardware.cpu.amd.updateMicrocode = true;
 

@@ -74,6 +74,9 @@
         kdePackages.qtstyleplugin-kvantum
         libsForQt5.qtstyleplugin-kvantum
         libsForQt5.qt5ct
+        nwg-look
+        bibata-cursors
+        hyprcursor
       ];
     };
   };

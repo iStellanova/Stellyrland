@@ -10,6 +10,25 @@ in
     # NixOS level config
     programs.hyprland.enable = true;
 
+    environment.systemPackages = with pkgs; [
+      hyprpicker
+      hyprpolkitagent
+      hyprshot
+      swaybg
+      cliphist
+      wl-clipboard
+      nautilus
+      sushi
+      file-roller
+      libnotify
+      udiskie
+      linux-wallpaperengine
+      mpvpaper
+      xdg-desktop-portal-hyprland
+      xhost
+      xauth
+    ];
+
     hardware.graphics = {
       enable = true;
       enable32Bit = true;

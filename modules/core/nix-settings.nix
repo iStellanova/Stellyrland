@@ -1,4 +1,4 @@
-{ config, lib, ... }:
+{ config, lib, pkgs, ... }:
 
 {
   options.aspects.core.nix-settings.enable = lib.mkEnableOption "Core nix settings" // { default = true; };
@@ -23,11 +23,35 @@
       flake = "/etc/nixos";
     };
 
+    environment.systemPackages = with pkgs; [
+      nix-output-monitor # Pipeline your nix-build to nom to get a better output
+    ];
+
     environment.variables = {
       FLAKE = "/etc/nixos";
       NIXOS_OZONE_WL = "1";
     };
 
     nixpkgs.config.allowUnfree = true;
+
+    home-manager.users.stellanova.programs.zsh.shellAliases = {
+      # Nix-specific maintenance
+      rebuild = "(snapper -c home create -c timeline --description \"Before rebuild\" || true) && git -C /etc/nixos add . && nh os switch";
+      upgrade = "(snapper -c home create -c timeline --description \"Before upgrade\" || true)  && flatpak update && git -C /etc/nixos add . && nh os switch --update";
+      clean = "nh clean all --keep 20";
+      cdn = "cd /etc/nixos/";
+
+      # Scratch profile aliases
+      nix-list = "nix profile list --profile ~/.local/state/nix/profiles/scratch";
+      nix-clear = "rm -rf ~/.local/state/nix/profiles/scratch && nh clean all --keep 20";
+    };
+
+    home-manager.users.stellanova.programs.zsh.initExtra = ''
+      nix-add() { local profile="$HOME/.local/state/nix/profiles/scratch"; nix profile add --profile "$profile" nixpkgs#$1; }
+      nix-remove() {
+        if [[ ! -d ~/.local/state/nix/profiles/scratch ]]; then echo "Scratch profile doesn't exist"; return 1; fi
+        nix profile remove --profile ~/.local/state/nix/profiles/scratch $1
+      }
+    '';
   };
 }

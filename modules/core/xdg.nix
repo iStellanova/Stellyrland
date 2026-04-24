@@ -1,9 +1,13 @@
-{ config, lib, ... }:
+{ config, lib, pkgs, ... }:
 
 {
   options.aspects.core.xdg.enable = lib.mkEnableOption "Core XDG settings" // { default = true; };
 
   config = lib.mkIf config.aspects.core.xdg.enable {
+    environment.systemPackages = with pkgs; [
+      xdg-user-dirs
+      xdg-utils
+    ];
     home-manager.users.stellanova = { config, ... }: {
       xdg.userDirs = {
         enable = true;

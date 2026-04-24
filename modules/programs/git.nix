@@ -1,9 +1,9 @@
 { config, lib, ... }:
 
 {
-  options.aspects.programs.ssh.enable = lib.mkEnableOption "SSH client and git identity configuration";
+  options.aspects.programs.git.enable = lib.mkEnableOption "Git and SSH identity configuration";
 
-  config = lib.mkIf config.aspects.programs.ssh.enable {
+  config = lib.mkIf config.aspects.programs.git.enable {
     # NixOS level
     programs.ssh.startAgent = true;
 

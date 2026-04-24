@@ -1,4 +1,4 @@
-{ config, lib, ... }:
+{ config, lib, pkgs, ... }:
 
 {
   options.aspects.core.services-base.enable = lib.mkEnableOption "Base system services" // { default = true; };

@@ -171,6 +171,11 @@ in
 
   config = lib.mkIf cfg.enable {
     programs.coolercontrol.enable = true;
+
+    environment.systemPackages = [
+      pkgs.coolercontrol.coolercontrol-gui
+      pkgs.liquidctl
+    ];
     # We use a systemd preStart script instead of environment.etc because
     # coolercontrold panics if its configuration file is not writable.
     systemd.services.coolercontrold.preStart = ''
