@@ -29,11 +29,11 @@ let
         pmfw_options = {
           zero_rpm = true;
         };
-        power_cap = 402.0;
+        power_cap = 350.0;
         performance_level = "manual";
-        min_core_clock = 2700;
-        max_core_clock = 3000;
-        max_memory_clock = 1250;
+        min_core_clock = 500;
+        max_core_clock = 2700;
+        max_memory_clock = 1124;
         voltage_offset = 0;
         power_profile_mode_index = 0;
       };
@@ -59,11 +59,11 @@ let
             pmfw_options = {
               zero_rpm = true;
             };
-            power_cap = 402.0;
+            power_cap = 350.0;
             performance_level = "manual";
-            min_core_clock = 2700;
-            max_core_clock = 3000;
-            max_memory_clock = 1250;
+            min_core_clock = 500;
+            max_core_clock = 2700;
+            max_memory_clock = 1124;
             voltage_offset = 0;
             power_profile_mode_index = 0;
           };
