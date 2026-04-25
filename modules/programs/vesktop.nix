@@ -4,7 +4,10 @@
   options.aspects.programs.vesktop.enable = lib.mkEnableOption "Vesktop Discord client";
 
   config = lib.mkIf config.aspects.programs.vesktop.enable {
-    environment.systemPackages = [ pkgs.vesktop ];
+    # environment.systemPackages = [ pkgs.vesktop ];
+    environment.systemPackages = [ # Remove when fixed.
+      (pkgs.vesktop.override { withSystemVencord = false; })
+    ];
 
     home-manager.users.stellanova = {
       # Vesktop configuration

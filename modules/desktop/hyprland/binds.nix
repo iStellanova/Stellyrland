@@ -78,7 +78,6 @@
       "$mainMod, F, movetoworkspacesilent, special:minimized"
       "$mainMod, R, togglespecialworkspace, minimized"
       "$mainMod+Alt, R, exec, systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP DISPLAY && pkill noctalia-shell; noctalia-shell"
-      "$mainMod, Tab, exec, qs-hyprview-toggle"
       "$mainMod+SHIFT, Tab, exec, noctalia-shell ipc call wallpaper toggle"
       "$mainMod + Shift, X, exec, noctalia-shell ipc call sessionMenu toggle"
 
@@ -90,7 +89,6 @@
       "Shift, Print, exec, hyprshot -m output -o ~/Pictures/Screenshots"
 
       # Alt-Tab
-      "ALT, Tab, exec, qs-hyprview-toggle"
       "ALT+SHIFT, Tab, cyclenext, prev"
       "ALT+SHIFT, Tab, bringactivetotop"
 

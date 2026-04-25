@@ -5,6 +5,8 @@
 
   config = lib.mkIf config.aspects.core.nix-settings.enable {
     # Nix Settings
+    nix.daemonCPUSchedPolicy = "idle";
+    nix.daemonIOSchedPriority = 7;
     nix.settings = {
       experimental-features = [ "nix-command" "flakes" ];
       log-lines = 25;
@@ -12,6 +14,7 @@
       warn-dirty = false;
       min-free = 2147483648; # 2GB
       max-free = 5368709120; # 5GB
+      cores = 24;                       # Leave 8 threads free for system/driver
       builders-use-substitutes = true;
     };
 

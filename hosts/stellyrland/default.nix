@@ -42,7 +42,6 @@
       gsr.enable = true;
       kitty.enable = true;
       ns.enable = true;
-      quickshell.enable = true;
       yazi.enable = true;
       zed.enable = true;
     };

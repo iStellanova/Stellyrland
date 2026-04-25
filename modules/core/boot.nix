@@ -20,13 +20,14 @@
     boot.kernelPackages = pkgs.linuxPackages_zen;
 
     boot.kernelParams = [
+      "amdgpu.sg_display=0"    # Fix for white screen/flicker on 7900XTX
       "amdgpu.dc_disable_psr=1"
+      "amdgpu.gpu_recovery=1"           # Enable GPU recovery
       "pcie_aspm=off"          # WiFi stability
       "amd_pstate=active"      # Zen 5 Preferred Core ranking
       "preempt=full"           # Low latency
       "split_lock_detect=off"  # Smooth gaming
       "transparent_hugepage=madvise" # Smart memory usage
-      "amdgpu.dcdebugmask=0x10"
       "amdgpu.ppfeaturemask=0xffffffff" # GPU tuning
       "amdgpu.ignore_min_pcap=1"        # Uncap power limits
     ];
