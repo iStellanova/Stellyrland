@@ -21,10 +21,10 @@
 
     boot.kernelParams = [
       "amdgpu.gpu_recovery=1"           # Enable GPU recovery
-      "amd_pstate=active"      # Zen 5 Preferred Core ranking
-      "preempt=full"           # Low latency
-      "split_lock_detect=off"  # Smooth gaming
-      "transparent_hugepage=madvise" # Smart memory usage
+      "amd_pstate=active"               # Zen 5 Preferred Core ranking
+      "preempt=full"                    # Low latency
+      "split_lock_detect=off"           # Smooth gaming
+      "transparent_hugepage=madvise"    # Smart memory usage
       "amdgpu.ppfeaturemask=0xffffffff" # GPU tuning
     ];
 

@@ -1,7 +1,6 @@
 {
   wayland.windowManager.hyprland.settings = {
     windowrule = [
-      "float on, match:class ^(Rofi)$"
       "float on, match:class ^(xdg-desktop-portal-gtk)$"
       "float on, match:class ^(zenity)$"
       "float on, match:class ^(org.pulseaudio.pavucontrol)$"
@@ -24,10 +23,6 @@
       "float on, match:class ^(org.gnome.Sushi|sushi|org.gnome.NautilusPreviewer)$"
       "center on, match:class ^(org.gnome.Sushi|sushi|org.gnome.NautilusPreviewer)$"
       "size 50% 50%, match:class ^(org.gnome.Sushi|sushi|org.gnome.NautilusPreviewer)$"
-      "float on, match:class ^(waypaper)$"
-      "center on, match:class ^(waypaper)$"
-      "size 70% 70%, match:class ^(waypaper)$"
-      "pin on, match:class ^(waypaper)$"
       "pin on, match:title ^(Select a Wallpaper)$"
       "opacity 1.0 override, match:class ^(org.gnome.Sushi|sushi|org.gnome.NautilusPreviewer)$"
       "opacity 1.0 override, match:class ^(xdg-desktop-portal-gtk)$"
@@ -44,7 +39,6 @@
       "no_blur on, match:class ^(xdg-desktop-portal-gtk)$"
       "no_blur on, match:title ^(Picture in picture)$"
       "no_shadow on, match:title ^(Picture in picture)$"
-      "animation popin override, match:class ^(rofi)$"
     ];
 
     layerrule = [
