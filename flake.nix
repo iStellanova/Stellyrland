@@ -2,6 +2,10 @@
   description = "Modular Dendritic NixOS configuration for stellyrland";
 
   inputs = {
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    # TODO: Remove this pin once deno/rusty-v8 build issues are resolved
+    nixpkgs-deno.url = "github:nixos/nixpkgs/3e2cf88148e732abc1d259286123e06a9d8c964a";
+
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -33,6 +37,15 @@
             lib = nixpkgs.lib.extend (self: super: (import ./lib/default.nix { lib = self; }));
           };
           modules = [
+            # TODO: Remove this overlay once deno/rusty-v8 build issues are resolved #
+            ({ inputs, ... }: {                                                      #
+              nixpkgs.overlays = [                                                   #
+                (final: prev: {                                                      #
+                  deno = inputs.nixpkgs-deno.legacyPackages.${prev.system}.deno;     #
+                })                                                                   #
+              ];                                                                     #
+            })                                                                       #
+            ##########################################################################
             ./modules/default.nix
             ./hosts/stellyrland/default.nix
             home-manager.nixosModules.home-manager
