@@ -4,8 +4,7 @@
   options.aspects.programs.noctalia-shell.enable = lib.mkEnableOption "Noctalia shell environment";
 
   config = lib.mkIf config.aspects.programs.noctalia-shell.enable {
-    home-manager.users.stellanova =
-      { inputs, pkgs, ... }:
+    home-manager.users.stellanova = { inputs, pkgs, ... }:
       {
         imports = [
           inputs.noctalia-shell.homeModules.default
@@ -858,7 +857,7 @@
               diskCriticalThreshold = 90;
               diskWarningThreshold = 80;
               enableDgpuMonitoring = true;
-              externalMonitor = "resources || missioncenter || jdsystemmonitor || corestats || system-monitoring-center || gnome-system-monitor || plasma-systemmonitor || mate-system-monitor || ukui-system-monitor || deepin-system-monitor || pantheon-system-monitor";
+              externalMonitor = "resources";
               gpuCriticalThreshold = 90;
               gpuWarningThreshold = 80;
               memCriticalThreshold = 90;
