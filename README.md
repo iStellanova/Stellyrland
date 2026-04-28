@@ -1,10 +1,8 @@
-# Dendritic NixOS & Home Manager Configuration
+# Stellyrland Personal Nix Configuration
 
-A highly modular, feature-centric **Dendritic** NixOS configuration for **stellyrland**, powered by **flake-parts** and **Hyprland**.
+This is my configuration I follow for my systems managed by nix. I follow the dendritic style as best I can :)
 
-## 📂 Project Structure (Dendritic)
-
-The configuration follows the **Dendritic Pattern**, where logic is organized by **feature** rather than system/user splits. Every file in `modules/` is automatically discovered and imported.
+## 📂 Project Structure
 
 ```text
 /etc/nixos/
@@ -24,46 +22,44 @@ The configuration follows the **Dendritic Pattern**, where logic is organized by
 ```
 
 ## 🛠️ Tech Stack
-- **Architecture:** Dendritic (Feature-centric)
+- **Architecture:** Dendritic
 - **Framework:** `flake-parts`
 - **OS:** NixOS (Unstable)
 - **WM:** Hyprland
-- **Shell:** Zsh (Powerlevel10k)
-- **Editor:** Zed / Neovim (LazyVim)
+- **Shell:** Zsh
+- **Editor:** Zed / Neovim
 - **Terminal:** Kitty
 - **Bar/Shell:** Noctalia Shell
-- **Theming:** Catppuccin Macchiato (Flamingo)
 
-## ✨ Key Features
+## ✨ Notable Configurations
 - **Zero-Boilerplate Imports:** Modules are automatically discovered via a recursive scanner in `lib/`.
 - **Unified Aspects:** System (NixOS) and User (Home Manager) logic for a single feature live in the same file/folder.
 - **Sched-ext (scx):** Optimized CPU scheduling with `scx_lavd`.
-- **Performance Kernel:** Running `linux-zen` for low latency.
 - **Smart Cleanup:** `nh` configured to strictly retain the last **20 generations**.
-- **Btrfs Snapshots:** Integrated `snapper` with automated pre-rebuild hooks.
+- **Btrfs Snapshots + Scrubber:** Integrated `snapper` with automated pre-rebuild hooks.
 
 ### 3. Apply Configuration
+Using 'nh' (recommended)
 ```bash
-# Using 'nh' (recommended)
 nh os switch .
-
-# Or using the 'rebuild' alias
+```
+Or using the 'rebuild' alias
+```bash
 rebuild
 ```
 
-## ⌨️ Key Workflows
+## ⌨️ Key Aliases
 - `rebuild`: Snapshots /home, adds all changes to git, and applies configuration.
 - `upgrade`: Similar to rebuild but performs a flake update first.
 - `clean`: Triggers `nh clean all --keep 20`.
-- `nis`: Fuzzy-find files and open them in Neovim.
+- `nixinfo`: Generation lists.
 
 ## 💻 Hardware
-- **CPU:** AMD Ryzen (Zen 5 Optimized)
-- **GPU:** AMD Radeon (ROCm enabled)
-- **Storage:** Btrfs with Zstd compression and Async discard.
+- **CPU:** AMD Ryzen 9 9950X3D
+- **GPU:** AMD Radeon 7900XTX (Tuned)
+- **Storage:** 4.5TB NVMe
 
 ## 📜 Credits & Inspiration
 - **Vimjoyer:** For popularizing the Dendritic pattern.
 - [LazyVim](https://github.com/LazyVim/LazyVim) for the Neovim base.
-- [Catppuccin](https://github.com/catppuccin/catppuccin) for the color palette.
 - [Noctalia Dev](https://github.com/noctalia-dev) for the shell components.
