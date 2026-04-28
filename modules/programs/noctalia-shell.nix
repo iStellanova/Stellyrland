@@ -217,7 +217,7 @@
               showIconBackground = false;
               sortByMostUsed = true;
               terminalCommand = "kitty -e";
-              viewMode = "grid";
+              viewMode = "list";
             };
             audio = {
               mprisBlacklist = [ ];
