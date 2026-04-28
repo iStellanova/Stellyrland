@@ -34,7 +34,7 @@ let
         min_core_clock = 2700;
         max_core_clock = 3000;
         max_memory_clock = 1350;
-        voltage_offset = 0;
+        voltage_offset = -20;
         power_profile_mode_index = 0;
       };
     };
@@ -64,7 +64,7 @@ let
             min_core_clock = 2700;
             max_core_clock = 3000;
             max_memory_clock = 1350;
-            voltage_offset = 0;
+            voltage_offset = -20;
             power_profile_mode_index = 0;
           };
         };
