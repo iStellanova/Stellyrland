@@ -24,17 +24,33 @@
       url = "github:caesar-admin/Noctalia-Nix-Monitor";
       flake = false;
     };
+
+    nix-darwin = {
+      url = "github:LnL7/nix-darwin";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    mac-app-util.url = "github:hraban/mac-app-util";
+
+    identity.url = "git+ssh://git@github.com/iStellanova/stellyrdentity.git";
   };
 
-  outputs = inputs@{ self, nixpkgs, flake-parts, home-manager, cachyos-kernel, ... }:
+  outputs = inputs@{ self, nixpkgs, flake-parts, home-manager, cachyos-kernel, nix-darwin, mac-app-util, ... }:
     flake-parts.lib.mkFlake { inherit inputs; } {
-      systems = [ "x86_64-linux" ];
+      systems = [ "x86_64-linux" "aarch64-darwin" ];
 
       flake = {
         nixosConfigurations.stellyrland = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
           specialArgs = {
             inherit inputs;
+            identity = {
+              name = inputs.identity.nixosName;
+              email = inputs.identity.userEmail;
+              gitName = inputs.identity.gitName;
+              home = "/home/${inputs.identity.nixosName}";
+            };
+            isDarwin = false;
             # Extend lib with our custom scan function
             lib = nixpkgs.lib.extend (self: super: (import ./lib/default.nix { lib = self; }));
           };
@@ -44,6 +60,8 @@
               nixpkgs.overlays = [
                 (final: prev: {
                   deno = inputs.nixpkgs-deno.legacyPackages.${prev.stdenv.hostPlatform.system}.deno;
+                  # TODO: Remove direnv override once macOS/Sandbox hangs are resolved upstream
+                  direnv = prev.direnv.overrideAttrs (old: { doCheck = false; });
                 })
                 inputs.cachyos-kernel.overlays.default
               ];
@@ -55,7 +73,45 @@
               home-manager = {
                 useGlobalPkgs = true;
                 useUserPackages = true;
-                extraSpecialArgs = { inherit inputs; };
+                extraSpecialArgs = { inherit inputs; identity = { name = inputs.identity.nixosName; email = inputs.identity.userEmail; gitName = inputs.identity.gitName; home = "/home/${inputs.identity.nixosName}"; }; };
+                backupFileExtension = "backup";
+                overwriteBackup = true;
+              };
+            }
+          ];
+        };
+
+        darwinConfigurations.stellyrtop = nix-darwin.lib.darwinSystem {
+          system = "aarch64-darwin";
+          specialArgs = {
+            inherit inputs;
+            identity = {
+              name = inputs.identity.darwinName;
+              email = inputs.identity.userEmail;
+              gitName = inputs.identity.gitName;
+              home = "/Users/${inputs.identity.darwinName}";
+            };
+            isDarwin = true;
+            lib = nixpkgs.lib.extend (self: super: (import ./lib/default.nix { lib = self; }));
+          };
+          modules = [
+            ({ ... }: {
+              nixpkgs.overlays = [
+                (final: prev: {
+                  # TODO: Remove direnv override once macOS/Sandbox hangs are resolved upstream
+                  direnv = prev.direnv.overrideAttrs (old: { doCheck = false; });
+                })
+              ];
+            })
+            ./modules/default.nix
+            ./hosts/stellyrtop/default.nix
+            mac-app-util.darwinModules.default
+            home-manager.darwinModules.home-manager
+            {
+              home-manager = {
+                useGlobalPkgs = true;
+                useUserPackages = true;
+                extraSpecialArgs = { inherit inputs; identity = { name = inputs.identity.darwinName; email = inputs.identity.userEmail; gitName = inputs.identity.gitName; home = "/Users/${inputs.identity.darwinName}"; }; };
                 backupFileExtension = "backup";
                 overwriteBackup = true;
               };

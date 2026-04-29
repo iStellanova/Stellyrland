@@ -1,3 +1,4 @@
+{ identity, ... }:
 {
   imports = [
     ./hardware-configuration.nix
@@ -56,7 +57,7 @@
 
   networking.hostName = "stellyrland";
 
-  fileSystems."/home/stellanova/ExtraDisk" = {
+  fileSystems."/home/${identity.name}/ExtraDisk" = {
     device = "/dev/disk/by-uuid/5082e55b-50fd-4f53-a753-157fa30415cc";
     fsType = "ext4";
     options = [ "nofail" "x-gvfs-show" "x-gvfs-name=Extra Disk" ];
