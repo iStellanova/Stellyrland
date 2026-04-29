@@ -24,6 +24,7 @@
 
     programs = {
       cli.enable = true;
+      gemini.enable = true;
       aesthetic.enable = true;
       media.enable = true;
       utils.enable = true;
