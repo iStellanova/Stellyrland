@@ -34,8 +34,8 @@ in
         };
         Service = {
           Type = "oneshot";
-          # Load the profile first, then force all devices to pure white (FFFFFF)
-          ExecStart = "${pkgs.openrgb-with-all-plugins}/bin/bash -c '${pkgs.openrgb-with-all-plugins}/bin/openrgb --profile Main.orp && sleep 2 && ${pkgs.openrgb-with-all-plugins}/bin/openrgb --color ffffff'";
+          # Load profile then force white globally
+          ExecStart = "${pkgs.bash}/bin/bash -c '${pkgs.openrgb-with-all-plugins}/bin/openrgb --profile Main.orp && ${pkgs.openrgb-with-all-plugins}/bin/openrgb --color ffffff'";
           RemainAfterExit = true;
         };
         Install = {
