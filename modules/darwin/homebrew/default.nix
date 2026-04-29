@@ -20,74 +20,61 @@
       ];
 
       brews = [
-        "cava"
-        "apple-music-discord-rpc"
+        "cava"                                 # Audio visualization
+        "apple-music-discord-rpc"              # Discord RPC for Apple Music
       ];
 
       casks = [
-        "antigravity"
-        "dimentium/autoraise/autoraiseapp"
-        "background-music"
-        "balenaetcher"
-        "bitwarden"
-        "claude"
-        "cleanmymac"
-        "clion"
-        "craft"
-        "discord"
-        "discord@canary"
-        "discord@ptb"
-        "firefox"
-        "font-sf-pro"
-        "gimp"
-        "github"
-        "google-drive"
-        "google-earth-pro"
-        "intellij-idea"
-        "mactracker"
-        "marta"
-        "obs"
-        "obsidian"
-        "parallels"
-        "prismlauncher"
-        "pycharm"
-        "quicken"
-        "raycast"
-        "steam"
-        "utm"
-        "visual-studio-code"
-        "vlc"
-        "webex"
-        "zed"
-        "zen"
-        "zoom"
+        "antigravity"                          # Antigravity IDE
+        "dimentium/autoraise/autoraiseapp"     # Auto-raise
+        "background-music"                     # Background music
+        "balenaetcher"                        # Balena Etcher
+        "bitwarden"                           # Bitwarden
+        "claude"                              # Claude
+        "cleanmymac"                          # CleanMyMac
+        "clion"                               # IntelliJ CLion
+        "craft"                               # Craft - Notes Application
+        "discord"                             # Discord
+        "font-sf-pro"                         # SF Pro font
+        "gimp"                                # GIMP - Image Editor
+        "github"                              # GitHub Desktop
+        "google-drive"                        # Google Drive
+        "intellij-idea"                       # IntelliJ IDEA
+        "mactracker"                          # MacTracker - Mac Information
+        "obs"                                 # OBS Studio
+        "obsidian"                            # Obsidian - Note-taking
+        "prismlauncher"                       # Prism Launcher
+        "pycharm"                             # IntelliJ PyCharm - Python IDE
+        "quicken"                             # Quicken
+        "steam"                               # Steam
+        "utm"                                 # UTM - Virtual Machine Manager
+        "vlc"                                 # VLC
+        "webex"                               # WebEx
+        "zed"                                 # Zed
+        "zen"                                 # Zen
+        "zoom"                                # Zoom
       ];
 
       masApps = {
-        "Agenda" = 1287445660;
-        "Beat" = 1549538329;
-        "CleanMyMac" = 1339170533;
-        "DaVinci Resolve" = 571213070;
-        "Drafts" = 1435957248;
-        "Dynamic wallpaper" = 1582358382;
-        "Essayist" = 1537845384;
-        "Friendly Streaming" = 553245401;
-        "GarageBand" = 682658836;
-        "iMovie" = 408981434;
-        "Keynote" = 361285480;
-        "Microsoft Excel" = 462058435;
-        "Microsoft OneNote" = 784801555;
-        "Microsoft Outlook" = 985367838;
-        "Microsoft PowerPoint" = 462062816;
-        "Microsoft Word" = 462054704;
-        "Noizio Lite" = 1481029536;
-        "Numbers" = 361304891;
-        "OneDrive" = 823766827;
-        "Pages" = 361309726;
-        "School Assistant" = 1465687472;
-        "Scrobbles for Last.fm" = 1344679160;
-        "Speedtest" = 1153157709;
-        "Xcode" = 497799835;
+        "Agenda" = 1287445660;                # Agenda - Task management
+        "Beat" = 1549538329;                  # Beat - Manuscripter
+        "DaVinci Resolve" = 571213070;        # DaVinci Resolve - Video editing
+        "Dynamic wallpaper" = 1582358382;     # Dynamic wallpaper - Wallpaper manager
+        "Essayist" = 1537845384;              # Essayist - Writing assistant
+        "GarageBand" = 682658836;             # GarageBand - Music production
+        "iMovie" = 408981434;                 # iMovie - Movie editing
+        "Keynote" = 361285480;                # Keynote - Presentation software
+        "Microsoft Excel" = 462058435;        # Microsoft Excel - Spreadsheet software
+        "Microsoft OneNote" = 784801555;      # Microsoft OneNote - Note-taking
+        "Microsoft Outlook" = 985367838;      # Microsoft Outlook - Email client
+        "Microsoft PowerPoint" = 462062816;   # Microsoft PowerPoint - Presentation software
+        "Microsoft Word" = 462054704;         # Microsoft Word - Word processing software
+        "Noizio Lite" = 1481029536;           # Noizio Lite - White Noise
+        "Numbers" = 361304891;                # Numbers - Spreadsheet software
+        "OneDrive" = 823766827;               # OneDrive - Cloud storage
+        "Pages" = 361309726;                  # Pages - Word processing software
+        "School Assistant" = 1465687472;      # School Assistant - School management
+        "Xcode" = 497799835;                  # Xcode - Apple IDE
       };
     };
   };

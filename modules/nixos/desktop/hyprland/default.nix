@@ -7,43 +7,42 @@ in
   options.aspects.desktop.hyprland.enable = lib.mkEnableOption "Hyprland desktop environment";
 
   config = lib.mkIf cfg.enable {
-    # NixOS level config
     programs.hyprland.enable = true;
 
+    # Packages and Extras.
     environment.systemPackages = with pkgs; [
-      hyprpicker
-      hyprpolkitagent
-      hyprshot
-      swaybg
-      cliphist
-      wl-clipboard
-      nautilus
-      sushi
-      file-roller
-      libnotify
-      udiskie
-      linux-wallpaperengine
-      mpvpaper
-      xdg-desktop-portal-hyprland
-      xhost
-      xauth
+      hyprpolkitagent # PolicyKit agent for Hyprland
+      hyprshot # Screenshot utility for Hyprland
+      cliphist # Clipboard history utility
+      wl-clipboard # Clipboard utility for Wayland
+      nautilus # File manager
+      sushi # Preview utility for nautilus
+      file-roller # Archive utility
+      libnotify # Notification utility
+      udiskie # Disk utility
+      linux-wallpaperengine # Wallpaper engine for Linux
+      xdg-desktop-portal-hyprland # Desktop portal for Hyprland
+      xhost # X11 host utility
+      xauth # X11 authentication utility
     ];
 
+    # Enable certain graphics settings.
     hardware.graphics = {
       enable = true;
-      enable32Bit = true;
+      enable32Bit = true; # Necessary for steam.
       extraPackages = with pkgs; [
-        rocmPackages.clr
+        rocmPackages.clr # AMD GPU driver, ROCm support.
       ];
     };
 
+    # Specify AMD GPU driver for X11 and PipeWire.
     services.xserver.videoDrivers = [ "amdgpu" ];
-
     services.pipewire = {
       enable = true;
       pulse.enable = true;
     };
 
+    # greetd (login manager) for Hyprland.
     services.greetd = {
       enable = true;
       settings = {
@@ -92,26 +91,31 @@ in
       };
     };
 
+    # regreet (login manager) for Hyprland.
     programs.regreet = {
       enable = true;
       theme = {
         package = pkgs.adw-gtk3;
         name = "adw-gtk3-dark";
       };
+      # Bibata cursor theme for regreet.
       cursorTheme = {
         package = pkgs.bibata-cursors;
         name = "Bibata-Modern-Ice";
       };
+      # JetBrains Mono font for regreet.
       font = {
         package = pkgs.nerd-fonts.jetbrains-mono;
         name = "JetBrainsMono Nerd Font";
         size = 12;
       };
+      # GTK theme settings for regreet.
       settings = {
         GTK = {
           application_prefer_dark_theme = true;
         };
       };
+      # Custom CSS for regreet window.
       extraCss = ''
         window { background-color: transparent; }
         #container, .container, #clock, popover contents {
@@ -135,6 +139,7 @@ in
       '';
     };
 
+    # xdg-desktop-portal for Hyprland.
     xdg.portal = {
       enable = true;
       xdgOpenUsePortal = true;
@@ -149,10 +154,11 @@ in
         ./rules.nix
       ];
 
+      # Hyprland window manager. Main Configuration.
       wayland.windowManager.hyprland = {
         enable = true;
         xwayland.enable = true;
-        systemd.enable = true;
+        systemd.enable = true; # necessary for systemd activation.
 
         settings = {
           monitor = [
@@ -170,17 +176,16 @@ in
           ];
 
           "exec-once" = [
-            "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP DISPLAY"
-            "dbus-update-activation-environment --systemd --all"
-            "systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP"
-            "systemctl --user start hyprpolkitagent"
-            "gnome-keyring-daemon --start --components=secrets"
-            "mprisence"
-            "udiskie -a -s --file-manager nautilus"
-            "wl-paste --type text --watch cliphist store"
-            "wl-paste --type image --watch cliphist store"
-            "noctalia-shell"
-            "systemctl --user restart xdg-desktop-portal-hyprland"
+            "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP DISPLAY" # update the activation environment.
+            "systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP" # import environment variables.
+            "systemctl --user start hyprpolkitagent" # start the Polkit agent.
+            "gnome-keyring-daemon --start --components=secrets" # start the GNOME keyring daemon.
+            "mprisence" # start the MPRIS client.
+            "udiskie -a -s --file-manager nautilus" # mount removable media and open file manager.
+            "wl-paste --type text --watch cliphist store" # store text clipboard contents in cliphist.
+            "wl-paste --type image --watch cliphist store" # store image clipboard contents in cliphist.
+            "noctalia-shell" # start the Noctalia shell.
+            "systemctl --user restart xdg-desktop-portal-hyprland" # restart the xdg-desktop-portal-hyprland service.
           ];
 
           env = [

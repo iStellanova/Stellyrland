@@ -5,7 +5,7 @@
 
   config = lib.mkIf config.aspects.programs.vesktop.enable {
     # environment.systemPackages = [ pkgs.vesktop ];
-    environment.systemPackages = [ # Remove when fixed.
+    environment.systemPackages = [ # TODO: Remove when fixed.
       (pkgs.vesktop.override { withSystemVencord = false; })
     ];
 

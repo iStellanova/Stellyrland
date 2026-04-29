@@ -16,7 +16,7 @@ let
         fan_control_settings = {
           mode = "curve";
           static_speed = 0.0;
-          temperature_key = "junction";
+          temperature_key = "junction"; # Use junction temperature for fan control.
           interval_ms = 500;
           curve = {
             "40" = 0.15;
@@ -29,13 +29,13 @@ let
         pmfw_options = {
           zero_rpm = true;
         };
-        power_cap = 402.0;
+        power_cap = 402.0; # Increase power cap to 402W.
         performance_level = "manual";
-        min_core_clock = 2700;
-        max_core_clock = 3000;
-        max_memory_clock = 1350;
-        voltage_offset = -20;
-        power_profile_mode_index = 0;
+        min_core_clock = 2700; # Higher to avoid spikes.
+        max_core_clock = 3000; # Overclocked.
+        max_memory_clock = 1350; # Overclocked.
+        voltage_offset = -20; # Undervolted for better efficiency.
+        power_profile_mode_index = 0; # Use performance mode.
       };
     };
     profiles = {
@@ -46,7 +46,7 @@ let
             fan_control_settings = {
               mode = "curve";
               static_speed = 0.0;
-              temperature_key = "junction";
+              temperature_key = "junction"; # Use junction temperature for fan control.
               interval_ms = 500;
               curve = {
                 "40" = 0.15;
@@ -59,13 +59,13 @@ let
             pmfw_options = {
               zero_rpm = true;
             };
-            power_cap = 402.0;
+            power_cap = 402.0; # Cap power to 402W.
             performance_level = "manual";
-            min_core_clock = 2700;
-            max_core_clock = 3000;
-            max_memory_clock = 1350;
-            voltage_offset = -20;
-            power_profile_mode_index = 0;
+            min_core_clock = 2700; # Higher to avoid spikes.
+            max_core_clock = 3000; # Overclocked.
+            max_memory_clock = 1350; # Overclocked.
+            voltage_offset = -20; # Undervolted for better efficiency.
+            power_profile_mode_index = 0; # Use performance mode.
           };
         };
       };

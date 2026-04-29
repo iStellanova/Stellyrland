@@ -99,6 +99,7 @@
       "ALT, mouse_up, layoutmsg, move -200"
     ];
 
+    # Window Movements and Sizing
     binde = [
       "$mainMod, S, layoutmsg, move -col"
       "$mainMod, D, layoutmsg, move +col"
@@ -108,11 +109,13 @@
       "$mainMod+Alt, down, resizeactive, 0 50"
     ];
 
+    # Window Resizing
     bindm = [
       "$mainMod, mouse:272, movewindow"
       "$mainMod, mouse:273, resizewindow"
     ];
 
+    # Noctalia Launcher
     bindr = [
       "SUPER, Super_L, exec, noctalia-shell ipc call launcher toggle"
     ];

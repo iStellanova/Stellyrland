@@ -6,32 +6,40 @@
     # TODO: Remove this pin once deno/rusty-v8 build issues are resolved
     nixpkgs-deno.url = "github:nixos/nixpkgs/3e2cf88148e732abc1d259286123e06a9d8c964a";
 
+    # CachyOS kernel.
     cachyos-kernel.url = "github:xddxdd/nix-cachyos-kernel/release";
 
+    # Home Manager.
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    # Zen Browser.
     zen-browser.url = "github:youwen5/zen-browser-flake";
 
+    # Noctalia shell.
     noctalia-shell = {
       url = "github:noctalia-dev/noctalia-shell";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    # Noctalia Nix Monitor.
     noctalia-nix-monitor = {
       url = "github:caesar-admin/Noctalia-Nix-Monitor";
       flake = false;
     };
 
+    # Nix Darwin.
     nix-darwin = {
       url = "github:LnL7/nix-darwin";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    # Mac App Util.
     mac-app-util.url = "github:hraban/mac-app-util";
 
+    # Identity from private repo.
     identity.url = "git+ssh://git@github.com/iStellanova/stellyrdentity.git";
   };
 
