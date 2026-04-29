@@ -29,13 +29,13 @@ let
         pmfw_options = {
           zero_rpm = true;
         };
-        power_cap = 402.0; # Increase power cap to 402W.
+        power_cap = 402.0; # Increased power cap to 402W for higher boost headroom.
         performance_level = "manual";
-        min_core_clock = 2700; # Higher to avoid spikes.
-        max_core_clock = 3000; # Overclocked.
-        max_memory_clock = 1350; # Overclocked.
-        voltage_offset = -20; # Undervolted for better efficiency.
-        power_profile_mode_index = 0; # Use performance mode.
+        min_core_clock = 2700; # High minimum clock to prevent stutter during frequency switching.
+        max_core_clock = 3000; # Mild overclock for better peak performance.
+        max_memory_clock = 1350; # Aggressive memory overclock.
+        voltage_offset = -20; # Undervolted to reduce heat and power consumption while maintaining stability.
+        power_profile_mode_index = 0; # Use the high-performance power profile.
       };
     };
     profiles = {

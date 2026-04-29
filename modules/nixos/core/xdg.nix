@@ -23,7 +23,8 @@
         templates = "${config.home.homeDirectory}/Templates";
         videos = "${config.home.homeDirectory}/Videos";
       };
-      # Scratch system directories.
+      # Add the scratch profile to XDG data dirs to allow desktop entries and icons
+      # from temporary nix-profile installations to be discovered by the shell.
       xdg.systemDirs.data = [
         "${config.home.homeDirectory}/.local/state/nix/profiles/scratch/share"
       ];

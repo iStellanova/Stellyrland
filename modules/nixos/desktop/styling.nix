@@ -37,13 +37,16 @@
         style.name = "kvantum";
       };
 
-      # Distributes the gtk assets.
+      # Asset Distribution:
+      # Manually link GTK 4.0 and Kvantum assets. This is required to ensure
+      # a consistent Catppuccin theme across all toolkits (libadwaita, Qt, etc.)
+      # since many modern apps ignore standard GTK_THEME variables.
       xdg.configFile = {
         "gtk-4.0/assets".source = "${config.gtk.theme.package}/share/themes/${config.gtk.theme.name}/gtk-4.0/assets";
         "gtk-4.0/gtk.css".source = "${config.gtk.theme.package}/share/themes/${config.gtk.theme.name}/gtk-4.0/gtk.css";
         "gtk-4.0/gtk-dark.css".source = "${config.gtk.theme.package}/share/themes/${config.gtk.theme.name}/gtk-4.0/gtk-dark.css";
 
-        # Distributes the Kvantum theme.
+        # Distributes the Kvantum theme for Qt applications.
         "Kvantum/kvantum.kvconfig".text = "[General]\ntheme=catppuccin-macchiato-flamingo";
         "Kvantum/catppuccin-macchiato-flamingo".source = "${pkgs.catppuccin-kvantum.override {
           variant = "macchiato";

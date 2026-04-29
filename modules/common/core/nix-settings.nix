@@ -28,10 +28,10 @@
         ];
       };
 
-      # Cleaner nix output feedback.
+      # Cleaner nix output feedback and generation diffing.
       environment.systemPackages = with pkgs; [
         nix-output-monitor # Pipeline your nix-build to nom to get a better output
-        nvd                # Diff tool for nix packages
+        nvd                # Diff tool to see exactly what changed between generations
       ];
 
       # Set the flake path based on the system type (Darwin/Linux).
@@ -88,7 +88,7 @@
             nix profile remove --profile ~/.local/state/nix/profiles/scratch $1
           }
         '';
-        # Nix Helper, a Cleaner Nix Management CLI.
+        # nh - Yet another Nix Helper. Provides a cleaner CLI for builds and GC.
         programs.nh = {
           enable = true;
           clean.enable = true;

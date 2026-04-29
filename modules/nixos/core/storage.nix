@@ -21,7 +21,8 @@
       };
     };
 
-    # Auto-scrubbing for BTRFS filesystems. Basically cleans up stale BTRFS snapshots.
+    # Auto-scrubbing for BTRFS filesystems.
+    # Periodically checks for and repairs bitrot or data corruption.
     services.btrfs.autoScrub = {
       enable = true;
       interval = "monthly";
