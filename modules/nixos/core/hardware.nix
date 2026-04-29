@@ -11,24 +11,24 @@
     # Microcode updates for AMD CPU.
     hardware.cpu.amd.updateMicrocode = true;
 
-    # ZRAM Swap - Zstandard compression for swap space.
+    # ZRAM Swap - Compressed swap in RAM to prevent disk thrashing and improve responsiveness.
     zramSwap = {
       enable = true;
-      algorithm = "zstd";
+      algorithm = "zstd"; # High compression ratio for better RAM utilization
       priority = 100;
     };
 
-    # fstrim - Trim unused space from SSDs.
+    # fstrim - Trim unused space from SSDs (crucial for NVMe health and performance).
     services.fstrim.enable = true;
 
     # High-performance optimizations
-    # irqbalance - Distribute IRQs across CPU cores.
-    # Ananicy - Advanced task scheduling.
+    # irqbalance - Distribute hardware interrupts across CPU cores.
+    # Ananicy - Automated process prioritization for better desktop fluidity.
     services.irqbalance.enable = true;
     services.ananicy = {
       enable = true;
-      package = pkgs.ananicy-cpp;
-      rulesProvider = pkgs.ananicy-rules-cachyos;
+      package = pkgs.ananicy-cpp; # C++ rewrite for lower overhead
+      rulesProvider = pkgs.ananicy-rules-cachyos; # Community-vetted performance rules
     };
   };
 }

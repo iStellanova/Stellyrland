@@ -108,7 +108,7 @@ drivetemp_suspend = false
 name = "AMD Ryzen 9 9950X3D 16-Core Processor"
 disable = false
 
-# --- GPU Conflict Prevention (Disabled for LACT) ---
+# --- GPU Conflict Prevention (Disabled here to allow LACT to manage the GPU) ---
 [settings.97910386cac9bfce54b2c224e4aaef42cd953440cb57f1ff5ff46ac183bf338e]
 name = "Navi 31 [Radeon RX 7900 XT/7900 XTX/7900 GRE/7900M]"
 disable = true
@@ -176,8 +176,10 @@ in
       pkgs.coolercontrol.coolercontrol-gui
       pkgs.liquidctl
     ];
+    # CoolerControl Configuration Management:
     # We use a systemd preStart script instead of environment.etc because
-    # coolercontrold panics if its configuration file is not writable.
+    # coolercontrold requires its configuration file to be writable for runtime updates.
+    # This allows us to keep the config declarative in Nix while satisfying the daemon.
     systemd.services.coolercontrold.preStart = ''
       mkdir -p /etc/coolercontrol
       cp -f ${coolerConfig} /etc/coolercontrol/config.toml

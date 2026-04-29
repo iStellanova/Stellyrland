@@ -1,5 +1,9 @@
 {
-  description = "Modular Dendritic NixOS configuration for stellyrland";
+  description = "Stellyrland - A Modular, Dendritic NixOS and Darwin configuration";
+
+  # This flake serves as the single entry point for all systems (Linux and macOS).
+  # It leverages flake-parts for clean attribute separation and a custom recursive
+  # module scanner in lib/ for automated feature discovery.
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";

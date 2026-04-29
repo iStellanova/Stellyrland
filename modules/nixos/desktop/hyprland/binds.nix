@@ -5,26 +5,26 @@
     "$fileManager" = "nautilus";
 
     bind = [
-      # Apps
+      # --- Core Applications ---
       "$mainMod, Q, exec, $terminal"
       "$mainMod, E, exec, $fileManager --new-window"
       "$mainMod, B, exec, zen-browser"
       "$mainMod, Space, exec, rofi -show drun"
       "$mainMod, B, exec, zeditor"
 
-      # Session
+      # --- System & Session Management ---
       "$mainMod+Shift, L, exec, noctalia-shell ipc call lockScreen lock"
 
-      # Windows
+      # --- Window Management ---
       "$mainMod, C, killactive"
       "Alt, F4, killactive"
       "$mainMod, A, togglefloating"
       "$mainMod, P, layoutmsg, promote"
       "$mainMod, O, togglesplit"
       "Alt, Return, fullscreen"
-      "$mainMod, G, movetoworkspace, +0"
+      "$mainMod, G, movetoworkspace, +0" # Pin window to current workspace
 
-      # Focus
+      # --- Focus & Navigation (Dwindle/Master Logic) ---
       "$mainMod, H, layoutmsg, focus l"
       "$mainMod, L, layoutmsg, focus r"
       "$mainMod, K, layoutmsg, focus u"
@@ -34,7 +34,7 @@
       "$mainMod+CTRL, up, layoutmsg, focus u"
       "$mainMod+CTRL, down, layoutmsg, focus d"
 
-      # Workspaces
+      # --- Workspace Switching (Using scan codes for layout independence) ---
       "$mainMod, code:10, workspace, 1"
       "$mainMod, code:11, workspace, 2"
       "$mainMod, code:12, workspace, 3"
@@ -48,7 +48,7 @@
       "$mainMod, code:20, workspace, 11"
       "$mainMod, code:21, workspace, 12"
 
-      # Move to Workspace
+      # --- Window Relocation (Move to Workspace) ---
       "$mainMod+SHIFT, 1, movetoworkspace, 1"
       "$mainMod+SHIFT, 2, movetoworkspace, 2"
       "$mainMod+SHIFT, 3, movetoworkspace, 3"
@@ -62,7 +62,7 @@
       "$mainMod+SHIFT, code:20, movetoworkspace, 11"
       "$mainMod+SHIFT, code:21, movetoworkspace, 12"
 
-      # Navigate
+      # --- Rapid Navigation ---
       "$mainMod, left, workspace, -1"
       "$mainMod, right, workspace, +1"
       "$mainMod, Z, workspace, -1"
@@ -73,26 +73,28 @@
       "$mainMod, down, workspace, empty"
       "$mainMod, grave, workspace, empty"
 
-      # Special
+      # --- Special Workspaces (Scratchpads) ---
+      # magic: General purpose scratchpad
+      # minimized: Used as a makeshift 'minimize' bin for active windows
       "$mainMod+SHIFT, S, movetoworkspace, special:magic"
       "$mainMod, F, movetoworkspacesilent, special:minimized"
       "$mainMod, R, togglespecialworkspace, minimized"
+
+      # --- Noctalia Integration ---
       "$mainMod+Alt, R, exec, systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP DISPLAY && pkill noctalia-shell; noctalia-shell"
       "$mainMod+SHIFT, Tab, exec, noctalia-shell ipc call wallpaper toggle"
       "$mainMod + Shift, X, exec, noctalia-shell ipc call sessionMenu toggle"
 
-      # Clipboard
+      # --- Utilities ---
       "$mainMod, V, exec, kitty --class cliphist-fzf -e sh -c 'cliphist list | fzf --no-scrollbar | cliphist decode | wl-copy'"
-
-      # Screenshot
       ", Print, exec, hyprshot -m region -o ~/Pictures/Screenshots"
       "Shift, Print, exec, hyprshot -m output -o ~/Pictures/Screenshots"
 
-      # Alt-Tab
+      # --- Legacy/Alternative Navigation ---
       "ALT+SHIFT, Tab, cyclenext, prev"
       "ALT+SHIFT, Tab, bringactivetotop"
 
-      # Scroll
+      # --- Mouse Bindings ---
       "$mainMod, mouse_down, workspace, e+1"
       "$mainMod, mouse_up, workspace, e-1"
       "ALT, mouse_down, layoutmsg, move +200"

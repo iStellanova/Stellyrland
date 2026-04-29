@@ -59,6 +59,8 @@
               fi
             ''}
 
+            # zd - Smart 'cd'. Falls back to 'z' (zoxide) for rapid jumping if the directory
+            # isn't a direct child of the current path.
             zd() {
               if [ $# -eq 0 ]; then builtin cd ~ && return
               elif [ -d "$1" ]; then builtin cd "$1"
@@ -68,7 +70,9 @@
               open() { xdg-open "$@" >/dev/null 2>&1 &; }
             ''}
 
-            # Clipboard utilities (Wayland)
+            # Clipboard utilities for Wayland/Hyprland
+            # cp2c: Copy file content to clipboard
+            # c2f: Create file from clipboard content
             ${lib.optionalString (pkgs.stdenv.isLinux && (config.aspects.desktop.hyprland.enable or false)) ''
               cp2c() { if [[ -z "$1" ]]; then echo "Usage: cp2c <file>" >&2; return 1; fi; wl-copy < "$1"; }
               c2f() { if [[ -z "$1" ]]; then echo "Usage: create-from-clip <filename>" >&2; return 1; fi; wl-paste > "$1"; }

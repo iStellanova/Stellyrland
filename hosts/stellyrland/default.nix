@@ -4,7 +4,8 @@
     ./hardware-configuration.nix
   ];
 
-  # Core NixOS Aspects
+  # Aspects - The "toggle" system for modular features.
+  # Every attribute corresponds to an enable option defined in the modules/ directory.
   aspects = {
     core = {
       enable = true;
@@ -17,12 +18,12 @@
       services-base.enable = true;
       xdg.enable = true;
     };
-    # Desktop Aspects
+    # Desktop Aspects - Graphical environment and styling.
     desktop = {
       hyprland.enable = true;
       styling.enable = true;
     };
-    # Program Aspects
+    # Program Aspects - CLI and GUI applications.
     programs = {
       cli.enable = true;
       gemini.enable = true;
@@ -46,7 +47,7 @@
       yazi.enable = true;
       zed.enable = true;
     };
-    # Service Aspects
+    # Service Aspects - Background daemons and hardware controllers.
     services = {
       desktop-services.enable = true;
       coolercontrol.enable = true;
@@ -56,7 +57,10 @@
   };
   # Hostname
   networking.hostName = "stellyrland";
-  # Mount Extra Disk on Startup.
+
+  # Extra Storage:
+  # nofail ensures the system still boots if the drive is missing.
+  # x-gvfs options make the drive easily accessible and identifiable in the file manager.
   fileSystems."/home/${identity.name}/ExtraDisk" = {
     device = "/dev/disk/by-uuid/5082e55b-50fd-4f53-a753-157fa30415cc";
     fsType = "ext4";

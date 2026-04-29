@@ -161,12 +161,16 @@ in
         systemd.enable = true; # necessary for systemd activation.
 
         settings = {
+          # Monitor Configuration:
+          # DP-2: Samsung Odyssey G8 (Main). 10-bit color, HDR-ready brightness, VRR enabled.
+          # DP-3: Secondary vertical monitor.
           monitor = [
             "DP-2, 3440x1440@175, 1440x541, 1, bitdepth, 10, sdrbrightness, 1.2, sdrsaturation, 0.98, vrr, 1"
             "DP-3, 2560x1440@100, 0x0, 1, transform, 1, bitdepth, 10, sdrbrightness, 1.2, sdrsaturation, 0.98"
             ", preferred, auto, 1"
           ];
 
+          # Workspace pinning to ensure the Odyssey G8 always holds the primary workspaces.
           workspace = [
             "1, monitor:desc:Samsung Electric Company Odyssey G85SB H1AK500000, persistent:true, default:true"
             "2, monitor:desc:Samsung Electric Company Odyssey G85SB H1AK500000, persistent:true"
@@ -189,21 +193,28 @@ in
           ];
 
           env = [
+            # --- Theming & Cursors ---
             "HYPRCURSOR_THEME, Bibata-Modern-Ice-Hypr"
             "HYPRCURSOR_SIZE, 16"
             "XCURSOR_THEME, Bibata-Modern-Ice"
             "XCURSOR_SIZE, 16"
+            "GTK_THEME, catppuccin-macchiato-flamingo-standard"
+
+            # --- Toolkit Backend Overrides ---
             "QT_QPA_PLATFORM, wayland;xcb"
             "QT_QPA_PLATFORMTHEME, gtk3"
             "QT_STYLE_OVERRIDE, kvantum"
             "QT_WAYLAND_DISABLE_WINDOWDECORATION, 1"
             "QT_AUTO_SCREEN_SCALE_FACTOR, 1.25"
             "GDK_SCALE, 1.0"
-            "GTK_THEME, catppuccin-macchiato-flamingo-standard"
             "GTK_CSD, 0"
+
+            # --- XDG & Session Desktop ---
             "XDG_CURRENT_DESKTOP, Hyprland"
             "XDG_SESSION_TYPE, wayland"
             "XDG_SESSION_DESKTOP, Hyprland"
+
+            # --- Wayland Compatibility Hacks (Electron/Firefox/Proton) ---
             "MOZ_ENABLE_WAYLAND, 1"
             "ELECTRON_OZONE_PLATFORM_HINT, auto"
             "OBS_USE_EGL, 1"
@@ -291,10 +302,11 @@ in
             no_hardware_cursors = false;
           };
 
-          render.direct_scanout = false;
+          # Performance and Compatibility
+          render.direct_scanout = false; # Set to false to prevent flickering in some full-screen apps
           dwindle = { pseudotile = true; preserve_split = true; };
           misc = { force_default_wallpaper = 0; disable_hyprland_logo = true; };
-          xwayland.force_zero_scaling = true;
+          xwayland.force_zero_scaling = true; # Prevents blurriness in XWayland apps on HiDPI
         };
       };
     };

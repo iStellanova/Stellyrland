@@ -1,7 +1,7 @@
 { lib, ... }: {
-  # Recursively find all .nix files in a directory
-  # This version is non-recursive to avoid complex path logic for now
-  # and just does a simple scan of the directories we created.
+  # scan - The core engine of the "Dendritic" configuration pattern.
+  # This function recursively searches a directory for .nix files and default.nix folders,
+  # allowing for zero-boilerplate module discovery and automatic inclusion in the system flake.
   scan = path:
     let
       items = builtins.readDir path;
