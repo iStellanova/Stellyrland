@@ -9,13 +9,15 @@
       unzip                    # Extraction utility for archives compressed in .zip format
       zip                      # Archiver for .zip files
     ];
-    
+
+    # Enables special tools.
     home-manager.users.${identity.name} = {
       programs.fzf.enable = true;
       programs.zoxide.enable = true;
       programs.jq.enable = true;
       programs.ripgrep.enable = true;
-      
+
+      # bat - cat with syntax highlighting
       programs.bat = {
         enable = true;
         config = {
@@ -23,6 +25,7 @@
         };
       };
 
+      # eza - modern replacement for ls
       programs.eza = {
         enable = true;
         enableZshIntegration = true;
@@ -34,6 +37,7 @@
         ];
       };
 
+      # tealdeer - fast, minimalistic man page viewer
       programs.tealdeer = {
         enable = true;
         settings = {
@@ -45,7 +49,7 @@
 
       programs.zsh.shellAliases = {
         # QOL aliases
-        ls = "eza -lh"; # Minimal manual override for preference
+        ls = "eza -lh";
         ll = "eza -al";
         lt = "eza -a --tree --level=2";
         ff = "sudo fd -HI -a --exclude .snapshots";
@@ -55,17 +59,20 @@
         man = "tldr";
       };
 
+      # fd - fast directory search
       programs.fd.enable = true;
 
-      home.packages = with pkgs; [ 
+      # comma - command line interface for managing dotfiles
+      home.packages = with pkgs; [
         comma
       ];
 
+      # direnv - environment variable management
       programs.direnv = {
         enable = true;
         nix-direnv.enable = true;
       };
-
+      # nix-index - index for nix package search
       programs.nix-index.enable = true;
     };
   };

@@ -7,6 +7,8 @@
     home-manager.users.${identity.name} = { config, pkgs, ... }: {
       gtk = {
         enable = true;
+
+        # GTK Theme.
         theme = {
           name = "catppuccin-macchiato-flamingo-standard";
           package = pkgs.catppuccin-gtk.override {
@@ -15,6 +17,8 @@
           };
         };
         gtk4.theme = null;
+
+        # Icon Theme.
         iconTheme = {
           name = "Colloid-Catppuccin-Dark";
           package = pkgs.colloid-icon-theme.override {
@@ -23,29 +27,35 @@
         };
       };
 
+      # Specify GTK theme.
       home.sessionVariables.GTK_THEME = "catppuccin-macchiato-flamingo-standard";
 
+      # Specify QT theme.
       qt = {
         enable = true;
         platformTheme.name = "qtct";
         style.name = "kvantum";
       };
 
+      # Distributes the gtk assets.
       xdg.configFile = {
         "gtk-4.0/assets".source = "${config.gtk.theme.package}/share/themes/${config.gtk.theme.name}/gtk-4.0/assets";
         "gtk-4.0/gtk.css".source = "${config.gtk.theme.package}/share/themes/${config.gtk.theme.name}/gtk-4.0/gtk.css";
         "gtk-4.0/gtk-dark.css".source = "${config.gtk.theme.package}/share/themes/${config.gtk.theme.name}/gtk-4.0/gtk-dark.css";
 
+        # Distributes the Kvantum theme.
         "Kvantum/kvantum.kvconfig".text = "[General]\ntheme=catppuccin-macchiato-flamingo";
         "Kvantum/catppuccin-macchiato-flamingo".source = "${pkgs.catppuccin-kvantum.override {
           variant = "macchiato";
           accent = "flamingo";
         }}/share/Kvantum/catppuccin-macchiato-flamingo";
 
+        # Ensures kvantum is specified.
         "qt5ct/qt5ct.conf".text = "[Appearance]\nstyle=kvantum";
         "qt6ct/qt6ct.conf".text = "[Appearance]\nstyle=kvantum";
       };
 
+      # Dconf GNOME Settings after the above is set.
       dconf.settings = {
         "org/gnome/desktop/interface" = {
           color-scheme = "prefer-dark";
@@ -56,6 +66,7 @@
         };
       };
 
+      # Cursor stuff
       home.pointerCursor = {
         gtk.enable = true;
         x11.enable = true;
@@ -66,6 +77,7 @@
         size = 16;
       };
 
+      # Packages for cursor and theme.
       home.packages = with pkgs; [
         (catppuccin-kvantum.override {
           variant = "macchiato";

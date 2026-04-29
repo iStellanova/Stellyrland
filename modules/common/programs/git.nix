@@ -1,4 +1,4 @@
-{ config, lib, pkgs, identity, ... }:
+{ config, lib, identity, ... }:
 
 {
   options.aspects.programs.git.enable = lib.mkEnableOption "Git and SSH identity configuration";

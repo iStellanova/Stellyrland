@@ -12,6 +12,7 @@
     ];
 
     services.snapper.configs = {
+      # Snapper configuration for the home subvolume. Aims and creates BTRFS snapshots.
       home = {
         SUBVOLUME = "/home";
         ALLOW_USERS = [ identity.name ];
@@ -20,6 +21,7 @@
       };
     };
 
+    # Auto-scrubbing for BTRFS filesystems. Basically cleans up stale BTRFS snapshots.
     services.btrfs.autoScrub = {
       enable = true;
       interval = "monthly";

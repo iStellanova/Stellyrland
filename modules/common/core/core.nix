@@ -1,8 +1,7 @@
 { config, lib, pkgs, identity, ... }:
 {
-  # In Dendritic, we can make core stuff a default, or make it an option.
   options.aspects.core.enable = lib.mkEnableOption "Core system configuration" // { default = true; };
-
+  # Timezone based on whether the system is Darwin (macOS) or Linux. They're different in convention.
   config = lib.mkIf config.aspects.core.enable {
     time.timeZone = if pkgs.stdenv.isDarwin then "America/Indiana/Indianapolis" else "America/Indianapolis";
 

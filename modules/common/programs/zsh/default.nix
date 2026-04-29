@@ -4,6 +4,7 @@
   options.aspects.programs.zsh.enable = lib.mkEnableOption "Zsh shell configuration";
 
   config = lib.mkIf config.aspects.programs.zsh.enable {
+    # Enables zsh.
     programs.zsh.enable = true;
     environment.systemPackages = [ pkgs.zsh-completions ];
 
@@ -15,6 +16,7 @@
         autosuggestion.enable = true;
         syntaxHighlighting.enable = true;
 
+        # Oh My Zsh and plugins.
         oh-my-zsh = {
           enable = true;
           plugins = [ "git" "copyfile" "copybuffer" "ssh-agent" ];
@@ -42,7 +44,7 @@
             # Fix for fzf-tab and other completion-related plugins
             zstyle ':completion:*:descriptions' format '[%d]'
             zstyle ':completion:*' list-colors ''${(s.:.)LS_COLORS}
-            
+
             # CLI tools integration
             ${lib.optionalString config.aspects.programs.cli.enable ''
               zstyle ':fzf-tab:*' fzf-command fzf

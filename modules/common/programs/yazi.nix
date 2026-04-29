@@ -19,8 +19,8 @@
       };
 
       home.packages = with pkgs; [
-        imagemagick
-        poppler-utils
+        imagemagick       # Image processing
+        poppler-utils     # PDF processing
       ];
     };
   };

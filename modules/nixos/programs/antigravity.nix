@@ -4,7 +4,7 @@
   config = lib.mkIf config.aspects.programs.antigravity.enable {
     home-manager.users.${identity.name} = {
       home.packages = with pkgs; [
-        antigravity-fhs
+        antigravity-fhs # Use fhs package, a better wrapper for it.
       ];
     };
   };

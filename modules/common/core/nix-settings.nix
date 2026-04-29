@@ -4,6 +4,7 @@
   options.aspects.core.nix-settings.enable = lib.mkEnableOption "Core nix settings" // { default = true; };
 
   config = lib.mkIf config.aspects.core.nix-settings.enable (lib.mkMerge [
+
     # Nix Settings
     {
       nix.enable = lib.mkDefault (!pkgs.stdenv.isDarwin);
@@ -14,7 +15,6 @@
         warn-dirty = false;
         min-free = 2147483648; # 2GB
         max-free = 5368709120; # 5GB
-        cores = 24;                       # Leave 8 threads free for system/driver
         builders-use-substitutes = true;
 
         # CachyOS Binary Cache
@@ -28,29 +28,43 @@
         ];
       };
 
+      # Cleaner nix output feedback.
       environment.systemPackages = with pkgs; [
         nix-output-monitor # Pipeline your nix-build to nom to get a better output
         nvd                # Diff tool for nix packages
       ];
 
+      # Set the flake path based on the system type (Darwin/Linux).
       environment.variables = {
         FLAKE = if pkgs.stdenv.isDarwin then "${identity.home}/Documents/GitHub/Stellyrland" else "/etc/nixos";
       };
 
-    nixpkgs.config.allowUnfree = true;
+      # Allow unfree packages (e.g. proprietary software).
+      nixpkgs.config.allowUnfree = true;
 
+      # Home Manager configuration for maintenance aliases.
       home-manager.users.${identity.name} = {
         programs.zsh.shellAliases = {
+
           # Nix-specific maintenance
-          clean = "nh clean all --keep 20";
-          cdn = "cd $FLAKE";
-          nixinfo = if pkgs.stdenv.isDarwin then "nix-shell -p nix-info --run nix-info" else "nh os info";
+          clean = "nh clean all --keep 20"; # Clean up old generations. Leaves 20.
+          cdn = "cd $FLAKE";  # Change directory to the flake.
+          nixinfo = "nh os info"; # Checks generations.
 
           # Scratch profile aliases
-          nix-list = "nix profile list --profile ~/.local/state/nix/profiles/scratch";
-          nix-clear = "rm -rf ~/.local/state/nix/profiles/scratch && nh clean all --keep 20";
+          nix-list = "nix profile list --profile ~/.local/state/nix/profiles/scratch"; # List packages in the scratch profile.
+          nix-clear = "rm -rf ~/.local/state/nix/profiles/scratch && nh clean all --keep 20"; # Clear the scratch profile and clean up old generations.
         };
 
+        # Rebuild aliases.
+        # rebuild
+          # NixOS: Take a BTRFS snapshot, add the repo to git, rebuild and switch.
+          # Darwin: Simply rebuild and switch.
+        # upgrade
+          # NixOS: Take a BTRFS snapshot, add the repo to git, upgrade flatpak, upgrade the system, and switch to the new generation.
+          # Darwin: Upgrade the system.
+        # nix-add: Add a package to the scratch profile.
+        # nix-remove: Remove a package from the scratch profile.
         programs.zsh.initContent = ''
           rebuild() {
             if [[ "$1" == "check" ]]; then
@@ -74,7 +88,7 @@
             nix profile remove --profile ~/.local/state/nix/profiles/scratch $1
           }
         '';
-
+        # Nix Helper, a Cleaner Nix Management CLI.
         programs.nh = {
           enable = true;
           clean.enable = true;

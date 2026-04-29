@@ -4,7 +4,7 @@
     ./hardware-configuration.nix
   ];
 
-  # --- Enable Aspects ---
+  # Core NixOS Aspects
   aspects = {
     core = {
       enable = true;
@@ -17,12 +17,12 @@
       services-base.enable = true;
       xdg.enable = true;
     };
-
+    # Desktop Aspects
     desktop = {
       hyprland.enable = true;
       styling.enable = true;
     };
-
+    # Program Aspects
     programs = {
       cli.enable = true;
       gemini.enable = true;
@@ -46,7 +46,7 @@
       yazi.enable = true;
       zed.enable = true;
     };
-
+    # Service Aspects
     services = {
       desktop-services.enable = true;
       coolercontrol.enable = true;
@@ -54,9 +54,9 @@
       openrgb.enable = true;
     };
   };
-
+  # Hostname
   networking.hostName = "stellyrland";
-
+  # Mount Extra Disk on Startup.
   fileSystems."/home/${identity.name}/ExtraDisk" = {
     device = "/dev/disk/by-uuid/5082e55b-50fd-4f53-a753-157fa30415cc";
     fsType = "ext4";

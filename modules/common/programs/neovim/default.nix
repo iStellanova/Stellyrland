@@ -21,7 +21,7 @@
       };
 
       xdg.configFile."nvim".source = ./nvim;
-      
+      # Fuzzyfind files using fzf and bat. Opens the selected file in Neovim.
       programs.zsh.shellAliases = lib.mkIf config.aspects.programs.cli.enable {
         nis = "nvim $(fzf --preview=\"bat --color=always {}\")";
       };

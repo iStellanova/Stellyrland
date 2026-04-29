@@ -9,6 +9,7 @@
       xdg-utils
     ];
     home-manager.users.${identity.name} = { config, ... }: {
+      # Create the user directories if they don't exist.
       xdg.userDirs = {
         enable = true;
         setSessionVariables = true;
@@ -22,11 +23,11 @@
         templates = "${config.home.homeDirectory}/Templates";
         videos = "${config.home.homeDirectory}/Videos";
       };
-
+      # Scratch system directories.
       xdg.systemDirs.data = [
         "${config.home.homeDirectory}/.local/state/nix/profiles/scratch/share"
       ];
-
+      # Default applications. Sets them to be used by default.
       xdg.mimeApps = {
         enable = true;
         defaultApplications = {

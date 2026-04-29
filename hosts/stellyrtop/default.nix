@@ -2,6 +2,7 @@
 
 {
   system.stateVersion = 5;
+  # Pull the Name from Identity Flake
   system.primaryUser = identity.name;
 
   # Core macOS settings
@@ -14,13 +15,11 @@
     NSGlobalDomain.AppleInterfaceStyle = "Dark";
   };
 
-  # Enable the dendritic modules you want on macOS
+  # Program Aspects
   aspects = {
     darwin.homebrew.enable = true;
-
     core.fonts.enable = true;
     core.nix-settings.enable = true;
-
     programs.aesthetic.enable = true;
     programs.btop.enable = true;
     programs.cli.enable = true;
