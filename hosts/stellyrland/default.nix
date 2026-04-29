@@ -28,7 +28,6 @@
       aesthetic.enable = true;
       media.enable = true;
       utils.enable = true;
-      network.enable = true;
       browser.enable = true;
       gaming.enable = true;
       git.enable = true;

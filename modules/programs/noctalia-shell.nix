@@ -4,7 +4,7 @@
   options.aspects.programs.noctalia-shell.enable = lib.mkEnableOption "Noctalia shell environment";
 
   config = lib.mkIf config.aspects.programs.noctalia-shell.enable {
-    home-manager.users.stellanova = { inputs, pkgs, ... }:
+    home-manager.users.stellanova = { inputs, ... }:
       {
         imports = [
           inputs.noctalia-shell.homeModules.default

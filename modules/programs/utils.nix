@@ -8,6 +8,7 @@
       gnome-disk-utility       # A utility for managing disk drives and media
       planify                  # Task manager with Todoist support
       resources                # Resource monitor
+      proton-vpn               # Official Proton VPN Linux app
     ];
   };
 }
