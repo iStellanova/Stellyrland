@@ -156,7 +156,7 @@ in
 
         settings = {
           monitor = [
-            "DP-2, 3440x1440@175, 1440x541, 1, bitdepth, 10, sdrbrightness, 1.2, sdrsaturation, 0.98"
+            "DP-2, 3440x1440@175, 1440x541, 1, bitdepth, 10, sdrbrightness, 1.2, sdrsaturation, 0.98, vrr, 1"
             "DP-3, 2560x1440@100, 0x0, 1, transform, 1, bitdepth, 10, sdrbrightness, 1.2, sdrsaturation, 0.98"
             ", preferred, auto, 1"
           ];
@@ -181,7 +181,6 @@ in
             "wl-paste --type image --watch cliphist store"
             "noctalia-shell"
             "systemctl --user restart xdg-desktop-portal-hyprland"
-            "sleep 1 && cmd=$(ps aux | grep '[l]inux-wallpaperengine' | awk '{$1=$2=$3=$4=$5=$6=$7=$8=$9=$10=""; print $0}'); pkill linux-wallpaperengine; eval $cmd &"
           ];
 
           env = [

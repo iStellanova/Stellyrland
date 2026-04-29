@@ -19,8 +19,12 @@
     # SSD Maintenance
     services.fstrim.enable = true;
 
-    # Enable Sched-ext (scx) support
-    services.scx.enable = true;
-    services.scx.scheduler = "scx_lavd";
+    # High-performance optimizations
+    services.irqbalance.enable = true;
+    services.ananicy = {
+      enable = true;
+      package = pkgs.ananicy-cpp;
+      rulesProvider = pkgs.ananicy-rules-cachyos;
+    };
   };
 }
