@@ -27,7 +27,7 @@ Note: This configuration depends on a private identity flake for personal secret
 └── README.md
 ```
 
-## 🛠️ Tech Stack
+## 🛠️ Main Aspects Involved
 - **Architecture:** Dendritic
 - **Framework:** `flake-parts`
 - **OS:** NixOS (Unstable) & macOS (Darwin)
@@ -39,30 +39,18 @@ Note: This configuration depends on a private identity flake for personal secret
 
 ## ✨ Notable Configurations
 - **Zero-Boilerplate Imports:** Modules are automatically discovered via a recursive scanner in `lib/`.
-- **Unified Aspects:** System (NixOS) and User (Home Manager) logic for a single feature live in the same file/folder.
-- **Sched-ext (scx):** Optimized CPU scheduling with `scx_lavd`.
+- **Unified Configs:** System (NixOS) and User (Home Manager) logic for a single feature live in the same file/folder.
+- **BORE Scheduler:** Optimized CPU scheduling.
 - **Smart Cleanup:** `nh` configured to strictly retain the last **20 generations**.
 - **Btrfs Snapshots + Scrubber:** Integrated `snapper` with automated pre-rebuild hooks.
-
-## 🚀 Deployment
-
-### 1. Apply Configuration
-Using `nh` (recommended):
-- **NixOS:** `nh os switch .`
-- **macOS:** `nh darwin switch .`
-
-Or using the built-in aliases:
-- `rebuild`: Snapshots (NixOS), adds changes to git, and applies configuration.
-- `upgrade`: Updates the flake and applies configuration.
-
-### 2. Check for Errors
-- `rebuild check`: Performs a dry-run build to verify configuration.
 
 ## ⌨️ Key Aliases
 - `rebuild`: Snapshots /home, adds all changes to git, and applies configuration.
 - `upgrade`: Similar to rebuild but performs a flake update first.
 - `clean`: Triggers `nh clean all --keep 20`.
 - `nixinfo`: Generation lists.
+
+Can also flag ``check`` to look for changes before applying anything.
 
 ## 💻 Hardware
 
