@@ -31,10 +31,10 @@ let
         };
         power_cap = 402.0; # Increased power cap to 402W for higher boost headroom.
         performance_level = "manual";
-        min_core_clock = 2700; # High minimum clock to prevent stutter during frequency switching.
+        min_core_clock = 1300; # Moderate minimum clock to prevent stutter while improving stability.
         max_core_clock = 3000; # Mild overclock for better peak performance.
-        max_memory_clock = 1350; # Aggressive memory overclock.
-        voltage_offset = -20; # Undervolted to reduce heat and power consumption while maintaining stability.
+        max_memory_clock = 1300; # Stable memory overclock.
+        voltage_offset = -15; # Slightly relaxed undervolt to ensure stability under transient loads.
         power_profile_mode_index = 0; # Use the high-performance power profile.
       };
     };
@@ -61,10 +61,10 @@ let
             };
             power_cap = 402.0; # Cap power to 402W.
             performance_level = "manual";
-            min_core_clock = 2700; # Higher to avoid spikes.
+            min_core_clock = 1300; # Moderate minimum clock.
             max_core_clock = 3000; # Overclocked.
-            max_memory_clock = 1350; # Overclocked.
-            voltage_offset = -20; # Undervolted for better efficiency.
+            max_memory_clock = 1300; # Moderate memory overclock.
+            voltage_offset = -15; # Relaxed undervolt for stability.
             power_profile_mode_index = 0; # Use performance mode.
           };
         };
@@ -84,6 +84,13 @@ in
   config = lib.mkIf cfg.enable {
     # Enable the LACT daemon
     services.lact.enable = true;
+
+    # Prevent the service from restarting during a switch to avoid display desync/static.
+    # Settings will apply on the next boot or manual service restart.
+    systemd.services.lact = {
+      stopIfChanged = false;
+      restartIfChanged = false;
+    };
 
     # Manage the configuration file with GPU tuning
     environment.etc."lact/config.yaml".source = lactConfig;

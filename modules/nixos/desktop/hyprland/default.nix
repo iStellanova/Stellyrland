@@ -162,10 +162,10 @@ in
 
         settings = {
           # Monitor Configuration:
-          # DP-2: Samsung Odyssey G8 (Main). 10-bit color, HDR-ready brightness, VRR enabled.
+          # DP-2: Samsung Odyssey G8 (Main). 10-bit color, HDR-ready brightness.
           # DP-3: Secondary vertical monitor.
           monitor = [
-            "DP-2, 3440x1440@175, 1440x541, 1, bitdepth, 10, sdrbrightness, 1.2, sdrsaturation, 0.98, vrr, 1"
+            "DP-2, 3440x1440@175, 1440x541, 1, bitdepth, 10, sdrbrightness, 1.2, sdrsaturation, 0.98"
             "DP-3, 2560x1440@100, 0x0, 1, transform, 1, bitdepth, 10, sdrbrightness, 1.2, sdrsaturation, 0.98"
             ", preferred, auto, 1"
           ];
