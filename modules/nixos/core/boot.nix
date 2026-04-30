@@ -37,9 +37,6 @@
       "w /sys/bus/platform/drivers/amd_x3d_vcache/AMDI0101:00/amd_x3d_mode - - - - cache"
     ];
 
-    # Kernel modules.
-    boot.kernelModules = [ "mt7921e" ];
-
     # AMDGPU initrd allows the kernel to load AMDGPU drivers early in the boot process.
     hardware.amdgpu.initrd.enable = true;
   };
