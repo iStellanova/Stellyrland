@@ -15,6 +15,7 @@
           window_padding_width = 28; # High padding for a cleaner, centered aesthetic
           window_padding_height = 28;
           background_opacity = "0.65";
+          background_blur = 32; # Enable background blur (macOS only)
           cursor_trail = 4;
           cursor_trail_decay = "0.1 0.5";
           cursor_trail_start_threshold = 0;
