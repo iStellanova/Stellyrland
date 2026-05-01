@@ -16,16 +16,6 @@
         min-free = 2147483648; # 2GB
         max-free = 5368709120; # 5GB
         builders-use-substitutes = true;
-
-        # CachyOS Binary Cache
-        substituters = [
-          "https://cache.nixos.org"
-          "https://nix-cachyos-kernel.cachix.org"
-        ];
-        trusted-public-keys = [
-          "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
-          "nix-cachyos-kernel.cachix.org-1:7Xf057/lP09V9q3l3qH6K25W/vV6J7S07V/1ZqX8L/A="
-        ];
       };
 
       # Cleaner nix output feedback and generation diffing.
