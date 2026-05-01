@@ -72,8 +72,6 @@
               nixpkgs.overlays = [
                 (final: prev: {
                   deno = inputs.nixpkgs-deno.legacyPackages.${prev.stdenv.hostPlatform.system}.deno;
-                  # TODO: Remove direnv override once macOS/Sandbox hangs are resolved upstream
-                  direnv = prev.direnv.overrideAttrs (old: { doCheck = false; });
                 })
                 inputs.cachyos-kernel.overlays.default
               ];
