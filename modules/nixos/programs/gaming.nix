@@ -11,7 +11,7 @@
     environment.systemPackages = with pkgs; [
       heroic                   # Open-source launcher for Epic, GOG and Amazon Games
       prismlauncher            # A free, open source launcher for Minecraft
-      protonup-qt              # Install and manage GE-Proton, Luxtorpeda & more
+      protonplus               # Install and manage GE-Proton, Luxtorpeda & more
       r2modman                 # Mod manager for several games
     ];
   };

@@ -8,9 +8,8 @@
       # --- Core Applications ---
       "$mainMod, Q, exec, $terminal"
       "$mainMod, E, exec, $fileManager --new-window"
-      "$mainMod, B, exec, zen-browser"
-      "$mainMod, Space, exec, rofi -show drun"
-      "$mainMod, B, exec, zeditor"
+      "$mainMod, B, exec, zen"
+      "$mainMod, V, exec, zeditor"
 
       # --- System & Session Management ---
       "$mainMod+Shift, L, exec, noctalia-shell ipc call lockScreen lock"
@@ -86,7 +85,6 @@
       "$mainMod + Shift, X, exec, noctalia-shell ipc call sessionMenu toggle"
 
       # --- Utilities ---
-      "$mainMod, V, exec, kitty --class cliphist-fzf -e sh -c 'cliphist list | fzf --no-scrollbar | cliphist decode | wl-copy'"
       ", Print, exec, hyprshot -m region -o ~/Pictures/Screenshots"
       "Shift, Print, exec, hyprshot -m output -o ~/Pictures/Screenshots"
 
