@@ -31,10 +31,10 @@ let
         };
         power_cap = 402.0;
         performance_level = "manual";
-        min_core_clock = 2700;
-        max_core_clock = 3000;
+        min_core_clock = 500;
+        max_core_clock = 2700;
         max_memory_clock = 1250;
-        voltage_offset = -20;
+        voltage_offset = 0;
         power_profile_mode_index = 0;
       };
     };
@@ -61,10 +61,10 @@ let
             };
             power_cap = 402.0;
             performance_level = "manual";
-            min_core_clock = 2700;
-            max_core_clock = 3000;
+            min_core_clock = 500;
+            max_core_clock = 2700;
             max_memory_clock = 1250;
-            voltage_offset = -20;
+            voltage_offset = 0;
             power_profile_mode_index = 0;
           };
         };

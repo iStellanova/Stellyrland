@@ -10,9 +10,6 @@
     # TODO: Remove this pin once deno/rusty-v8 build issues are resolved
     nixpkgs-deno.url = "github:nixos/nixpkgs/3e2cf88148e732abc1d259286123e06a9d8c964a";
 
-    # CachyOS kernel.
-    cachyos-kernel.url = "github:xddxdd/nix-cachyos-kernel/release";
-
     # Home Manager.
     home-manager = {
       url = "github:nix-community/home-manager";
@@ -47,7 +44,7 @@
     identity.url = "git+ssh://git@github.com/iStellanova/stellyrdentity.git";
   };
 
-  outputs = inputs@{ self, nixpkgs, flake-parts, home-manager, cachyos-kernel, nix-darwin, mac-app-util, ... }:
+  outputs = inputs@{ self, nixpkgs, flake-parts, home-manager, nix-darwin, mac-app-util, ... }:
     flake-parts.lib.mkFlake { inherit inputs; } {
       systems = [ "x86_64-linux" "aarch64-darwin" ];
 
@@ -73,7 +70,6 @@
                 (final: prev: {
                   deno = inputs.nixpkgs-deno.legacyPackages.${prev.stdenv.hostPlatform.system}.deno;
                 })
-                inputs.cachyos-kernel.overlays.default
               ];
             })
             ./modules/default.nix
