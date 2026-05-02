@@ -29,7 +29,7 @@ let
         pmfw_options = {
           zero_rpm = true;
         };
-        power_cap = 402.0;
+        power_cap = 350.0;
         performance_level = "manual";
         min_core_clock = 500;
         max_core_clock = 2700;
@@ -59,7 +59,7 @@ let
             pmfw_options = {
               zero_rpm = true;
             };
-            power_cap = 402.0;
+            power_cap = 350.0;
             performance_level = "manual";
             min_core_clock = 500;
             max_core_clock = 2700;

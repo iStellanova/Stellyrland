@@ -27,7 +27,7 @@
       "preempt=full"                    # Full preemption for low latency
       "split_lock_detect=off"           # Prevents performance penalties in gaming
       "transparent_hugepage=always"     # Significant speedup for large-cache CPUs
-      "amdgpu.ppfeaturemask=0xffffffff" # Full access to GPU power/clock tuning
+      # "amdgpu.ppfeaturemask=0xffffffff" # Full access to GPU power/clock tuning
     ];
 
     # Cache mode for AMD X3D V-Cache.
