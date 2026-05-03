@@ -16,6 +16,9 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    # CachyOS kernel.
+    cachyos-kernel.url = "github:xddxdd/nix-cachyos-kernel/release";
+
     # Zen Browser.
     zen-browser.url = "github:youwen5/zen-browser-flake";
 
@@ -44,7 +47,7 @@
     identity.url = "git+ssh://git@github.com/iStellanova/stellyrdentity.git";
   };
 
-  outputs = inputs@{ self, nixpkgs, flake-parts, home-manager, nix-darwin, mac-app-util, ... }:
+  outputs = inputs@{ self, nixpkgs, flake-parts, home-manager, cachyos-kernel, nix-darwin, mac-app-util, ... }:
     flake-parts.lib.mkFlake { inherit inputs; } {
       systems = [ "x86_64-linux" "aarch64-darwin" ];
 
@@ -67,6 +70,7 @@
             # TODO: Remove this overlay once deno/rusty-v8 build issues are resolved
             ({ inputs, ... }: {
               nixpkgs.overlays = [
+                inputs.cachyos-kernel.overlays.default
                 (final: prev: {
                   deno = inputs.nixpkgs-deno.legacyPackages.${prev.stdenv.hostPlatform.system}.deno;
                 })
