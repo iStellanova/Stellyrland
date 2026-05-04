@@ -22,6 +22,9 @@
     # Zen Browser.
     zen-browser.url = "github:youwen5/zen-browser-flake";
 
+    # Catppuccin theming.
+    catppuccin.url = "github:catppuccin/nix";
+
     # Noctalia shell.
     noctalia-shell = {
       url = "github:noctalia-dev/noctalia-shell";
@@ -78,6 +81,7 @@
             })
             ./modules/default.nix
             ./hosts/stellyrland/default.nix
+            inputs.catppuccin.nixosModules.catppuccin
             home-manager.nixosModules.home-manager
             {
               home-manager = {
@@ -86,6 +90,9 @@
                 extraSpecialArgs = { inherit inputs; identity = { name = inputs.identity.nixosName; email = inputs.identity.userEmail; gitName = inputs.identity.gitName; home = "/home/${inputs.identity.nixosName}"; }; };
                 backupFileExtension = "backup";
                 overwriteBackup = true;
+                users.${inputs.identity.nixosName} = {
+                  imports = [ inputs.catppuccin.homeModules.catppuccin ];
+                };
               };
             }
           ];
@@ -124,6 +131,9 @@
                 extraSpecialArgs = { inherit inputs; identity = { name = inputs.identity.darwinName; email = inputs.identity.userEmail; gitName = inputs.identity.gitName; home = "/Users/${inputs.identity.darwinName}"; }; };
                 backupFileExtension = "backup";
                 overwriteBackup = true;
+                users.${inputs.identity.darwinName} = {
+                  imports = [ inputs.catppuccin.homeModules.catppuccin ];
+                };
               };
             }
           ];

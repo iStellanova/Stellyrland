@@ -4,11 +4,30 @@
   options.aspects.desktop.styling.enable = lib.mkEnableOption "Desktop styling (GTK, QT, Cursors)" // { default = true; };
 
   config = lib.mkIf config.aspects.desktop.styling.enable {
+    # Global Catppuccin configuration for the system.
+    # This provides a base theme for system-level toolkits.
+    catppuccin.flavor = "macchiato";
+    catppuccin.accent = "flamingo";
+
     home-manager.users.${identity.name} = { config, pkgs, ... }: {
+      # Catppuccin home-manager configuration.
+      catppuccin.flavor = "macchiato";
+      catppuccin.accent = "flamingo";
+
+      # Hybrid Theming Strategy:
+      # We enable the Catppuccin flake for core toolkits (GTK/QT) to ensure
+      # consistency in complex apps, but keep it DISABLED for terminal/shell
+      # apps (Kitty, Btop, Yazi, Zsh) to allow Noctalia to handle them dynamically.
+      catppuccin.kvantum.enable = true;
+
+      # Apps handled by Noctalia - Keep these disabled in the flake to avoid conflicts.
+      catppuccin.btop.enable = false;
+      catppuccin.kitty.enable = false;
+      catppuccin.yazi.enable = false;
+      catppuccin.zsh-syntax-highlighting.enable = false;
+
       gtk = {
         enable = true;
-
-        # GTK Theme.
         theme = {
           name = "catppuccin-macchiato-flamingo-standard";
           package = pkgs.catppuccin-gtk.override {
@@ -27,9 +46,6 @@
         };
       };
 
-      # Specify GTK theme.
-      home.sessionVariables.GTK_THEME = "catppuccin-macchiato-flamingo-standard";
-
       # Specify QT theme.
       qt = {
         enable = true;
@@ -37,39 +53,17 @@
         style.name = "kvantum";
       };
 
-      # Asset Distribution:
-      # Manually link GTK 4.0 and Kvantum assets. This is required to ensure
-      # a consistent Catppuccin theme across all toolkits (libadwaita, Qt, etc.)
-      # since many modern apps ignore standard GTK_THEME variables.
-      xdg.configFile = {
-        "gtk-4.0/assets".source = "${config.gtk.theme.package}/share/themes/${config.gtk.theme.name}/gtk-4.0/assets";
-        "gtk-4.0/gtk.css".source = "${config.gtk.theme.package}/share/themes/${config.gtk.theme.name}/gtk-4.0/gtk.css";
-        "gtk-4.0/gtk-dark.css".source = "${config.gtk.theme.package}/share/themes/${config.gtk.theme.name}/gtk-4.0/gtk-dark.css";
-
-        # Distributes the Kvantum theme for Qt applications.
-        "Kvantum/kvantum.kvconfig".text = "[General]\ntheme=catppuccin-macchiato-flamingo";
-        "Kvantum/catppuccin-macchiato-flamingo".source = "${pkgs.catppuccin-kvantum.override {
-          variant = "macchiato";
-          accent = "flamingo";
-        }}/share/Kvantum/catppuccin-macchiato-flamingo";
-
-        # Ensures kvantum is specified.
-        "qt5ct/qt5ct.conf".text = "[Appearance]\nstyle=kvantum";
-        "qt6ct/qt6ct.conf".text = "[Appearance]\nstyle=kvantum";
-      };
-
-      # Dconf GNOME Settings after the above is set.
+      # Dconf GNOME Settings.
       dconf.settings = {
         "org/gnome/desktop/interface" = {
           color-scheme = "prefer-dark";
-          gtk-theme = "catppuccin-macchiato-flamingo-standard";
           icon-theme = "Colloid-Catppuccin-Dark";
           cursor-theme = "Bibata-Modern-Ice";
           cursor-size = 16;
         };
       };
 
-      # Cursor stuff
+      # Cursor configuration.
       home.pointerCursor = {
         gtk.enable = true;
         x11.enable = true;
@@ -80,12 +74,8 @@
         size = 16;
       };
 
-      # Packages for cursor and theme.
+      # Additional packages for cursor and desktop management.
       home.packages = with pkgs; [
-        (catppuccin-kvantum.override {
-          variant = "macchiato";
-          accent = "flamingo";
-        })
         kdePackages.qtstyleplugin-kvantum
         libsForQt5.qtstyleplugin-kvantum
         libsForQt5.qt5ct
