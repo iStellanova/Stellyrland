@@ -2,8 +2,9 @@
 {
   config = lib.mkIf config.aspects.core.nix-settings.enable {
     # Nix settings for Linux.
-    nix.daemonCPUSchedPolicy = "idle"; # Idle CPU scheduling policy for the Nix daemon.
+    nix.daemonCPUSchedPolicy = "batch"; # Batch scheduling for faster builds without UI lag.
     nix.daemonIOSchedPriority = 7; # IO scheduling priority for the Nix daemon.
+    nix.settings.cores = 24; # Reserve 8 threads for system responsiveness.
 
     # Support for dynamically linked executables.
     programs.nix-ld.enable = true;

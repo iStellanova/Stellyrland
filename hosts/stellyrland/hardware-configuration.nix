@@ -16,19 +16,19 @@
   fileSystems."/" =
     { device = "/dev/disk/by-uuid/8e1f7f22-7c3b-4950-86a1-90c4a04037c4";
       fsType = "btrfs";
-      options = [ "compress=zstd" "noatime" "discard=async" ];
+      options = [ "compress=zstd" "noatime" "discard=async" "commit=60" "space_cache=v2" ];
     };
 
   fileSystems."/home" =
     { device = "/dev/disk/by-uuid/8e1f7f22-7c3b-4950-86a1-90c4a04037c4";
       fsType = "btrfs";
-      options = [ "subvol=@home" "compress=zstd" "noatime" "discard=async" ];
+      options = [ "subvol=@home" "compress=zstd" "noatime" "discard=async" "commit=60" "space_cache=v2" ];
     };
 
     fileSystems."/home/.snapshots" = {
       device = "/dev/disk/by-uuid/8e1f7f22-7c3b-4950-86a1-90c4a04037c4";
       fsType = "btrfs";
-      options = [ "subvol=/@home_snapshots" "noatime" "compress=zstd" "discard=async" ];
+      options = [ "subvol=/@home_snapshots" "noatime" "compress=zstd" "discard=async" "commit=60" "space_cache=v2" ];
     };
 
   fileSystems."/boot" =
