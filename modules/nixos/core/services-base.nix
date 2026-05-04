@@ -12,5 +12,8 @@
     security.pam.services.greetd.enableGnomeKeyring = true; # Enable GNOME Keyring for greetd.
     networking.networkmanager.enable = true; # Network manager.
     programs.dconf.enable = true; # Configuration management. Stores GNOME settings.
+
+    # Use dbus-broker for high-performance IPC.
+    services.dbus.implementation = "broker";
   };
 }

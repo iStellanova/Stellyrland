@@ -15,5 +15,8 @@
     programs.ssh.startAgent = true;
     # Disable the gnome one, use the systemd service instead.
     services.gnome.gcr-ssh-agent.enable = false;
+
+    # Proactive OOM killer to prevent system hangs under extreme memory pressure.
+    systemd.oomd.enable = true;
   };
 }
