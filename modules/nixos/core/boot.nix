@@ -41,5 +41,11 @@
 
     # AMDGPU initrd allows the kernel to load AMDGPU drivers early in the boot process.
     hardware.amdgpu.initrd.enable = true;
+
+    # High-performance network stack optimizations.
+    boot.kernel.sysctl = {
+      "net.core.default_qdisc" = "fq";
+      "net.ipv4.tcp_congestion_control" = "bbr";
+    };
   };
 }
