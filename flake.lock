@@ -164,7 +164,10 @@
     },
     "flake-utils": {
       "inputs": {
-        "systems": ["mac-app-util", "systems"]
+        "systems": [
+          "mac-app-util",
+          "systems"
+        ]
       },
       "locked": {
         "lastModified": 1731533236,
@@ -181,7 +184,9 @@
     },
     "home-manager": {
       "inputs": {
-        "nixpkgs": ["nixpkgs"]
+        "nixpkgs": [
+          "nixpkgs"
+        ]
       },
       "locked": {
         "lastModified": 1777852249,
@@ -237,7 +242,9 @@
     },
     "nix-darwin": {
       "inputs": {
-        "nixpkgs": ["nixpkgs"]
+        "nixpkgs": [
+          "nixpkgs"
+        ]
       },
       "locked": {
         "lastModified": 1777780666,
@@ -429,22 +436,25 @@
     "noctalia-nix-monitor": {
       "flake": false,
       "locked": {
-        "lastModified": 1775542671,
-        "narHash": "sha256-CeY0EZ4OxEIHSD9gz45fo/wpnKtOitaFq9E7WCQEAQ0=",
-        "owner": "caesar-admin",
-        "repo": "Noctalia-Nix-Monitor",
-        "rev": "189b70382c35105c2b853439ec25120681786266",
+        "lastModified": 1777884893,
+        "narHash": "sha256-kUxWbdGXtTHpmwXNO1POECD6OQ/UQeOsL9BeinRS/oE=",
+        "owner": "iStellanova",
+        "repo": "Nix-Monitor",
+        "rev": "074888daa56394827313dc22b53aec3d213d4182",
         "type": "github"
       },
       "original": {
-        "owner": "caesar-admin",
-        "repo": "Noctalia-Nix-Monitor",
+        "owner": "iStellanova",
+        "repo": "Nix-Monitor",
         "type": "github"
       }
     },
     "noctalia-qs": {
       "inputs": {
-        "nixpkgs": ["noctalia-shell", "nixpkgs"],
+        "nixpkgs": [
+          "noctalia-shell",
+          "nixpkgs"
+        ],
         "systems": "systems_3",
         "treefmt-nix": "treefmt-nix_3"
       },
@@ -464,7 +474,9 @@
     },
     "noctalia-shell": {
       "inputs": {
-        "nixpkgs": ["nixpkgs"],
+        "nixpkgs": [
+          "nixpkgs"
+        ],
         "noctalia-qs": "noctalia-qs"
       },
       "locked": {
@@ -579,7 +591,11 @@
     },
     "treefmt-nix_3": {
       "inputs": {
-        "nixpkgs": ["noctalia-shell", "noctalia-qs", "nixpkgs"]
+        "nixpkgs": [
+          "noctalia-shell",
+          "noctalia-qs",
+          "nixpkgs"
+        ]
       },
       "locked": {
         "lastModified": 1775636079,

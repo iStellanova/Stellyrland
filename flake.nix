@@ -30,7 +30,7 @@
 
     # Noctalia Nix Monitor.
     noctalia-nix-monitor = {
-      url = "github:caesar-admin/Noctalia-Nix-Monitor";
+      url = "github:iStellanova/Nix-Monitor";
       flake = false;
     };
 
