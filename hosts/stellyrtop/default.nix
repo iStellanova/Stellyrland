@@ -30,6 +30,8 @@
     programs.yazi.enable = true;
     programs.zsh.enable = true;
     programs.neovim.enable = true;
+    programs.gemini.enable = true;
+    programs.vesktop.enable = true;
   };
 
   # Define the user so home-manager can link user packages correctly
