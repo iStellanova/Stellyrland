@@ -13,7 +13,7 @@
 
           matchBlocks = {
             "stellyrland" = {
-              hostname = "stellyrland.tailscale.net";
+              hostname = "stellyrland.tailb15b96.ts.net";
               user = identity.name;
               identityFile = "~/.ssh/stellacode";
             };
