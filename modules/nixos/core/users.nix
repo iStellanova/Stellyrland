@@ -8,6 +8,7 @@
       shell = pkgs.zsh;
       isNormalUser = true;
       extraGroups = [ "wheel" "storage" "disk" "video" "render" "networkmanager" ];
+      openssh.authorizedKeys.keys = identity.sshKeys;
     };
 
   };

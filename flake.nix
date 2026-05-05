@@ -63,6 +63,7 @@
               name = inputs.identity.nixosName;
               email = inputs.identity.userEmail;
               gitName = inputs.identity.gitName;
+              sshKeys = inputs.identity.sshKeys or [ ];
               home = "/home/${inputs.identity.nixosName}";
             };
             isDarwin = false;
@@ -87,7 +88,7 @@
               home-manager = {
                 useGlobalPkgs = true;
                 useUserPackages = true;
-                extraSpecialArgs = { inherit inputs; identity = { name = inputs.identity.nixosName; email = inputs.identity.userEmail; gitName = inputs.identity.gitName; home = "/home/${inputs.identity.nixosName}"; }; };
+                extraSpecialArgs = { inherit inputs; identity = { name = inputs.identity.nixosName; email = inputs.identity.userEmail; gitName = inputs.identity.gitName; sshKeys = inputs.identity.sshKeys or [ ]; home = "/home/${inputs.identity.nixosName}"; }; };
                 backupFileExtension = "backup";
                 overwriteBackup = true;
                 users.${inputs.identity.nixosName} = {
@@ -106,6 +107,7 @@
               name = inputs.identity.darwinName;
               email = inputs.identity.userEmail;
               gitName = inputs.identity.gitName;
+              sshKeys = inputs.identity.sshKeys or [ ];
               home = "/Users/${inputs.identity.darwinName}";
             };
             isDarwin = true;
@@ -128,7 +130,7 @@
               home-manager = {
                 useGlobalPkgs = true;
                 useUserPackages = true;
-                extraSpecialArgs = { inherit inputs; identity = { name = inputs.identity.darwinName; email = inputs.identity.userEmail; gitName = inputs.identity.gitName; home = "/Users/${inputs.identity.darwinName}"; }; };
+                extraSpecialArgs = { inherit inputs; identity = { name = inputs.identity.darwinName; email = inputs.identity.userEmail; gitName = inputs.identity.gitName; sshKeys = inputs.identity.sshKeys or [ ]; home = "/Users/${inputs.identity.darwinName}"; }; };
                 backupFileExtension = "backup";
                 overwriteBackup = true;
                 users.${inputs.identity.darwinName} = {
