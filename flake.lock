@@ -222,11 +222,11 @@
     },
     "identity": {
       "locked": {
-        "lastModified": 1777479285,
-        "narHash": "sha256-v6cbu4aYQ1nVNO4gRp+bjiOJfwyTM/hn4DuPe6HMju4=",
+        "lastModified": 1778001173,
+        "narHash": "sha256-4fbSCsSVSwm3oHEinRHoY4BbbS774Gc7VuMQX6eRsMI=",
         "ref": "refs/heads/master",
-        "rev": "279ae1d3dcdefc9df6b0de2622089c63f661d03c",
-        "revCount": 2,
+        "rev": "5489a8c26cffe23f83bef01a8001fc9d6bc3616e",
+        "revCount": 3,
         "type": "git",
         "url": "ssh://git@github.com/iStellanova/stellyrdentity.git"
       },

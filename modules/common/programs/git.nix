@@ -14,7 +14,7 @@
           matchBlocks = {
             "stellyrland" = {
               hostname = "stellyrland.tailb15b96.ts.net";
-              user = identity.name;
+              user = identity.nixosName;
               identityFile = "~/.ssh/stellacode";
             };
             "github.com" = {
