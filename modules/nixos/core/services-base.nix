@@ -15,5 +15,16 @@
 
     # Use dbus-broker for high-performance IPC.
     services.dbus.implementation = "broker";
+
+    # Enable SSH server for remote access
+    services.openssh = {
+      enable = true;
+      settings = {
+        PasswordAuthentication = false;
+        KbdInteractiveAuthentication = false;
+        PermitRootLogin = "no";
+      };
+    };
+    networking.firewall.allowedTCPPorts = [ 22 ];
   };
 }
