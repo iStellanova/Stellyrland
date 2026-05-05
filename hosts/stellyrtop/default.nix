@@ -11,6 +11,7 @@
     programs.aerospace.enable = true;
     darwin.homebrew.enable = true;
     core.fonts.enable = true;
+    core.networking.enable = true;
     core.nix-settings.enable = true;
     programs.aesthetic.enable = true;
     programs.btop.enable = true;
