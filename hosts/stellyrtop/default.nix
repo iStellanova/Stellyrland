@@ -5,18 +5,10 @@
   # Pull the Name from Identity Flake
   system.primaryUser = identity.name;
 
-  # Core macOS settings
-  system.defaults = {
-    dock.autohide = false;
-    dock.mru-spaces = false;
-    finder.AppleShowAllExtensions = true;
-    finder.FXPreferredViewStyle = "clmv";
-    loginwindow.GuestEnabled = false;
-    NSGlobalDomain.AppleInterfaceStyle = "Dark";
-  };
-
   # Program Aspects
   aspects = {
+    darwin.system.enable = true;
+    programs.aerospace.enable = true;
     darwin.homebrew.enable = true;
     core.fonts.enable = true;
     core.nix-settings.enable = true;
