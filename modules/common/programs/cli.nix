@@ -8,6 +8,7 @@
       curl                     # A command line tool for transferring data with URL syntax
       unzip                    # Extraction utility for archives compressed in .zip format
       zip                      # Archiver for .zip files
+      croc                     # Easily and securely send things from one computer to another
     ];
 
     # Enables special tools.
