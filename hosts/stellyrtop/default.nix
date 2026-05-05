@@ -5,26 +5,32 @@
   # Pull the Name from Identity Flake
   system.primaryUser = identity.name;
 
-  # Program Aspects
+  # Enabled Aspects
   aspects = {
-    darwin.system.enable = true;
-    programs.aerospace.enable = true;
-    darwin.homebrew.enable = true;
-    core.fonts.enable = true;
-    core.networking.enable = true;
-    core.nix-settings.enable = true;
-    programs.aesthetic.enable = true;
-    programs.btop.enable = true;
-    programs.cli.enable = true;
-    programs.fastfetch.enable = true;
-    programs.git.enable = true;
-    programs.kitty.enable = true;
-    programs.ns.enable = true;
-    programs.yazi.enable = true;
-    programs.zsh.enable = true;
-    programs.neovim.enable = true;
-    programs.gemini.enable = true;
-    programs.vesktop.enable = true;
+    darwin = {
+      system.enable = true;
+      homebrew.enable = true;
+    };
+    core = {
+      fonts.enable = true;
+      nix-settings.enable = true;
+      networking.enable = true;
+    };
+    programs = {
+      aerospace.enable = true;
+      aesthetic.enable = true;
+      btop.enable = true;
+      cli.enable = true;
+      fastfetch.enable = true;
+      git.enable = true;
+      kitty.enable = true;
+      ns.enable = true;
+      yazi.enable = true;
+      zsh.enable = true;
+      neovim.enable = true;
+      gemini.enable = true;
+      vesktop.enable = true;
+    };
   };
 
   # Define the user so home-manager can link user packages correctly
