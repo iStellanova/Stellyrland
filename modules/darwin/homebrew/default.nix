@@ -42,7 +42,6 @@
         "intellij-idea"                       # IntelliJ IDEA
         "mactracker"                          # MacTracker - Mac Information
         "obs"                                 # OBS Studio
-        "obsidian"                            # Obsidian - Note-taking
         "prismlauncher"                       # Prism Launcher
         "pycharm"                             # IntelliJ PyCharm - Python IDE
         "quicken"                             # Quicken
