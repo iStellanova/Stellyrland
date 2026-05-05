@@ -14,6 +14,7 @@
       hardware.enable = true;
       boot.enable = true;
       fonts.enable = true;
+      networking.enable = true;
       storage.enable = true;
       services-base.enable = true;
       xdg.enable = true;

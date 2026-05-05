@@ -6,12 +6,17 @@
   config = lib.mkIf config.aspects.programs.git.enable (lib.mkMerge [
     {
       # Home Manager level
-      home-manager.users.${identity.name} = {
+      home-manager.users.${identity.name} = { pkgs, ... }: {
         programs.ssh = {
           enable = true;
           enableDefaultConfig = false;
 
           matchBlocks = {
+            "stellyrland" = {
+              hostname = "stellyrland.tailscale.net";
+              user = identity.name;
+              identityFile = "~/.ssh/stellacode";
+            };
             "github.com" = {
               hostname = "github.com";
               user = "git";
