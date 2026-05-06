@@ -21,6 +21,16 @@ I have a custom flake outside of this repo keeping my identity separate. It is i
 ### Overall Declarative Nature
 I love declarative deployment. Defining my system this way keeps it organized and exactly the way I want it. It is a different way of thinking about programming, but certainly one I prefer over imperative management. Nix is not exclusively declarative, I can nix-shell or nix-env imperative projects and packages I wish to run in certain points as I please.
 
+## 📖 Documentation
+
+- [Workflow Journey](./docs/workflow-journey.md)
+- [Multi-System Management](./docs/multi-system-management.md)
+
+### 🔧 Troubleshooting
+- [GPU White Screen](./docs/troubleshooting/gpu-whitescreen.md)
+- [GPU Snow Artifacts](./docs/troubleshooting/gpu-snow.md)
+- [Boot Loss](./docs/troubleshooting/boot-loss.md)
+
 ## 📂 Project Structure
 
 ```text
