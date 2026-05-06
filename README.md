@@ -15,7 +15,7 @@ I chose this as it makes maintaining my systems much cleaner. I can enable aspec
 ### Flakes
 I use nix flakes, which consist of inputs and outputs. This feature allows me to input various systems and libraries, such as nix packages, home-manager, github controlled projects, and my identity from a private repository I keep. It then outputs these libraries and configurations into a buildable system using the wider range of configurations listed dendritically. Using an input and output system allows me to version control and define what my configuration imports in order to get the result I want.
 ### Darwin
-Nix-Darwin is my macbook configuration. I not only manage my NixOS linux system declaratively, but also my Macbook Pro. I define programs, system defaults, ssh keys, and more using it. This is a must for my Macbook, as typical Nix is made for other architectures and kernels.
+Nix-Darwin is my Macbook configuration. I not only manage my NixOS Linux system declaratively, but also my Macbook Pro. I define programs, system defaults, ssh keys, and more using it. This is a must for my Macbook, as typical Nix is made for other architectures and kernels.
 ### Private Identity
 I have a custom flake outside of this repo keeping my identity separate. It is imported using the main flake in this configuration with private keys that allow me access to import that information. This is to keep it out of public prying eyes.
 ### Overall Declarative Nature
