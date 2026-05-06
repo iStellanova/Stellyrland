@@ -4,6 +4,10 @@ This is my personal configuration for my systems, managed by the nix language an
 I stick to the dendritic style. Documentation will explain all concepts I use here.
 I use this to tinker, deploy, and manage my computers from home and remote. :)
 
+![Stellyrland Desktop](./assets/screenshot.png)
+
+-# Note: This is a personal configuration. This is not meant to be forked or used by others.
+
 ## ✨ Concepts Utilized
 
 I make use of various concepts, each of the big ones I'll explain here.
