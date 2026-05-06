@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, isDarwin, ... }:
 
 {
   options.aspects.core.networking.enable = lib.mkEnableOption "Core networking services (Tailscale)" // { default = true; };
@@ -9,6 +9,7 @@
     # On Darwin, this enables the tailscale service.
     services.tailscale = {
       enable = true;
+    } // lib.optionalAttrs (!isDarwin) {
       interfaceName = "userspace-networking";
       useRoutingFeatures = "none";
       extraUpFlags = [
