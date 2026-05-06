@@ -25,6 +25,14 @@
         PermitRootLogin = "no";
       };
     };
-    networking.firewall.allowedTCPPorts = [ 22 ];
+    networking.firewall = {
+      enable = true;
+      checkReversePath = "loose";
+      allowedTCPPorts = [ 22 ];
+      allowedUDPPorts = [ 41641 ]; # Tailscale
+      allowedUDPPortRanges = [
+        { from = 50000; to = 65535; } # Discord/WebRTC
+      ];
+    };
   };
 }
