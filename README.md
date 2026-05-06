@@ -24,7 +24,7 @@ I love declarative deployment. Defining my system this way keeps it organized an
 ## 📖 Documentation
 
 - [Workflow Journey](./docs/workflow-journey.md)
-- [Multi-System Management](./docs/multi-system-management.md)
+- [Multi-System Management](./docs/multi-system.md)
 
 ### 🔧 Troubleshooting
 - [GPU White Screen](./docs/troubleshooting/gpu-whitescreen.md)
