@@ -51,6 +51,10 @@
   };
 
   outputs = inputs@{ self, nixpkgs, flake-parts, home-manager, cachyos-kernel, nix-darwin, mac-app-util, ... }:
+    let
+      # Shared lib extension
+      lib = nixpkgs.lib.extend (self: super: (import ./lib/default.nix { lib = self; }));
+    in
     flake-parts.lib.mkFlake { inherit inputs; } {
       systems = [ "x86_64-linux" "aarch64-darwin" ];
 
@@ -58,30 +62,11 @@
         nixosConfigurations.stellyrland = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
           specialArgs = {
-            inherit inputs;
-            identity = {
-              name = inputs.identity.nixosName;
-              nixosName = inputs.identity.nixosName;
-              darwinName = inputs.identity.darwinName;
-              email = inputs.identity.userEmail;
-              gitName = inputs.identity.gitName;
-              sshKeys = inputs.identity.sshKeys or [ ];
-              home = "/home/${inputs.identity.nixosName}";
-            };
+            inherit inputs lib;
+            identity = lib.mkIdentity inputs.identity false;
             isDarwin = false;
-            # Extend lib with our custom scan function
-            lib = nixpkgs.lib.extend (self: super: (import ./lib/default.nix { lib = self; }));
           };
           modules = [
-            # TODO: Remove this overlay once deno/rusty-v8 build issues are resolved
-            ({ inputs, ... }: {
-              nixpkgs.overlays = [
-                inputs.cachyos-kernel.overlays.default
-                (final: prev: {
-                  deno = inputs.nixpkgs-deno.legacyPackages.${prev.stdenv.hostPlatform.system}.deno;
-                })
-              ];
-            })
             ./modules/default.nix
             ./hosts/stellyrland/default.nix
             inputs.catppuccin.nixosModules.catppuccin
@@ -90,12 +75,15 @@
               home-manager = {
                 useGlobalPkgs = true;
                 useUserPackages = true;
-                extraSpecialArgs = { inherit inputs; identity = { name = inputs.identity.nixosName; nixosName = inputs.identity.nixosName; darwinName = inputs.identity.darwinName; email = inputs.identity.userEmail; gitName = inputs.identity.gitName; sshKeys = inputs.identity.sshKeys or [ ]; home = "/home/${inputs.identity.nixosName}"; }; };
                 backupFileExtension = "backup";
                 overwriteBackup = true;
-                users.${inputs.identity.nixosName} = {
-                  imports = [ inputs.catppuccin.homeModules.catppuccin ];
+                extraSpecialArgs = {
+                  inherit inputs;
+                  identity = lib.mkIdentity inputs.identity false;
                 };
+                users.${(lib.mkIdentity inputs.identity false).name}.imports = [
+                  inputs.catppuccin.homeModules.catppuccin
+                ];
               };
             }
           ];
@@ -104,28 +92,11 @@
         darwinConfigurations.stellyrtop = nix-darwin.lib.darwinSystem {
           system = "aarch64-darwin";
           specialArgs = {
-            inherit inputs;
-            identity = {
-              name = inputs.identity.darwinName;
-              nixosName = inputs.identity.nixosName;
-              darwinName = inputs.identity.darwinName;
-              email = inputs.identity.userEmail;
-              gitName = inputs.identity.gitName;
-              sshKeys = inputs.identity.sshKeys or [ ];
-              home = "/Users/${inputs.identity.darwinName}";
-            };
+            inherit inputs lib;
+            identity = lib.mkIdentity inputs.identity true;
             isDarwin = true;
-            lib = nixpkgs.lib.extend (self: super: (import ./lib/default.nix { lib = self; }));
           };
           modules = [
-            ({ ... }: {
-              nixpkgs.overlays = [
-                (final: prev: {
-                  # TODO: Remove direnv override once macOS/Sandbox hangs are resolved upstream
-                  direnv = prev.direnv.overrideAttrs (old: { doCheck = false; });
-                })
-              ];
-            })
             ./modules/default.nix
             ./hosts/stellyrtop/default.nix
             mac-app-util.darwinModules.default
@@ -134,16 +105,17 @@
               home-manager = {
                 useGlobalPkgs = true;
                 useUserPackages = true;
-                extraSpecialArgs = { inherit inputs; identity = { name = inputs.identity.darwinName; nixosName = inputs.identity.nixosName; darwinName = inputs.identity.darwinName; email = inputs.identity.userEmail; gitName = inputs.identity.gitName; sshKeys = inputs.identity.sshKeys or [ ]; home = "/Users/${inputs.identity.darwinName}"; }; };
                 backupFileExtension = "backup";
                 overwriteBackup = true;
-                users.${inputs.identity.darwinName} = {
-                  imports = [ inputs.catppuccin.homeModules.catppuccin ];
+                extraSpecialArgs = {
+                  inherit inputs;
+                  identity = lib.mkIdentity inputs.identity true;
                 };
               };
             }
           ];
         };
       };
+
     };
 }

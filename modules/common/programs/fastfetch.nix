@@ -1,4 +1,4 @@
-{ config, lib, pkgs, identity, ... }:
+{ config, lib, identity, isDarwin, ... }:
 {
   options.aspects.programs.fastfetch.enable = lib.mkEnableOption "Fastfetch";
   config = lib.mkIf config.aspects.programs.fastfetch.enable {
@@ -104,7 +104,7 @@
               type = "command";
               key = "󰃶 ";
               keyColor = "34";
-              text = if pkgs.stdenv.isDarwin then "echo $(( ($(date +%s) - $(stat -f %B /)) / 86400 )) days" else "echo $(( ($(date +%s) - $(stat -c %W /)) / 86400 )) days";
+              text = if isDarwin then "echo $(( ($(date +%s) - $(stat -f %B /)) / 86400 )) days" else "echo $(( ($(date +%s) - $(stat -c %W /)) / 86400 )) days";
             }
             "break"
           ];

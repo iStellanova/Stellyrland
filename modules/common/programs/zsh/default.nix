@@ -1,4 +1,4 @@
-{ config, lib, pkgs, identity, ... }:
+{ config, lib, pkgs, identity, isDarwin, ... }:
 
 {
   options.aspects.programs.zsh.enable = lib.mkEnableOption "Zsh shell configuration";
@@ -66,14 +66,14 @@
               elif [ -d "$1" ]; then builtin cd "$1"
               else z "$@" && printf "\U000F17A9 " && pwd; fi
             }
-            ${lib.optionalString pkgs.stdenv.isLinux ''
+            ${lib.optionalString (!isDarwin) ''
               open() { xdg-open "$@" >/dev/null 2>&1 &; }
             ''}
 
             # Clipboard utilities for Wayland/Hyprland
             # cp2c: Copy file content to clipboard
             # c2f: Create file from clipboard content
-            ${lib.optionalString (pkgs.stdenv.isLinux && (config.aspects.desktop.hyprland.enable or false)) ''
+            ${lib.optionalString (!isDarwin && (config.aspects.desktop.hyprland.enable or false)) ''
               cp2c() { if [[ -z "$1" ]]; then echo "Usage: cp2c <file>" >&2; return 1; fi; wl-copy < "$1"; }
               c2f() { if [[ -z "$1" ]]; then echo "Usage: create-from-clip <filename>" >&2; return 1; fi; wl-paste > "$1"; }
             ''}

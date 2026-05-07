@@ -20,4 +20,13 @@
       ) items);
     in
     res;
+
+  # mkIdentity - Helper to format identity data for specialArgs.
+  mkIdentity = identityInput: isDarwin: {
+    name = if isDarwin then identityInput.darwinName else identityInput.nixosName;
+    inherit (identityInput) nixosName darwinName gitName;
+    email = identityInput.userEmail;
+    sshKeys = identityInput.sshKeys or [ ];
+    home = if isDarwin then "/Users/${identityInput.darwinName}" else "/home/${identityInput.nixosName}";
+  };
 }
