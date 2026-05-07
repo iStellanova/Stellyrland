@@ -1,9 +1,9 @@
-{ config, lib, pkgs, identity, ... }:
+{ config, lib, identity, isDarwin, ... }:
 {
   options.aspects.core.enable = lib.mkEnableOption "Core system configuration" // { default = true; };
   # Timezone based on whether the system is Darwin (macOS) or Linux. They're different in convention.
   config = lib.mkIf config.aspects.core.enable {
-    time.timeZone = if pkgs.stdenv.isDarwin then "America/Indiana/Indianapolis" else "America/Indianapolis";
+    time.timeZone = if isDarwin then "America/Indiana/Indianapolis" else "America/Indianapolis";
 
     # Home Manager core settings
     home-manager.users.${identity.name} = {

@@ -1,13 +1,31 @@
-{ config, lib, pkgs, identity, ... }:
+{ config, lib, pkgs, identity, inputs, isDarwin, ... }:
 
 {
   options.aspects.core.nix-settings.enable = lib.mkEnableOption "Core nix settings" // { default = true; };
 
   config = lib.mkIf config.aspects.core.nix-settings.enable (lib.mkMerge [
-
-    # Nix Settings
     {
-      nix.enable = lib.mkDefault (!pkgs.stdenv.isDarwin);
+      nixpkgs.overlays = [
+        # Platform-agnostic overlays
+        (final: prev: {
+          # Example of a shared overlay if needed
+        })
+      ] ++ lib.optionals (!isDarwin) [
+        # NixOS specific overlays
+        inputs.cachyos-kernel.overlays.default
+        (final: prev: {
+          # TODO: Remove this overlay once deno/rusty-v8 build issues are resolved
+          deno = inputs.nixpkgs-deno.legacyPackages.${prev.stdenv.hostPlatform.system}.deno;
+        })
+      ] ++ lib.optionals isDarwin [
+        # Darwin specific overlays
+        (final: prev: {
+          # TODO: Remove direnv override once macOS/Sandbox hangs are resolved upstream
+          direnv = prev.direnv.overrideAttrs (old: { doCheck = false; });
+        })
+      ];
+
+      nix.enable = lib.mkDefault (!isDarwin);
       nix.settings = {
         experimental-features = [ "nix-command" "flakes" ];
         log-lines = 25;
@@ -26,7 +44,7 @@
 
       # Set the flake path based on the system type (Darwin/Linux).
       environment.variables = {
-        FLAKE = if pkgs.stdenv.isDarwin then "${identity.home}/Documents/GitHub/Stellyrland" else "/etc/nixos";
+        FLAKE = if isDarwin then "${identity.home}/Documents/GitHub/Stellyrland" else "/etc/nixos";
       };
 
       # Allow unfree packages (e.g. proprietary software).
@@ -58,17 +76,17 @@
         programs.zsh.initContent = ''
           rebuild() {
             if [[ "$1" == "check" ]]; then
-              git -C $FLAKE add . && ${if pkgs.stdenv.isDarwin then "nh darwin build $FLAKE" else "nh os build --diff always"}
+              git -C $FLAKE add . && ${if isDarwin then "nh darwin build $FLAKE" else "nh os build --diff always"}
             else
-              ${if pkgs.stdenv.isDarwin then "" else "(snapper -c home create -c timeline --description \"Before rebuild\" || true) && "}git -C $FLAKE add . && ${if pkgs.stdenv.isDarwin then "nh darwin switch $FLAKE" else "nh os switch"}
+              ${if isDarwin then "" else "(snapper -c home create -c timeline --description \"Before rebuild\" || true) && "}git -C $FLAKE add . && ${if isDarwin then "nh darwin switch $FLAKE" else "nh os switch"}
             fi
           }
 
           upgrade() {
             if [[ "$1" == "check" ]]; then
-              git -C $FLAKE add . && ${if pkgs.stdenv.isDarwin then "nix flake update $FLAKE && nh darwin build $FLAKE" else "nh os build --update --diff always"}
+              git -C $FLAKE add . && ${if isDarwin then "nix flake update $FLAKE && nh darwin build $FLAKE" else "nh os build --update --diff always"}
             else
-              ${if pkgs.stdenv.isDarwin then "" else "(snapper -c home create -c timeline --description \"Before upgrade\" || true) && flatpak update && "}git -C $FLAKE add . && ${if pkgs.stdenv.isDarwin then "nh darwin switch --update $FLAKE" else "nh os switch --update"}
+              ${if isDarwin then "" else "(snapper -c home create -c timeline --description \"Before upgrade\" || true) && flatpak update && "}git -C $FLAKE add . && ${if isDarwin then "nh darwin switch --update $FLAKE" else "nh os switch --update"}
             fi
           }
 
@@ -83,7 +101,7 @@
           enable = true;
           clean.enable = true;
           clean.extraArgs = "--keep 20";
-          flake = if pkgs.stdenv.isDarwin then "${identity.home}/Documents/GitHub/Stellyrland" else "/etc/nixos";
+          flake = if isDarwin then "${identity.home}/Documents/GitHub/Stellyrland" else "/etc/nixos";
         };
       };
     }
