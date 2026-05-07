@@ -6,7 +6,7 @@ I use this to tinker, deploy, and manage my computers from home and remote. :)
 
 ![Stellyrland Desktop](./assets/screenshot.png)
 
--# Note: This is a personal configuration. This is not meant to be forked or used by others.
+- **Note:** This is a personal configuration. This is not meant to be forked or used by others.
 
 ## ✨ Concepts Utilized
 

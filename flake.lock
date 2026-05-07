@@ -182,10 +182,7 @@
     },
     "flake-utils": {
       "inputs": {
-        "systems": [
-          "mac-app-util",
-          "systems"
-        ]
+        "systems": ["mac-app-util", "systems"]
       },
       "locked": {
         "lastModified": 1731533236,
@@ -202,9 +199,7 @@
     },
     "home-manager": {
       "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
+        "nixpkgs": ["nixpkgs"]
       },
       "locked": {
         "lastModified": 1778144356,
@@ -260,9 +255,7 @@
     },
     "nix-darwin": {
       "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
+        "nixpkgs": ["nixpkgs"]
       },
       "locked": {
         "lastModified": 1777780666,
@@ -485,10 +478,7 @@
     },
     "noctalia-qs": {
       "inputs": {
-        "nixpkgs": [
-          "noctalia-shell",
-          "nixpkgs"
-        ],
+        "nixpkgs": ["noctalia-shell", "nixpkgs"],
         "systems": "systems_3",
         "treefmt-nix": "treefmt-nix_3"
       },
@@ -508,9 +498,7 @@
     },
     "noctalia-shell": {
       "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ],
+        "nixpkgs": ["nixpkgs"],
         "noctalia-qs": "noctalia-qs"
       },
       "locked": {
@@ -626,11 +614,7 @@
     },
     "treefmt-nix_3": {
       "inputs": {
-        "nixpkgs": [
-          "noctalia-shell",
-          "noctalia-qs",
-          "nixpkgs"
-        ]
+        "nixpkgs": ["noctalia-shell", "noctalia-qs", "nixpkgs"]
       },
       "locked": {
         "lastModified": 1775636079,
