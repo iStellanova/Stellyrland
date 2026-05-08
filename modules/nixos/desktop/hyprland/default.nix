@@ -220,7 +220,6 @@ in
             "MOZ_ENABLE_WAYLAND, 1"
             "ELECTRON_OZONE_PLATFORM_HINT, auto"
             "OBS_USE_EGL, 1"
-            "PROTON_ENABLE_WAYLAND, 1"
             "PROTON_ENABLE_HDR, 1"
           ];
 

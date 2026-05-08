@@ -1,5 +1,8 @@
 { config, lib, pkgs, ... }:
 
+# Aggressive overclock to get the most out of my GPU.
+# Manually tuned for maximum performance.
+
 let
   cfg = config.aspects.services.lact;
   configData = {
@@ -19,21 +22,21 @@ let
           temperature_key = "junction"; # Use junction temperature for fan control.
           interval_ms = 500;
           curve = {
-            "40" = 0.15;
-            "50" = 0.3;
-            "60" = 0.5;
-            "70" = 0.8;
-            "75" = 1.0;
+            "45" = 0.20;
+            "60" = 0.40;
+            "80" = 0.65;
+            "90" = 0.85;
+            "100" = 1.0;
           };
         };
         pmfw_options = {
           zero_rpm = true;
         };
-        power_cap = 402.0;
+        power_cap = 402.0; # +15% power limit.
         performance_level = "manual";
-        min_core_clock = 2700;
+        min_core_clock = 2700; # High minimum to avoid sudden dips during load.
         max_core_clock = 3000;
-        max_memory_clock = 1250;
+        max_memory_clock = 1250; # Kept at 1250, as 1350 cause white static lines.
         voltage_offset = -20;
         power_profile_mode_index = 0;
       };
@@ -49,21 +52,21 @@ let
               temperature_key = "junction"; # Use junction temperature for fan control.
               interval_ms = 500;
               curve = {
-                "40" = 0.15;
-                "50" = 0.3;
-                "60" = 0.5;
-                "70" = 0.8;
-                "75" = 1.0;
+                "45" = 0.20;
+                "60" = 0.40;
+                "80" = 0.65;
+                "90" = 0.85;
+                "100" = 1.0;
               };
             };
             pmfw_options = {
               zero_rpm = true;
             };
-            power_cap = 402.0;
+            power_cap = 402.0; # +15% power limit.
             performance_level = "manual";
-            min_core_clock = 2700;
+            min_core_clock = 2700; # High minimum to avoid sudden dips during load.
             max_core_clock = 3000;
-            max_memory_clock = 1250;
+            max_memory_clock = 1250; # Kept at 1250, as 1350 cause white static lines.
             voltage_offset = -20;
             power_profile_mode_index = 0;
           };
@@ -84,13 +87,6 @@ in
   config = lib.mkIf cfg.enable {
     # Enable the LACT daemon
     services.lact.enable = true;
-
-    # Prevent the service from restarting during a switch to avoid display desync/static.
-    # Settings will apply on the next boot or manual service restart.
-    systemd.services.lact = {
-      stopIfChanged = false;
-      restartIfChanged = false;
-    };
 
     # Manage the configuration file with GPU tuning
     environment.etc."lact/config.yaml".source = lactConfig;
