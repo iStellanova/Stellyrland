@@ -25,9 +25,9 @@
       ];
 
       casks = [
-        "antigravity"                          # Antigravity IDE
-        "dimentium/autoraise/autoraiseapp"     # Auto-raise
-        "background-music"                     # Background music
+        "antigravity"                         # Antigravity IDE
+        "dimentium/autoraise/autoraiseapp"    # Auto-raise
+        "background-music"                    # Background music
         "balenaetcher"                        # Balena Etcher
         "bitwarden"                           # Bitwarden
         "claude"                              # Claude
@@ -40,7 +40,6 @@
         "github"                              # GitHub Desktop
         "google-drive"                        # Google Drive
         "intellij-idea"                       # IntelliJ IDEA
-        "mactracker"                          # MacTracker - Mac Information
         "obs"                                 # OBS Studio
         "prismlauncher"                       # Prism Launcher
         "pycharm"                             # IntelliJ PyCharm - Python IDE
