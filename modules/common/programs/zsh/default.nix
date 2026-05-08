@@ -19,7 +19,7 @@
         # Oh My Zsh and plugins.
         oh-my-zsh = {
           enable = true;
-          plugins = [ "git" "copyfile" "copybuffer" "ssh-agent" ];
+          plugins = [ "git" "copyfile" "copybuffer" ];
         };
 
         shellAliases = {
