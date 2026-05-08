@@ -20,6 +20,10 @@
     };
 
     # Add tailscale to system packages to ensure the CLI is always available
-    environment.systemPackages = [ pkgs.tailscale ];
+    environment.systemPackages = with pkgs;
+    [
+      tailscale
+      wget
+    ];
   };
 }
