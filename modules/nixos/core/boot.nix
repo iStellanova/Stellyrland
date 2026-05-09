@@ -17,10 +17,10 @@
     # Permission to modify EFI variables.
     boot.loader.efi.canTouchEfiVariables = true;
 
-    # Kernel - Optimized for Zen 5 (9950X3D)
-    # BORE: Better Overall Responsiveness and Efficiency (scheduler)
-    # LTO: Link-Time Optimization for maximum performance
-    boot.kernelPackages = pkgs.cachyosKernels.linuxPackages-cachyos-bore-lto;
+    # Kernel package selection is handled by aspects.core.kernel (kernel.nix).
+    # When aspects.core.kernel.enable = false, the system falls back to the
+    # default NixOS kernel. Set it to true in the host config to use the
+    # stripped cachyos-bore-lto build.
 
     # Kernel parameters for extreme performance and 3D V-Cache optimization.
     boot.kernelParams = [
