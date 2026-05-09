@@ -13,6 +13,7 @@
       users.enable = true;
       hardware.enable = true;
       boot.enable = true;
+      kernel.enable = true;
       fonts.enable = true;
       networking.enable = true;
       storage.enable = true;
@@ -65,6 +66,12 @@
   fileSystems."/home/${identity.name}/ExtraDisk" = {
     device = "/dev/disk/by-uuid/5082e55b-50fd-4f53-a753-157fa30415cc";
     fsType = "ext4";
-    options = [ "nofail" "x-gvfs-show" "x-gvfs-name=Extra Disk" "noatime" "lazytime" ];
+    options = [
+      "nofail"
+      "x-gvfs-show"
+      "x-gvfs-name=Extra Disk"
+      "noatime"
+      "lazytime"
+    ];
   };
 }
