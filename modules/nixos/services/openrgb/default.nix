@@ -46,9 +46,9 @@ in
             if [ "$COUNT" -ge 10 ]; then
               echo "OpenRGB: All hardware detected. Applying global White settings..."
 
-              # 1. Apply the profile
-              $OPENRGB --profile ${./Stellyr.orp} >/dev/null 2>&1
-              sleep 3
+              # 1. Apply the profile (contains the resized zones and saved colors)
+              $OPENRGB --profile ${./stellyr.orp} >/dev/null 2>&1
+              sleep 2
 
               # 2. Force everything to White globally in one shot
               $OPENRGB --color ffffff >/dev/null 2>&1
@@ -60,13 +60,14 @@ in
           done
           echo "OpenRGB: Error - Timed out waiting for hardware."
           exit 1
-        '';        RemainAfterExit = true;
+        '';
+        RemainAfterExit = true;
       };
     };
 
     home-manager.users.${identity.name} = {
       # Keep files in user config for GUI access
       xdg.configFile."OpenRGB/OpenRGB.json".source = ./OpenRGB.json;
-      xdg.configFile."OpenRGB/Stellyr.orp".source = ./Stellyr.orp;
+      xdg.configFile."OpenRGB/stellyr.orp".source = ./stellyr.orp;
     };  };
 }

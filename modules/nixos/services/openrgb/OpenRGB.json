@@ -1769,14 +1769,14 @@
       "Data": {
         "D_LED1 Bottom": [
           {
-            "count": 0,
+            "count": 120,
             "header": "LED6",
             "name": "Name for LED Strip 1"
           }
         ],
         "D_LED2 Top": [
           {
-            "count": 0,
+            "count": 120,
             "header": "LED7",
             "name": "Name for LED Strip 2"
           }
@@ -1814,7 +1814,7 @@
           }
         ]
       },
-      "Enabled": false
+      "Enabled": true
     }
   },
   "Plugins": {
