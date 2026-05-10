@@ -10,7 +10,7 @@ let
     daemon = {
       log_level = "info";
       admin_group = "wheel";
-      disable_clocks_cleanup = false;
+      disable_clocks_cleanup = true;
     };
     apply_settings_timer = 5;
     gpus = {
