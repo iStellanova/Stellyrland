@@ -24,6 +24,7 @@
 
     # Kernel parameters for extreme performance and 3D V-Cache optimization.
     boot.kernelParams = [
+      "acpi_enforce_resources=lax"      # Allow i2c-piix4 to access SMBus for RAM RGB
       "amdgpu.sg_display=0"             # Fix for white screen/flicker on 7900XTX
       "amdgpu.dc_disable_psr=1"         # Disable Panel Self Refresh to prevent freezes
       "amdgpu.gpu_recovery=1"           # Enable GPU recovery
