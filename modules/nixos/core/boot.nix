@@ -29,6 +29,7 @@
       "amdgpu.gpu_recovery=1"           # Enable GPU recovery
       "amd_pstate=active"               # Zen 5 Preferred Core ranking (EPP)
       "preempt=full"                    # Full preemption for low latency
+      "udev.event-timeout=5"            # Prevent hardware stalls from hanging boot
       "split_lock_detect=off"           # Prevents performance penalties in gaming
       "transparent_hugepage=always"     # Significant speedup for large-cache CPUs
       "amdgpu.ppfeaturemask=0xffffffff" # Full access to GPU power/clock tuning
@@ -41,6 +42,12 @@
 
     # AMDGPU initrd allows the kernel to load AMDGPU drivers early in the boot process.
     hardware.amdgpu.initrd.enable = true;
+
+    # Minimize udev timeouts in the initrd to bypass hardware stalls (e.g. Kraken Z)
+    boot.initrd.systemd.services."systemd-udevd".serviceConfig = {
+      TimeoutStartSec = "5s";
+      TimeoutStopSec = "5s";
+    };
 
     # High-performance network stack optimizations.
     boot.kernel.sysctl = {
