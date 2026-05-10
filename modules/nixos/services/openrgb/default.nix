@@ -30,10 +30,11 @@ in
       "L+ /var/lib/OpenRGB/OpenRGB.json - - - - ${./OpenRGB.json}"
     ];
 
-    # System-wide service to apply the profile and color on boot
+    # System-wide service to apply the profile and color on boot, and turn off on shutdown
     systemd.services.openrgb-boot-apply = {
-      description = "Apply OpenRGB Stellyr Profile and Force White";
-      wants = [ "openrgb.service" ];
+      description = "Apply OpenRGB Stellyr Profile and Force White / Black on Shutdown";
+      requires = [ "openrgb.service" ];
+      after = [ "openrgb.service" ];
       wantedBy = [ "multi-user.target" ];
       serviceConfig = {
         Type = "oneshot";
@@ -60,6 +61,12 @@ in
           done
           echo "OpenRGB: Error - Timed out waiting for hardware."
           exit 1
+        '';
+        ExecStop = pkgs.writeShellScript "openrgb-shutdown-blackout" ''
+          OPENRGB="${pkgs.openrgb-with-all-plugins}/bin/openrgb --client 127.0.0.1:6742 --nodetect"
+          echo "OpenRGB: Turning off lights for shutdown..."
+          $OPENRGB --color 000000 >/dev/null 2>&1
+          sleep 2
         '';
         RemainAfterExit = true;
       };
