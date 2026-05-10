@@ -76,5 +76,10 @@ in
       # Keep files in user config for GUI access
       xdg.configFile."OpenRGB/OpenRGB.json".source = ./OpenRGB.json;
       xdg.configFile."OpenRGB/stellyr.orp".source = ./stellyr.orp;
+
+      programs.zsh.shellAliases = {
+        blackout = "openrgb --color 000000";
+        whiteout = "openrgb --color ffffff";
+      };
     };  };
 }
