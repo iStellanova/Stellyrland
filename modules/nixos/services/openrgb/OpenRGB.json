@@ -519,7 +519,7 @@
       "Dygma Raise": false,
       "E1.31": false,
       "EK Loop Connect": false,
-      "ENE SMBus DRAM": false,
+      "ENE SMBus DRAM": true,
       "EVGA GeForce GTX 1070 FTW": false,
       "EVGA GeForce GTX 1070 FTW DT Gaming": false,
       "EVGA GeForce GTX 1070 FTW HYBRID": false,
