@@ -82,6 +82,12 @@
 
     # Custom greeting to confirm we're in headless mode.
     services.getty.greetingLine = lib.mkForce "Welcome to Stellyrland (Headless/Remote Mode)";
+
+    # Disable physical display outputs at the kernel level.
+    boot.kernelParams = [
+      "video=DP-2:d"
+      "video=DP-3:d"
+    ];
   };
 
   # Hostname
