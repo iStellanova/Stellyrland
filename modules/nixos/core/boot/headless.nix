@@ -33,7 +33,6 @@ in
         gsr.enable = lib.mkForce false;
         kitty.enable = lib.mkForce false;
         aesthetic.enable = lib.mkForce false;
-        fastfetch.enable = lib.mkForce false;
       };
 
       # 3. Hardware specific: Disable display outputs.
