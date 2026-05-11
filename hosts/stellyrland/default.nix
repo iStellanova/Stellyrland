@@ -19,6 +19,10 @@
       storage.enable = true;
       services-base.enable = true;
       xdg.enable = true;
+      headless = {
+        enable = true;
+        disabledPorts = [ "DP-2" "DP-3" ];
+      };
     };
     # Desktop Aspects - Graphical environment and styling.
     desktop = {
@@ -56,38 +60,6 @@
       lact.enable = true;
       openrgb.enable = true;
     };
-  };
-
-  # Specialisation for a TTY-only environment, ideal for remote work.
-  specialisation.headless.configuration = {
-    # Disable GUI aspects.
-    aspects.desktop.hyprland.enable = lib.mkForce false;
-    aspects.desktop.styling.enable = lib.mkForce false;
-    aspects.services.desktop-services.enable = lib.mkForce false;
-
-    # Disable heavy GUI-only programs to save resources.
-    aspects.programs = {
-      media.enable = lib.mkForce false;
-      browser.enable = lib.mkForce false;
-      gaming.enable = lib.mkForce false;
-      vesktop.enable = lib.mkForce false;
-      zed.enable = lib.mkForce false;
-      noctalia-shell.enable = lib.mkForce false;
-      antigravity.enable = lib.mkForce false;
-      cava.enable = lib.mkForce false;
-      gsr.enable = lib.mkForce false;
-      kitty.enable = lib.mkForce false;
-      aesthetic.enable = lib.mkForce false;
-    };
-
-    # Custom greeting to confirm we're in headless mode.
-    services.getty.greetingLine = lib.mkForce "Welcome to Stellyrland (Headless/Remote Mode)";
-
-    # Disable physical display outputs at the kernel level.
-    boot.kernelParams = [
-      "video=DP-2:d"
-      "video=DP-3:d"
-    ];
   };
 
   # Hostname
