@@ -59,74 +59,13 @@
     };
   };
 
-  outputs = inputs@{ self, nixpkgs, flake-parts, home-manager, cachyos-kernel, nix-darwin, mac-app-util, hyprland, ... }:
-    let
-      # Shared lib extension
-      lib = nixpkgs.lib.extend (self: super: (import ./lib/default.nix { lib = self; }));
-    in
+  outputs = inputs@{ flake-parts, ... }:
     flake-parts.lib.mkFlake { inherit inputs; } {
       systems = [ "x86_64-linux" "aarch64-darwin" ];
 
-      flake = {
-        nixosConfigurations.stellyrland = nixpkgs.lib.nixosSystem {
-          system = "x86_64-linux";
-          specialArgs = {
-            inherit inputs lib;
-            identity = lib.mkIdentity inputs.identity false;
-            isDarwin = false;
-          };
-          modules = [
-            ./modules/default.nix
-            ./hosts/stellyrland/default.nix
-            inputs.catppuccin.nixosModules.catppuccin
-            hyprland.nixosModules.default
-            home-manager.nixosModules.home-manager
-            {
-              home-manager = {
-                useGlobalPkgs = true;
-                useUserPackages = true;
-                backupFileExtension = "backup";
-                overwriteBackup = true;
-                extraSpecialArgs = {
-                  inherit inputs;
-                  identity = lib.mkIdentity inputs.identity false;
-                };
-                users.${(lib.mkIdentity inputs.identity false).name}.imports = [
-                  inputs.catppuccin.homeModules.catppuccin
-                  hyprland.homeManagerModules.default
-                ];
-              };
-            }
-          ];
-        };
-
-        darwinConfigurations.stellyrtop = nix-darwin.lib.darwinSystem {
-          system = "aarch64-darwin";
-          specialArgs = {
-            inherit inputs lib;
-            identity = lib.mkIdentity inputs.identity true;
-            isDarwin = true;
-          };
-          modules = [
-            ./modules/default.nix
-            ./hosts/stellyrtop/default.nix
-            mac-app-util.darwinModules.default
-            home-manager.darwinModules.home-manager
-            {
-              home-manager = {
-                useGlobalPkgs = true;
-                useUserPackages = true;
-                backupFileExtension = "backup";
-                overwriteBackup = true;
-                extraSpecialArgs = {
-                  inherit inputs;
-                  identity = lib.mkIdentity inputs.identity true;
-                };
-              };
-            }
-          ];
-        };
-      };
-
+      imports = [
+        ./flake/lib.nix
+        ./flake/hosts.nix
+      ];
     };
 }
