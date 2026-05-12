@@ -581,7 +581,7 @@
               deadOpacity = 1;
               displayMode = "auto_hide";
               dockType = "floating";
-              enabled = true;
+              enabled = false;
               floatingRatio = 0.53;
               groupApps = false;
               groupClickAction = "cycle";
