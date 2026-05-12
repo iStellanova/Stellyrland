@@ -46,6 +46,7 @@ in
                 env = XDG_CURRENT_DESKTOP,Hyprland
                 env = XDG_SESSION_TYPE,wayland
                 env = XDG_SESSION_DESKTOP,Hyprland
+                env = GDK_BACKEND,wayland
                 env = XCURSOR_THEME,Bibata-Modern-Ice
                 env = XCURSOR_SIZE,16
                 env = HYPRCURSOR_THEME,Bibata-Modern-Ice
@@ -78,8 +79,11 @@ in
     programs.regreet = {
       enable = true;
       theme = {
-        package = pkgs.adw-gtk3;
-        name = "adw-gtk3-dark";
+        name = "catppuccin-macchiato-flamingo-standard";
+        package = pkgs.catppuccin-gtk.override {
+          accents = [ "flamingo" ];
+          variant = "macchiato";
+        };
       };
       # Bibata cursor theme for regreet.
       cursorTheme = {
@@ -94,30 +98,100 @@ in
       };
       # GTK theme settings for regreet.
       settings = {
+        appearance = {
+          greeting_msg = "Welcome back, Stellanova";
+          custom_css = "/etc/greetd/regreet.css";
+        };
         GTK = {
           application_prefer_dark_theme = true;
         };
       };
       # Custom CSS for regreet window.
       extraCss = ''
-        window { background-color: transparent; }
-        #container, .container, #clock, popover contents {
-          background-color: rgba(30, 30, 46, 0.55);
+        window, .main-window { 
+          background-color: transparent; 
+        }
+        
+        #container, .container {
+          background-color: rgba(36, 39, 58, 0.55);
           border-radius: 16px;
           padding: 24px;
           box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
-          border: 1px solid rgba(180, 190, 254, 0.4);
+          border: 1px solid rgba(242, 205, 205, 0.4);
+          margin: auto;
+          -gtk-halign: center;
+          -gtk-valign: center;
+          min-width: 400px;
         }
-        #clock { font-size: 32px; margin-bottom: 20px; padding: 12px 24px; }
-        popover contents { padding: 8px; border-radius: 12px; }
-        button { background-color: #b4befe; color: #11111b; border-radius: 8px; font-weight: bold; }
-        button:hover { background-color: #cdd6f4; }
-        entry {
-          background-color: rgba(49, 50, 68, 0.6);
-          color: #cdd6f4;
-          border: 1px solid #45475a;
+
+        label {
+          color: #cad3f5;
+        }
+
+        #clock { 
+          font-size: 32px; 
+          margin-bottom: 20px; 
+          padding: 12px 24px; 
+          color: #cad3f5;
+        }
+
+        popover contents { 
+          background-color: rgba(36, 39, 58, 0.95); 
+          padding: 8px; 
+          border-radius: 12px; 
+          color: #cad3f5;
+          border: 1px solid rgba(242, 205, 205, 0.2);
+        }
+
+        popover contents label {
+          color: #cad3f5;
+        }
+        
+        button { 
+          background-color: rgba(54, 58, 79, 0.6);
+          color: #cad3f5;
+          border-radius: 8px; 
+          padding: 8px 16px;
+        }
+
+        button label {
+          color: #cad3f5;
+        }
+
+        button.suggested-action {
+          background-color: #f2cdcd; 
+          font-weight: bold;
+        }
+
+        button.suggested-action label {
+          color: #181926;
+        }
+        
+        button:hover { 
+          background-color: rgba(69, 71, 90, 0.8); 
+        }
+
+        button.suggested-action:hover {
+          background-color: #f5e0dc;
+        }
+
+        button.suggested-action:hover label {
+          color: #181926;
+        }
+        
+        entry, dropdown, .dropdown, combo {
+          background-color: rgba(54, 58, 79, 0.6);
+          color: #cad3f5;
+          border: 1px solid #494d64;
           border-radius: 8px;
-          caret-color: #b4befe;
+        }
+
+        dropdown label, .dropdown label {
+          color: #cad3f5;
+        }
+
+        dropdown arrow, .dropdown arrow {
+          color: #f2cdcd;
         }
       '';
     };
