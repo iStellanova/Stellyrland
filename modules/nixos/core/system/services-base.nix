@@ -1,7 +1,7 @@
 { config, lib, ... }:
 
 {
-  options.aspects.core.services-base.enable = lib.mkEnableOption "Base system services" // { default = true; };
+  options.aspects.core.services-base.enable = lib.mkEnableOption "Base system services";
 
   config = lib.mkIf config.aspects.core.services-base.enable {
     services.udisks2.enable = true; # Disk device manager.

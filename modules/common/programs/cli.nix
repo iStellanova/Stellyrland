@@ -1,7 +1,7 @@
 { config, lib, pkgs, identity, isDarwin, ... }:
 
 {
-  options.aspects.programs.cli.enable = lib.mkEnableOption "Common CLI utilities" // { default = true; };
+  options.aspects.programs.cli.enable = lib.mkEnableOption "Common CLI utilities";
 
   config = lib.mkIf config.aspects.programs.cli.enable {
     environment.systemPackages = with pkgs; [

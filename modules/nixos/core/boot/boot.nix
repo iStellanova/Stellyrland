@@ -1,7 +1,7 @@
 { config, lib, pkgs, ... }:
 
 {
-  options.aspects.core.boot.enable = lib.mkEnableOption "Core boot settings" // { default = true; };
+  options.aspects.core.boot.enable = lib.mkEnableOption "Core boot settings";
 
   config = lib.mkIf config.aspects.core.boot.enable {
     environment.systemPackages = [ pkgs.efibootmgr ];

@@ -1,19 +1,22 @@
-{ self, inputs, ... }: {
-  flake = {
-    nixosConfigurations.stellyrland = inputs.nixpkgs.lib.nixosSystem {
-      system = "x86_64-linux";
+{ self, inputs, ... }: 
+let
+  mkHost = { system, isDarwin, hostname, extraModules ? [] }:
+    let
+      identity = self.lib.mkIdentity inputs.identity isDarwin;
+      coreBuilder = if isDarwin then inputs.nix-darwin.lib.darwinSystem else inputs.nixpkgs.lib.nixosSystem;
+      hmModule = if isDarwin then inputs.home-manager.darwinModules.home-manager else inputs.home-manager.nixosModules.home-manager;
+    in
+    coreBuilder {
+      inherit system;
       specialArgs = {
         inherit inputs;
         lib = self.lib;
-        identity = self.lib.mkIdentity inputs.identity false;
-        isDarwin = false;
+        inherit identity isDarwin;
       };
       modules = [
         ../modules/default.nix
-        ../hosts/stellyrland/default.nix
-        inputs.catppuccin.nixosModules.catppuccin
-        inputs.hyprland.nixosModules.default
-        inputs.home-manager.nixosModules.home-manager
+        ../hosts/${hostname}/default.nix
+        hmModule
         {
           home-manager = {
             useGlobalPkgs = true;
@@ -21,43 +24,38 @@
             backupFileExtension = "backup";
             overwriteBackup = true;
             extraSpecialArgs = {
-              inherit inputs;
-              identity = self.lib.mkIdentity inputs.identity false;
+              inherit inputs identity;
             };
-            users.${(self.lib.mkIdentity inputs.identity false).name}.imports = [
+          } // (if !isDarwin then {
+            users.${identity.name}.imports = [
               inputs.catppuccin.homeModules.catppuccin
               inputs.hyprland.homeManagerModules.default
             ];
-          };
+          } else {});
         }
+      ] ++ extraModules;
+    };
+in {
+  flake = {
+    # Export the dendritic module framework
+    nixosModules.default = ../modules/default.nix;
+
+    nixosConfigurations.stellyrland = mkHost {
+      system = "x86_64-linux";
+      isDarwin = false;
+      hostname = "stellyrland";
+      extraModules = [
+        inputs.catppuccin.nixosModules.catppuccin
+        inputs.hyprland.nixosModules.default
       ];
     };
 
-    darwinConfigurations.stellyrtop = inputs.nix-darwin.lib.darwinSystem {
+    darwinConfigurations.stellyrtop = mkHost {
       system = "aarch64-darwin";
-      specialArgs = {
-        inherit inputs;
-        lib = self.lib;
-        identity = self.lib.mkIdentity inputs.identity true;
-        isDarwin = true;
-      };
-      modules = [
-        ../modules/default.nix
-        ../hosts/stellyrtop/default.nix
+      isDarwin = true;
+      hostname = "stellyrtop";
+      extraModules = [
         inputs.mac-app-util.darwinModules.default
-        inputs.home-manager.darwinModules.home-manager
-        {
-          home-manager = {
-            useGlobalPkgs = true;
-            useUserPackages = true;
-            backupFileExtension = "backup";
-            overwriteBackup = true;
-            extraSpecialArgs = {
-              inherit inputs;
-              identity = self.lib.mkIdentity inputs.identity true;
-            };
-          };
-        }
       ];
     };
   };

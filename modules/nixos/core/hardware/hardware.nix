@@ -1,7 +1,7 @@
 { config, lib, pkgs, ... }:
 
 {
-  options.aspects.core.hardware.enable = lib.mkEnableOption "Core hardware settings" // { default = true; };
+  options.aspects.core.hardware.enable = lib.mkEnableOption "Core hardware settings";
 
   config = lib.mkIf config.aspects.core.hardware.enable {
     environment.systemPackages = [ pkgs.usbutils ];

@@ -1,7 +1,7 @@
 { config, lib, identity, ... }:
 
 {
-  options.aspects.desktop.styling.enable = lib.mkEnableOption "Desktop styling (GTK, QT, Cursors)" // { default = true; };
+  options.aspects.desktop.styling.enable = lib.mkEnableOption "Desktop styling (GTK, QT, Cursors)";
 
   config = lib.mkIf config.aspects.desktop.styling.enable {
     # Global Catppuccin configuration for the system.

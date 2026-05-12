@@ -1,7 +1,7 @@
 { config, lib, pkgs, identity, ... }:
 
 {
-  options.aspects.core.users.enable = lib.mkEnableOption "Core users" // { default = true; };
+  options.aspects.core.users.enable = lib.mkEnableOption "Core users";
 
   config = lib.mkIf config.aspects.core.users.enable {
     users.users.${identity.name} = {
