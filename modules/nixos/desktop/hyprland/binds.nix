@@ -19,7 +19,6 @@
       "Alt, F4, killactive"
       "$mainMod, A, togglefloating"
       "$mainMod, P, layoutmsg, promote"
-      "$mainMod, O, togglesplit"
       "Alt, Return, fullscreen"
       "$mainMod, G, movetoworkspace, +0" # Pin window to current workspace
 

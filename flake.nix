@@ -48,9 +48,12 @@
 
     # Identity from private repo.
     identity.url = "git+ssh://git@github.com/iStellanova/stellyrdentity.git";
+
+    # Hyprland.
+    hyprland.url = "github:hyprwm/Hyprland";
   };
 
-  outputs = inputs@{ self, nixpkgs, flake-parts, home-manager, cachyos-kernel, nix-darwin, mac-app-util, ... }:
+  outputs = inputs@{ self, nixpkgs, flake-parts, home-manager, cachyos-kernel, nix-darwin, mac-app-util, hyprland, ... }:
     let
       # Shared lib extension
       lib = nixpkgs.lib.extend (self: super: (import ./lib/default.nix { lib = self; }));
@@ -70,6 +73,7 @@
             ./modules/default.nix
             ./hosts/stellyrland/default.nix
             inputs.catppuccin.nixosModules.catppuccin
+            hyprland.nixosModules.default
             home-manager.nixosModules.home-manager
             {
               home-manager = {
@@ -83,6 +87,7 @@
                 };
                 users.${(lib.mkIdentity inputs.identity false).name}.imports = [
                   inputs.catppuccin.homeModules.catppuccin
+                  hyprland.homeManagerModules.default
                 ];
               };
             }

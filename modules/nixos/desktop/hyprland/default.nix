@@ -1,4 +1,4 @@
-{ config, lib, pkgs, identity, ... }:
+{ config, lib, pkgs, identity, inputs, ... }:
 
 let
   cfg = config.aspects.desktop.hyprland;
@@ -7,7 +7,12 @@ in
   options.aspects.desktop.hyprland.enable = lib.mkEnableOption "Hyprland desktop environment";
 
   config = lib.mkIf cfg.enable {
-    programs.hyprland.enable = true;
+    programs.hyprland = {
+      enable = true;
+      # Use the flake package.
+      package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
+      portalPackage = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
+    };
 
     # Packages and Extras.
     environment.systemPackages = with pkgs; [
@@ -21,7 +26,6 @@ in
       libnotify # Notification utility
       udiskie # Disk utility
       linux-wallpaperengine # Wallpaper engine for Linux
-      xdg-desktop-portal-hyprland # Desktop portal for Hyprland
       xhost # X11 host utility
       xauth # X11 authentication utility
     ];
@@ -157,6 +161,7 @@ in
       # Hyprland window manager. Main Configuration.
       wayland.windowManager.hyprland = {
         enable = true;
+        package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
         xwayland.enable = true;
         systemd.enable = true; # necessary for systemd activation.
 
@@ -305,7 +310,9 @@ in
 
           # Performance and Compatibility
           render.direct_scanout = false; # Set to false to prevent flickering in some full-screen apps
-          dwindle = { pseudotile = true; preserve_split = true; };
+          dwindle = {
+            preserve_split = true;
+          };
           misc = { force_default_wallpaper = 0; disable_hyprland_logo = true; };
           xwayland.force_zero_scaling = true; # Prevents blurriness in XWayland apps on HiDPI
         };
