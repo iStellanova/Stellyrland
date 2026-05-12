@@ -59,6 +59,7 @@ in
       imports = [
         ./binds.nix
         ./rules.nix
+        inputs.hyprland.homeManagerModules.default
       ];
 
       # Hyprland window manager. Main Configuration.
@@ -87,7 +88,7 @@ in
             "udiskie -a -s --file-manager nautilus" # mount removable media and open file manager.
             "wl-paste --type text --watch cliphist store" # store text clipboard contents in cliphist.
             "wl-paste --type image --watch cliphist store" # store image clipboard contents in cliphist.
-            "noctalia-shell && sleep 1 && cmd=$(ps aux | grep '[l]inux-wallpaperengine' | awk '{$1=$2=$3=$4=$5=$6=$7=$8=$9=$10=""; print $0}'); pkill linux-wallpaperengine; eval $cmd &" # start the Noctalia shell.
+            "noctalia-shell & sleep 3 && pkill -f linux-wallpaperengine && linux-wallpaperengine " # start the Noctalia shell.
             "systemctl --user restart xdg-desktop-portal-hyprland" # restart the xdg-desktop-portal-hyprland service.
           ];
 

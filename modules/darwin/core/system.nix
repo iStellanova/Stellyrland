@@ -4,11 +4,6 @@
   options.aspects.darwin.system.enable = lib.mkEnableOption "Darwin system configuration";
 
   config = lib.mkIf config.aspects.darwin.system.enable {
-    # Networking
-    networking.computerName = "Stellyrtop";
-    networking.hostName = "stellyrtop";
-    networking.localHostName = "stellyrtop";
-
     # Security
     security.pam.services.sudo_local.touchIdAuth = true;
 

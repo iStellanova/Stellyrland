@@ -9,7 +9,7 @@ in
     disabledPorts = lib.mkOption {
       type = lib.types.listOf lib.types.str;
       default = lib.attrNames config.aspects.core.monitors;
-      description = "List of display ports to disable (kernel level) in headless mode (e.g. ['DP-2', 'DP-3']). Defaults to all centralized monitors.";
+      description = "Display ports to disable in the headless specialisation.";
     };
   };
 

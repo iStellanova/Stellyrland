@@ -5,6 +5,11 @@
   # Pull the Name from Identity Flake
   system.primaryUser = identity.name;
 
+  # Networking
+  networking.computerName = "Stellyrtop";
+  networking.hostName = "stellyrtop";
+  networking.localHostName = "stellyrtop";
+
   # Enabled Aspects
   aspects = {
     darwin = {
@@ -12,6 +17,7 @@
       homebrew.enable = true;
     };
     core = {
+      enable = true;
       fonts.enable = true;
       nix-settings.enable = true;
       networking.enable = true;
@@ -19,9 +25,13 @@
     programs = {
       aerospace.enable = true;
       aesthetic.enable = true;
+      antigravity.enable = true;
+      browser.enable = true;
       btop.enable = true;
+      cava.enable = true;
       cli.enable = true;
       fastfetch.enable = true;
+      gaming.enable = true;
       git.enable = true;
       kitty.enable = true;
       ns.enable = true;
@@ -30,6 +40,7 @@
       neovim.enable = true;
       gemini.enable = true;
       vesktop.enable = true;
+      zed.enable = true;
     };
   };
 

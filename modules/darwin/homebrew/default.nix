@@ -20,12 +20,10 @@
       ];
 
       brews = [
-        "cava"                                 # Audio visualization
         "apple-music-discord-rpc"              # Discord RPC for Apple Music
       ];
 
       casks = [
-        "antigravity"                         # Antigravity IDE
         "dimentium/autoraise/autoraiseapp"    # Auto-raise
         "background-music"                    # Background music
         "balenaetcher"                        # Balena Etcher
@@ -34,22 +32,17 @@
         "cleanmymac"                          # CleanMyMac
         "clion"                               # IntelliJ CLion
         "craft"                               # Craft - Notes Application
-        "discord"                             # Discord
         "font-sf-pro"                         # SF Pro font
         "gimp"                                # GIMP - Image Editor
         "github"                              # GitHub Desktop
         "google-drive"                        # Google Drive
         "intellij-idea"                       # IntelliJ IDEA
         "obs"                                 # OBS Studio
-        "prismlauncher"                       # Prism Launcher
         "pycharm"                             # IntelliJ PyCharm - Python IDE
         "quicken"                             # Quicken
-        "steam"                               # Steam
         "utm"                                 # UTM - Virtual Machine Manager
         "vlc"                                 # VLC
         "webex"                               # WebEx
-        "zed"                                 # Zed
-        "zen"                                 # Zen
         "zoom"                                # Zoom
       ];
 

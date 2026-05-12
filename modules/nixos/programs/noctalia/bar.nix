@@ -1,4 +1,4 @@
-{ ... }: {
+{ lib, osConfig, ... }: {
   programs.noctalia-shell.settings.bar = {
     autoHideDelay = 500;
     autoShowDelay = 150;
@@ -19,7 +19,7 @@
     middleClickAction = "none";
     middleClickCommand = "";
     middleClickFollowMouse = false;
-    monitors = [ "DP-2" ];
+    monitors = [ (lib.head (lib.attrNames osConfig.aspects.core.monitors)) ];
     mouseWheelAction = "none";
     mouseWheelWrap = false;
     outerCorners = true;
