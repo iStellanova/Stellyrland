@@ -245,7 +245,7 @@ in
             "col.inactive_border" = "rgba(c0c6dc33)";
             resize_on_border = true;
             allow_tearing = false;
-            layout = "dwindle";
+            layout = "scrolling";
           };
 
           decoration = {
@@ -307,13 +307,16 @@ in
             warp_on_change_workspace = false;
             no_hardware_cursors = false;
           };
+# Performance and Compatibility
+render.direct_scanout = false; # Set to false to prevent flickering in some full-screen apps
+scrolling = {
+  column_width = 0.5;
+  fullscreen_on_one_column = true;
+  follow_focus = true;
+};
 
-          # Performance and Compatibility
-          render.direct_scanout = false; # Set to false to prevent flickering in some full-screen apps
-          dwindle = {
-            preserve_split = true;
-          };
-          misc = { force_default_wallpaper = 0; disable_hyprland_logo = true; };
+misc = { force_default_wallpaper = 0; disable_hyprland_logo = true; };
+
           xwayland.force_zero_scaling = true; # Prevents blurriness in XWayland apps on HiDPI
         };
       };
