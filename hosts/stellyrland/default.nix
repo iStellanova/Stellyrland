@@ -1,4 +1,4 @@
-{ lib, identity, ... }:
+{ identity, ... }:
 {
   imports = [
     ./hardware-configuration.nix
@@ -55,6 +55,7 @@
     };
     # Service Aspects - Background daemons and hardware controllers.
     services = {
+      greetd.enable = true;
       desktop-services.enable = true;
       coolercontrol.enable = true;
       lact.enable = true;
