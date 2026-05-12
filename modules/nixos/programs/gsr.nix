@@ -25,7 +25,7 @@
         main.quality very_high
         main.record_app_audio_inverted false
         main.record_area_height 1080
-        main.record_area_option DP-2
+        main.record_area_option ${lib.head (lib.attrNames config.aspects.core.monitors)}
         main.record_area_width 1920
         main.record_cursor true
         main.restore_portal_session true

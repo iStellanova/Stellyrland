@@ -26,12 +26,7 @@ let
             extraSpecialArgs = {
               inherit inputs identity;
             };
-          } // (if !isDarwin then {
-            users.${identity.name}.imports = [
-              inputs.catppuccin.homeModules.catppuccin
-              inputs.hyprland.homeManagerModules.default
-            ];
-          } else {});
+          };
         }
       ] ++ extraModules;
     };
