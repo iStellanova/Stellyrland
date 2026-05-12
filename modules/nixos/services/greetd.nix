@@ -7,6 +7,9 @@ in
   options.aspects.services.greetd.enable = lib.mkEnableOption "greetd login manager with regreet";
 
   config = lib.mkIf cfg.enable {
+    # Accounts service is required for regreet to list users.
+    services.accounts-daemon.enable = true;
+
     # greetd (login manager) for Hyprland.
     services.greetd = {
       enable = true;
@@ -15,6 +18,7 @@ in
           command =
             let
               wallpaper = ../../../assets/login-wallpaper.png;
+              hyprlandPkg = if config.aspects.desktop.hyprland.enable then config.programs.hyprland.package else pkgs.hyprland;
               greetdHyprConfig = pkgs.writeText "greetd-hyprland.conf" ''
                 ${lib.concatStringsSep "\n" (lib.mapAttrsToList (name: conf: "monitor=${name}, ${conf}") config.aspects.core.monitors)}
                 monitor=, preferred, auto, 1
@@ -48,11 +52,10 @@ in
                 env = HYPRCURSOR_SIZE,16
                 env = XCURSOR_PATH,${pkgs.bibata-cursors}/share/icons
 
-                exec-once = ${config.programs.hyprland.package}/bin/hyprctl setcursor Bibata-Modern-Ice 16
+                exec-once = ${hyprlandPkg}/bin/hyprctl setcursor Bibata-Modern-Ice 16
                 exec-once = ${pkgs.swaybg}/bin/swaybg -o \* -i ${wallpaper} -m fill
-                exec-once = ${pkgs.regreet}/bin/regreet; ${config.programs.hyprland.package}/bin/hyprctl dispatch exit
+                exec-once = sh -c "sleep 0.5; ${pkgs.regreet}/bin/regreet; ${hyprlandPkg}/bin/hyprctl dispatch exit"
               '';
-              hyprlandPkg = if config.aspects.desktop.hyprland.enable then config.programs.hyprland.package else pkgs.hyprland;
               # A launcher that tricks the official start-hyprland into using this config
               # by placing it at the default search path in a temporary HOME.
               greetdHyprLauncher = pkgs.writeShellScript "greetd-hyprland-launcher" ''
@@ -63,7 +66,7 @@ in
                 exec ${hyprlandPkg}/bin/start-hyprland
               '';
             in
-            "${greetdHyprLauncher}";
+            "${pkgs.dbus}/bin/dbus-run-session ${greetdHyprLauncher}";
           user = "greeter";
         };
       };
