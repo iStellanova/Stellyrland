@@ -8,8 +8,8 @@ in
     enable = lib.mkEnableOption "Headless/Remote-only specialisation";
     disabledPorts = lib.mkOption {
       type = lib.types.listOf lib.types.str;
-      default = [ ];
-      description = "List of display ports to disable (kernel level) in headless mode (e.g. ['DP-2', 'DP-3']).";
+      default = lib.attrNames config.aspects.core.monitors;
+      description = "List of display ports to disable (kernel level) in headless mode (e.g. ['DP-2', 'DP-3']). Defaults to all centralized monitors.";
     };
   };
 

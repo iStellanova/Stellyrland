@@ -15,8 +15,7 @@ in
           command = let
             wallpaper = ../../../assets/login-wallpaper.png;
             greetdHyprConfig = pkgs.writeText "greetd-hyprland.conf" ''
-              monitor=DP-2, 3440x1440@175, 1440x541, 1, bitdepth, 10, sdrbrightness, 1.2, sdrsaturation, 0.98
-              monitor=DP-3, 2560x1440@100, 0x0, 1, transform, 1, bitdepth, 10, sdrbrightness, 1.2, sdrsaturation, 0.98
+              ${lib.concatStringsSep "\n" (lib.mapAttrsToList (name: conf: "monitor=${name}, ${conf}") config.aspects.core.monitors)}
               monitor=, preferred, auto, 1
 
               misc {
@@ -50,7 +49,8 @@ in
               exec-once = ${pkgs.swaybg}/bin/swaybg -o \* -i ${wallpaper} -m fill
               exec-once = ${pkgs.regreet}/bin/regreet; ${config.programs.hyprland.package}/bin/hyprctl dispatch exit
             '';
-          in "${config.programs.hyprland.package}/bin/Hyprland --config ${greetdHyprConfig}";
+            hyprlandPkg = if config.aspects.desktop.hyprland.enable then config.programs.hyprland.package else pkgs.hyprland;
+          in "${hyprlandPkg}/bin/Hyprland --config ${greetdHyprConfig}";
           user = "greeter";
         };
       };

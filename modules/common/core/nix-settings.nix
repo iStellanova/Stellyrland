@@ -3,27 +3,23 @@
 {
   options.aspects.core.nix-settings.enable = lib.mkEnableOption "Core nix settings";
 
-  config = lib.mkIf config.aspects.core.nix-settings.enable (lib.mkMerge [
-    {
-      nixpkgs.overlays = [
-        # Platform-agnostic overlays
-        (final: prev: {
-          # Example of a shared overlay if needed
-        })
-      ] ++ lib.optionals (!isDarwin) [
-        # NixOS specific overlays
-        inputs.cachyos-kernel.overlays.default
-        (final: prev: {
-          # TODO: Remove this overlay once deno/rusty-v8 build issues are resolved
-          deno = inputs.nixpkgs-deno.legacyPackages.${prev.stdenv.hostPlatform.system}.deno;
-        })
-      ] ++ lib.optionals isDarwin [
-        # Darwin specific overlays
-        (final: prev: {
-          # TODO: Remove direnv override once macOS/Sandbox hangs are resolved upstream
-          direnv = prev.direnv.overrideAttrs (old: { doCheck = false; });
-        })
-      ];
+  config = lib.mkIf config.aspects.core.nix-settings.enable {
+    nixpkgs.overlays = [
+      # Platform-agnostic overlays
+    ] ++ lib.optionals (!isDarwin) [
+      # NixOS specific overlays
+      inputs.cachyos-kernel.overlays.default
+      (final: prev: {
+        # TODO: Remove this overlay once deno/rusty-v8 build issues are resolved
+        deno = inputs.nixpkgs-deno.legacyPackages.${prev.stdenv.hostPlatform.system}.deno;
+      })
+    ] ++ lib.optionals isDarwin [
+      # Darwin specific overlays
+      (final: prev: {
+        # TODO: Remove direnv override once macOS/Sandbox hangs are resolved upstream
+        direnv = prev.direnv.overrideAttrs (old: { doCheck = false; });
+      })
+    ];
 
       nix.enable = lib.mkDefault (!isDarwin);
       nix.settings = {
@@ -110,6 +106,5 @@
           flake = if isDarwin then "${identity.home}/Documents/GitHub/Stellyrland" else "/etc/nixos";
         };
       };
-    }
-  ]);
+    };
 }
