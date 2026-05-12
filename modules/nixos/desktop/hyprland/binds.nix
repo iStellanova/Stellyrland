@@ -21,8 +21,11 @@
       "$mainMod, P, layoutmsg, promote"
       "Alt, Return, fullscreen"
       "$mainMod, G, movetoworkspace, +0" # Pin window to current workspace
+      "$mainMod, Space, exec, hyprctl activeworkspace -j | jq -r 'if .tiledLayout == \"scrolling\" then \"dwindle\" else \"scrolling\" end as $l | \"workspace \\(.id),layout:\\($l)\"' | xargs hyprctl keyword"
 
-      # --- Focus & Navigation (Dwindle/Master Logic) ---
+      # --- Focus & Navigation (Scrolling / Dwindle / Master) ---
+      "$mainMod, S, layoutmsg, focus l"
+      "$mainMod, D, layoutmsg, focus r"
       "$mainMod, H, layoutmsg, focus l"
       "$mainMod, L, layoutmsg, focus r"
       "$mainMod, K, layoutmsg, focus u"
@@ -100,8 +103,6 @@
 
     # Window Movements and Sizing
     binde = [
-      "$mainMod, S, layoutmsg, move -col"
-      "$mainMod, D, layoutmsg, move +col"
       "$mainMod+Alt, right, resizeactive, 50 0"
       "$mainMod+Alt, left, resizeactive, -50 0"
       "$mainMod+Alt, up, resizeactive, 0 -50"
