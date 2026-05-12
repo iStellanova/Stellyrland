@@ -68,6 +68,10 @@ in
         xwayland.enable = true;
         systemd.enable = true; # necessary for systemd activation.
 
+        plugins = [
+          inputs.split-monitor-workspaces.packages.${pkgs.stdenv.hostPlatform.system}.split-monitor-workspaces
+        ];
+
         settings = {
           # Monitor Configuration:
           # DP-2: Samsung Odyssey G8 (Main). 10-bit color, HDR-ready brightness.
@@ -76,15 +80,6 @@ in
             "DP-2, 3440x1440@175, 1440x541, 1, bitdepth, 10, sdrbrightness, 1.2, sdrsaturation, 0.98"
             "DP-3, 2560x1440@100, 0x0, 1, transform, 1, bitdepth, 10, sdrbrightness, 1.2, sdrsaturation, 0.98"
             ", preferred, auto, 1"
-          ];
-
-          # Workspace pinning to ensure the Odyssey G8 always holds the primary workspaces.
-          workspace = [
-            "1, monitor:desc:Samsung Electric Company Odyssey G85SB H1AK500000, persistent:true, default:true"
-            "2, monitor:desc:Samsung Electric Company Odyssey G85SB H1AK500000, persistent:true"
-            "3, monitor:desc:Samsung Electric Company Odyssey G85SB H1AK500000, persistent:true"
-            "4, monitor:desc:Samsung Electric Company Odyssey G85SB H1AK500000, persistent:true"
-            "5, monitor:desc:Samsung Electric Company Odyssey G85SB H1AK500000, persistent:true"
           ];
 
           "exec-once" = [
@@ -100,6 +95,15 @@ in
             "noctalia-shell && sleep 1 && cmd=$(ps aux | grep '[l]inux-wallpaperengine' | awk '{$1=$2=$3=$4=$5=$6=$7=$8=$9=$10=""; print $0}'); pkill linux-wallpaperengine; eval $cmd &" # start the Noctalia shell.
             "systemctl --user restart xdg-desktop-portal-hyprland" # restart the xdg-desktop-portal-hyprland service.
           ];
+
+          plugin = {
+            split-monitor-workspaces = {
+              count = 5;
+              keep_focused = 0;
+              enable_notifications = 0;
+              enable_persistent_workspaces = 1;
+            };
+          };
 
           env = [
             # --- Theming & Cursors ---
@@ -215,6 +219,7 @@ scrolling = {
   column_width = 0.5;
   fullscreen_on_one_column = true;
   follow_focus = true;
+  focus_fit_method = 1; # 0 = center
 };
 
 misc = { force_default_wallpaper = 0; disable_hyprland_logo = true; };

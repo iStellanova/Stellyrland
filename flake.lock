@@ -668,6 +668,21 @@
         "type": "github"
       }
     },
+    "nix-filter": {
+      "locked": {
+        "lastModified": 1693833173,
+        "narHash": "sha256-hlMABKrGbEiJD5dwUSfnw1CQ3bG7KKwDV+Nx3bEZd7U=",
+        "owner": "numtide",
+        "repo": "nix-filter",
+        "rev": "ac030bd9ba98e318e1f4c4328d60766ade8ebe8b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "nix-filter",
+        "type": "github"
+      }
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1778401622,
@@ -970,7 +985,29 @@
         "nixpkgs-deno": "nixpkgs-deno",
         "noctalia-nix-monitor": "noctalia-nix-monitor",
         "noctalia-shell": "noctalia-shell",
+        "split-monitor-workspaces": "split-monitor-workspaces",
         "zen-browser": "zen-browser"
+      }
+    },
+    "split-monitor-workspaces": {
+      "inputs": {
+        "hyprland": [
+          "hyprland"
+        ],
+        "nix-filter": "nix-filter"
+      },
+      "locked": {
+        "lastModified": 1778427620,
+        "narHash": "sha256-9lvSQGryzG72jLbTCciRgngsp2V39+BBhBaicB6gOok=",
+        "owner": "zjeffer",
+        "repo": "split-monitor-workspaces",
+        "rev": "1f2ec598cb21c62fb403a5a6665a2478f83a4b7e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "zjeffer",
+        "repo": "split-monitor-workspaces",
+        "type": "github"
       }
     },
     "systems": {
