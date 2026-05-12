@@ -51,6 +51,12 @@
 
     # Hyprland.
     hyprland.url = "github:hyprwm/Hyprland";
+
+    # Split Monitor Workspaces plugin.
+    split-monitor-workspaces = {
+      url = "github:zjeffer/split-monitor-workspaces";
+      inputs.hyprland.follows = "hyprland";
+    };
   };
 
   outputs = inputs@{ self, nixpkgs, flake-parts, home-manager, cachyos-kernel, nix-darwin, mac-app-util, hyprland, ... }:
