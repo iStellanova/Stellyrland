@@ -12,49 +12,64 @@ in
       enable = true;
       settings = {
         default_session = {
-          command = let
-            wallpaper = ../../../assets/login-wallpaper.png;
-            greetdHyprConfig = pkgs.writeText "greetd-hyprland.conf" ''
-              ${lib.concatStringsSep "\n" (lib.mapAttrsToList (name: conf: "monitor=${name}, ${conf}") config.aspects.core.monitors)}
-              monitor=, preferred, auto, 1
+          command =
+            let
+              wallpaper = ../../../assets/login-wallpaper.png;
+              greetdHyprConfig = pkgs.writeText "greetd-hyprland.conf" ''
+                ${lib.concatStringsSep "\n" (lib.mapAttrsToList (name: conf: "monitor=${name}, ${conf}") config.aspects.core.monitors)}
+                monitor=, preferred, auto, 1
 
-              misc {
-                disable_hyprland_logo = true
-                disable_splash_rendering = true
-                force_default_wallpaper = 0
-              }
-
-              decoration {
-                blur {
-                  enabled = true
-                  size = 10
-                  passes = 3
-                  new_optimizations = true
-                  ignore_opacity = true
-                  vibrancy = 0.1696
+                misc {
+                  disable_hyprland_logo = true
+                  disable_splash_rendering = true
+                  force_default_wallpaper = 0
                 }
-              }
 
-              layerrule = blur on, match:namespace regreet
-              layerrule = ignore_alpha 0.5, match:namespace regreet
+                decoration {
+                  blur {
+                    enabled = true
+                    size = 10
+                    passes = 3
+                    new_optimizations = true
+                    ignore_opacity = true
+                    vibrancy = 0.1696
+                  }
+                }
 
-              env = XCURSOR_THEME,Bibata-Modern-Ice
-              env = XCURSOR_SIZE,16
-              env = HYPRCURSOR_THEME,Bibata-Modern-Ice
-              env = HYPRCURSOR_SIZE,16
-              env = XCURSOR_PATH,${pkgs.bibata-cursors}/share/icons
-              env = HYPRLAND_STARTED_WITH_HYPRLAND_START, 1
+                layerrule = blur on, match:namespace regreet
+                layerrule = ignore_alpha 0.5, match:namespace regreet
 
-              exec-once = ${config.programs.hyprland.package}/bin/hyprctl setcursor Bibata-Modern-Ice 16
-              exec-once = ${pkgs.swaybg}/bin/swaybg -o \* -i ${wallpaper} -m fill
-              exec-once = ${pkgs.regreet}/bin/regreet; ${config.programs.hyprland.package}/bin/hyprctl dispatch exit
-            '';
-            hyprlandPkg = if config.aspects.desktop.hyprland.enable then config.programs.hyprland.package else pkgs.hyprland;
-          in "${hyprlandPkg}/bin/Hyprland --config ${greetdHyprConfig}";
+                env = XDG_CURRENT_DESKTOP,Hyprland
+                env = XDG_SESSION_TYPE,wayland
+                env = XDG_SESSION_DESKTOP,Hyprland
+                env = XCURSOR_THEME,Bibata-Modern-Ice
+                env = XCURSOR_SIZE,16
+                env = HYPRCURSOR_THEME,Bibata-Modern-Ice
+                env = HYPRCURSOR_SIZE,16
+                env = XCURSOR_PATH,${pkgs.bibata-cursors}/share/icons
+
+                exec-once = ${config.programs.hyprland.package}/bin/hyprctl setcursor Bibata-Modern-Ice 16
+                exec-once = ${pkgs.swaybg}/bin/swaybg -o \* -i ${wallpaper} -m fill
+                exec-once = ${pkgs.regreet}/bin/regreet; ${config.programs.hyprland.package}/bin/hyprctl dispatch exit
+              '';
+              hyprlandPkg = if config.aspects.desktop.hyprland.enable then config.programs.hyprland.package else pkgs.hyprland;
+              # A launcher that tricks the official start-hyprland into using this config
+              # by placing it at the default search path in a temporary HOME.
+              greetdHyprLauncher = pkgs.writeShellScript "greetd-hyprland-launcher" ''
+                export HOME=/tmp/greetd-home
+                rm -rf $HOME
+                mkdir -p $HOME/.config/hypr
+                ln -sf ${greetdHyprConfig} $HOME/.config/hypr/hyprland.conf
+                exec ${hyprlandPkg}/bin/start-hyprland
+              '';
+            in
+            "${greetdHyprLauncher}";
           user = "greeter";
         };
       };
     };
+
+    systemd.services.greetd.environment.HYPRLAND_STARTED_WITH_HYPRLAND_START = "1";
 
     # regreet (login manager) for Hyprland.
     programs.regreet = {
