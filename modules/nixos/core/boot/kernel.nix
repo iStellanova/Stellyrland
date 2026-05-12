@@ -6,9 +6,7 @@
 }:
 
 {
-  options.aspects.core.kernel.enable = lib.mkEnableOption "Custom stripped kernel" // {
-    default = false;
-  };
+  options.aspects.core.kernel.enable = lib.mkEnableOption "Custom stripped kernel";
 
   config = lib.mkIf config.aspects.core.kernel.enable {
 

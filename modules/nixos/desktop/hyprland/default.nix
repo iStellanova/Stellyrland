@@ -74,13 +74,8 @@ in
 
         settings = {
           # Monitor Configuration:
-          # DP-2: Samsung Odyssey G8 (Main). 10-bit color, HDR-ready brightness.
-          # DP-3: Secondary vertical monitor.
-          monitor = [
-            "DP-2, 3440x1440@175, 1440x541, 1, bitdepth, 10, sdrbrightness, 1.2, sdrsaturation, 0.98"
-            "DP-3, 2560x1440@100, 0x0, 1, transform, 1, bitdepth, 10, sdrbrightness, 1.2, sdrsaturation, 0.98"
-            ", preferred, auto, 1"
-          ];
+          # Centralized via aspects.core.monitors
+          monitor = (lib.mapAttrsToList (name: conf: "${name}, ${conf}") config.aspects.core.monitors) ++ [ ", preferred, auto, 1" ];
 
           "exec-once" = [
             "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP DISPLAY" # update the activation environment.
@@ -213,16 +208,20 @@ in
             warp_on_change_workspace = false;
             no_hardware_cursors = false;
           };
-# Performance and Compatibility
-render.direct_scanout = false; # Set to false to prevent flickering in some full-screen apps
-scrolling = {
-  column_width = 0.5;
-  fullscreen_on_one_column = true;
-  follow_focus = true;
-  focus_fit_method = 1; # 0 = center
-};
 
-misc = { force_default_wallpaper = 0; disable_hyprland_logo = true; };
+          # Performance and Compatibility
+          render.direct_scanout = false; # Set to false to prevent flickering in some full-screen apps
+          scrolling = {
+            column_width = 0.5;
+            fullscreen_on_one_column = true;
+            follow_focus = true;
+            focus_fit_method = 1; # 0 = center
+          };
+
+          misc = {
+            force_default_wallpaper = 0;
+            disable_hyprland_logo = true;
+          };
 
           xwayland.force_zero_scaling = true; # Prevents blurriness in XWayland apps on HiDPI
         };
