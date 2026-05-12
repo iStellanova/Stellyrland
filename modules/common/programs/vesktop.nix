@@ -5,7 +5,7 @@
 
   config = lib.mkIf config.aspects.programs.vesktop.enable (lib.mkMerge [
     (lib.optionalAttrs isDarwin {
-      homebrew.casks = [ "discord" ];
+      homebrew.casks = [ "vesktop" ];
     })
 
     (lib.optionalAttrs (!isDarwin) {

@@ -6,6 +6,12 @@
   config = lib.mkIf config.aspects.core.nix-settings.enable {
     nixpkgs.overlays = [
       # Platform-agnostic overlays
+      (final: prev: {
+        # TODO: Remove this once unity-test build failure on Darwin is resolved upstream
+        unity-test = prev.unity-test.overrideAttrs (old: {
+          doCheck = false;
+        });
+      })
     ] ++ lib.optionals (!isDarwin) [
       # NixOS specific overlays
       inputs.cachyos-kernel.overlays.default
