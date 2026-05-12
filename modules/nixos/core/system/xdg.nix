@@ -1,7 +1,7 @@
 { config, lib, pkgs, identity, ... }:
 
 {
-  options.aspects.core.xdg.enable = lib.mkEnableOption "Core XDG settings" // { default = true; };
+  options.aspects.core.xdg.enable = lib.mkEnableOption "Core XDG settings";
 
   config = lib.mkIf config.aspects.core.xdg.enable {
     environment.systemPackages = with pkgs; [

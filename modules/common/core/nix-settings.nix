@@ -1,7 +1,7 @@
 { config, lib, pkgs, identity, inputs, isDarwin, ... }:
 
 {
-  options.aspects.core.nix-settings.enable = lib.mkEnableOption "Core nix settings" // { default = true; };
+  options.aspects.core.nix-settings.enable = lib.mkEnableOption "Core nix settings";
 
   config = lib.mkIf config.aspects.core.nix-settings.enable (lib.mkMerge [
     {

@@ -1,7 +1,7 @@
 { config, lib, pkgs, isDarwin, ... }:
 
 {
-  options.aspects.core.networking.enable = lib.mkEnableOption "Core networking services (Tailscale)" // { default = true; };
+  options.aspects.core.networking.enable = lib.mkEnableOption "Core networking services (Tailscale)";
 
   config = lib.mkIf config.aspects.core.networking.enable {
     # Tailscale service

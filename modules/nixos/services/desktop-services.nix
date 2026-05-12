@@ -1,7 +1,7 @@
 { config, lib, ... }:
 
 {
-  options.aspects.services.desktop-services.enable = lib.mkEnableOption "Common desktop services (Flatpak, Indexing, Seahorse)" // { default = true; };
+  options.aspects.services.desktop-services.enable = lib.mkEnableOption "Common desktop services (Flatpak, Indexing, Seahorse)";
 
   config = lib.mkIf config.aspects.services.desktop-services.enable {
     # TinySPARQL and LocalSearch provide the indexing backend for Nautilus file searching.

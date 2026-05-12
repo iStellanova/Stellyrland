@@ -1,6 +1,6 @@
 { config, lib, identity, isDarwin, ... }:
 {
-  options.aspects.core.enable = lib.mkEnableOption "Core system configuration" // { default = true; };
+  options.aspects.core.enable = lib.mkEnableOption "Core system configuration";
   # Timezone based on whether the system is Darwin (macOS) or Linux. They're different in convention.
   config = lib.mkIf config.aspects.core.enable {
     time.timeZone = if isDarwin then "America/Indiana/Indianapolis" else "America/Indianapolis";
