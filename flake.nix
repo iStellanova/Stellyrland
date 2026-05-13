@@ -60,11 +60,19 @@
     # with Hyprland 0.55 colour management (sdrbrightness/sdrsaturation).
     # Ref: https://github.com/hyprwm/aquamarine/commit/be35f75
     #
-    # TODO: Unpin aquamarine once confident upstream is stable, then verify:
-    #   1. Remove the url pin (revert to letting hyprland pull its own aquamarine).
-    #   2. Re-enable `bitdepth, 10` in modules/common/core/monitors.nix once
-    #      the AMD atomic DRM format (XRGB2101010) commit path is fixed upstream
-    #      (amdgpu driver or Aquamarine). Track: https://github.com/hyprwm/aquamarine/issues
+    #
+    # TODO: Unpin aquamarine when Hyprland's own bundled aquamarine advances
+    #   past be35f75 on its own — the pin is redundant at that point.
+    #   Check after any hyprland flake bump:
+    #     nix flake metadata /etc/nixos | grep -A2 aquamarine
+    #   If the rev shown is be35f75 or later, remove:
+    #     1. The entire `aquamarine` input block below.
+    #     2. `inputs.aquamarine.follows` from the `hyprland` input above
+    #        (revert to plain `hyprland.url = "github:hyprwm/Hyprland";`).
+    #     3. Run `nix flake lock --update-input hyprland` to clean the lock.
+    #   Re-enable `bitdepth, 10` in modules/common/core/monitors.nix
+    #   separately — that is an AMD amdgpu/DRM atomic commit issue with the
+    #   XRGB2101010 format, unrelated to CTM. Test after a kernel upgrade.
     aquamarine = {
       url = "github:hyprwm/aquamarine/be35f75ac305f430f5f9d89b5f5a4af59ca7567e";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -77,9 +85,13 @@
     };
   };
 
-  outputs = inputs@{ flake-parts, ... }:
+  outputs =
+    inputs@{ flake-parts, ... }:
     flake-parts.lib.mkFlake { inherit inputs; } {
-      systems = [ "x86_64-linux" "aarch64-darwin" ];
+      systems = [
+        "x86_64-linux"
+        "aarch64-darwin"
+      ];
 
       imports = [
         ./flake/lib.nix
