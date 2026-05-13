@@ -31,6 +31,7 @@
       loadModels = config.aspects.services.ai.models;
     };
     systemd.services.ollama.wantedBy = lib.mkForce [ ];
+    systemd.services.ollama-model-loader.wantedBy = lib.mkForce [ ];
 
     # Open WebUI - The interface & Memory manager
     services.open-webui = {
@@ -82,11 +83,11 @@
 
     # Add a friendly alias for checking status
     environment.shellAliases = {
-      ai-logs = "journalctl -u ollama --since '1 hour ago' -f";
-      ai-webui-logs = "journalctl -u open-webui --since '1 hour ago' -f";
+      ai-logs = "journalctl -u ollama -u open-webui -u searx --since '1 hour ago' -f";
       ai-models = "ollama list";
-      ai-on = "sudo systemctl start ollama open-webui searx";
-      ai-off = "sudo systemctl stop ollama open-webui searx";
+      ai-start = "sudo systemctl start ollama ollama-model-loader open-webui searx";
+      ai-stop = "sudo systemctl stop ollama ollama-model-loader open-webui searx";
+      ai-status = "systemctl status ollama open-webui searx";
     };
   };
 }
