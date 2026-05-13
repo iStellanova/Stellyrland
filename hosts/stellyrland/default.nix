@@ -21,7 +21,10 @@
       xdg.enable = true;
       headless = {
         enable = true;
-        disabledPorts = [ "DP-2" "DP-3" ];
+        disabledPorts = [
+          "DP-2"
+          "DP-3"
+        ];
       };
     };
     # Desktop Aspects - Graphical environment and styling.
@@ -55,8 +58,7 @@
     };
     # Service Aspects - Background daemons and hardware controllers.
     services = {
-      greetd.enable = false;
-      sddm.enable = true;
+      greetd.enable = true;
       desktop-services.enable = true;
       coolercontrol.enable = true;
       lact.enable = true;
