@@ -55,7 +55,8 @@
     };
     # Service Aspects - Background daemons and hardware controllers.
     services = {
-      greetd.enable = true;
+      greetd.enable = false;
+      sddm.enable = true;
       desktop-services.enable = true;
       coolercontrol.enable = true;
       lact.enable = true;
