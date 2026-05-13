@@ -63,6 +63,7 @@
       coolercontrol.enable = true;
       lact.enable = true;
       openrgb.enable = true;
+      ai.enable = true;
     };
   };
 
