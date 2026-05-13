@@ -76,7 +76,8 @@ in
 
     # GPU & Backend Hardening (Fixes black screen/flickering/invisible cursor)
     systemd.services.display-manager.environment = {
-      KWIN_DRM_DEVICES = "/dev/dri/by-path/pci-0000:03:00.0-card:/dev/dri/by-path/pci-0000:18:00.0-card";
+      # Use card paths to avoid PCI colon splitting bug in kwin
+      KWIN_DRM_DEVICES = "/dev/dri/card1:/dev/dri/card0";
       KWIN_FORCE_SW_CURSOR = "1";
       KWIN_DRM_NO_AMS = "1"; # Disable Atomic Mode Setting for cursor stability
       XCURSOR_THEME = "Bibata-Modern-Ice";
