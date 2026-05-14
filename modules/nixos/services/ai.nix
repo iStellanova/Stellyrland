@@ -12,6 +12,6 @@ in
 
   config = lib.mkIf cfg.enable {
     # Enable the self-contained service from the external flake
-    services.echo-ai.enable = true;
+    aspects.services.echo-ai.enable = true;
   };
 }
