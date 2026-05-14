@@ -124,11 +124,11 @@
         "nixpkgs": "nixpkgs_3"
       },
       "locked": {
-        "lastModified": 1778784111,
-        "narHash": "sha256-Tq8Z1kMeaw8FjZGIh2liF2rYh7zmGJhoOi5NR9gAKFU=",
+        "lastModified": 1778784199,
+        "narHash": "sha256-R+0Rnsf9JcxEzcbb74oO4ogE9Qe49YBw1OQlvDqOj0M=",
         "ref": "refs/heads/master",
-        "rev": "ed2c50b2d04bfd316ef93184ac528de031e3564b",
-        "revCount": 5,
+        "rev": "0e433d4daaf01c3dec98aa3a161bb14648cbcd0d",
+        "revCount": 6,
         "type": "git",
         "url": "ssh://git@github.com/iStellanova/Project-Echo.git"
       },
