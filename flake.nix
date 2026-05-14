@@ -83,6 +83,9 @@
       url = "github:zjeffer/split-monitor-workspaces";
       inputs.hyprland.follows = "hyprland";
     };
+
+    # Echo AI Personality Forge.
+    echo.url = "git+ssh://git@github.com/iStellanova/Project-Echo.git";
   };
 
   outputs =
