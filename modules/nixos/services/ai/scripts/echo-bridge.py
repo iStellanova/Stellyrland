@@ -7,11 +7,12 @@ import os
 import subprocess
 from database_manager import DatabaseManager
 
-OLLAMA_API_URL = "http://localhost:11434/api/generate"
+OLLAMA_API_URL = "http://localhost:11434/api/chat"
 
 class EchoBridge:
     def __init__(self):
         self.base_model = "llama3"
+        self.adapter_path = "/home/stellanova/projects/local-ai/echo-lora-adapter"
         self.personalized_model = "echo-personalized"
         self.model = self.base_model
         self.db = DatabaseManager()
@@ -20,44 +21,39 @@ class EchoBridge:
         self.check_and_activate_lora()
 
     def check_and_activate_lora(self):
-        """Detects a merged personality and registers it with Ollama."""
-        project_dir = os.path.expanduser("~/projects/local-ai")
-        merged_model_src = os.path.join(project_dir, "echo-merged")
-        
-        # Shared forge directory for Ollama access
-        forge_dir = "/var/lib/echo-forge"
-        merged_model_dest = os.path.join(forge_dir, "echo-merged")
-        modelfile_path = os.path.join(forge_dir, "Modelfile")
-
-        if os.path.exists(merged_model_src):
-            print("\n[Forge] Integrated Personality detected. Synchronizing with neural stack...")
+        """Detects the personality adapter and registers it with Ollama."""
+        if os.path.exists(self.adapter_path):
+            print("\n[Forge] Personality adapter detected. Synchronizing with neural stack...")
             
+            # Shared forge directory (System-wide)
+            forge_dir = "/var/lib/echo-forge"
+            shared_adapter_path = os.path.join(forge_dir, "echo-lora-adapter")
+            modelfile_path = os.path.join(forge_dir, "Modelfile")
+
             try:
-                # Sync the merged model to the shared forge directory
-                # We use rsync if available, otherwise a simple cp
-                subprocess.run(["rsync", "-a", "--delete", merged_model_src + "/", merged_model_dest + "/"], check=True)
+                # 1. Sync all adapter files directly into the forge directory root
+                # This ensures adapter_config.json and adapter_model.safetensors are right next to the Modelfile
+                subprocess.run(["rsync", "-a", "--delete", self.adapter_path + "/", forge_dir + "/"], check=True)
                 
-                # Create the Modelfile pointing to the merged directory
-                # This ensures the weights ARE the model and the format is SANE
-                modelfile_content = f"""FROM {merged_model_dest}
-TEMPLATE \"\"\"{{{{ if .System }}}}<|start_header_id|>system<|end_header_id|>
-
-{{{{ .System }}}}<|eot_id|>{{{{ end }}}}{{{{ if .Prompt }}}}<|start_header_id|>user<|end_header_id|>
-
-{{{{ .Prompt }}}}<|eot_id|>{{{{ end }}}}<|start_header_id|>assistant<|end_header_id|>
-
-{{{{ .Response }}}}<|eot_id|>\"\"\"
-PARAMETER stop <|start_header_id|>
-PARAMETER stop <|end_header_id|>
-PARAMETER stop <|eot_id|>
-PARAMETER stop <|reserved_special_token_
+                # 2. Create the Modelfile (Brute Force Simple)
+                modelfile_content = f"""FROM llama3:8b
+ADAPTER .
+PARAMETER temperature 0.7
+PARAMETER top_p 0.9
+PARAMETER repeat_penalty 1.1
+PARAMETER stop "<|eot_id|>"
+PARAMETER stop "<|start_header_id|>"
 """
                 with open(modelfile_path, "w") as f:
                     f.write(modelfile_content)
+
+                # 3. Legacy compatibility: ensure Ollama sees the weights regardless of extension
+                # Some older Ollama versions on NixOS only look for .bin
+                subprocess.run(["ln", "-sf", "adapter_model.safetensors", os.path.join(forge_dir, "adapter_model.bin")], check=True)
                 
-                # Register/Update the personalized model with Ollama
+                # 4. Register/Update the personalized model with Ollama (Relative path to -f)
                 result = subprocess.run(
-                    ["ollama", "create", self.personalized_model, "-f", modelfile_path],
+                    ["ollama", "create", self.personalized_model, "-f", "Modelfile"],
                     cwd=forge_dir,
                     capture_output=True,
                     text=True
@@ -67,16 +63,13 @@ PARAMETER stop <|reserved_special_token_
                     self.model = self.personalized_model
                     print(f"[Forge] Success: Integrated Personality Forge is ACTIVE.")
                 else:
+                    print(f"[Forge] Error creating model: {result.stderr}")
                     self.model = self.base_model
-            except Exception:
+            except Exception as e:
+                print(f"[Forge] Activation failed: {e}")
                 self.model = self.base_model
         else:
-            # Check for legacy adapter if merged doesn't exist
-            adapter_path = os.path.join(project_dir, "echo-lora-adapter")
-            if os.path.exists(adapter_path):
-                 print("\n[Forge] Legacy adapter found. Please rerun training to merge weights.")
-            
-            print(f"\n[Status] Using base model: {self.model}")
+            print(f"\n[Status] No adapter found at {self.adapter_path}. Using base model: {self.model}")
 
     def construct_system_prompt(self):
         facts = self.db.get_all_facts()
@@ -97,12 +90,21 @@ Curiosity Directive:
 Build a comprehensive understanding of the user. If they mention a project or preference you don't recognize, ask a natural follow-up question.
 """
 
-    def get_context(self):
+    def get_messages(self, user_input):
+        """Construct the full message list for the Chat API."""
+        messages = [{"role": "system", "content": self.construct_system_prompt()}]
+        
+        # Add historical context
         logs = self.db.get_recent_logs(limit=10)
-        context = ""
+        # Sort logs correctly (they come in DESC usually)
+        logs.reverse() 
+        
         for role, content in logs:
-            context += f"{role.capitalize()}: {content}\n"
-        return context
+            messages.append({"role": role, "content": content})
+            
+        # Add current input
+        messages.append({"role": "user", "content": user_input})
+        return messages
 
     def post_process_conversation(self, user_input, assistant_response):
         """Background task to extract facts and identity from the conversation."""
@@ -121,8 +123,12 @@ Assistant: {assistant_response}
 """
         payload = {
             "model": self.base_model, # Use base model for extraction tasks to save complexity
-            "prompt": extraction_prompt,
-            "stream": False
+            "messages": [
+                {"role": "system", "content": "You are a helpful assistant that extracts JSON facts."},
+                {"role": "user", "content": extraction_prompt}
+            ],
+            "stream": False,
+            "format": "json"
         }
 
         try:
@@ -142,16 +148,19 @@ Assistant: {assistant_response}
             pass
 
     def chat(self, user_input):
-        self.db.save_log("user", user_input)
-
-        system_prompt = self.construct_system_prompt()
-        context = self.get_context()
-        full_prompt = f"{system_prompt}\n\nRecent History:\n{context}\nUser: {user_input}\nAssistant:"
-
+        messages = self.get_messages(user_input)
+        # We don't save the log here yet, we save it after we get the response to maintain order in DB
+        
         payload = {
             "model": self.model,
-            "prompt": full_prompt,
-            "stream": True
+            "messages": messages,
+            "stream": True,
+            "options": {
+                "temperature": 0.7,
+                "top_p": 0.9,
+                "repeat_penalty": 1.1,
+                "stop": ["<|eot_id|>", "<|start_header_id|>", "User:", "Assistant:"]
+            }
         }
 
         try:
@@ -163,13 +172,16 @@ Assistant: {assistant_response}
             for line in response.iter_lines():
                 if line:
                     chunk = json.loads(line)
-                    text = chunk.get("response", "")
-                    print(text, end="", flush=True)
-                    full_response += text
+                    if "message" in chunk:
+                        text = chunk["message"].get("content", "")
+                        print(text, end="", flush=True)
+                        full_response += text
                     if chunk.get("done"):
                         break
             print("\n")
             
+            # Save to DB after successful interaction
+            self.db.save_log("user", user_input)
             self.db.save_log("assistant", full_response)
             
             threading.Thread(
