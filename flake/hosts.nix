@@ -42,6 +42,7 @@ in {
       extraModules = [
         inputs.catppuccin.nixosModules.catppuccin
         inputs.hyprland.nixosModules.default
+        inputs.echo.nixosModules.default
       ];
     };
 
