@@ -12,7 +12,7 @@
       "$mainMod, V, exec, zeditor"
 
       # --- System & Session Management ---
-      "$mainMod+Shift, L, exec, noctalia-shell ipc call lockScreen lock"
+      "$mainMod+Shift, L, exec, noctalia msg lock"
 
       # --- Window Management ---
       "$mainMod, C, killactive"
@@ -83,9 +83,9 @@
       "$mainMod, R, togglespecialworkspace, minimized"
 
       # --- Noctalia Integration ---
-      "$mainMod+Alt, R, exec, systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP DISPLAY && pkill noctalia-shell; noctalia-shell"
-      "$mainMod+SHIFT, Tab, exec, noctalia-shell ipc call wallpaper toggle"
-      "$mainMod + Shift, X, exec, noctalia-shell ipc call sessionMenu toggle"
+      "$mainMod+Alt, R, exec, systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP DISPLAY && pkill noctalia; noctalia"
+      "$mainMod+SHIFT, Tab, exec, noctalia msg wallpaper-toggle"
+      "$mainMod + Shift, X, exec, noctalia msg session-toggle"
 
       # --- Utilities ---
       ", Print, exec, hyprshot -m region -o ~/Pictures/Screenshots"
@@ -118,7 +118,7 @@
 
     # Noctalia Launcher
     bindr = [
-      "SUPER, Super_L, exec, noctalia-shell ipc call launcher toggle"
+      "SUPER, Super_L, exec, noctalia msg launcher-toggle"
     ];
   };
 }
