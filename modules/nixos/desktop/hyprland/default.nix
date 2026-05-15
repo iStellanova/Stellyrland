@@ -65,7 +65,7 @@ in
       # Hyprland window manager. Main Configuration.
       wayland.windowManager.hyprland = {
         enable = true;
-        configType = "lua";
+        configType = "hyprlang";
         package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
         xwayland.enable = true;
         systemd.enable = true; # necessary for systemd activation.
