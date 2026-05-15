@@ -4,26 +4,54 @@
   options.aspects.programs.noctalia-shell.enable = lib.mkEnableOption "Noctalia shell environment";
 
   config = lib.mkIf config.aspects.programs.noctalia-shell.enable {
-    home-manager.users.${identity.name} = { inputs, ... }:
+    home-manager.users.${identity.name} = { inputs, pkgs, osConfig, ... }:
       {
         imports = [
           inputs.noctalia-shell.homeModules.default
-          ./plugins.nix
-          ./bar.nix
-          ./launcher.nix
-          ./control-center.nix
-          ./appearance.nix
-          ./system.nix
         ];
 
-        programs.noctalia-shell = {
+        programs.noctalia = {
           enable = true;
-          systemd.enable = false;
+          systemd.enable = true;
+
+          # Main configuration (generates config.toml)
+          config = {
+            shell = {
+              scale = 1.0;
+              font = "Sans";
+            };
+            theme = {
+              mode = "dark";
+              # source = "custom"; # Uncomment and set customPalette if needed
+            };
+            wallpaper = {
+              enabled = true;
+              directory = "${identity.home}/Pictures/wallpapers/static";
+            };
+            desktop_widgets = {
+              enabled = true;
+            };
+            bar = {
+              main = {
+                position = "top";
+              };
+            };
+          };
+
+          # Widget configuration (generates desktop_widgets.toml in state)
+          desktopWidgets = {
+            schema_version = 1;
+            grid = {
+              cell_size = 16;
+              major_interval = 4;
+              visible = false;
+            };
+            widget = [
+            ];
+          };
         };
 
-        # Link ONLY the nixos-monitor plugin so it is available to Noctalia.
-        # We use force = true to ensure it overwrites any existing local version
-        # with the one from the flake.
+        # Link the nix-monitor plugin so it is available to Noctalia v5.
         xdg.configFile."noctalia/plugins/nixos-monitor" = {
           source = inputs.noctalia-nix-monitor;
           force = true;
