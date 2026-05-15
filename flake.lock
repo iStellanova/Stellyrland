@@ -124,11 +124,11 @@
         "nixpkgs": "nixpkgs_3"
       },
       "locked": {
-        "lastModified": 1778789149,
-        "narHash": "sha256-N2hhinqorFUO/y9gLmmmxeF0TvYdqvhCxOdBVTs3QUM=",
+        "lastModified": 1778796611,
+        "narHash": "sha256-oDFWSP4xAvjFLcZJepKuguoDlCR2ekUUT/9F5RGRBGk=",
         "ref": "refs/heads/master",
-        "rev": "226bdd7f29d48a5fedccb8556e41585a6deae106",
-        "revCount": 13,
+        "rev": "b546482c08956ebfdc61b07b8a7b008196f8e730",
+        "revCount": 15,
         "type": "git",
         "url": "ssh://git@github.com/iStellanova/Project-Echo.git"
       },
@@ -306,11 +306,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1778781368,
-        "narHash": "sha256-t7GW8f4So0b+ATPACjTkCy9UesbSidDW3X9w3utVC1A=",
+        "lastModified": 1778805320,
+        "narHash": "sha256-nGFJ01m2CTBKD4ABtcY4vLhHrRN91LKr/pn41PcU78A=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "c68d2a24376da3860ef161373d91348b1542356b",
+        "rev": "9846abe15e7d0d36b8acbd4d05f2b87461744c92",
         "type": "github"
       },
       "original": {
@@ -396,11 +396,11 @@
         "xdph": "xdph"
       },
       "locked": {
-        "lastModified": 1778767344,
-        "narHash": "sha256-KJutpgkxREVjkYmWortGonNMfFTzTlUlFLPqnqrsqsw=",
+        "lastModified": 1778798629,
+        "narHash": "sha256-m6gp6RBEg33+LorxWcDWyLZ5+N2RnOkITZNaS4lFItQ=",
         "owner": "hyprwm",
         "repo": "Hyprland",
-        "rev": "a45fc64935e77bdcfdfb1166904db45a813ee4d4",
+        "rev": "805f7bf48e46dcab20c0b45844ae36aac354b4bd",
         "type": "github"
       },
       "original": {
