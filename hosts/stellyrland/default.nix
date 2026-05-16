@@ -63,12 +63,7 @@
       coolercontrol.enable = true;
       lact.enable = true;
       openrgb.enable = true;
-      echo-ai = {
-        enable = true;
-        onDemand = true;
-        manageInfrastructure = true;
-      };
-
+      ai.enable = true;
     };
   };
 
