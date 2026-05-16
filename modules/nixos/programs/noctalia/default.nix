@@ -1,7 +1,7 @@
 { config, lib, identity, ... }:
 
 {
-  options.aspects.programs.noctalia-shell.enable = lib.mkEnableOption "Noctalia shell environment";
+  options.aspects.programs.noctalia-shell.enable = lib.mkEnableOption "Noctalia shell";
 
   config = lib.mkIf config.aspects.programs.noctalia-shell.enable {
     home-manager.users.${identity.name} = { inputs, pkgs, osConfig, ... }:
@@ -18,7 +18,7 @@
           config = {
             shell = {
               scale = 1.0;
-              font = "Sans";
+              font = "JetBrainsMono Nerd Font";
               avatar_path = "${identity.home}/Pictures/PFPs/G3eRBGwWkAAJ1_v.jpg";
               password_style = "random";
               settings_show_advanced = true;
@@ -50,16 +50,6 @@
               };
             };
 
-            # Desktop Widgets (Minimalist, disabled)
-            desktop_widgets = {
-              enabled = false;
-            };
-
-            # Dock (Might try later)
-            dock = {
-              auto_hide = true;
-            };
-
             # Notifications, only showing on main monitor.
             notification = {
               background_opacity = 0.5;
@@ -68,7 +58,8 @@
 
             # Main Bar settings.
             bar.main = {
-              monitors = [ "DP-2" ];
+              enabled = false;
+              monitor.DP-2.enabled = true;
               position = "top";
               background_opacity = 0.5;
               center = [ "media" ];
@@ -78,7 +69,7 @@
               widget_spacing = 13;
             };
 
-            # AMERICAN WEATHER RAAAGH
+            # AMERICAN UINITS RAAAGH
             weather = {
               auto_locate = true;
               unit = "imperial";
@@ -92,7 +83,7 @@
                 width = 150.0;
               };
               # Clock formatted WKDY, DD/MM 12HR AM/PM
-              clock.format = "{:%a %d %b %I:%M %p}";
+              clock.format = "{:%a, %b %d %I:%M %p}";
               cpu.display = "graph";
               launcher = {
                 anchor = false;
