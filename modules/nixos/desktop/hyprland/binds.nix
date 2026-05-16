@@ -83,7 +83,7 @@
       "$mainMod, R, togglespecialworkspace, minimized"
 
       # --- Noctalia Integration ---
-      "$mainMod+Alt, R, exec, systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP DISPLAY && pkill noctalia; noctalia"
+      "$mainMod+Alt, R, exec, systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP DISPLAY && systemctl --user restart noctalia"
       "$mainMod+SHIFT, Tab, exec, noctalia msg panel-toggle wallpaper"
       "$mainMod + Shift, X, exec, noctalia msg panel-toggle session"
 

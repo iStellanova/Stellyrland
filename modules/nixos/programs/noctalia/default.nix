@@ -14,7 +14,7 @@
           enable = true;
           systemd.enable = true;
 
-          # Main configuration (generates config.toml)
+          # General
           config = {
             shell = {
               scale = 1.0;
@@ -26,6 +26,7 @@
               screen_corners.enabled = true;
             };
 
+            # Theme
             theme = {
               mode = "dark";
               builtin = "Catppuccin";
@@ -37,6 +38,7 @@
               };
             };
 
+            # Wallpaper
             wallpaper = {
               enabled = true;
               directory = "${identity.home}/Pictures/wallpapers/static";
@@ -48,20 +50,25 @@
               };
             };
 
+            # Desktop Widgets (Minimalist, disabled)
             desktop_widgets = {
               enabled = false;
             };
 
+            # Dock (Might try later)
             dock = {
               auto_hide = true;
             };
 
+            # Notifications, only showing on main monitor.
             notification = {
               background_opacity = 0.5;
               monitors = [ "DP-2" ];
             };
 
+            # Main Bar settings.
             bar.main = {
+              monitors = [ "DP-2" ];
               position = "top";
               background_opacity = 0.5;
               center = [ "media" ];
@@ -71,28 +78,35 @@
               widget_spacing = 13;
             };
 
+            # AMERICAN WEATHER RAAAGH
             weather = {
               auto_locate = true;
               unit = "imperial";
             };
 
+            # Simple Visualizer
             widget = {
               audio_visualizer = {
                 bands = 35;
                 show_when_idle = true;
                 width = 150.0;
               };
-              clock.format = "{:%a %d %b %H:%M}";
+              # Clock formatted WKDY, DD/MM 12HR AM/PM
+              clock.format = "{:%a %d %b %I:%M %p}";
               cpu.display = "graph";
               launcher = {
                 anchor = false;
                 capsule = true;
-                glyph = "brand-snowflake";
+                glyph = "brand-snowflake"; # Kind of a nix icon... May change.
               };
+
+              # Center Media Widget
               media = {
                 capsule = false;
                 title_scroll = "on_hover";
               };
+
+              # No names necessary, but I like my graphs.
               network.show_label = false;
               ram.display = "graph";
               sysmon = {
@@ -107,8 +121,7 @@
             };
           };
 
-          # Widget configuration (generates desktop_widgets.toml in state)
-          # Note: v5 separates this from config.toml as it's interactive state.
+          # General widget configuration
           desktopWidgets = {
             schema_version = 1;
             grid = {
@@ -119,12 +132,6 @@
             widget = [
             ];
           };
-        };
-
-        # Link the nix-monitor plugin so it is available to Noctalia v5.
-        xdg.configFile."noctalia/plugins/nixos-monitor" = {
-          source = inputs.noctalia-nix-monitor;
-          force = true;
         };
       };
   };
