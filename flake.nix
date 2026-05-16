@@ -1,5 +1,5 @@
 {
-  description = "Stellyrland - A Modular, Dendritic NixOS and Darwin configuration";
+  description = "Stellyrland Configurations";
 
   # This flake serves as the single entry point for all systems (Linux and macOS).
   # It leverages flake-parts for clean attribute separation and a custom recursive
