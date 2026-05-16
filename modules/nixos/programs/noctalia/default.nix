@@ -89,7 +89,7 @@
                 anchor = false;
                 capsule = true;
                 custom_image = "${identity.home}/Pictures/nix-snowflake-white.svg";
-                glyph = "brand-snowflake"; # Kind of a nix icon... May change.
+                glyph = "brand-snowflake";
               };
 
               # Center Media Widget
