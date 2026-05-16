@@ -31,12 +31,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # Noctalia Nix Monitor.
-    noctalia-nix-monitor = {
-      url = "github:iStellanova/Nix-Monitor";
-      flake = false;
-    };
-
     # Nix Darwin.
     nix-darwin = {
       url = "github:LnL7/nix-darwin";

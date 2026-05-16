@@ -306,11 +306,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1778839998,
-        "narHash": "sha256-RDgpRW/09hQMy2w+IAyS4M5lHJ24hvVQ9J4TY4m+7zc=",
+        "lastModified": 1778876681,
+        "narHash": "sha256-9XOIxYLBp+sJsPWNnNyk1aVfYXuuRJZ4Anpplm9Tn8g=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "3e707f5f93d7be40fd3e4182ed977446bdf2e2c3",
+        "rev": "c7fad8197070948d8aa02cb8922240ee129cab2e",
         "type": "github"
       },
       "original": {
@@ -396,11 +396,11 @@
         "xdph": "xdph"
       },
       "locked": {
-        "lastModified": 1778841351,
-        "narHash": "sha256-a52shxptMqdBLiDkUq1rT7IQB3jRgZLWLvcZaMYX+Gg=",
+        "lastModified": 1778886962,
+        "narHash": "sha256-e6PbS5lXPfRWJ0mJAi0oZGrOmyO/Ng4dJFoFWhMe35w=",
         "owner": "hyprwm",
         "repo": "Hyprland",
-        "rev": "b74b1f934f03b74df2214e06e26a8c9098236602",
+        "rev": "614671e4e3adde95097d544021a1253070bbc7cd",
         "type": "github"
       },
       "original": {
@@ -984,22 +984,6 @@
         "type": "github"
       }
     },
-    "noctalia-nix-monitor": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1777884893,
-        "narHash": "sha256-kUxWbdGXtTHpmwXNO1POECD6OQ/UQeOsL9BeinRS/oE=",
-        "owner": "iStellanova",
-        "repo": "Nix-Monitor",
-        "rev": "074888daa56394827313dc22b53aec3d213d4182",
-        "type": "github"
-      },
-      "original": {
-        "owner": "iStellanova",
-        "repo": "Nix-Monitor",
-        "type": "github"
-      }
-    },
     "noctalia-shell": {
       "inputs": {
         "nixpkgs": [
@@ -1058,7 +1042,6 @@
         "nix-darwin": "nix-darwin",
         "nixpkgs": "nixpkgs_9",
         "nixpkgs-deno": "nixpkgs-deno",
-        "noctalia-nix-monitor": "noctalia-nix-monitor",
         "noctalia-shell": "noctalia-shell",
         "split-monitor-workspaces": "split-monitor-workspaces",
         "zen-browser": "zen-browser"
