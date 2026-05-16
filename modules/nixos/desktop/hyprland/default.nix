@@ -89,7 +89,8 @@ in
             "udiskie -a -s --file-manager nautilus" # mount removable media and open file manager.
             "wl-paste --type text --watch cliphist store" # store text clipboard contents in cliphist.
             "wl-paste --type image --watch cliphist store" # store image clipboard contents in cliphist.
-            "noctalia & sleep 3 && pkill -f linux-wallpaperengine && linux-wallpaperengine " # start the Noctalia shell.
+            "noctalia" # start the Noctalia shell.
+            "sleep 3 && linux-wallpaperengine"
             "systemctl --user restart xdg-desktop-portal-hyprland" # restart the xdg-desktop-portal-hyprland service.
           ];
 

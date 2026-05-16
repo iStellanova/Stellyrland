@@ -84,8 +84,8 @@
 
       # --- Noctalia Integration ---
       "$mainMod+Alt, R, exec, systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP DISPLAY && pkill noctalia; noctalia"
-      "$mainMod+SHIFT, Tab, exec, noctalia msg wallpaper-toggle"
-      "$mainMod + Shift, X, exec, noctalia msg session-toggle"
+      "$mainMod+SHIFT, Tab, exec, noctalia msg panel-toggle wallpaper"
+      "$mainMod + Shift, X, exec, noctalia msg panel-toggle session"
 
       # --- Utilities ---
       ", Print, exec, hyprshot -m region -o ~/Pictures/Screenshots"
@@ -118,7 +118,7 @@
 
     # Noctalia Launcher
     bindr = [
-      "SUPER, Super_L, exec, noctalia msg launcher-toggle"
+      "SUPER, Super_L, exec, noctalia msg panel-toggle launcher"
     ];
   };
 }
