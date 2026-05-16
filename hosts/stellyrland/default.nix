@@ -4,7 +4,7 @@
     ./hardware-configuration.nix
   ];
 
-  # Aspects - The "toggle" system for modular features.
+  # Aspects
   # Every attribute corresponds to an enable option defined in the modules/ directory.
   aspects = {
     core = {
@@ -27,12 +27,12 @@
         ];
       };
     };
-    # Desktop Aspects - Graphical environment and styling.
+    # Desktop Aspects
     desktop = {
       hyprland.enable = true;
       styling.enable = true;
     };
-    # Program Aspects - CLI and GUI applications.
+    # Program Aspects
     programs = {
       cli.enable = true;
       gemini.enable = true;
@@ -56,7 +56,7 @@
       yazi.enable = true;
       zed.enable = true;
     };
-    # Service Aspects - Background daemons and hardware controllers.
+    # Service Aspects
     services = {
       greetd.enable = true;
       desktop-services.enable = true;
