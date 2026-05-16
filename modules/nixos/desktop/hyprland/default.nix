@@ -90,7 +90,7 @@ in
             "wl-paste --type text --watch cliphist store" # store text clipboard contents in cliphist.
             "wl-paste --type image --watch cliphist store" # store image clipboard contents in cliphist.
             "noctalia" # start the Noctalia shell.
-            "sleep 3 && linux-wallpaperengine"
+            "sleep 3 && linux-wallpaperengine --assets-dir $HOME/ExtraDisk/SteamLibrary/steamapps/common/wallpaper_engine/assets --screen-root DP-2 --screen-root DP-3 --fps 60 --silent $HOME/ExtraDisk/SteamLibrary/steamapps/workshop/content/431960/3258032485/" #Start Wallpaper Engine
             "systemctl --user restart xdg-desktop-portal-hyprland" # restart the xdg-desktop-portal-hyprland service.
           ];
 
