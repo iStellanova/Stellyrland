@@ -7,7 +7,7 @@
       environment.systemPackages = with pkgs; [
         gnome-disk-utility       # A utility for managing disk drives and media
         planify                  # Task manager with Todoist support
-        resources                # Resource monitor
+        mission-center           # Resource monitor
         proton-vpn               # Official Proton VPN Linux app
         bleachbit                # Cleaning utility for files
       ];
