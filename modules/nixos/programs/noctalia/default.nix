@@ -15,7 +15,7 @@
           systemd.enable = true;
 
           # General
-          config = {
+          settings = {
             shell = {
               scale = 1.0;
               font = "JetBrainsMono Nerd Font";
@@ -111,18 +111,19 @@
               volume.show_label = false;
               workspaces.display = "none";
             };
-          };
 
-          # General widget configuration
-          desktopWidgets = {
-            schema_version = 1;
-            grid = {
-              cell_size = 16;
-              major_interval = 4;
-              visible = false;
+            # General widget configuration
+            desktop_widgets = {
+              enabled = false;
+              schema_version = 1;
+              grid = {
+                cell_size = 16;
+                major_interval = 4;
+                visible = false;
+              };
+              widget = [
+              ];
             };
-            widget = [
-            ];
           };
         };
       };
