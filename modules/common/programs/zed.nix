@@ -21,7 +21,10 @@
           mutableUserTasks = false;
           userSettings = {
             "inline_completions" = {
-              "provider" = "copilot";
+              "provider" = "none";
+            };
+            "features" = {
+              "copilot" = false;
             };
             "format_on_save" = "off";
             "font_family" = "JetBrainsMono Nerd Font Mono";
