@@ -133,11 +133,11 @@
         "nixpkgs": "nixpkgs_3"
       },
       "locked": {
-        "lastModified": 1778796611,
-        "narHash": "sha256-oDFWSP4xAvjFLcZJepKuguoDlCR2ekUUT/9F5RGRBGk=",
+        "lastModified": 1779003805,
+        "narHash": "sha256-+Ral3ZvONBzF58l6gpj0PpLEC4ZJa+bw4ieTWNyX8d8=",
         "ref": "refs/heads/master",
-        "rev": "b546482c08956ebfdc61b07b8a7b008196f8e730",
-        "revCount": 15,
+        "rev": "8d9b1cd3d77b21b9bbdfefce3ce28b84cb864849",
+        "revCount": 19,
         "type": "git",
         "url": "ssh://git@github.com/iStellanova/Project-Echo.git"
       },
@@ -692,11 +692,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1777780666,
-        "narHash": "sha256-8wURyQMdDkGUarSTKOGdCuFfYiwa3HbzwscUfn3STDE=",
+        "lastModified": 1779003074,
+        "narHash": "sha256-fzWN7BoguvtZtxEohqSHpn1mE+WC8cQ587xNTW5fe4g=",
         "owner": "LnL7",
         "repo": "nix-darwin",
-        "rev": "8c62fba0854ba15c8917aed18894dbccb48a3777",
+        "rev": "1e107a7b92c6910f0e910d9f2520f5791189a01b",
         "type": "github"
       },
       "original": {
