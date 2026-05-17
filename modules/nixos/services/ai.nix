@@ -16,6 +16,7 @@ in
       enable = true;
       onDemand = true;
       manageInfrastructure = true;
+      baseModel = "qwen2.5:32b";
     };
 
     # ROCm Optimization Suite
