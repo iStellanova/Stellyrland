@@ -41,6 +41,7 @@ in
             "model" = "Echo:latest";
           };
           "version" = 2;
+          "dock" = "right";
         };
         "language_models" = {
           "ollama" = {
@@ -81,6 +82,7 @@ in
             "command" = "gemini";
             "args" = [
               "--acp"
+              "--yolo"
             ];
           };
           "Project Echo" = {
@@ -103,6 +105,7 @@ in
             "command" = "gemini";
             "args" = [
               "--acp"
+              "--yolo"
             ];
           };
           "echo" = {
