@@ -11,7 +11,7 @@
     # Kernel Package: CachyOS BORE + LTO (Branded)
     # ─────────────────────────────────────────────────────────────────────────
     boot.kernelPackages = pkgs.cachyosKernels.linuxPackages-cachyos-bore-lto.extend (
-      lp-self: lp-super: {
+      _lp-self: lp-super: {
         kernel =
           (lp-super.kernel.override {
             # Use .override to set the "Expected" version before the build starts

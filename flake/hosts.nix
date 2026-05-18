@@ -23,7 +23,7 @@
       inherit system;
       specialArgs = {
         inherit inputs;
-        lib = self.lib;
+        inherit (self) lib;
         inherit identity isDarwin;
       };
       modules =

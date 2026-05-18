@@ -89,9 +89,9 @@ in {
 
     # Optimize Nixpkgs ROCm targeting to prevent massive compilation times
     nixpkgs.overlays = [
-      (final: prev: {
+      (_final: prev: {
         ollama-rocm = prev.ollama-rocm.override {
-          rocmPackages = prev.rocmPackages.overrideScope (rfinal: rprev: {
+          rocmPackages = prev.rocmPackages.overrideScope (_rfinal: rprev: {
             clr = rprev.clr.override {localGpuTargets = ["gfx1100"];};
           });
         };

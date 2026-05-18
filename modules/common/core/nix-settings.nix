@@ -18,9 +18,9 @@ in {
     nixpkgs.overlays =
       [
         # Platform-agnostic overlays
-        (final: prev: {
+        (_final: prev: {
           # TODO: Remove this once unity-test build failure on Darwin is resolved upstream
-          unity-test = prev.unity-test.overrideAttrs (old: {
+          unity-test = prev.unity-test.overrideAttrs (_old: {
             doCheck = false;
           });
         })
@@ -28,16 +28,16 @@ in {
       ++ lib.optionals (!isDarwin) [
         # NixOS specific overlays
         inputs.cachyos-kernel.overlays.default
-        (final: prev: {
+        (_final: prev: {
           # TODO: Remove this overlay once deno/rusty-v8 build issues are resolved
           deno = inputs.nixpkgs-deno.legacyPackages.${prev.stdenv.hostPlatform.system}.deno;
         })
       ]
       ++ lib.optionals isDarwin [
         # Darwin specific overlays
-        (final: prev: {
+        (_final: prev: {
           # TODO: Remove direnv override once macOS/Sandbox hangs are resolved upstream
-          direnv = prev.direnv.overrideAttrs (old: {doCheck = false;});
+          direnv = prev.direnv.overrideAttrs (_old: {doCheck = false;});
         })
       ];
 
