@@ -105,6 +105,9 @@
               "claude-acp" = {
                 "type" = "registry";
               };
+              "gemini-cli" = {
+                "type" = "registry";
+              };
             };
           };
         };
