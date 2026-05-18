@@ -5,7 +5,7 @@
 
   config = lib.mkIf config.aspects.core.services-base.enable {
     services.udisks2.enable = true; # Disk device manager.
-    services.gvfs.enable = true; # Virtual file system manager. For virtual machines.
+    services.gvfs.enable = true; # GNOME virtual filesystem — enables trash, network mounts, MTP, and URI schemes in Nautilus.
     services.libinput.enable = true; # Input device manager.
     services.gnome.gnome-keyring.enable = true; # Credential manager. Stores passwords and secrets.
     security.polkit.enable = true; # Access control manager. For those popups that require authentication.
@@ -26,11 +26,14 @@
     };
     networking.firewall = {
       enable = true;
+      # loose: required so Tailscale traffic (which arrives on a different interface
+      # than the routing table expects) isn't dropped by the reverse path filter.
       checkReversePath = "loose";
-      allowedTCPPorts = [ 22 ];
       allowedUDPPorts = [ 41641 ]; # Tailscale
+      # Discord voice uses this full range for its gateway servers. Without it,
+      # Tailscale's routing changes break inbound UDP return packets for VoIP.
       allowedUDPPortRanges = [
-        { from = 50000; to = 65535; } # Discord/WebRTC
+        { from = 50000; to = 65535; }
       ];
     };
   };

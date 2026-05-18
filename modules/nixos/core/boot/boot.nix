@@ -44,7 +44,9 @@
     # AMDGPU initrd allows the kernel to load AMDGPU drivers early in the boot process.
     hardware.amdgpu.initrd.enable = true;
 
-    # Minimize udev timeouts in the initrd to bypass hardware stalls (e.g. Kraken Z)
+    # Tighter udev timeout for the initrd stage (fewer devices, 5s is safe).
+    # Mirrors the system-level timeout in system.nix — both prevent Kraken Z USB
+    # stalls from hanging the sequence for the default 90s.
     boot.initrd.systemd.services."systemd-udevd".serviceConfig = {
       TimeoutStartSec = "5s";
       TimeoutStopSec = "5s";

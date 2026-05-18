@@ -14,8 +14,8 @@
         src = fetchFromGitHub {
           owner = "rmaake1";
           repo = "terminal-rain-lightning";
-          rev = "master";
-          sha256 = "1r4ccxnrww1wn35sis6qmqlkn70735izhii0n3i55nfz8xs2l4w2";
+          rev = "cc3aa19e1e9aec628a608b0ca6b7c475cce98c05";
+          hash = "sha256-GJvGnvo78l4RK2Y9ACbqOXHLQkNtIwIktbm/FK1vOcc=";
         };
         pyproject = true;
         nativeBuildInputs = [ python3Packages.setuptools python3Packages.wheel ];

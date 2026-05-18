@@ -39,7 +39,6 @@
       "opacity 0.8 override 0.8 override 1.0 override, match:class ^(kitty)$"
       "opacity 0.3 override, match:class ^(nvim)$" # High transparency for focused coding
       "opacity 1.0 override 0.85 override 1.0 override, match:class ^(zen)$"
-      "opacity 1.0 override 1.0 override, match:class ^(discord)$"
       "opacity 1.0 override 1.0 override, match:class ^(vesktop)$"
       "opacity 1.0 override, match:title ^(Picture in picture)$"
       "opacity 0.6 override 0.6 override 1.0 override, match:title (.*)(YouTube Music)(.*)"
