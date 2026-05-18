@@ -1,16 +1,21 @@
-{ config, lib, pkgs, identity, isDarwin, ... }:
-
 {
+  config,
+  lib,
+  pkgs,
+  identity,
+  isDarwin,
+  ...
+}: {
   options.aspects.programs.vesktop.enable = lib.mkEnableOption "Vesktop Discord client";
 
   config = lib.mkIf config.aspects.programs.vesktop.enable (lib.mkMerge [
     (lib.optionalAttrs isDarwin {
-      homebrew.casks = [ "vesktop" ];
+      homebrew.casks = ["vesktop"];
     })
 
     (lib.optionalAttrs (!isDarwin) {
       environment.systemPackages = [
-        (pkgs.vesktop.override { withSystemVencord = false; })
+        (pkgs.vesktop.override {withSystemVencord = false;})
       ];
     })
 

@@ -1,9 +1,15 @@
-{ config, lib, pkgs, identity, isDarwin, ... }:
 {
+  config,
+  lib,
+  pkgs,
+  identity,
+  isDarwin,
+  ...
+}: {
   options.aspects.programs.zed.enable = lib.mkEnableOption "Zed editor";
   config = lib.mkIf config.aspects.programs.zed.enable (lib.mkMerge [
     (lib.optionalAttrs isDarwin {
-      homebrew.casks = [ "zed" ];
+      homebrew.casks = ["zed"];
     })
 
     {
@@ -15,7 +21,10 @@
 
         programs.zed-editor = {
           enable = true;
-          package = if isDarwin then null else pkgs.zed-editor;
+          package =
+            if isDarwin
+            then null
+            else pkgs.zed-editor;
           mutableUserSettings = false;
           mutableUserKeymaps = false;
           mutableUserTasks = false;
@@ -69,11 +78,11 @@
                 "format_on_save" = "off";
               };
               "Nix" = {
-                "language_servers" = [ "nil" ];
+                "language_servers" = ["nil"];
                 "formatter" = {
                   "external" = {
                     "command" = "nixfmt";
-                    "arguments" = [ ];
+                    "arguments" = [];
                   };
                 };
               };

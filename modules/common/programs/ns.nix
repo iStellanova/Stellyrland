@@ -1,5 +1,10 @@
-{ config, lib, pkgs, identity, ... }:
 {
+  config,
+  lib,
+  pkgs,
+  identity,
+  ...
+}: {
   # ns - Nix Search script
   options.aspects.programs.ns.enable = lib.mkEnableOption "Nix Search script";
   config = lib.mkIf config.aspects.programs.ns.enable {

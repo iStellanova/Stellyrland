@@ -1,6 +1,9 @@
-{ config, lib, identity, ... }:
-
 {
+  config,
+  lib,
+  identity,
+  ...
+}: {
   options.aspects.darwin.system.enable = lib.mkEnableOption "Darwin system configuration";
 
   config = lib.mkIf config.aspects.darwin.system.enable {

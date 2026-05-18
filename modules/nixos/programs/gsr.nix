@@ -1,10 +1,15 @@
-{ config, lib, pkgs, identity, ... }:
 {
+  config,
+  lib,
+  pkgs,
+  identity,
+  ...
+}: {
   options.aspects.programs.gsr.enable = lib.mkEnableOption "GPU Screen Recorder";
-  
+
   config = lib.mkIf config.aspects.programs.gsr.enable {
     programs.gpu-screen-recorder.enable = true;
-    environment.systemPackages = [ pkgs.gpu-screen-recorder-gtk ];
+    environment.systemPackages = [pkgs.gpu-screen-recorder-gtk];
     home-manager.users.${identity.name} = {
       # GSR configuration
       xdg.configFile."gpu-screen-recorder/config".text = ''

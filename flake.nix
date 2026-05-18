@@ -55,13 +55,21 @@
       inputs.hyprland.follows = "hyprland";
     };
 
-    # Echo AI Personality Forge.
-    echo.url = "git+ssh://git@github.com/iStellanova/Project-Echo.git";
+    # nix-index pre-built database + comma.
+    nix-index-database = {
+      url = "github:nix-community/nix-index-database";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    # Treefmt - unified code formatter orchestration.
+    treefmt-nix = {
+      url = "github:numtide/treefmt-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs =
-    inputs@{ flake-parts, ... }:
-    flake-parts.lib.mkFlake { inherit inputs; } {
+  outputs = inputs @ {flake-parts, ...}:
+    flake-parts.lib.mkFlake {inherit inputs;} {
       systems = [
         "x86_64-linux"
         "aarch64-darwin"
@@ -70,6 +78,7 @@
       imports = [
         ./flake/lib.nix
         ./flake/hosts.nix
+        ./flake/treefmt.nix
       ];
     };
 }

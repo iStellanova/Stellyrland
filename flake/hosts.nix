@@ -1,11 +1,24 @@
-{ self, inputs, ... }: 
-let
-  mkHost = { system, isDarwin, hostname, extraModules ? [] }:
-    let
-      identity = self.lib.mkIdentity inputs.identity isDarwin;
-      coreBuilder = if isDarwin then inputs.nix-darwin.lib.darwinSystem else inputs.nixpkgs.lib.nixosSystem;
-      hmModule = if isDarwin then inputs.home-manager.darwinModules.home-manager else inputs.home-manager.nixosModules.home-manager;
-    in
+{
+  self,
+  inputs,
+  ...
+}: let
+  mkHost = {
+    system,
+    isDarwin,
+    hostname,
+    extraModules ? [],
+  }: let
+    identity = self.lib.mkIdentity inputs.identity isDarwin;
+    coreBuilder =
+      if isDarwin
+      then inputs.nix-darwin.lib.darwinSystem
+      else inputs.nixpkgs.lib.nixosSystem;
+    hmModule =
+      if isDarwin
+      then inputs.home-manager.darwinModules.home-manager
+      else inputs.home-manager.nixosModules.home-manager;
+  in
     coreBuilder {
       inherit system;
       specialArgs = {
@@ -13,22 +26,27 @@ let
         lib = self.lib;
         inherit identity isDarwin;
       };
-      modules = [
-        ../modules/default.nix
-        ../hosts/${hostname}/default.nix
-        hmModule
-        {
-          home-manager = {
-            useGlobalPkgs = true;
-            useUserPackages = true;
-            backupFileExtension = "backup";
-            overwriteBackup = true;
-            extraSpecialArgs = {
-              inherit inputs identity;
+      modules =
+        [
+          ../modules/default.nix
+          ../hosts/${hostname}/default.nix
+          hmModule
+          {
+            home-manager = {
+              useGlobalPkgs = true;
+              useUserPackages = true;
+              backupFileExtension = "backup";
+              overwriteBackup = true;
+              extraSpecialArgs = {
+                inherit inputs identity;
+              };
+              sharedModules = [
+                inputs.nix-index-database.hmModules.nix-index
+              ];
             };
-          };
-        }
-      ] ++ extraModules;
+          }
+        ]
+        ++ extraModules;
     };
 in {
   flake = {
@@ -42,7 +60,6 @@ in {
       extraModules = [
         inputs.catppuccin.nixosModules.catppuccin
         inputs.hyprland.nixosModules.default
-        inputs.echo.nixosModules.default
       ];
     };
 

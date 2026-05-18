@@ -1,4 +1,4 @@
-{ lib, ... }: {
+{lib, ...}: {
   options.aspects.core.monitors = lib.mkOption {
     type = lib.types.attrsOf lib.types.str;
     default = {

@@ -1,9 +1,13 @@
-{ config, lib, pkgs, identity, inputs, ... }:
-
-let
-  cfg = config.aspects.desktop.hyprland;
-in
 {
+  config,
+  lib,
+  pkgs,
+  identity,
+  inputs,
+  ...
+}: let
+  cfg = config.aspects.desktop.hyprland;
+in {
   options.aspects.desktop.hyprland.enable = lib.mkEnableOption "Hyprland desktop environment";
 
   config = lib.mkIf cfg.enable {
@@ -40,7 +44,7 @@ in
     };
 
     # Specify AMD GPU driver for X11 and PipeWire.
-    services.xserver.videoDrivers = [ "amdgpu" ];
+    services.xserver.videoDrivers = ["amdgpu"];
     services.pipewire = {
       enable = true;
       pulse.enable = true;
@@ -52,7 +56,7 @@ in
     xdg.portal = {
       enable = true;
       xdgOpenUsePortal = true;
-      extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+      extraPortals = [pkgs.xdg-desktop-portal-gtk];
       config.common.default = "*";
     };
 
@@ -79,7 +83,7 @@ in
         settings = {
           # Monitor Configuration:
           # Centralized via aspects.core.monitors
-          monitor = (lib.mapAttrsToList (name: conf: "${name}, ${conf}") config.aspects.core.monitors) ++ [ ", preferred, auto, 1" ];
+          monitor = (lib.mapAttrsToList (name: conf: "${name}, ${conf}") config.aspects.core.monitors) ++ [", preferred, auto, 1"];
 
           "exec-once" = [
             "dbus-update-activation-environment --systemd --all" # update the activation environment.

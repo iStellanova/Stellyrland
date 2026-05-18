@@ -1,12 +1,15 @@
-{ config, lib, identity, ... }:
-
 {
+  config,
+  lib,
+  identity,
+  ...
+}: {
   options.aspects.programs.git.enable = lib.mkEnableOption "Git and SSH identity configuration";
 
   config = lib.mkIf config.aspects.programs.git.enable (lib.mkMerge [
     {
       # Home Manager level
-      home-manager.users.${identity.name} = { pkgs, ... }: {
+      home-manager.users.${identity.name} = {pkgs, ...}: {
         programs.ssh = {
           enable = true;
           enableDefaultConfig = false;

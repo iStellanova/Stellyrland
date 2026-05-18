@@ -1,9 +1,12 @@
-{ config, lib, pkgs, identity, ... }:
-
-let
-  cfg = config.aspects.services.openrgb;
-in
 {
+  config,
+  lib,
+  pkgs,
+  identity,
+  ...
+}: let
+  cfg = config.aspects.services.openrgb;
+in {
   options.aspects.services.openrgb.enable = lib.mkEnableOption "OpenRGB service";
 
   config = lib.mkIf cfg.enable {
@@ -16,13 +19,13 @@ in
     # Allow OpenRGB to access I2C for RAM control.
     systemd.services.openrgb = {
       serviceConfig = {
-        RestrictAddressFamilies = [ "AF_UNIX" "AF_INET" "AF_INET6" ];
+        RestrictAddressFamilies = ["AF_UNIX" "AF_INET" "AF_INET6"];
       };
     };
 
     # Enable I2C support (required for RAM control and CoolerControl)
     hardware.i2c.enable = true;
-    boot.kernelModules = [ "i2c-dev" "i2c-piix4" ];
+    boot.kernelModules = ["i2c-dev" "i2c-piix4"];
 
     # Make the optimized config available to the daemon in its state directory
     systemd.tmpfiles.rules = [
@@ -33,9 +36,9 @@ in
     # System-wide service to apply the profile and color on boot, and turn off on shutdown
     systemd.services.openrgb-boot-apply = {
       description = "Apply OpenRGB Stellyr Profile and Force White / Black on Shutdown";
-      requires = [ "openrgb.service" ];
-      after = [ "openrgb.service" ];
-      wantedBy = [ "multi-user.target" ];
+      requires = ["openrgb.service"];
+      after = ["openrgb.service"];
+      wantedBy = ["multi-user.target"];
       serviceConfig = {
         Type = "oneshot";
         ExecStart = pkgs.writeShellScript "openrgb-retry-apply" ''
@@ -81,5 +84,6 @@ in
         blackout = "openrgb --color 000000";
         whiteout = "openrgb --color ffffff";
       };
-    };  };
+    };
+  };
 }

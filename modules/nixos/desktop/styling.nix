@@ -1,6 +1,9 @@
-{ config, lib, identity, ... }:
-
 {
+  config,
+  lib,
+  identity,
+  ...
+}: {
   options.aspects.desktop.styling.enable = lib.mkEnableOption "Desktop styling (GTK, QT, Cursors)";
 
   config = lib.mkIf config.aspects.desktop.styling.enable {
@@ -9,7 +12,11 @@
     catppuccin.flavor = "macchiato";
     catppuccin.accent = "flamingo";
 
-    home-manager.users.${identity.name} = { pkgs, inputs, ... }: {
+    home-manager.users.${identity.name} = {
+      pkgs,
+      inputs,
+      ...
+    }: {
       imports = [
         inputs.catppuccin.homeModules.catppuccin
       ];
@@ -34,7 +41,7 @@
         theme = {
           name = "catppuccin-macchiato-flamingo-standard";
           package = pkgs.catppuccin-gtk.override {
-            accents = [ "flamingo" ];
+            accents = ["flamingo"];
             variant = "macchiato";
           };
         };
@@ -44,7 +51,7 @@
         iconTheme = {
           name = "Colloid-Catppuccin-Dark";
           package = pkgs.colloid-icon-theme.override {
-            schemeVariants = [ "catppuccin" ];
+            schemeVariants = ["catppuccin"];
           };
         };
       };
@@ -80,8 +87,8 @@
 
       # Additional packages for cursor and desktop management.
       home.packages = with pkgs; [
-        kdePackages.qtstyleplugin-kvantum  # Qt6 kvantum plugin (QT_STYLE_OVERRIDE=kvantum)
-        libsForQt5.qtstyleplugin-kvantum  # Qt5 kvantum plugin
+        kdePackages.qtstyleplugin-kvantum # Qt6 kvantum plugin (QT_STYLE_OVERRIDE=kvantum)
+        libsForQt5.qtstyleplugin-kvantum # Qt5 kvantum plugin
         nwg-look
         bibata-cursors
         hyprcursor

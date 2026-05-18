@@ -1,14 +1,19 @@
-{ config, lib, pkgs, identity, isDarwin, ... }:
-
 {
+  config,
+  lib,
+  pkgs,
+  identity,
+  isDarwin,
+  ...
+}: {
   options.aspects.programs.zsh.enable = lib.mkEnableOption "Zsh shell configuration";
 
   config = lib.mkIf config.aspects.programs.zsh.enable {
     # Enables zsh.
     programs.zsh.enable = true;
-    environment.systemPackages = [ pkgs.zsh-completions ];
+    environment.systemPackages = [pkgs.zsh-completions];
 
-    home-manager.users.${identity.name} = { pkgs, ... }: {
+    home-manager.users.${identity.name} = {pkgs, ...}: {
       home.file.".p10k.zsh".source = ./p10k.zsh;
       programs.zsh = {
         enable = true;
@@ -19,7 +24,7 @@
         # Oh My Zsh and plugins.
         oh-my-zsh = {
           enable = true;
-          plugins = [ "git" "copyfile" "copybuffer" ];
+          plugins = ["git" "copyfile" "copybuffer"];
         };
 
         shellAliases = {
@@ -81,11 +86,31 @@
         ];
 
         plugins = [
-          { name = "powerlevel10k"; src = pkgs.zsh-powerlevel10k; file = "share/zsh-powerlevel10k/powerlevel10k.zsh-theme"; }
-          { name = "zsh-nix-shell"; src = pkgs.zsh-nix-shell; file = "share/zsh-nix-shell/nix-shell.plugin.zsh"; }
-          { name = "nix-zsh-completions"; src = pkgs.nix-zsh-completions; file = "share/zsh/plugins/nix-zsh-completions/nix-zsh-completions.plugin.zsh"; }
-          { name = "fzf-tab"; src = pkgs.zsh-fzf-tab; file = "share/fzf-tab/fzf-tab.plugin.zsh"; }
-          { name = "zsh-history-substring-search"; src = pkgs.zsh-history-substring-search; file = "share/zsh-history-substring-search/zsh-history-substring-search.zsh"; }
+          {
+            name = "powerlevel10k";
+            src = pkgs.zsh-powerlevel10k;
+            file = "share/zsh-powerlevel10k/powerlevel10k.zsh-theme";
+          }
+          {
+            name = "zsh-nix-shell";
+            src = pkgs.zsh-nix-shell;
+            file = "share/zsh-nix-shell/nix-shell.plugin.zsh";
+          }
+          {
+            name = "nix-zsh-completions";
+            src = pkgs.nix-zsh-completions;
+            file = "share/zsh/plugins/nix-zsh-completions/nix-zsh-completions.plugin.zsh";
+          }
+          {
+            name = "fzf-tab";
+            src = pkgs.zsh-fzf-tab;
+            file = "share/fzf-tab/fzf-tab.plugin.zsh";
+          }
+          {
+            name = "zsh-history-substring-search";
+            src = pkgs.zsh-history-substring-search;
+            file = "share/zsh-history-substring-search/zsh-history-substring-search.zsh";
+          }
         ];
       };
     };
