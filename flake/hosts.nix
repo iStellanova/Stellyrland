@@ -60,6 +60,7 @@ in {
       extraModules = [
         inputs.catppuccin.nixosModules.catppuccin
         inputs.hyprland.nixosModules.default
+        inputs.disko.nixosModules.disko
       ];
     };
 
