@@ -11,8 +11,6 @@ in {
   config = lib.mkIf config.aspects.programs.noctalia-shell.enable {
     home-manager.users.${identity.name} = {
       inputs,
-      pkgs,
-      osConfig,
       ...
     }: {
       imports = [

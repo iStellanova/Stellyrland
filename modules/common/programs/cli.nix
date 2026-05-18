@@ -82,9 +82,10 @@
       programs.fd.enable = true;
 
       # comma - command line interface for managing dotfiles
-      home.packages = with pkgs; [
-        comma
-      ];
+      home.packages = with pkgs;
+        lib.optionals (!config.aspects.programs.nix-index.enable) [
+          comma
+        ];
 
       # direnv - environment variable management
       programs.direnv = {

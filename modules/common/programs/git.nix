@@ -9,7 +9,7 @@
   config = lib.mkIf config.aspects.programs.git.enable (lib.mkMerge [
     {
       # Home Manager level
-      home-manager.users.${identity.name} = {pkgs, ...}: {
+      home-manager.users.${identity.name} = _: {
         programs.ssh = {
           enable = true;
           enableDefaultConfig = false;
@@ -42,7 +42,7 @@
           settings = {
             user = {
               name = identity.gitName;
-              email = identity.email;
+              inherit (identity) email;
             };
             # Bootstrap: on a fresh machine this file configures the SSH key
             # so the private identity flake can be pulled before Nix manages git.
