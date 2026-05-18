@@ -61,7 +61,7 @@ in
               # by placing it at the default search path in a temporary HOME.
               greetdHyprLauncher = pkgs.writeShellScript "greetd-hyprland-launcher" ''
                 export HOME=/tmp/greetd-home
-                rm -rf $HOME
+                rm -rf "$HOME"
                 mkdir -p $HOME/.config/hypr
                 ln -sf ${greetdHyprConfig} $HOME/.config/hypr/hyprland.conf
                 exec ${hyprlandPkg}/bin/start-hyprland

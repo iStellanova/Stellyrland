@@ -19,8 +19,9 @@
     # Proactive OOM killer to prevent system hangs under extreme memory pressure.
     systemd.oomd.enable = true;
 
-    # Surgical udev timeout reduction to prevent hardware stalls (e.g. Kraken Z USB errors)
-    # from hanging the boot/shutdown sequence for 90 seconds.
+    # Full-system udev timeout — more lenient than initrd (10s vs 5s) because the
+    # complete hardware set is present. Prevents Kraken Z USB stalls from hanging
+    # boot/shutdown for the default 90s. Counterpart lives in boot.nix (initrd stage).
     systemd.services."systemd-udevd".serviceConfig = {
       TimeoutStartSec = "10s";
       TimeoutStopSec = "10s";
