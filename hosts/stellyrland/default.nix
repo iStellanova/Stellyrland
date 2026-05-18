@@ -1,6 +1,7 @@
 {identity, ...}: {
   imports = [
     ./hardware-configuration.nix
+    ./disko.nix
   ];
 
   # Aspects
