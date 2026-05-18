@@ -44,7 +44,6 @@
         "/Applications/Beat.app"
         "/Applications/Zed.app"
         "/Applications/Claude.app"
-        "/Applications/Nix Apps/Vesktop.app"
         "${identity.home}/Applications/Home Manager Apps/kitty.app"
         "/Applications/Zen Browser.app"
       ];
