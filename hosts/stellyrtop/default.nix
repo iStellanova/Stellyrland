@@ -37,7 +37,7 @@
       yazi.enable = true;
       zsh.enable = true;
       neovim.enable = true;
-      claude.enable = true;
+      ai-tools.enable = true;
       vesktop.enable = true;
       zed.enable = true;
     };

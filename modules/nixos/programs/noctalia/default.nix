@@ -9,10 +9,7 @@ in {
   options.aspects.programs.noctalia-shell.enable = lib.mkEnableOption "Noctalia shell";
 
   config = lib.mkIf config.aspects.programs.noctalia-shell.enable {
-    home-manager.users.${identity.name} = {
-      inputs,
-      ...
-    }: {
+    home-manager.users.${identity.name} = {inputs, ...}: {
       imports = [
         inputs.noctalia-shell.homeModules.default
       ];
