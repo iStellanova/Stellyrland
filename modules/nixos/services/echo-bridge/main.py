@@ -66,6 +66,12 @@ def resolve_client_id(request: Request) -> str:
 def get_session_id(client_id: str) -> uuid.UUID:
     """Retrieves or rotates the in-memory session UUID for a client."""
     now = time.time()
+
+    # Evict expired sessions to prevent unbounded map growth
+    expired = [k for k, v in SESSION_MAP.items() if now - v["last_activity"] >= SESSION_TIMEOUT]
+    for k in expired:
+        del SESSION_MAP[k]
+
     if client_id in SESSION_MAP:
         sess = SESSION_MAP[client_id]
         if now - sess["last_activity"] < SESSION_TIMEOUT:
@@ -84,19 +90,17 @@ def assemble_system_prompt() -> str:
     """Assembles active rules, facts, and traits from Postgres into a system prompt.
     Runs synchronously and should be wrapped in an executor when called from async paths.
     """
+    conn = None
     try:
         conn = get_db_connection()
         cur = conn.cursor()
 
-        # 1. Retrieve active rules ordered by priority
         cur.execute("SELECT rule FROM rules WHERE active = TRUE ORDER BY priority DESC")
         rules = [row[0] for row in cur.fetchall()]
 
-        # 2. Retrieve facts with confidence >= 0.7
         cur.execute("SELECT key, value FROM facts WHERE confidence >= 0.7 ORDER BY updated_at DESC")
         facts = [f"{row[0]}: {row[1]}" for row in cur.fetchall()]
 
-        # 3. Retrieve extreme traits (> 0.7 or < 0.3)
         cur.execute("SELECT trait, score FROM traits WHERE score > 0.7 OR score < 0.3")
         traits = []
         for row in cur.fetchall():
@@ -104,11 +108,12 @@ def assemble_system_prompt() -> str:
             traits.append(f"Your trait '{row[0]}' is currently {status} (score: {row[1]:.2f}). Adjust your tone accordingly.")
 
         cur.close()
-        conn.close()
     except Exception as e:
-        # Prevent crash if Postgres schema isn't fully ready or migrations are running
         print(f"[Echo Bridge] Error fetching cognitive memory from DB: {e}")
         rules, facts, traits = [], [], []
+    finally:
+        if conn:
+            conn.close()
 
     sys_prompt = "You are Echo, a highly personalized Cognitive AI.\n\n"
     if rules:
@@ -125,27 +130,26 @@ def log_interaction_to_db(session_id: uuid.UUID, user_message: str, assistant_me
     """Saves both the user message and assistant reply to the episodic log.
     Called via background_tasks which runs it safely in a background thread pool.
     """
+    conn = None
     try:
         conn = get_db_connection()
         cur = conn.cursor()
-
-        # Log User Message
         cur.execute(
             "INSERT INTO messages (session_id, role, content, processed) VALUES (%s, %s, %s, FALSE)",
             (str(session_id), "user", user_message)
         )
-        # Log Assistant Message
         cur.execute(
             "INSERT INTO messages (session_id, role, content, processed) VALUES (%s, %s, %s, FALSE)",
             (str(session_id), "assistant", assistant_message)
         )
-
         conn.commit()
         cur.close()
-        conn.close()
         print(f"[Echo Bridge] Successfully logged message exchange for session {session_id}.")
     except Exception as e:
         print(f"[Echo Bridge] Error logging conversation to DB: {e}")
+    finally:
+        if conn:
+            conn.close()
 
 
 # =====================================================================
