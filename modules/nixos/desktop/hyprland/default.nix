@@ -44,6 +44,8 @@ in
     services.pipewire = {
       enable = true;
       pulse.enable = true;
+      alsa.enable = true;
+      alsa.support32Bit = true; # Required for 32-bit games (Steam runtime) to have audio.
     };
 
     # xdg-desktop-portal for Hyprland.
@@ -80,8 +82,7 @@ in
           monitor = (lib.mapAttrsToList (name: conf: "${name}, ${conf}") config.aspects.core.monitors) ++ [ ", preferred, auto, 1" ];
 
           "exec-once" = [
-            "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP DISPLAY" # update the activation environment.
-            "dbus-update-activation-environment --systemd --all"
+            "dbus-update-activation-environment --systemd --all" # update the activation environment.
             "systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP" # import environment variables.
             "systemctl --user start hyprpolkitagent" # start the Polkit agent.
             "gnome-keyring-daemon --start --components=secrets" # start the GNOME keyring daemon.
@@ -115,7 +116,6 @@ in
             "QT_QPA_PLATFORMTHEME, gtk3"
             "QT_STYLE_OVERRIDE, kvantum"
             "QT_WAYLAND_DISABLE_WINDOWDECORATION, 1"
-            "QT_AUTO_SCREEN_SCALE_FACTOR, 1.25"
             "GDK_SCALE, 1.0"
             "GTK_CSD, 0"
 

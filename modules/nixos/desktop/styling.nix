@@ -49,10 +49,11 @@
         };
       };
 
-      # Specify QT theme.
+      # Qt theming — platformTheme is intentionally omitted so HM doesn't set
+      # QT_QPA_PLATFORMTHEME; the Hyprland env var (gtk3) owns that.
+      # style.name = "kvantum" satisfies catppuccin.kvantum's assertStyle guard.
       qt = {
         enable = true;
-        platformTheme.name = "qtct";
         style.name = "kvantum";
       };
 
@@ -79,9 +80,8 @@
 
       # Additional packages for cursor and desktop management.
       home.packages = with pkgs; [
-        kdePackages.qtstyleplugin-kvantum
-        libsForQt5.qtstyleplugin-kvantum
-        libsForQt5.qt5ct
+        kdePackages.qtstyleplugin-kvantum  # Qt6 kvantum plugin (QT_STYLE_OVERRIDE=kvantum)
+        libsForQt5.qtstyleplugin-kvantum  # Qt5 kvantum plugin
         nwg-look
         bibata-cursors
         hyprcursor

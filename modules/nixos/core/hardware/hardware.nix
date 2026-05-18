@@ -42,7 +42,10 @@
     };
     services.scx = {
       enable = true;
-      scheduler = "scx_rusty"; # Modern Rust-based scheduler with high efficiency
+      # scx_lavd: deadline-based scheduler, preferred-core-aware via amd_pstate=active.
+      # Better than scx_rusty for the 9950X3D's asymmetric CCDs — keeps latency-sensitive
+      # threads (games) on CCD0 (V-Cache) and throughput work on CCD1 naturally.
+      scheduler = "scx_lavd";
     };
   };
 }

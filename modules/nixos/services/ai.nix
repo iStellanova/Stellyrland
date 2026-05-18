@@ -209,10 +209,8 @@ in
     # 6. System Packages (Purely Native)
     environment.systemPackages = lib.optionals cfg.oterm.enable [ pkgs.oterm ];
 
-    # Beautiful and safe interactive shell aliases to launch oterm TUI natively
-    environment.interactiveShellInit = ''
+    environment.interactiveShellInit = lib.optionalString cfg.oterm.enable ''
       alias chat="OLLAMA_HOST=127.0.0.1:8000 oterm"
-      alias echo-chat="OLLAMA_HOST=127.0.0.1:8000 oterm"
     '';
   };
 }

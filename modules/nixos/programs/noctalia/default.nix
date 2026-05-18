@@ -1,5 +1,8 @@
 { config, lib, identity, ... }:
 
+let
+  defaultWallpaper = "${identity.home}/Pictures/wallpapers/static/Untitled.png";
+in
 {
   options.aspects.programs.noctalia-shell.enable = lib.mkEnableOption "Noctalia shell";
 
@@ -42,11 +45,11 @@
             wallpaper = {
               enabled = true;
               directory = "${identity.home}/Pictures/wallpapers/static";
-              default.path = "${identity.home}/Pictures/wallpapers/static/Untitled.png";
-              last.path = "${identity.home}/Pictures/wallpapers/static/Untitled.png";
+              default.path = defaultWallpaper;
+              last.path = defaultWallpaper;
               monitors = {
-                DP-2.path = "${identity.home}/Pictures/wallpapers/static/Untitled.png";
-                DP-3.path = "${identity.home}/Pictures/wallpapers/static/Untitled.png";
+                DP-2.path = defaultWallpaper;
+                DP-3.path = defaultWallpaper;
               };
             };
 
