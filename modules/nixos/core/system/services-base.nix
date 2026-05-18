@@ -1,6 +1,8 @@
-{ config, lib, ... }:
-
 {
+  config,
+  lib,
+  ...
+}: {
   options.aspects.core.services-base.enable = lib.mkEnableOption "Base system services";
 
   config = lib.mkIf config.aspects.core.services-base.enable {
@@ -29,11 +31,14 @@
       # loose: required so Tailscale traffic (which arrives on a different interface
       # than the routing table expects) isn't dropped by the reverse path filter.
       checkReversePath = "loose";
-      allowedUDPPorts = [ 41641 ]; # Tailscale
+      allowedUDPPorts = [41641]; # Tailscale
       # Discord voice uses this full range for its gateway servers. Without it,
       # Tailscale's routing changes break inbound UDP return packets for VoIP.
       allowedUDPPortRanges = [
-        { from = 50000; to = 65535; }
+        {
+          from = 50000;
+          to = 65535;
+        }
       ];
     };
   };

@@ -1,5 +1,9 @@
-{ config, lib, identity, ... }:
 {
+  config,
+  lib,
+  identity,
+  ...
+}: {
   options.aspects.programs.btop.enable = lib.mkEnableOption "Btop";
   config = lib.mkIf config.aspects.programs.btop.enable {
     home-manager.users.${identity.name} = {

@@ -1,6 +1,10 @@
-{ config, lib, pkgs, identity, ... }:
-
 {
+  config,
+  lib,
+  pkgs,
+  identity,
+  ...
+}: {
   options.aspects.core.xdg.enable = lib.mkEnableOption "Core XDG settings";
 
   config = lib.mkIf config.aspects.core.xdg.enable {
@@ -8,7 +12,7 @@
       xdg-user-dirs
       xdg-utils
     ];
-    home-manager.users.${identity.name} = { config, ... }: {
+    home-manager.users.${identity.name} = {config, ...}: {
       # Create the user directories if they don't exist.
       xdg.userDirs = {
         enable = true;
@@ -32,17 +36,17 @@
       xdg.mimeApps = {
         enable = true;
         defaultApplications = {
-          "x-scheme-handler/discord" = [ "vesktop.desktop" ];
-          "x-scheme-handler/http" = [ "zen.desktop" ];
-          "x-scheme-handler/https" = [ "zen.desktop" ];
-          "x-scheme-handler/chrome" = [ "zen.desktop" ];
-          "text/html" = [ "zen.desktop" ];
-          "application/x-extension-htm" = [ "zen.desktop" ];
-          "application/x-extension-html" = [ "zen.desktop" ];
-          "application/x-extension-shtml" = [ "zen.desktop" ];
-          "application/xhtml+xml" = [ "zen.desktop" ];
-          "application/x-extension-xhtml" = [ "zen.desktop" ];
-          "application/x-extension-xht" = [ "zen.desktop" ];
+          "x-scheme-handler/discord" = ["vesktop.desktop"];
+          "x-scheme-handler/http" = ["zen.desktop"];
+          "x-scheme-handler/https" = ["zen.desktop"];
+          "x-scheme-handler/chrome" = ["zen.desktop"];
+          "text/html" = ["zen.desktop"];
+          "application/x-extension-htm" = ["zen.desktop"];
+          "application/x-extension-html" = ["zen.desktop"];
+          "application/x-extension-shtml" = ["zen.desktop"];
+          "application/xhtml+xml" = ["zen.desktop"];
+          "application/x-extension-xhtml" = ["zen.desktop"];
+          "application/x-extension-xht" = ["zen.desktop"];
         };
       };
     };

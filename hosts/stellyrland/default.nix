@@ -1,5 +1,4 @@
-{ identity, ... }:
-{
+{identity, ...}: {
   imports = [
     ./hardware-configuration.nix
   ];
@@ -52,6 +51,7 @@
       fastfetch.enable = true;
       gsr.enable = true;
       kitty.enable = true;
+      nix-index.enable = true;
       ns.enable = true;
       yazi.enable = true;
       zed.enable = true;

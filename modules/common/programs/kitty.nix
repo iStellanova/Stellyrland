@@ -1,5 +1,9 @@
-{ config, lib, identity, ... }:
 {
+  config,
+  lib,
+  identity,
+  ...
+}: {
   options.aspects.programs.kitty.enable = lib.mkEnableOption "Kitty terminal emulator";
   config = lib.mkIf config.aspects.programs.kitty.enable {
     home-manager.users.${identity.name} = {

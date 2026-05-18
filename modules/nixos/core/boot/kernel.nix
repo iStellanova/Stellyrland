@@ -3,26 +3,24 @@
   lib,
   pkgs,
   ...
-}:
-
-{
+}: {
   options.aspects.core.kernel.enable = lib.mkEnableOption "Custom stripped kernel";
 
   config = lib.mkIf config.aspects.core.kernel.enable {
-
     # ─────────────────────────────────────────────────────────────────────────
     # Kernel Package: CachyOS BORE + LTO (Branded)
     # ─────────────────────────────────────────────────────────────────────────
     boot.kernelPackages = pkgs.cachyosKernels.linuxPackages-cachyos-bore-lto.extend (
       lp-self: lp-super: {
-        kernel = (lp-super.kernel.override {
-          # Use .override to set the "Expected" version before the build starts
-          modDirVersion = "${lib.head (lib.splitString "-" lp-super.kernel.version)}-stellyrkernel";
-        }).overrideAttrs (old: rec {
-          pname = "linux";
-          version = "${lib.head (lib.splitString "-" old.version)}-stellyrkernel";
-          __intentionallyOverridingVersion = true;
-        });
+        kernel =
+          (lp-super.kernel.override {
+            # Use .override to set the "Expected" version before the build starts
+            modDirVersion = "${lib.head (lib.splitString "-" lp-super.kernel.version)}-stellyrkernel";
+          }).overrideAttrs (old: rec {
+            pname = "linux";
+            version = "${lib.head (lib.splitString "-" old.version)}-stellyrkernel";
+            __intentionallyOverridingVersion = true;
+          });
       }
     );
 
@@ -31,7 +29,6 @@
         name = "stellyrland-super-kernel";
         patch = null;
         structuredExtraConfig = with lib.kernel; {
-
           # ── Scheduler & Performance ───────────────────────────────────────
           # We use the expected name here to pass the check, but rename in postInstall
           LOCALVERSION = lib.mkForce (freeform "-stellyrkernel");

@@ -1,9 +1,10 @@
-{ config, lib, ... }:
-
-let
-  cfg = config.aspects.core.headless;
-in
 {
+  config,
+  lib,
+  ...
+}: let
+  cfg = config.aspects.core.headless;
+in {
   options.aspects.core.headless = {
     enable = lib.mkEnableOption "Headless/Remote-only specialisation";
     disabledPorts = lib.mkOption {

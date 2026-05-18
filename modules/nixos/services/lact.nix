@@ -1,8 +1,11 @@
-{ config, lib, pkgs, ... }:
-
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 # Aggressive overclock to get the most out of my GPU.
 # Manually tuned for maximum performance.
-
 let
   cfg = config.aspects.services.lact;
   gpuConfig = {
@@ -56,8 +59,7 @@ let
   lactConfig = pkgs.runCommand "lact-config.yaml" {} ''
     sed "s/'\([0-9]*\)':/\1:/g" ${yamlFile} > $out
   '';
-in
-{
+in {
   options.aspects.services.lact.enable = lib.mkEnableOption "LACT GPU tuning service";
 
   config = lib.mkIf cfg.enable {

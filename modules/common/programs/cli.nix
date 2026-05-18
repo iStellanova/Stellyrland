@@ -1,18 +1,25 @@
-{ config, lib, pkgs, identity, isDarwin, ... }:
-
 {
+  config,
+  lib,
+  pkgs,
+  identity,
+  isDarwin,
+  ...
+}: {
   options.aspects.programs.cli.enable = lib.mkEnableOption "Common CLI utilities";
 
   config = lib.mkIf config.aspects.programs.cli.enable {
-    environment.systemPackages = with pkgs; [
-      curl                     # A command line tool for transferring data with URL syntax
-      unzip                    # Extraction utility for archives compressed in .zip format
-      zip                      # Archiver for .zip files
-      croc                     # Easily and securely send things from one computer to another
-      kitty.terminfo           # Terminal info for Kitty, fixes 'unknown terminal type' over SSH
-    ] ++ lib.optionals (!isDarwin) [
-      efibootmgr               # EFI Boot Manager for Linux
-    ];
+    environment.systemPackages = with pkgs;
+      [
+        curl # A command line tool for transferring data with URL syntax
+        unzip # Extraction utility for archives compressed in .zip format
+        zip # Archiver for .zip files
+        croc # Easily and securely send things from one computer to another
+        kitty.terminfo # Terminal info for Kitty, fixes 'unknown terminal type' over SSH
+      ]
+      ++ lib.optionals (!isDarwin) [
+        efibootmgr # EFI Boot Manager for Linux
+      ];
 
     # Enables special tools.
     home-manager.users.${identity.name} = {
@@ -51,23 +58,25 @@
         };
       };
 
-      programs.zsh.shellAliases = {
-        # QOL aliases
-        ls = "eza -lh";
-        ll = "eza -al";
-        lt = "eza -a --tree --level=2";
-        ff = "sudo fd -HI -a --exclude .snapshots";
-        is = "fzf --preview=\"bat --style=numbers --color=always {}\"";
-        cat = "bat";
-        grep = "rg";
-        man = "tldr";
-      } // lib.optionalAttrs (!isDarwin) {
-        # Environment switching aliases (Linux only)
-        # Sets the 'headless' specialisation as the default boot entry and reboots.
-        reboot-headless = "sudo /run/current-system/specialisation/headless/bin/switch-to-configuration boot && sudo reboot";
-        # Restores the main system (GUI) as the default boot entry and reboots.
-        reboot-gui = "sudo /nix/var/nix/profiles/system/bin/switch-to-configuration boot && sudo reboot";
-      };
+      programs.zsh.shellAliases =
+        {
+          # QOL aliases
+          ls = "eza -lh";
+          ll = "eza -al";
+          lt = "eza -a --tree --level=2";
+          ff = "sudo fd -HI -a --exclude .snapshots";
+          is = "fzf --preview=\"bat --style=numbers --color=always {}\"";
+          cat = "bat";
+          grep = "rg";
+          man = "tldr";
+        }
+        // lib.optionalAttrs (!isDarwin) {
+          # Environment switching aliases (Linux only)
+          # Sets the 'headless' specialisation as the default boot entry and reboots.
+          reboot-headless = "sudo /run/current-system/specialisation/headless/bin/switch-to-configuration boot && sudo reboot";
+          # Restores the main system (GUI) as the default boot entry and reboots.
+          reboot-gui = "sudo /nix/var/nix/profiles/system/bin/switch-to-configuration boot && sudo reboot";
+        };
 
       # fd - fast directory search
       programs.fd.enable = true;
