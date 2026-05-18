@@ -40,21 +40,24 @@ I love declarative deployment. Defining my system this way keeps it organized an
 ```text
 /etc/nixos/
 ├── flake.nix               # Entry point using flake-parts
+├── flake.lock              # Lockfile for flake inputs
+├── flake/                  # Flake-related logic (Hosts, Lib, Treefmt)
 ├── hosts/                  # Machine-specific entry points
 │   ├── stellyrland/        # Primary NixOS workstation configuration
 │   └── stellyrtop/         # Secondary macOS (Darwin) configuration
 ├── modules/                # Self-contained feature modules (Aspects)
 │   ├── common/             # Shared across all platforms (NixOS/Darwin)
-│   │   ├── core/           # Shared core settings (Nix, Fonts)
-│   │   └── programs/       # Shared CLI & TUI apps (Git, Zsh, Neovim)
+│   │   ├── core/           # Shared core settings (Nix, Fonts, Networking)
+│   │   └── programs/       # Shared CLI & TUI apps (Git, Zsh, Nixvim, etc.)
 │   ├── darwin/             # macOS specific modules
 │   └── nixos/              # NixOS specific modules
 │       ├── core/           # Base system (Boot, Hardware, Storage, Users)
 │       ├── desktop/        # UI & Theming (Hyprland, Styling)
 │       ├── programs/       # GUI Applications (Zed, Gaming, Browser)
-│       └── services/       # Background daemons (Lact, OpenRGB)
-├── assets/                 # Non-code resources (Wallpapers, etc.)
-├── lib/                    # Custom Nix helpers (Recursive scanner)
+│       └── services/       # Background daemons (Lact, OpenRGB, AI)
+├── assets/                 # Non-code resources (Wallpapers, Screenshots)
+├── docs/                   # Documentation and troubleshooting guides
+├── lib/                    # Custom Nix helpers
 └── README.md
 ```
 
@@ -74,7 +77,7 @@ I love declarative deployment. Defining my system this way keeps it organized an
 - **OS:** NixOS (Unstable) & macOS (Darwin)
 - **WM:** Hyprland
 - **Shell:** Zsh
-- **Editor:** Zed / Neovim
+- **Editor:** Zed / Nixvim
 - **Terminal:** Kitty
 - **Bar/Shell:** Noctalia Shell
 
@@ -101,5 +104,4 @@ More elaboration on my AI morals [here](./docs/ai.md).
 
 ## 📜 Credits & Inspiration
 - **Vimjoyer:** For popularizing the Dendritic pattern.
-- [LazyVim](https://github.com/LazyVim/LazyVim) for the Neovim base.
 - [Noctalia Dev](https://github.com/noctalia-dev) for the shell components.
