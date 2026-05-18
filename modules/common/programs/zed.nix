@@ -85,6 +85,18 @@
                 };
               };
             };
+            "assistant" = {
+              "version" = 2;
+              "dock" = "right";
+            };
+            "chat_panel" = {
+              "dock" = "right";
+            };
+            "agent_servers" = {
+              "claude-acp" = {
+                "type" = "registry";
+              };
+            };
           };
         };
 

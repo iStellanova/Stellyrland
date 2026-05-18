@@ -35,7 +35,7 @@
     # Program Aspects
     programs = {
       cli.enable = true;
-      gemini.enable = true;
+      claude.enable = true;
       aesthetic.enable = true;
       media.enable = true;
       utils.enable = true;

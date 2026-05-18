@@ -38,7 +38,7 @@
       yazi.enable = true;
       zsh.enable = true;
       neovim.enable = true;
-      gemini.enable = true;
+      claude.enable = true;
       vesktop.enable = true;
       zed.enable = true;
     };
