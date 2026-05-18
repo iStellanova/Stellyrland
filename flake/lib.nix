@@ -1,3 +1,3 @@
 {inputs, ...}: {
-  flake.lib = inputs.nixpkgs.lib.extend (self: super: (import ../lib/default.nix {lib = self;}));
+  flake.lib = inputs.nixpkgs.lib.extend (self: _super: (import ../lib/default.nix {lib = self;}));
 }

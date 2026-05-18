@@ -1,7 +1,6 @@
 {
   config,
   lib,
-  pkgs,
   identity,
   ...
 }: {
@@ -11,9 +10,8 @@
     home-manager.users.${identity.name} = {
       programs.nix-index = {
         enable = true;
-        enableNixLocate = true;
       };
-      home.packages = [pkgs.comma];
+      programs.nix-index-database.comma.enable = true;
     };
   };
 }

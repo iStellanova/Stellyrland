@@ -45,7 +45,7 @@
 
   # Define the user so home-manager can link user packages correctly
   users.users.${identity.name} = {
-    name = identity.name;
-    home = identity.home;
+    inherit (identity) name;
+    inherit (identity) home;
   };
 }
