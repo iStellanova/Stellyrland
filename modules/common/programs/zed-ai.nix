@@ -40,8 +40,6 @@ in
             "provider" = "OllamaMemoryBridge";
             "model" = "devstral-small-2:24b";
           };
-          "version" = 2;
-          "dock" = "right";
         };
         "language_models" = {
           "openai_compatible" = {
@@ -74,28 +72,6 @@ in
           "anthropic" = {
             "api_key" = null;
           };
-        };
-        "context_servers" = {
-          "Gemini CLI" = {
-            "command" = "gemini";
-            "args" = [
-              "--acp"
-              "--yolo"
-            ];
-          };
-        };
-        "agent_servers" = {
-          "gemini" = {
-            "type" = "custom";
-            "command" = "gemini";
-            "args" = [
-              "--acp"
-              "--yolo"
-            ];
-          };
-        };
-        "chat_panel" = {
-          "dock" = "right";
         };
       };
     };
