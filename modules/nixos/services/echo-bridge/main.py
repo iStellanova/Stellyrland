@@ -234,11 +234,33 @@ async def stream_ollama_generate(r, session_id: uuid.UUID, user_prompt: str, bac
 # Intercept endpoints (Injections, Routing, Session Allocation)
 # =====================================================================
 
+def extract_text_content(content) -> str:
+    """Safely extracts text content from various message content formats (plain string, list, or dict)."""
+    if isinstance(content, str):
+        return content
+    if isinstance(content, list):
+        text_parts = []
+        for part in content:
+            if isinstance(part, dict):
+                if part.get("type") == "text" and "text" in part:
+                    text_parts.append(part["text"])
+                elif "text" in part:
+                    text_parts.append(part["text"])
+            elif isinstance(part, str):
+                text_parts.append(part)
+        return "\n".join(text_parts)
+    if isinstance(content, dict):
+        if "text" in content:
+            return content["text"]
+        return str(content)
+    return str(content)
+
+
 def optimize_request_options(body: dict):
     """Enforces high-performance context and generation limits to prevent memory bloat."""
     options = body.get("options", {})
     if "num_ctx" not in options:
-        options["num_ctx"] = 8192  # Capped at 8k context for blazing-fast local GPU execution
+        options["num_ctx"] = 16384  # Doubled to 16k context for rich web searches while remaining fully on the 24GB VRAM GPU!
     body["options"] = options
 
 
@@ -255,7 +277,7 @@ async def chat_endpoint(request: Request, background_tasks: BackgroundTasks):
     user_msg = ""
     for msg in reversed(messages):
         if msg.get("role") == "user":
-            user_msg = msg.get("content", "")
+            user_msg = extract_text_content(msg.get("content", ""))
             break
 
     # Context Prompt Injection (Offloaded to a thread pool to unblock event loop)
@@ -305,7 +327,7 @@ async def openai_chat_endpoint(request: Request, background_tasks: BackgroundTas
     user_msg = ""
     for msg in reversed(messages):
         if msg.get("role") == "user":
-            user_msg = msg.get("content", "")
+            user_msg = extract_text_content(msg.get("content", ""))
             break
 
     # Context Prompt Injection (Offloaded to a thread pool to unblock event loop)
