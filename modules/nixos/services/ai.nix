@@ -180,13 +180,17 @@ in
     systemd.services.echo-memory-bridge = {
       description = "Project Echo Cognitive Memory Middleware Proxy";
       after = [ "postgresql.service" "ai-db-init.service" "ollama.service" ];
-      requires = [ "postgresql.service" "ollama.service" ];
+      requires = [ "postgresql.service" "ai-db-init.service" "ollama.service" ];
       wantedBy = if cfg.onDemand then [ ] else [ "multi-user.target" ];
       serviceConfig = {
         Type = "simple";
         User = cfg.user;
         ExecStart = "${pkgs.python3.withPackages (ps: [ ps.fastapi ps.uvicorn ps.psycopg2 ps.httpx ])}/bin/python ${./echo-bridge/main.py}";
         Restart = "on-failure";
+        PrivateTmp = true;
+        NoNewPrivileges = true;
+        ProtectSystem = "strict";
+        ProtectHome = "read-only";
       };
     };
 
