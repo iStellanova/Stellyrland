@@ -1,9 +1,11 @@
-{ config, lib, pkgs, ... }:
-
-let
-  cfg = config.aspects.services.ai;
-in
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}: let
+  cfg = config.aspects.services.ai;
+in {
   options.aspects.services.ai = {
     enable = lib.mkEnableOption "Cognitive AI Architecture Stack";
 
@@ -29,9 +31,9 @@ in
       trinity = lib.mkOption {
         type = lib.types.listOf lib.types.str;
         default = [
-          "qwen3:8b"              # L1 - Face (fast, ~5GB VRAM)
-          "qwen3.6:27b"           # L2 - Core / General + Deep Reasoning (thinking toggle, ~18GB VRAM)
-          "devstral-small-2:24b"  # L3 - Coding agent (~14GB VRAM)
+          "qwen3:8b" # L1 - Face (fast, ~5GB VRAM)
+          "qwen3.6:27b" # L2 - Core / General + Deep Reasoning (thinking toggle, ~18GB VRAM)
+          "devstral-small-2:24b" # L3 - Coding agent (~14GB VRAM)
         ];
         description = "List of model tags representing the 3-tier model escalation strategy.";
       };
@@ -80,7 +82,7 @@ in
       rocmOverrideGfx = "11.0.0"; # Automatically sets HSA_OVERRIDE_GFX_VERSION
       environmentVariables = {
         OLLAMA_MAX_LOADED_MODELS = "1"; # Explicit: one model in VRAM at a time
-        OLLAMA_KEEP_ALIVE = "10m";      # Unload after 10min idle, not instantly
+        OLLAMA_KEEP_ALIVE = "10m"; # Unload after 10min idle, not instantly
       };
       loadModels = lib.mkIf cfg.models.loadOnStartup cfg.models.trinity;
     };
@@ -90,7 +92,7 @@ in
       (final: prev: {
         ollama-rocm = prev.ollama-rocm.override {
           rocmPackages = prev.rocmPackages.overrideScope (rfinal: rprev: {
-            clr = rprev.clr.override { localGpuTargets = [ "gfx1100" ]; };
+            clr = rprev.clr.override {localGpuTargets = ["gfx1100"];};
           });
         };
       })
@@ -110,7 +112,7 @@ in
     services.postgresql = lib.mkIf cfg.postgresql.enable {
       enable = true;
       package = pkgs.postgresql_16;
-      ensureDatabases = [ cfg.postgresql.databaseName ];
+      ensureDatabases = [cfg.postgresql.databaseName];
       ensureUsers = [
         {
           name = cfg.user;
@@ -127,9 +129,12 @@ in
     # Robust oneshot initialization service running as 'postgres' admin
     systemd.services.ai-db-init = lib.mkIf cfg.postgresql.enable {
       description = "Initialize Cognitive AI Database Schema";
-      after = [ "postgresql.service" ];
-      requires = [ "postgresql.service" ];
-      wantedBy = if cfg.onDemand then [ ] else [ "multi-user.target" ];
+      after = ["postgresql.service"];
+      requires = ["postgresql.service"];
+      wantedBy =
+        if cfg.onDemand
+        then []
+        else ["multi-user.target"];
       serviceConfig = {
         Type = "oneshot";
         User = "postgres";
@@ -179,13 +184,16 @@ in
     # 4. Cognitive Memory Middleware Proxy (Option B: Path Co-location)
     systemd.services.echo-memory-bridge = {
       description = "Project Echo Cognitive Memory Middleware Proxy";
-      after = [ "postgresql.service" "ai-db-init.service" "ollama.service" ];
-      requires = [ "postgresql.service" "ai-db-init.service" "ollama.service" ];
-      wantedBy = if cfg.onDemand then [ ] else [ "multi-user.target" ];
+      after = ["postgresql.service" "ai-db-init.service" "ollama.service"];
+      requires = ["postgresql.service" "ai-db-init.service" "ollama.service"];
+      wantedBy =
+        if cfg.onDemand
+        then []
+        else ["multi-user.target"];
       serviceConfig = {
         Type = "simple";
         User = cfg.user;
-        ExecStart = "${pkgs.python3.withPackages (ps: [ ps.fastapi ps.uvicorn ps.psycopg2 ps.httpx ])}/bin/python ${./echo-bridge/main.py}";
+        ExecStart = "${pkgs.python3.withPackages (ps: [ps.fastapi ps.uvicorn ps.psycopg2 ps.httpx])}/bin/python ${./echo-bridge/main.py}";
         Restart = "on-failure";
         PrivateTmp = true;
         NoNewPrivileges = true;
@@ -195,9 +203,9 @@ in
     };
 
     # 5. On-Demand / Manual Start Controls (Off by Default)
-    systemd.services.ollama.wantedBy = lib.mkIf cfg.onDemand (lib.mkForce [ ]);
-    systemd.services.postgresql.wantedBy = lib.mkIf cfg.onDemand (lib.mkForce [ ]);
-    systemd.services.open-webui.wantedBy = lib.mkIf cfg.onDemand (lib.mkForce [ ]);
+    systemd.services.ollama.wantedBy = lib.mkIf cfg.onDemand (lib.mkForce []);
+    systemd.services.postgresql.wantedBy = lib.mkIf cfg.onDemand (lib.mkForce []);
+    systemd.services.open-webui.wantedBy = lib.mkIf cfg.onDemand (lib.mkForce []);
 
     # System-wide start/stop toggles
     environment.shellAliases = {
@@ -207,7 +215,7 @@ in
     };
 
     # 6. System Packages (Purely Native)
-    environment.systemPackages = lib.optionals cfg.oterm.enable [ pkgs.oterm ];
+    environment.systemPackages = lib.optionals cfg.oterm.enable [pkgs.oterm];
 
     environment.interactiveShellInit = lib.optionalString cfg.oterm.enable ''
       alias chat="OLLAMA_HOST=127.0.0.1:8000 oterm"

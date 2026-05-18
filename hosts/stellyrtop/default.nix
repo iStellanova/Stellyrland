@@ -1,6 +1,4 @@
-{ identity, ... }:
-
-{
+{identity, ...}: {
   system.stateVersion = 5;
   # Pull the Name from Identity Flake
   system.primaryUser = identity.name;
@@ -34,6 +32,7 @@
       gaming.enable = true;
       git.enable = true;
       kitty.enable = true;
+      nix-index.enable = true;
       ns.enable = true;
       yazi.enable = true;
       zsh.enable = true;

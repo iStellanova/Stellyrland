@@ -1,5 +1,9 @@
-{ config, lib, pkgs, ... }:
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}: {
   config = lib.mkIf config.aspects.core.nix-settings.enable {
     # Nix settings for Linux.
     nix.daemonCPUSchedPolicy = "batch"; # Batch scheduling for faster builds without UI lag.

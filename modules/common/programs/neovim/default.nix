@@ -1,10 +1,13 @@
-{ config, lib, identity, ... }:
-
 {
+  config,
+  lib,
+  identity,
+  ...
+}: {
   options.aspects.programs.neovim.enable = lib.mkEnableOption "Neovim editor configuration";
 
   config = lib.mkIf config.aspects.programs.neovim.enable {
-    home-manager.users.${identity.name} = { pkgs, ... }: {
+    home-manager.users.${identity.name} = {pkgs, ...}: {
       programs.neovim = {
         enable = true;
         viAlias = true;

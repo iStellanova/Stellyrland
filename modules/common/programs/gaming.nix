@@ -1,11 +1,15 @@
-{ config, lib, pkgs, isDarwin, ... }:
-
 {
+  config,
+  lib,
+  pkgs,
+  isDarwin,
+  ...
+}: {
   options.aspects.programs.gaming.enable = lib.mkEnableOption "Gaming suite (Steam, Gamemode, etc.)";
 
   config = lib.mkIf config.aspects.programs.gaming.enable (lib.mkMerge [
     (lib.optionalAttrs isDarwin {
-      homebrew.casks = [ "steam" "prismlauncher" ];
+      homebrew.casks = ["steam" "prismlauncher"];
     })
 
     (lib.optionalAttrs (!isDarwin) {

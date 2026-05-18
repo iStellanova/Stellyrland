@@ -1,5 +1,10 @@
-{ config, lib, identity, isDarwin, ... }:
 {
+  config,
+  lib,
+  identity,
+  isDarwin,
+  ...
+}: {
   options.aspects.programs.fastfetch.enable = lib.mkEnableOption "Fastfetch";
   config = lib.mkIf config.aspects.programs.fastfetch.enable {
     home-manager.users.${identity.name} = {
@@ -8,7 +13,7 @@
         enable = true;
         settings = {
           "$schema" = "https://github.com/fastfetch-cli/fastfetch/raw/dev/doc/json_schema.json";
-          logo = { };
+          logo = {};
           display = {
             separator = " ";
           };
@@ -104,13 +109,15 @@
               type = "command";
               key = "󰃶 ";
               keyColor = "34";
-              text = if isDarwin then "echo $(( ($(date +%s) - $(stat -f %B /)) / 86400 )) days" else "echo $(( ($(date +%s) - $(stat -c %W /)) / 86400 )) days";
+              text =
+                if isDarwin
+                then "echo $(( ($(date +%s) - $(stat -f %B /)) / 86400 )) days"
+                else "echo $(( ($(date +%s) - $(stat -c %W /)) / 86400 )) days";
             }
             "break"
           ];
         };
       };
-
     };
   };
 }

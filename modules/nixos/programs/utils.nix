@@ -1,15 +1,18 @@
-{ config, lib, pkgs, ... }:
-
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}: {
   options.aspects.programs.utils.enable = lib.mkEnableOption "Miscellaneous GUI utilities";
 
   config = lib.mkIf config.aspects.programs.utils.enable {
-      environment.systemPackages = with pkgs; [
-        gnome-disk-utility       # A utility for managing disk drives and media
-        planify                  # Task manager with Todoist support
-        mission-center           # Resource monitor
-        proton-vpn               # Official Proton VPN Linux app
-        bleachbit                # Cleaning utility for files
-      ];
+    environment.systemPackages = with pkgs; [
+      gnome-disk-utility # A utility for managing disk drives and media
+      planify # Task manager with Todoist support
+      mission-center # Resource monitor
+      proton-vpn # Official Proton VPN Linux app
+      bleachbit # Cleaning utility for files
+    ];
   };
 }

@@ -1,6 +1,9 @@
-{ config, lib, pkgs, ... }:
-
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}: {
   options.aspects.core.fonts.enable = lib.mkEnableOption "Core fonts";
 
   config = lib.mkIf config.aspects.core.fonts.enable {

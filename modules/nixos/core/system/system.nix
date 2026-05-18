@@ -1,5 +1,8 @@
-{ config, lib, ... }:
 {
+  config,
+  lib,
+  ...
+}: {
   config = lib.mkIf config.aspects.core.enable {
     # Locale, don't change.
     i18n.defaultLocale = "en_US.UTF-8";
