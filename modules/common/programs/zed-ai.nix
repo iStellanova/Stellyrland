@@ -27,46 +27,44 @@ in
       programs.zed-editor.userSettings = {
         "agent" = {
           "default_model" = {
-            "provider" = "ollama";
-            "model" = "Echo:latest";
+            "provider" = "OllamaMemoryBridge";
+            "model" = "devstral-small-2:24b";
           };
           "inline_assistant_model" = {
-            "provider" = "ollama";
-            "model" = "Echo:latest";
+            "provider" = "OllamaMemoryBridge";
+            "model" = "devstral-small-2:24b";
           };
         };
         "assistant" = {
           "default_model" = {
-            "provider" = "ollama";
-            "model" = "Echo:latest";
+            "provider" = "OllamaMemoryBridge";
+            "model" = "devstral-small-2:24b";
           };
           "version" = 2;
           "dock" = "right";
         };
         "language_models" = {
-          "ollama" = {
-            "api_url" = "http://127.0.0.1:11434";
-            "available_models" = [
-              { "name" = "Echo:latest"; }
-              { "name" = "qwen2.5-coder:32b"; }
-              { "name" = "deepseek-r1:70b"; }
-              { "name" = "qwen2.5:14b"; }
-              { "name" = "qwen2.5:32b"; }
-              { "name" = "echo-personalized:latest"; }
-              { "name" = "llama3.1:8b"; }
-            ];
-          };
-          "openai_api_compatible" = {
-            "ollama" = {
-              "api_url" = "http://127.0.0.1:11434/v1";
+          "openai_compatible" = {
+            "OllamaMemoryBridge" = {
+              "api_url" = "http://127.0.0.1:8000/v1";
+              "api_key" = "ollama";
               "available_models" = [
-                { "name" = "Echo:latest"; }
-                { "name" = "qwen2.5-coder:32b"; }
-                { "name" = "deepseek-r1:70b"; }
-                { "name" = "qwen2.5:14b"; }
-                { "name" = "qwen2.5:32b"; }
-                { "name" = "echo-personalized:latest"; }
-                { "name" = "llama3.1:8b"; }
+                {
+                  "name" = "devstral-small-2:24b";
+                  "max_tokens" = 32768;
+                }
+                {
+                  "name" = "devstral:24b";
+                  "max_tokens" = 32768;
+                }
+                {
+                  "name" = "qwen3:8b";
+                  "max_tokens" = 32768;
+                }
+                {
+                  "name" = "qwen3.6:27b";
+                  "max_tokens" = 32768;
+                }
               ];
             };
           };
@@ -85,19 +83,6 @@ in
               "--yolo"
             ];
           };
-          "Project Echo" = {
-            "command" = "nix";
-            "args" = [
-              "develop"
-              "/home/${identity.name}/Projects/Project Echo"
-              "-c"
-              "python"
-              "/home/${identity.name}/Projects/Project Echo/scripts/echo-zed.py"
-            ];
-            "env" = {
-              "ECHO_STATE_DIR" = "/home/${identity.name}/Projects/Project Echo";
-            };
-          };
         };
         "agent_servers" = {
           "gemini" = {
@@ -107,20 +92,6 @@ in
               "--acp"
               "--yolo"
             ];
-          };
-          "echo" = {
-            "type" = "custom";
-            "command" = "nix";
-            "args" = [
-              "develop"
-              "/home/${identity.name}/Projects/Project Echo"
-              "-c"
-              "python"
-              "/home/${identity.name}/Projects/Project Echo/scripts/echo-zed.py"
-            ];
-            "env" = {
-              "ECHO_STATE_DIR" = "/home/${identity.name}/Projects/Project Echo";
-            };
           };
         };
         "chat_panel" = {

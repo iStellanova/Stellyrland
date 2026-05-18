@@ -1,2 +1,4 @@
+# Echo project gitignore
 .DS_Store
 .aider*
+context/
