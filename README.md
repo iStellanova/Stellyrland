@@ -95,6 +95,10 @@ I love declarative deployment. Defining my system this way keeps it organized an
 - **Storage:** 512GB
 - **OS:** macOS (nix-darwin)
 
+## ⚠️ AI Disclaimer
+AI is utilized in the development of this system, largely for review and debugging.
+More elaboration on my AI morals [here](./docs/ai.md).
+
 ## 📜 Credits & Inspiration
 - **Vimjoyer:** For popularizing the Dendritic pattern.
 - [LazyVim](https://github.com/LazyVim/LazyVim) for the Neovim base.
