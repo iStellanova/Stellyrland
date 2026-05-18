@@ -67,6 +67,12 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    # NixVim - Neovim configuration system for Nix.
+    nixvim = {
+      url = "github:nix-community/nixvim";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     # Disko - declarative disk partitioning.
     disko = {
       url = "github:nix-community/disko";

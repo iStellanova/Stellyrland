@@ -36,7 +36,7 @@
       ns.enable = true;
       yazi.enable = true;
       zsh.enable = true;
-      neovim.enable = true;
+      nixvim.enable = true;
       ai-tools.enable = true;
       vesktop.enable = true;
       zed.enable = true;
