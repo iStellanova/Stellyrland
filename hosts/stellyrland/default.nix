@@ -43,7 +43,7 @@
       gaming.enable = true;
       git.enable = true;
       zsh.enable = true;
-      neovim.enable = true;
+      nixvim.enable = true;
       vesktop.enable = true;
       noctalia-shell.enable = true;
       antigravity.enable = true;
