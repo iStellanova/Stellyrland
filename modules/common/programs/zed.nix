@@ -105,6 +105,11 @@
               "claude-acp" = {
                 "type" = "registry";
               };
+              "gemini" = {
+                "default_mode" = "autoEdit";
+                "favorite_models" = ["gemini-3-flash-preview"];
+                "type" = "registry";
+              };
               "gemini-cli" = {
                 "type" = "registry";
               };
