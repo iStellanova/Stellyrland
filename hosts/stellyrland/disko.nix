@@ -7,7 +7,7 @@
 
   disko.devices = {
     disk.main = {
-      device = "/dev/nvme2n1";
+      device = "/dev/nvme0n1";
       type = "disk";
       content = {
         type = "gpt";
@@ -33,9 +33,19 @@
             content = {
               type = "btrfs";
               extraArgs = ["-f"];
-              mountpoint = "/";
-              mountOptions = ["compress=zstd" "noatime" "discard=async" "commit=60" "space_cache=v2"];
               subvolumes = {
+                "@" = {
+                  mountpoint = "/";
+                  mountOptions = ["compress=zstd" "noatime" "discard=async" "commit=60" "space_cache=v2"];
+                };
+                "@nix" = {
+                  mountpoint = "/nix";
+                  mountOptions = ["compress=zstd" "noatime" "discard=async" "commit=60" "space_cache=v2"];
+                };
+                "@persist" = {
+                  mountpoint = "/persist";
+                  mountOptions = ["compress=zstd" "noatime" "discard=async" "commit=60" "space_cache=v2"];
+                };
                 "@home" = {
                   mountpoint = "/home";
                   mountOptions = ["compress=zstd" "noatime" "discard=async" "commit=60" "space_cache=v2"];
