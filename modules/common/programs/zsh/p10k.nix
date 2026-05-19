@@ -39,7 +39,7 @@
       "status"
       "command_execution_time"
       "nix_shell" # Added nix_shell back as it's very relevant for NixOS
-      "direnv"    # Added direnv back for development workflow
+      "direnv" # Added direnv back for development workflow
     ];
 
     # Multiline Ornaments
@@ -135,7 +135,6 @@
 
   # problematic expansion escaped for use in p10k.zsh
   vcsExpansion = "'\${$((my_git_formatter()))+\${my_git_format}}'";
-
 in ''
   # Powerlevel10k Nix-native configuration
   # Generated from modules/common/programs/zsh/p10k.nix
