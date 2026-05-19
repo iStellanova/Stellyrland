@@ -14,25 +14,21 @@
           enable = true;
           enableDefaultConfig = false;
 
-          matchBlocks = {
+          settings = {
             "stellyrland" = {
-              hostname = "stellyrland.tailb15b96.ts.net";
-              user = identity.nixosName;
-              identityFile = "~/.ssh/stellacode";
+              HostName = "stellyrland.tailb15b96.ts.net";
+              User = identity.nixosName;
+              IdentityFile = "~/.ssh/stellacode";
             };
             "github.com" = {
-              hostname = "github.com";
-              user = "git";
-              identityFile = "~/.ssh/stellacode";
-              extraOptions = {
-                "AddKeysToAgent" = "yes";
-              };
+              HostName = "github.com";
+              User = "git";
+              IdentityFile = "~/.ssh/stellacode";
+              AddKeysToAgent = "yes";
             };
             "*" = {
-              extraOptions = {
-                "HashKnownHosts" = "yes";
-                "SendEnv" = "LANG LC_*";
-              };
+              HashKnownHosts = "yes";
+              SendEnv = "LANG LC_*";
             };
           };
         };
