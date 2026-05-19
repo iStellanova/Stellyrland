@@ -198,6 +198,8 @@ in ''
     typeset -g POWERLEVEL9K_VCS_DISABLE_GITSTATUS_FORMATTING=true
     typeset -g POWERLEVEL9K_VCS_CONTENT_EXPANSION=${vcsExpansion}
 
+    typeset -g POWERLEVEL9K_CONFIG_FILE=''${''${(%):-%x}:a}
+
     # If p10k is already loaded, reload configuration.
     (( ! $+functions[p10k] )) || p10k reload
   }
