@@ -69,6 +69,7 @@ in {
             center = ["media"];
             end = ["tray" "volume" "weather" "network" "temp" "cpu" "ram" "clock" "notifications"];
             margin_ends = 5;
+            margin_edge = 5;
             start = ["launcher" "workspaces" "audio_visualizer" "active_window"];
             widget_spacing = 13;
           };
