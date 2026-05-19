@@ -2,6 +2,7 @@
   config,
   lib,
   pkgs,
+  inputs,
   ...
 }: let
   cfg = config.aspects.services.ai;
@@ -193,7 +194,7 @@ in {
       serviceConfig = {
         Type = "simple";
         User = cfg.user;
-        ExecStart = "${pkgs.python3.withPackages (ps: [ps.fastapi ps.uvicorn ps.psycopg2 ps.httpx])}/bin/python ${./echo-bridge/main.py}";
+        ExecStart = "${inputs.echo-bridge.packages.${pkgs.system}.default}/bin/echo-bridge";
         Restart = "on-failure";
         PrivateTmp = true;
         NoNewPrivileges = true;

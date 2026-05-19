@@ -78,6 +78,12 @@
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    # Project Echo - Cognitive AI Bridge
+    echo-bridge = {
+      url = "git+file:///home/stellanova/Projects/Project%20Echo";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = inputs @ {flake-parts, ...}:
