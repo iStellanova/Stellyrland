@@ -16,12 +16,17 @@
     ];
 
     services.snapper.configs = {
-      # Snapper configuration for the home subvolume. Aims and creates BTRFS snapshots.
       home = {
         SUBVOLUME = "/home";
         ALLOW_USERS = [identity.name];
         TIMELINE_CREATE = true;
         TIMELINE_CLEANUP = true;
+        TIMELINE_MIN_AGE = "1800";
+        TIMELINE_LIMIT_HOURLY = "5";
+        TIMELINE_LIMIT_DAILY = "7";
+        TIMELINE_LIMIT_WEEKLY = "2";
+        TIMELINE_LIMIT_MONTHLY = "1";
+        TIMELINE_LIMIT_YEARLY = "0";
       };
     };
 

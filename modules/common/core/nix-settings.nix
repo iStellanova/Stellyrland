@@ -88,7 +88,7 @@ in {
       #   NixOS: Take a BTRFS snapshot, add the repo to git, rebuild and switch.
       #   Darwin: Simply rebuild and switch.
       # upgrade
-      #   NixOS: Take a BTRFS snapshot, add the repo to git, upgrade flatpak, upgrade the system, and switch to the new generation.
+      #   NixOS: Take a BTRFS snapshot, add the repo to git, upgrade the system, and switch to the new generation. Flatpak updates via onActivation.
       #   Darwin: Upgrade the system.
       # nix-add: Add a package to the scratch profile.
       # nix-remove: Remove a package from the scratch profile.
@@ -124,7 +124,7 @@ in {
             ${
           if isDarwin
           then ""
-          else "(snapper -c home create -c timeline --description \"Before upgrade\" || true) && flatpak update && "
+          else "(snapper -c home create -c timeline --description \"Before upgrade\" || true) && "
         }git -C $FLAKE add . && ${
           if isDarwin
           then "nh darwin switch --update $FLAKE"
