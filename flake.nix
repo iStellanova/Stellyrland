@@ -67,6 +67,12 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    # Git hooks - runs treefmt formatters as a pre-commit hook.
+    git-hooks = {
+      url = "github:cachix/git-hooks.nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     # NixVim - Neovim configuration system for Nix.
     nixvim = {
       url = "github:nix-community/nixvim";
@@ -78,6 +84,12 @@
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    # Impermanence - opt-in persistence (wipe / on boot, keep only declared paths).
+    impermanence.url = "github:nix-community/impermanence";
+
+    # Nix-Flatpak - declarative Flatpak package management.
+    nix-flatpak.url = "github:gmodena/nix-flatpak";
 
     # Project Echo - Cognitive AI Bridge
     echo-bridge = {
@@ -97,6 +109,7 @@
         ./flake/lib.nix
         ./flake/hosts.nix
         ./flake/treefmt.nix
+        ./flake/hooks.nix
       ];
     };
 }
