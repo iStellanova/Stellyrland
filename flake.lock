@@ -161,11 +161,11 @@
         "rev": "2f29388823576b08b4c08a6b055b007ef913d734",
         "revCount": 32,
         "type": "git",
-        "url": "file:///home/stellanova/Projects/Project%20Echo"
+        "url": "ssh://git@github.com/iStellanova/Project-Echo.git"
       },
       "original": {
         "type": "git",
-        "url": "file:///home/stellanova/Projects/Project%20Echo"
+        "url": "ssh://git@github.com/iStellanova/Project-Echo.git"
       }
     },
     "flake-compat": {

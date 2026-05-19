@@ -73,6 +73,12 @@ in {
         description = "The name of the PostgreSQL database for cognitive memory.";
       };
     };
+
+    echoProjectPath = lib.mkOption {
+      type = lib.types.str;
+      default = "/home/${config.aspects.services.ai.user}/Projects/Project Echo";
+      description = "Path to the Project Echo source directory on this machine.";
+    };
   };
 
   config = lib.mkIf cfg.enable {

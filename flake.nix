@@ -93,7 +93,7 @@
 
     # Project Echo - Cognitive AI Bridge
     echo-bridge = {
-      url = "git+file:///home/stellanova/Projects/Project%20Echo";
+      url = "git+ssh://git@github.com/iStellanova/Project-Echo.git";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };

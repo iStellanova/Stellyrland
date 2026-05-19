@@ -24,9 +24,11 @@ in {
     home-manager.users.${identity.name} = {
       home.packages = [echoPython];
 
-      programs.zsh.shellAliases = {
-        echo-cli = "nix develop '/home/${identity.name}/Projects/Project Echo' -c python '/home/${identity.name}/Projects/Project Echo/scripts/echo_prime_tui.py'";
-        echo-bridge = "nix develop '/home/${identity.name}/Projects/Project Echo' -c python '/home/${identity.name}/Projects/Project Echo/scripts/echo-bridge.py'";
+      programs.zsh.shellAliases = let
+        echoPath = config.aspects.services.ai.echoProjectPath;
+      in {
+        echo-cli = "nix develop '${echoPath}' -c python '${echoPath}/scripts/echo_prime_tui.py'";
+        echo-bridge = "nix develop '${echoPath}' -c python '${echoPath}/scripts/echo-bridge.py'";
       };
 
       programs.zed-editor.userSettings = {
