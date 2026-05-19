@@ -18,10 +18,10 @@
         enable = true;
         enableZshIntegration = false; # We will handle this manually to ensure order
         settings = {
-          # ... rest of settings unchanged ...
           add_newline = true;
 
           format = lib.concatStrings [
+            "[╭─](fg:#737aa2)"
             "[](#a3aed2)"
             "$os"
             "[](bg:#769ff0 fg:#a3aed2)"
@@ -29,24 +29,21 @@
             "[](fg:#769ff0 bg:#394260)"
             "$git_branch"
             "$git_status"
-            "[](fg:#394260 bg:#212736)"
-            "$nodejs"
-            "$rust"
-            "$golang"
-            "[](fg:#212736 bg:#1d2230)"
-            "$time"
-            "[ ](fg:#1d2230)"
-            "\n$character"
+            "[](fg:#394260)"
+            "\n[╰─](fg:#737aa2)"
+            "$character"
           ];
+
+          right_format = "$nix_shell$cmd_duration$status";
 
           os = {
             disabled = false;
             style = "bg:#a3aed2 fg:#000000";
-            symbols = {
-              NixOS = " ";
-              Macos = "󰀵 ";
-            };
             format = "[$symbol]($style)";
+            symbols = {
+              NixOS = "󱄅 ";
+              Macos = " ";
+            };
           };
 
           directory = {
@@ -57,39 +54,44 @@
           };
 
           git_branch = {
-            symbol = "";
+            symbol = " ";
             style = "bg:#394260";
-            format = "[[ $symbol $branch ](fg:#769ff0 bg:#394260)]($style)";
+            format = "[ $symbol$branch ](fg:#769ff0 bg:#394260)";
           };
 
           git_status = {
             style = "bg:#394260";
-            format = "[[($all_status$ahead_behind )](fg:#769ff0 bg:#394260)]($style)";
+            ahead = "⇡$count ";
+            behind = "⇣$count ";
+            diverged = "⇣$behind_count⇡$ahead_count ";
+            stashed = "*$count ";
+            modified = "!$count ";
+            staged = "+$count ";
+            untracked = "?$count ";
+            renamed = "»$count ";
+            deleted = "✘$count ";
+            format = "[$all_status$ahead_behind](fg:#769ff0 bg:#394260)";
           };
 
-          nodejs = {
-            symbol = "";
-            style = "bg:#212736";
-            format = "[[ $symbol ($version) ](fg:#769ff0 bg:#212736)]($style)";
+          fill = {};
+
+          nix_shell = {
+            symbol = " ";
+            impure_msg = "impure";
+            pure_msg = "pure";
+            format = "[](fg:#3b4261)[ $symbol$state ](fg:#7aa2f7 bg:#3b4261)[](fg:#3b4261) ";
           };
 
-          rust = {
-            symbol = "";
-            style = "bg:#212736";
-            format = "[[ $symbol ($version) ](fg:#769ff0 bg:#212736)]($style)";
+
+          cmd_duration = {
+            min_time = 3000;
+            format = "[](fg:#e0af68)[ ⧗ $duration ](fg:#1d2230 bg:#e0af68)[](fg:#e0af68) ";
           };
 
-          golang = {
-            symbol = "";
-            style = "bg:#212736";
-            format = "[[ $symbol ($version) ](fg:#769ff0 bg:#212736)]($style)";
-          };
-
-          time = {
+          status = {
             disabled = false;
-            time_format = "%R";
-            style = "bg:#1d2230";
-            format = "[[  $time ](fg:#a0a9cb bg:#1d2230)]($style)";
+            format = "[](fg:#f7768e)[ ✘ $status ](fg:#1d2230 bg:#f7768e)[](fg:#f7768e)";
+            style = "fg:#f7768e";
           };
 
           character = {
