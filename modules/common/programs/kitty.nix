@@ -2,6 +2,7 @@
   config,
   lib,
   identity,
+  isDarwin,
   ...
 }: {
   options.aspects.programs.kitty.enable = lib.mkEnableOption "Kitty terminal emulator";
@@ -32,6 +33,11 @@
         extraConfig = ''
           include ${identity.home}/.config/kitty/themes/noctalia.conf
         '';
+      };
+
+      xdg.terminal-exec = lib.mkIf (!isDarwin) {
+        enable = true;
+        settings.default = ["kitty.desktop"];
       };
     };
   };
