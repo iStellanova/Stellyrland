@@ -55,6 +55,34 @@
       TimeoutStopSec = "5s";
     };
 
+    # Ensure btrfs tools are available in the initrd for the rollback service.
+    boot.initrd.supportedFilesystems = ["btrfs"];
+
+    # Wipe / on every boot by restoring @ from the @blank read-only snapshot.
+    # Runs in the systemd initrd before sysroot.mount, so the root subvolume is
+    # replaced before the kernel ever pivots into it. /nix (@nix), /persist
+    # (@persist), and /home (@home) are separate subvolumes and are never touched.
+    boot.initrd.systemd.services.rollback = {
+      description = "Rollback BTRFS root to blank snapshot";
+      wantedBy = ["initrd.target"];
+      after = ["dev-nvme0n1p3.device"];
+      before = ["sysroot.mount"];
+      unitConfig.DefaultDependencies = "no";
+      serviceConfig.Type = "oneshot";
+      script = ''
+        mkdir /mnt
+        mount -t btrfs -o subvol=/ /dev/disk/by-uuid/8e1f7f22-7c3b-4950-86a1-90c4a04037c4 /mnt
+        btrfs subvolume list -o /mnt/@ |
+          awk '{print $NF}' |
+          while read subvol; do
+            btrfs subvolume delete "/mnt/$subvol"
+          done
+        btrfs subvolume delete /mnt/@
+        btrfs subvolume snapshot /mnt/@blank /mnt/@
+        umount /mnt
+      '';
+    };
+
     # High-performance network stack optimizations.
     boot.kernel.sysctl = {
       "net.core.default_qdisc" = "fq";

@@ -17,6 +17,7 @@
       fonts.enable = true;
       networking.enable = true;
       storage.enable = true;
+      impermanence.enable = true;
       services-base.enable = true;
       xdg.enable = true;
       headless = {
