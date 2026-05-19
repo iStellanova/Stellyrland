@@ -62,6 +62,8 @@ in {
         inputs.catppuccin.nixosModules.catppuccin
         inputs.hyprland.nixosModules.default
         inputs.disko.nixosModules.disko
+        inputs.impermanence.nixosModules.impermanence
+        inputs.nix-flatpak.nixosModules.nix-flatpak
       ];
     };
 

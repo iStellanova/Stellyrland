@@ -9,7 +9,13 @@
     # TinySPARQL and LocalSearch provide the indexing backend for Nautilus file searching.
     services.gnome.tinysparql.enable = true;
     services.gnome.localsearch.enable = true;
-    services.flatpak.enable = true;
+    services.flatpak = {
+      enable = true;
+      update.onActivation = true;
+      packages = [
+        "org.vinegarhq.Sober"
+      ];
+    };
     programs.seahorse.enable = true; # GUI for managing GPG keys and SSH passwords
   };
 }
