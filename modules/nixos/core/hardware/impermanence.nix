@@ -16,6 +16,7 @@
     environment.persistence."/persist" = {
       hideMounts = true;
       directories = [
+        "/var/lib/nixos"
         "/var/lib/postgresql"
         "/var/lib/private/ollama"
         "/var/lib/private/open-webui"
