@@ -14,7 +14,7 @@
     environment.systemPackages = [pkgs.zsh-completions];
 
     home-manager.users.${identity.name} = {pkgs, ...}: {
-      home.file.".p10k.zsh".source = ./p10k.zsh;
+      home.file.".p10k.zsh".text = import ./p10k.nix {inherit lib;};
       programs.zsh = {
         enable = true;
         enableCompletion = true;
