@@ -194,7 +194,7 @@ in {
       serviceConfig = {
         Type = "simple";
         User = cfg.user;
-        ExecStart = "${inputs.echo-bridge.packages.${pkgs.system}.default}/bin/echo-bridge";
+        ExecStart = "${inputs.echo-bridge.packages.${pkgs.stdenv.hostPlatform.system}.default}/bin/echo-bridge";
         Restart = "on-failure";
         PrivateTmp = true;
         NoNewPrivileges = true;
