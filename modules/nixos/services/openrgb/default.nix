@@ -44,26 +44,25 @@ in {
         ExecStart = pkgs.writeShellScript "openrgb-retry-apply" ''
           OPENRGB="${pkgs.openrgb-with-all-plugins}/bin/openrgb --client 127.0.0.1:6742 --nodetect"
 
-          # Wait for the server and all 10 device entries to stabilize
+          # Wait for the server to detect at least one device (I2C/RAM arrives first)
           for i in {1..60}; do
             COUNT=$($OPENRGB --list-devices 2>/dev/null | grep -c "Type:" || true)
-            if [ "$COUNT" -ge 10 ]; then
-              echo "OpenRGB: All hardware detected. Applying global White settings..."
-
-              # 1. Apply the profile (contains the resized zones and saved colors)
-              $OPENRGB --profile ${./stellyr.orp} >/dev/null 2>&1
+            if [ "$COUNT" -ge 1 ]; then
+              echo "OpenRGB: $COUNT device(s) detected. Applying profile and white..."
+              $OPENRGB --profile ${./stellyr.orp} >/dev/null 2>&1 || true
               sleep 2
-
-              # 2. Force everything to White globally in one shot
-              $OPENRGB --color ffffff >/dev/null 2>&1
-
-              echo "OpenRGB: Global synchronization complete."
-              exit 0
+              $OPENRGB --color ffffff >/dev/null 2>&1 || true
+              echo "OpenRGB: First pass complete. Waiting for USB controllers..."
+              break
             fi
             sleep 1
           done
-          echo "OpenRGB: Error - Timed out waiting for hardware."
-          exit 1
+
+          # Second pass after 30s: catches USB fan controllers (NZXT, etc.)
+          # that finish enumerating after I2C devices like RAM sticks.
+          sleep 30
+          $OPENRGB --color ffffff >/dev/null 2>&1 || true
+          echo "OpenRGB: Second pass complete."
         '';
         ExecStop = pkgs.writeShellScript "openrgb-shutdown-blackout" ''
           OPENRGB="${pkgs.openrgb-with-all-plugins}/bin/openrgb --client 127.0.0.1:6742 --nodetect"
