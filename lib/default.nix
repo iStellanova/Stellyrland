@@ -31,6 +31,7 @@
     inherit (identityInput) nixosName darwinName gitName;
     email = identityInput.userEmail;
     sshKeys = identityInput.sshKeys or [];
+    hashedPassword = identityInput.hashedPassword or null;
     home =
       if isDarwin
       then "/Users/${identityInput.darwinName}"
