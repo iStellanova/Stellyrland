@@ -131,12 +131,33 @@
           };
 
           # Formatting
-          none-ls = {
+          conform-nvim = {
             enable = true;
-            sources.formatting = {
-              stylua.enable = true;
-              shfmt.enable = true;
-              black.enable = true;
+            settings = {
+              formatters_by_ft = {
+                nix = ["alejandra"];
+                lua = ["stylua"];
+                python = ["black"];
+                sh = ["shfmt"];
+              };
+              formatters = {
+                alejandra = {
+                  command = "${pkgs.alejandra}/bin/alejandra";
+                };
+                stylua = {
+                  command = "${pkgs.stylua}/bin/stylua";
+                };
+                shfmt = {
+                  command = "${pkgs.shfmt}/bin/shfmt";
+                };
+                black = {
+                  command = "${pkgs.black}/bin/black";
+                };
+              };
+              format_on_save = {
+                lsp_fallback = true;
+                timeout_ms = 500;
+              };
             };
           };
         };
