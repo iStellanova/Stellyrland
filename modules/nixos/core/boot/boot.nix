@@ -58,6 +58,17 @@
     # Ensure btrfs tools are available in the initrd for the rollback service.
     boot.initrd.supportedFilesystems = ["btrfs"];
 
+    # Systemd initrd is required for TPM2 auto-unlock and the rollback service.
+    boot.initrd.systemd.enable = true;
+
+    # Open the LUKS container early in initrd before any filesystem mounts.
+    # allowDiscards passes TRIM commands through to the NVMe for longevity.
+    # TPM2 auto-unlock is enrolled post-install via systemd-cryptenroll.
+    boot.initrd.luks.devices."cryptroot" = {
+      device = "/dev/disk/by-partlabel/disk-main-root";
+      allowDiscards = true;
+    };
+
     # Wipe / on every boot by restoring @ from the @blank read-only snapshot.
     # Runs in the systemd initrd before sysroot.mount, so the root subvolume is
     # replaced before the kernel ever pivots into it. /nix (@nix), /persist
@@ -65,13 +76,13 @@
     boot.initrd.systemd.services.rollback = {
       description = "Rollback BTRFS root to blank snapshot";
       wantedBy = ["initrd.target"];
-      after = ["dev-disk-by\\x2duuid-8e1f7f22\\x2d7c3b\\x2d4950\\x2d86a1\\x2d90c4a04037c4.device"];
+      after = ["systemd-cryptsetup@cryptroot.service"];
       before = ["sysroot.mount"];
       unitConfig.DefaultDependencies = "no";
       serviceConfig.Type = "oneshot";
       script = ''
         mkdir /mnt
-        mount -t btrfs -o subvol=/ /dev/disk/by-uuid/8e1f7f22-7c3b-4950-86a1-90c4a04037c4 /mnt
+        mount -t btrfs -o subvol=/ /dev/mapper/cryptroot /mnt
         btrfs subvolume list -o /mnt/@ |
           awk '{print $NF}' |
           while read subvol; do

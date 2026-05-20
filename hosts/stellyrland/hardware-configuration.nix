@@ -17,46 +17,49 @@
   boot.extraModulePackages = [];
 
   fileSystems."/" = {
-    device = "/dev/disk/by-uuid/8e1f7f22-7c3b-4950-86a1-90c4a04037c4";
+    device = "/dev/mapper/cryptroot";
     fsType = "btrfs";
     options = ["subvol=@" "compress=zstd" "noatime" "discard=async" "commit=60" "space_cache=v2"];
     neededForBoot = true;
   };
 
   fileSystems."/nix" = {
-    device = "/dev/disk/by-uuid/8e1f7f22-7c3b-4950-86a1-90c4a04037c4";
+    device = "/dev/mapper/cryptroot";
     fsType = "btrfs";
     options = ["subvol=@nix" "compress=zstd" "noatime" "discard=async" "commit=60" "space_cache=v2"];
     neededForBoot = true;
   };
 
   fileSystems."/persist" = {
-    device = "/dev/disk/by-uuid/8e1f7f22-7c3b-4950-86a1-90c4a04037c4";
+    device = "/dev/mapper/cryptroot";
     fsType = "btrfs";
     options = ["subvol=@persist" "compress=zstd" "noatime" "discard=async" "commit=60" "space_cache=v2"];
     neededForBoot = true;
   };
 
   fileSystems."/home" = {
-    device = "/dev/disk/by-uuid/8e1f7f22-7c3b-4950-86a1-90c4a04037c4";
+    device = "/dev/mapper/cryptroot";
     fsType = "btrfs";
     options = ["subvol=@home" "compress=zstd" "noatime" "discard=async" "commit=60" "space_cache=v2"];
   };
 
   fileSystems."/home/.snapshots" = {
-    device = "/dev/disk/by-uuid/8e1f7f22-7c3b-4950-86a1-90c4a04037c4";
+    device = "/dev/mapper/cryptroot";
     fsType = "btrfs";
     options = ["subvol=@home_snapshots" "noatime" "compress=zstd" "discard=async" "commit=60" "space_cache=v2"];
   };
 
   fileSystems."/boot" = {
-    device = "/dev/disk/by-uuid/1047-4798";
+    device = "/dev/disk/by-label/STELLYR-BOOT";
     fsType = "vfat";
     options = ["fmask=0022" "dmask=0022"];
   };
 
   swapDevices = [
-    {device = "/dev/disk/by-uuid/f69d2426-45de-47d8-ab65-c0e829538964";}
+    {
+      device = "/dev/nvme0n1p2";
+      randomEncryption.enable = true;
+    }
   ];
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";

@@ -18,6 +18,7 @@
             content = {
               type = "filesystem";
               format = "vfat";
+              extraArgs = ["-n" "STELLYR-BOOT"];
               mountpoint = "/boot";
               mountOptions = ["fmask=0022" "dmask=0022"];
             };
@@ -31,28 +32,33 @@
           root = {
             size = "100%";
             content = {
-              type = "btrfs";
-              extraArgs = ["-f"];
-              subvolumes = {
-                "@" = {
-                  mountpoint = "/";
-                  mountOptions = ["compress=zstd" "noatime" "discard=async" "commit=60" "space_cache=v2"];
-                };
-                "@nix" = {
-                  mountpoint = "/nix";
-                  mountOptions = ["compress=zstd" "noatime" "discard=async" "commit=60" "space_cache=v2"];
-                };
-                "@persist" = {
-                  mountpoint = "/persist";
-                  mountOptions = ["compress=zstd" "noatime" "discard=async" "commit=60" "space_cache=v2"];
-                };
-                "@home" = {
-                  mountpoint = "/home";
-                  mountOptions = ["compress=zstd" "noatime" "discard=async" "commit=60" "space_cache=v2"];
-                };
-                "@home_snapshots" = {
-                  mountpoint = "/home/.snapshots";
-                  mountOptions = ["noatime" "compress=zstd" "discard=async" "commit=60" "space_cache=v2"];
+              type = "luks";
+              name = "cryptroot";
+              settings.allowDiscards = true;
+              content = {
+                type = "btrfs";
+                extraArgs = ["-f" "-L" "stellyrland-root"];
+                subvolumes = {
+                  "@" = {
+                    mountpoint = "/";
+                    mountOptions = ["compress=zstd" "noatime" "discard=async" "commit=60" "space_cache=v2"];
+                  };
+                  "@nix" = {
+                    mountpoint = "/nix";
+                    mountOptions = ["compress=zstd" "noatime" "discard=async" "commit=60" "space_cache=v2"];
+                  };
+                  "@persist" = {
+                    mountpoint = "/persist";
+                    mountOptions = ["compress=zstd" "noatime" "discard=async" "commit=60" "space_cache=v2"];
+                  };
+                  "@home" = {
+                    mountpoint = "/home";
+                    mountOptions = ["compress=zstd" "noatime" "discard=async" "commit=60" "space_cache=v2"];
+                  };
+                  "@home_snapshots" = {
+                    mountpoint = "/home/.snapshots";
+                    mountOptions = ["noatime" "compress=zstd" "discard=async" "commit=60" "space_cache=v2"];
+                  };
                 };
               };
             };
