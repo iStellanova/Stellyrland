@@ -107,7 +107,7 @@ in {
           if isDarwin
           then ""
           else "(snapper -c home create -c timeline --description \"Before rebuild\" || true) && "
-        }git -C $FLAKE add . && ${
+        }git -C $FLAKE add . && (cd $FLAKE && nix fmt) && ${
           if isDarwin
           then "nh darwin switch $FLAKE"
           else "nh os switch"
@@ -127,7 +127,7 @@ in {
           if isDarwin
           then ""
           else "(snapper -c home create -c timeline --description \"Before upgrade\" || true) && "
-        }git -C $FLAKE add . && ${
+        }git -C $FLAKE add . && (cd $FLAKE && nix fmt) && ${
           if isDarwin
           then "nh darwin switch --update $FLAKE"
           else "nh os switch --update"
