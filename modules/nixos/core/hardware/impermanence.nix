@@ -17,7 +17,7 @@
       hideMounts = true;
       directories = [
         "/etc/nixos"
-        "/etc/secureboot"
+        "/var/lib/sbctl"
         "/var/lib/nixos"
         "/var/lib/postgresql"
         "/var/lib/private/ollama"
@@ -25,9 +25,12 @@
         "/var/lib/tailscale"
         "/var/lib/bluetooth"
         "/var/lib/NetworkManager"
+        "/etc/NetworkManager/system-connections"
         "/var/log"
+        "/var/lib/regreet"
       ];
       files = [
+        "/etc/adjtime"
         "/etc/machine-id"
         "/etc/ssh/ssh_host_ed25519_key"
         "/etc/ssh/ssh_host_ed25519_key.pub"
