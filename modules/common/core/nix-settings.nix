@@ -53,9 +53,11 @@ in {
     };
     nix.settings.substituters = lib.optionals (!isDarwin) [
       "https://hyprland.cachix.org"
+      "https://nix-community.cachix.org"
     ];
     nix.settings.trusted-public-keys = lib.optionals (!isDarwin) [
       "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
+      "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
     ];
 
     # Cleaner nix output feedback and generation diffing.

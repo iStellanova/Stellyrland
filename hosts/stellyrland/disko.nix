@@ -7,7 +7,7 @@
 
   disko.devices = {
     disk.main = {
-      device = "/dev/nvme0n1";
+      device = "/dev/disk/by-id/nvme-Corsair_MP700_A72YB338003QTJ";
       type = "disk";
       content = {
         type = "gpt";
@@ -18,7 +18,7 @@
             content = {
               type = "filesystem";
               format = "vfat";
-              extraArgs = ["-n" "STELLYR-BOOT"];
+              extraArgs = ["-n" "STELLYRBOOT"];
               mountpoint = "/boot";
               mountOptions = ["fmask=0022" "dmask=0022"];
             };
