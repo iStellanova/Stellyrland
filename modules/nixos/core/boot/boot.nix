@@ -65,7 +65,7 @@
     boot.initrd.systemd.services.rollback = {
       description = "Rollback BTRFS root to blank snapshot";
       wantedBy = ["initrd.target"];
-      after = ["dev-nvme0n1p3.device"];
+      after = ["dev-disk-by\\x2duuid-8e1f7f22\\x2d7c3b\\x2d4950\\x2d86a1\\x2d90c4a04037c4.device"];
       before = ["sysroot.mount"];
       unitConfig.DefaultDependencies = "no";
       serviceConfig.Type = "oneshot";
