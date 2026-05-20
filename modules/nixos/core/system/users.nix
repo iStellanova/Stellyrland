@@ -12,7 +12,7 @@
 
     users.users.${identity.name} = {
       shell = pkgs.zsh;
-      hashedPassword = identity.hashedPassword;
+      inherit (identity) hashedPassword;
       isNormalUser = true;
       extraGroups = ["wheel" "storage" "disk" "video" "render" "networkmanager"];
       openssh.authorizedKeys.keys = identity.sshKeys;

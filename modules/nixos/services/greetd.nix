@@ -2,6 +2,7 @@
   config,
   lib,
   pkgs,
+  identity,
   ...
 }: let
   cfg = config.aspects.services.greetd;
@@ -67,7 +68,13 @@ in {
               export HOME=/tmp/greetd-home
               rm -rf "$HOME"
               mkdir -p $HOME/.config/hypr
+              mkdir -p $HOME/.cache/regreet
+              printf "%s\n%s\n" \
+                "last_username = \"${identity.name}\"" \
+                "last_session = \"${hyprlandPkg}/share/wayland-sessions/hyprland.desktop\"" \
+                > "$HOME/.cache/regreet/cache.toml"
               ln -sf ${greetdHyprConfig} $HOME/.config/hypr/hyprland.conf
+              export XDG_DATA_DIRS="${hyprlandPkg}/share''${XDG_DATA_DIRS:+:$XDG_DATA_DIRS}"
               exec ${hyprlandPkg}/bin/start-hyprland
             '';
           in "${pkgs.dbus}/bin/dbus-run-session ${greetdHyprLauncher}";

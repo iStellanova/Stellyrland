@@ -50,14 +50,14 @@
   };
 
   fileSystems."/boot" = {
-    device = "/dev/disk/by-label/STELLYR-BOOT";
+    device = "/dev/disk/by-label/STELLYRBOOT";
     fsType = "vfat";
     options = ["fmask=0022" "dmask=0022"];
   };
 
   swapDevices = [
     {
-      device = "/dev/nvme0n1p2";
+      device = "/dev/disk/by-partlabel/disk-main-swap";
       randomEncryption.enable = true;
     }
   ];

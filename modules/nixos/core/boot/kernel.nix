@@ -303,6 +303,13 @@
       "usb_storage"
       "sd_mod"
       "btrfs"
+      # LUKS/crypto: must be explicit because includeDefaultModules = false
+      # strips the modules NixOS would normally add for encrypted-devices.
+      "dm_mod"
+      "dm_crypt"
+      "aesni_intel" # hardware AES-NI (AMD Zen 5 + Intel); loaded before dm_crypt
+      "xts" # XTS block cipher mode used by the LUKS container
+      "cryptd" # async crypto daemon; required by aesni_intel
     ];
   };
 }
