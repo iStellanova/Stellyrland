@@ -20,7 +20,7 @@
 
     boot.lanzaboote = {
       enable = true;
-      pkiBundle = "/etc/secureboot";
+      pkiBundle = "/var/lib/sbctl";
     };
 
     # Kernel package selection is handled by aspects.core.kernel (kernel.nix).
