@@ -60,6 +60,9 @@
       TimeoutStopSec = "30s";
     };
 
+    boot.tmp.useTmpfs = true;
+    boot.tmp.tmpfsSize = "50%";
+
     # Ensure btrfs tools are available in the initrd for the rollback service.
     boot.initrd.supportedFilesystems = ["btrfs"];
 
@@ -95,6 +98,13 @@
       crypttabExtraOpts = ["tpm2-device=auto" "tpm2-pcrs=0+2+7"];
     };
 
+    # Ensure required tools are available in the systemd initrd.
+    # extraBin symlinks the binaries into /bin in the initrd image.
+    boot.initrd.systemd.extraBin = {
+      awk = "${pkgs.gawk}/bin/awk";
+      btrfs = "${pkgs.btrfs-progs}/bin/btrfs";
+    };
+
     # Wipe / on every boot by restoring @ from the @blank read-only snapshot.
     # Runs in the systemd initrd before sysroot.mount, so the root subvolume is
     # replaced before the kernel ever pivots into it. /nix (@nix), /persist
@@ -107,7 +117,7 @@
       unitConfig.DefaultDependencies = "no";
       serviceConfig.Type = "oneshot";
       script = ''
-        mkdir /mnt
+        mkdir -p /mnt
         mount -t btrfs -o subvol=/ /dev/mapper/cryptroot /mnt
 
         # Guard: only wipe @ if @blank exists. Skips safely on first boot
