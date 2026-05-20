@@ -7,18 +7,21 @@
   options.aspects.core.boot.enable = lib.mkEnableOption "Core boot settings";
 
   config = lib.mkIf config.aspects.core.boot.enable {
-    environment.systemPackages = [pkgs.efibootmgr];
+    environment.systemPackages = [pkgs.efibootmgr pkgs.sbctl];
 
-    # Use GRUB EFI boot loader.
-    boot.loader.grub = {
-      enable = true;
-      device = "nodev";
-      efiSupport = true;
-      useOSProber = true;
-    };
-
-    # Permission to modify EFI variables.
+    # systemd-boot is managed by lanzaboote, which wraps it to produce
+    # signed Unified Kernel Images on every nixos-rebuild. The stock
+    # systemd-boot module must be force-disabled to avoid conflicts.
+    boot.loader.systemd-boot.enable = lib.mkForce false;
     boot.loader.efi.canTouchEfiVariables = true;
+
+    # Lanzaboote signs the kernel + initrd as a UKI using keys from pkiBundle.
+    # Keys are persisted via impermanence so they survive the root wipe.
+    # Post-install enrollment: sbctl create-keys && sbctl enroll-keys --microsoft
+    boot.lanzaboote = {
+      enable = true;
+      pkiBundle = "/etc/secureboot";
+    };
 
     # Kernel package selection is handled by aspects.core.kernel (kernel.nix).
     # When aspects.core.kernel.enable = false, the system falls back to the

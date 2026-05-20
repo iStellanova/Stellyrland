@@ -85,6 +85,12 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    # Lanzaboote - Secure Boot for NixOS via signed UKIs.
+    lanzaboote = {
+      url = "github:nix-community/lanzaboote/v0.4.2";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     # Impermanence - opt-in persistence (wipe / on boot, keep only declared paths).
     impermanence.url = "github:nix-community/impermanence";
 

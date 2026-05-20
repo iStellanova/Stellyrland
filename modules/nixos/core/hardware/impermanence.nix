@@ -17,6 +17,7 @@
       hideMounts = true;
       directories = [
         "/etc/nixos"
+        "/etc/secureboot"
         "/var/lib/nixos"
         "/var/lib/postgresql"
         "/var/lib/private/ollama"
