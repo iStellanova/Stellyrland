@@ -12,7 +12,8 @@
 
     users.users.${identity.name} = {
       shell = pkgs.zsh;
-      inherit (identity) hashedPassword;
+      hashedPassword = lib.mkIf (!config.aspects.core.secrets.enable) (identity.hashedPassword or null);
+      hashedPasswordFile = lib.mkIf config.aspects.core.secrets.enable config.sops.secrets.user-password.path;
       isNormalUser = true;
       extraGroups = ["wheel" "storage" "disk" "video" "render" "networkmanager"];
       openssh.authorizedKeys.keys = identity.sshKeys;
