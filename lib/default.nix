@@ -36,5 +36,6 @@
       if isDarwin
       then "/Users/${identityInput.darwinName}"
       else "/home/${identityInput.nixosName}";
+    outPath = identityInput;
   };
 }

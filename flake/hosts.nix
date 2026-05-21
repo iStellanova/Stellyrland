@@ -9,7 +9,7 @@
     hostname,
     extraModules ? [],
   }: let
-    identity = self.lib.mkIdentity inputs.identity isDarwin;
+    identity = self.lib.mkIdentity inputs.stellyrdata isDarwin;
     coreBuilder =
       if isDarwin
       then inputs.nix-darwin.lib.darwinSystem
