@@ -35,7 +35,7 @@
     services.btrfs.autoScrub = {
       enable = true;
       interval = "monthly";
-      fileSystems = ["/"];
+      fileSystems = ["/"] ++ lib.optional config.aspects.core.extra-disk.enable "/home/${identity.name}/ExtraDisk";
     };
   };
 }

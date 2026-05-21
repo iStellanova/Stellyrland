@@ -10,7 +10,11 @@ in {
   options.aspects.programs.noctalia-shell.enable = lib.mkEnableOption "Noctalia shell";
 
   config = lib.mkIf config.aspects.programs.noctalia-shell.enable {
-    home-manager.users.${identity.name} = {inputs, ...}: {
+    home-manager.users.${identity.name} = {
+      inputs,
+      lib,
+      ...
+    }: {
       imports = [
         inputs.noctalia-shell.homeModules.default
       ];
@@ -18,23 +22,23 @@ in {
       home.file."Pictures/wallpapers/wallpaper.png".source = "${identity.outPath}/wallpapers/wallpaper.png";
 
       home.activation.noctaliaWallpaper = lib.hm.dag.entryAfter ["writeBoundary"] ''
-        state="$HOME/.local/state/noctalia/settings.toml"
-        if [ ! -f "$state" ]; then
-          mkdir -p "$(dirname "$state")"
-          cat > "$state" <<EOF
-[wallpaper.default]
-path = "${defaultWallpaper}"
+                state="$HOME/.local/state/noctalia/settings.toml"
+                if [ ! -f "$state" ]; then
+                  mkdir -p "$(dirname "$state")"
+                  cat > "$state" <<EOF
+        [wallpaper.default]
+        path = "${defaultWallpaper}"
 
-[wallpaper.last]
-path = "${defaultWallpaper}"
+        [wallpaper.last]
+        path = "${defaultWallpaper}"
 
-[wallpaper.monitors.DP-2]
-path = "${defaultWallpaper}"
+        [wallpaper.monitors.DP-2]
+        path = "${defaultWallpaper}"
 
-[wallpaper.monitors.DP-3]
-path = "${defaultWallpaper}"
-EOF
-        fi
+        [wallpaper.monitors.DP-3]
+        path = "${defaultWallpaper}"
+        EOF
+                fi
       '';
 
       programs.noctalia = {
