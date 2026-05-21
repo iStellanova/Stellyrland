@@ -12,7 +12,10 @@
       nix-settings.enable = true;
       users.enable = true;
       hardware.enable = true;
-      boot.enable = true;
+      boot = {
+        enable = true;
+        secureBoot = true;
+      };
       kernel.enable = true;
       fonts.enable = true;
       networking.enable = true;

@@ -43,6 +43,10 @@
                     mountpoint = "/";
                     mountOptions = ["compress=zstd" "noatime" "discard=async" "commit=60" "space_cache=v2"];
                   };
+                  "@blank" = {
+                    # Empty subvolume. Rollback service in boot.nix restores @ to this on every boot.
+                    mountpoint = null;
+                  };
                   "@nix" = {
                     mountpoint = "/nix";
                     mountOptions = ["compress=zstd" "noatime" "discard=async" "commit=60" "space_cache=v2"];
