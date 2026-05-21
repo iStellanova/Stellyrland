@@ -66,5 +66,26 @@
         };
       };
     };
+    disk.extra = {
+      device = "/dev/disk/by-id/nvme-Sabrent_SB-RKT4P-2TB_48820969804065";
+      type = "disk";
+      content = {
+        type = "gpt";
+        partitions = {
+          luks = {
+            size = "100%";
+            content = {
+              type = "luks";
+              name = "cryptextra";
+              settings.allowDiscards = true;
+              content = {
+                type = "btrfs";
+                extraArgs = ["-f" "-L" "EXTRADISK"];
+              };
+            };
+          };
+        };
+      };
+    };
   };
 }
