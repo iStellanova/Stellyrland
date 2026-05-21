@@ -62,6 +62,11 @@ in {
 
     # Home Manager level config
     home-manager.users.${identity.name} = {
+      programs.zsh.shellAliases = {
+        screenoff = "HYPRLAND_INSTANCE_SIGNATURE=$(basename /run/user/$(id -u)/hypr/*/) hyprctl dispatch dpms off";
+        screenon = "HYPRLAND_INSTANCE_SIGNATURE=$(basename /run/user/$(id -u)/hypr/*/) hyprctl dispatch dpms on";
+      };
+
       imports = [
         ./binds.nix
         ./rules.nix
