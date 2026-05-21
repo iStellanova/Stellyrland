@@ -1,4 +1,4 @@
-{identity, ...}: {
+{ ...}: {
   imports = [
     ./hardware-configuration.nix
     ./disko.nix
@@ -17,6 +17,7 @@
       fonts.enable = true;
       networking.enable = true;
       storage.enable = true;
+      extra-disk.enable = true;
       impermanence.enable = true;
       services-base.enable = true;
       xdg.enable = true;
@@ -74,22 +75,4 @@
 
   # Hostname
   networking.hostName = "stellyrland";
-
-  # Extra Storage: nvme1n1 (1.8T btrfs, "Extra Drive") — Steam library & wallpaper engine assets.
-  # nofail ensures the system still boots if the drive is missing.
-  # x-gvfs options make the drive easily accessible and identifiable in the file manager.
-  fileSystems."/home/${identity.name}/ExtraDisk" = {
-    device = "/dev/disk/by-label/EXTRADISK";
-    fsType = "btrfs";
-    options = [
-      "nofail"
-      "x-gvfs-show"
-      "x-gvfs-name=Extra Disk"
-      "noatime"
-      "compress=zstd:3"
-      "ssd"
-      "discard=async"
-      "space_cache=v2"
-    ];
-  };
 }

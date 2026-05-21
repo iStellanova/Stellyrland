@@ -67,12 +67,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # Git hooks - runs treefmt formatters as a pre-commit hook.
-    git-hooks = {
-      url = "github:cachix/git-hooks.nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     # NixVim - Neovim configuration system for Nix.
     nixvim = {
       url = "github:nix-community/nixvim";
@@ -115,7 +109,6 @@
         ./flake/lib.nix
         ./flake/hosts.nix
         ./flake/treefmt.nix
-        ./flake/hooks.nix
       ];
     };
 }
