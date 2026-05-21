@@ -4,7 +4,8 @@
   identity,
   ...
 }: let
-  defaultWallpaper = "${identity.outPath}/wallpapers/wallpaper.png";
+  wallpaperDir = "${identity.home}/Pictures/wallpapers";
+  defaultWallpaper = "${wallpaperDir}/wallpaper.png";
 in {
   options.aspects.programs.noctalia-shell.enable = lib.mkEnableOption "Noctalia shell";
 
@@ -13,6 +14,28 @@ in {
       imports = [
         inputs.noctalia-shell.homeModules.default
       ];
+
+      home.file."Pictures/wallpapers/wallpaper.png".source = "${identity.outPath}/wallpapers/wallpaper.png";
+
+      home.activation.noctaliaWallpaper = lib.hm.dag.entryAfter ["writeBoundary"] ''
+        state="$HOME/.local/state/noctalia/settings.toml"
+        if [ ! -f "$state" ]; then
+          mkdir -p "$(dirname "$state")"
+          cat > "$state" <<EOF
+[wallpaper.default]
+path = "${defaultWallpaper}"
+
+[wallpaper.last]
+path = "${defaultWallpaper}"
+
+[wallpaper.monitors.DP-2]
+path = "${defaultWallpaper}"
+
+[wallpaper.monitors.DP-3]
+path = "${defaultWallpaper}"
+EOF
+        fi
+      '';
 
       programs.noctalia = {
         enable = true;
@@ -45,7 +68,7 @@ in {
           # Wallpaper
           wallpaper = {
             enabled = true;
-            directory = "${identity.outPath}/wallpapers/";
+            directory = wallpaperDir;
             default.path = defaultWallpaper;
             last.path = defaultWallpaper;
             monitors = {
