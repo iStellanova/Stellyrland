@@ -17,7 +17,6 @@
       losslesscut-bin # Lossless video editing
       lollypop # A modern music player for GNOME
       mpv # A free, open source, and cross-platform media player
-      mprisence # Discord Rich Presence for MPRIS
       nicotine-plus # A graphical client for Soulseek
       obs-studio # Free and open source software for video recording
       parabolic # A fast and simple video downloader

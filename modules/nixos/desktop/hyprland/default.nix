@@ -90,7 +90,6 @@ in {
             "systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP" # import environment variables.
             "systemctl --user start hyprpolkitagent" # start the Polkit agent.
             "gnome-keyring-daemon --start --components=secrets" # start the GNOME keyring daemon.
-            "mprisence" # start the MPRIS client.
             "udiskie -a -s --file-manager nautilus" # mount removable media and open file manager.
             "wl-paste --type text --watch cliphist store" # store text clipboard contents in cliphist.
             "wl-paste --type image --watch cliphist store" # store image clipboard contents in cliphist.
