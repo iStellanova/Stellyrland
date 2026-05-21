@@ -4,7 +4,7 @@ This is my personal configuration for my systems, managed by the nix language an
 I stick to the dendritic style. Documentation will explain all concepts I use here.
 I use this to tinker, deploy, and manage my computers from home and remote. :)
 
-![Stellyrland Desktop](./assets/screenshot.png)
+![Stellyrland Desktop](https://raw.githubusercontent.com/iStellanova/Stellyrland/assets/assets/screenshot.png)
 
 - **Note:** This is a personal configuration. This is not meant to be forked or used by others.
 
@@ -55,7 +55,6 @@ I love declarative deployment. Defining my system this way keeps it organized an
 │       ├── desktop/        # UI & Theming (Hyprland, Styling)
 │       ├── programs/       # GUI Applications (Zed, Gaming, Browser)
 │       └── services/       # Background daemons (Lact, OpenRGB, AI)
-├── assets/                 # Non-code resources (Wallpapers, Screenshots)
 ├── docs/                   # Documentation and troubleshooting guides
 ├── lib/                    # Custom Nix helpers
 └── README.md

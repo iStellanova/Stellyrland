@@ -4,7 +4,7 @@
   identity,
   ...
 }: let
-  defaultWallpaper = "${identity.home}/Pictures/wallpapers/static/wallpaper.png";
+  defaultWallpaper = "${identity.outPath}/wallpapers/wallpaper.png";
 in {
   options.aspects.programs.noctalia-shell.enable = lib.mkEnableOption "Noctalia shell";
 
@@ -23,7 +23,7 @@ in {
           shell = {
             scale = 1.0;
             font = "JetBrainsMono Nerd Font";
-            avatar_path = "${identity.home}/Pictures/PFPs/G3eRBGwWkAAJ1_v.jpg";
+            avatar_path = "${identity.outPath}/icons/avatar.png";
             password_style = "random";
             settings_show_advanced = true;
             panel.transparency_mode = "glass";
@@ -45,7 +45,7 @@ in {
           # Wallpaper
           wallpaper = {
             enabled = true;
-            directory = "${identity.home}/Pictures/wallpapers/";
+            directory = "${identity.outPath}/wallpapers/";
             default.path = defaultWallpaper;
             last.path = defaultWallpaper;
             monitors = {
@@ -93,7 +93,7 @@ in {
             launcher = {
               anchor = false;
               capsule = true;
-              custom_image = "${identity.home}/Pictures/nix-snowflake-white.svg";
+              custom_image = "${identity.outPath}/icons/nix-snowflake-white.svg";
               glyph = "brand-snowflake";
             };
 
