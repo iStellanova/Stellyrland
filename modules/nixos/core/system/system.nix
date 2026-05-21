@@ -1,7 +1,6 @@
 {
   config,
   lib,
-  identity,
   ...
 }: {
   config = lib.mkIf config.aspects.core.enable {
@@ -15,7 +14,6 @@
 
     # Installed state, not meant for change.
     system.stateVersion = "25.11";
-    home-manager.users.${identity.name}.home.stateVersion = "25.11";
     # SSH agent start.
     programs.ssh.startAgent = true;
     # Disable the gnome one, use the systemd service instead.
