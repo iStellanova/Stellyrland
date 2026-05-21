@@ -43,8 +43,8 @@
     # Mac App Util.
     mac-app-util.url = "github:hraban/mac-app-util";
 
-    # Identity from private repo.
-    identity.url = "git+ssh://git@github.com/iStellanova/stellyrdentity.git";
+    # Private data and identity from private repo.
+    stellyrdata.url = "git+ssh://git@github.com/iStellanova/stellyrdata.git";
 
     # Hyprland.
     hyprland.url = "github:hyprwm/Hyprland";
