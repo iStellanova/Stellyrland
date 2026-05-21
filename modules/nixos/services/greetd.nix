@@ -19,7 +19,7 @@ in {
       settings = {
         default_session = {
           command = let
-            wallpaper = ../../../assets/login-wallpaper.png;
+            wallpaper = "${identity.outPath}/wallpapers/login-wallpaper.png";
             hyprlandPkg =
               if config.aspects.desktop.hyprland.enable
               then config.programs.hyprland.package
