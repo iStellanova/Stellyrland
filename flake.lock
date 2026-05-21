@@ -765,21 +765,6 @@
         "type": "github"
       }
     },
-    "identity": {
-      "locked": {
-        "lastModified": 1779243108,
-        "narHash": "sha256-jAOAxhUBIHQMqPo4pM5frDeDrzGQxLXz8IQhDnY3jkE=",
-        "ref": "refs/heads/master",
-        "rev": "ecf2825305ccb6e38cbf5e1e43f6b32afccc82e4",
-        "revCount": 4,
-        "type": "git",
-        "url": "ssh://git@github.com/iStellanova/stellyrdentity.git"
-      },
-      "original": {
-        "type": "git",
-        "url": "ssh://git@github.com/iStellanova/stellyrdentity.git"
-      }
-    },
     "impermanence": {
       "inputs": {
         "home-manager": "home-manager_2",
@@ -1234,7 +1219,6 @@
         "flake-parts": "flake-parts_2",
         "home-manager": "home-manager",
         "hyprland": "hyprland",
-        "identity": "identity",
         "impermanence": "impermanence",
         "lanzaboote": "lanzaboote",
         "mac-app-util": "mac-app-util",
@@ -1246,6 +1230,7 @@
         "nixvim": "nixvim",
         "noctalia-shell": "noctalia-shell",
         "split-monitor-workspaces": "split-monitor-workspaces",
+        "stellyrdata": "stellyrdata",
         "treefmt-nix": "treefmt-nix_3",
         "zen-browser": "zen-browser"
       }
@@ -1290,6 +1275,21 @@
         "owner": "zjeffer",
         "repo": "split-monitor-workspaces",
         "type": "github"
+      }
+    },
+    "stellyrdata": {
+      "locked": {
+        "lastModified": 1779329642,
+        "narHash": "sha256-KtOhi1J3U1BRx7RumradN0h0qEMYcPE4xK/1P5iwqZc=",
+        "ref": "refs/heads/master",
+        "rev": "d8738cd605f4b3a46fab53335e3c71235407384f",
+        "revCount": 6,
+        "type": "git",
+        "url": "ssh://git@github.com/iStellanova/stellyrdata.git"
+      },
+      "original": {
+        "type": "git",
+        "url": "ssh://git@github.com/iStellanova/stellyrdata.git"
       }
     },
     "systems": {
