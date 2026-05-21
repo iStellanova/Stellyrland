@@ -14,12 +14,8 @@
 
     home-manager.users.${identity.name} = {
       pkgs,
-      inputs,
       ...
     }: {
-      imports = [
-        inputs.catppuccin.homeModules.catppuccin
-      ];
       # Catppuccin home-manager configuration.
       catppuccin.flavor = "macchiato";
       catppuccin.accent = "flamingo";
