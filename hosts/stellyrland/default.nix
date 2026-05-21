@@ -46,6 +46,7 @@
       git.enable = true;
       zsh.enable = true;
       nixvim.enable = true;
+      mprisence.enable = true;
       vesktop.enable = true;
       noctalia-shell.enable = true;
       antigravity.enable = true;
