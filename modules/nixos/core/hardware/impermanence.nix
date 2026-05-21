@@ -25,7 +25,8 @@
         "/var/lib/tailscale"
         "/var/lib/bluetooth"
         "/var/lib/NetworkManager"
-        "/etc/NetworkManager/system-connections"
+        "/var/lib/iwd"
+        "/etc/NetworkManager"
         "/var/log"
         "/var/lib/regreet"
       ];
