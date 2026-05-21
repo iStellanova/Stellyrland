@@ -16,6 +16,7 @@
         enable = true;
         secureBoot = true;
       };
+      setup.enable = false;
       kernel.enable = true;
       fonts.enable = true;
       networking.enable = true;
