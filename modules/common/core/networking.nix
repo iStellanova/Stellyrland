@@ -16,12 +16,10 @@
         enable = true;
       }
       // lib.optionalAttrs (!isDarwin) {
-        interfaceName = "userspace-networking";
         useRoutingFeatures = "none";
         extraUpFlags = [
           "--accept-dns=false"
           "--accept-routes=false"
-          "--ssh"
         ];
       };
 
