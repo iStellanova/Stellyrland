@@ -1,7 +1,6 @@
 {...}: {
   imports = [
     ./hardware-configuration.nix
-    ./disko.nix
   ];
 
   # Aspects
@@ -16,7 +15,6 @@
         enable = true;
         secureBoot = true;
       };
-      setup.enable = false;
       secrets.enable = true;
       kernel.enable = true;
       fonts.enable = true;
