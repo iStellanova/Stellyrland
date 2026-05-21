@@ -65,6 +65,7 @@ in {
         inputs.impermanence.nixosModules.impermanence
         inputs.nix-flatpak.nixosModules.nix-flatpak
         inputs.lanzaboote.nixosModules.lanzaboote
+        inputs.sops-nix.nixosModules.sops
       ];
     };
 
