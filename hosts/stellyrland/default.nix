@@ -8,7 +8,10 @@
   aspects = {
     core = {
       enable = true;
-      nix-settings.enable = true;
+      nix-settings = {
+        enable = true;
+        cores = 24; # Reserve 8 threads for responsiveness on the 9950X3D (32 logical cores).
+      };
       users.enable = true;
       hardware.enable = true;
       boot = {
