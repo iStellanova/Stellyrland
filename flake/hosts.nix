@@ -41,6 +41,7 @@
                 inherit inputs identity;
               };
               sharedModules = [
+                inputs.catppuccin.homeManagerModules.catppuccin
                 inputs.nix-index-database.homeModules.nix-index
                 inputs.nixvim.homeModules.nixvim
               ];

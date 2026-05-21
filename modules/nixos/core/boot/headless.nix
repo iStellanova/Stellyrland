@@ -21,7 +21,10 @@ in {
       aspects.desktop.styling.enable = lib.mkForce false;
       aspects.services.desktop-services.enable = lib.mkForce false;
 
-      # 2. Disable heavy GUI-only programs to save resources.
+      # 2. Disable login manager (no GUI, no Hyprland to hand off to).
+      aspects.services.greetd.enable = lib.mkForce false;
+
+      # 3. Disable heavy GUI-only programs to save resources.
       aspects.programs = {
         media.enable = lib.mkForce false;
         browser.enable = lib.mkForce false;
@@ -36,10 +39,10 @@ in {
         aesthetic.enable = lib.mkForce false;
       };
 
-      # 3. Hardware specific: Disable display outputs.
+      # 4. Hardware specific: Disable display outputs.
       boot.kernelParams = map (port: "video=${port}:d") cfg.disabledPorts;
 
-      # 4. QOL: Custom TTY greeting for confirmation.
+      # 5. QOL: Custom TTY greeting for confirmation.
       services.getty.greetingLine = lib.mkForce "Welcome to Stellyrland (Headless/Remote Mode)";
     };
   };

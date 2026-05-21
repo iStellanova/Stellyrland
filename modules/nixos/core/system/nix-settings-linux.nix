@@ -4,11 +4,16 @@
   pkgs,
   ...
 }: {
+  options.aspects.core.nix-settings.cores = lib.mkOption {
+    type = lib.types.ints.unsigned;
+    default = 0;
+    description = "Cores available to the Nix daemon per build (0 = all cores).";
+  };
+
   config = lib.mkIf config.aspects.core.nix-settings.enable {
-    # Nix settings for Linux.
-    nix.daemonCPUSchedPolicy = "batch"; # Batch scheduling for faster builds without UI lag.
-    nix.daemonIOSchedPriority = 7; # IO scheduling priority for the Nix daemon.
-    nix.settings.cores = 24; # Reserve 8 threads for system responsiveness.
+    nix.daemonCPUSchedPolicy = "batch";
+    nix.daemonIOSchedPriority = 7;
+    nix.settings.cores = config.aspects.core.nix-settings.cores;
 
     # Support for dynamically linked executables.
     programs.nix-ld.enable = true;
