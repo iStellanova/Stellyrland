@@ -25,5 +25,11 @@
       owner = identity.name;
       mode = "0600";
     };
+
+    # Ensure .ssh exists with correct ownership before sops writes the key.
+    # sops-nix creates parent dirs as root:root if missing, which SSH rejects.
+    systemd.tmpfiles.rules = [
+      "d /home/${identity.name}/.ssh 0700 ${identity.name} users -"
+    ];
   };
 }
