@@ -88,6 +88,12 @@
     # Impermanence - opt-in persistence (wipe / on boot, keep only declared paths).
     impermanence.url = "github:nix-community/impermanence";
 
+    # Sops-Nix - secure secrets management using age.
+    sops-nix = {
+      url = "github:Mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     # Nix-Flatpak - declarative Flatpak package management.
     nix-flatpak.url = "github:gmodena/nix-flatpak";
 
