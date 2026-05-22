@@ -27,6 +27,7 @@
       browser.enable = true;
       background-sounds.enable = true;
       maintenance.enable = true;
+      finance.enable = true;
       school.enable = true;
       writing.enable = true;
       cloud-storage.enable = true;
