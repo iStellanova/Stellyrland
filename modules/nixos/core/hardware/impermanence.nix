@@ -13,10 +13,14 @@
   options.aspects.core.impermanence.enable = lib.mkEnableOption "Opt-in persistence (wipes / on each boot, keeps only declared paths)";
 
   config = lib.mkIf config.aspects.core.impermanence.enable {
+    systemd.tmpfiles.rules = [
+      # Returns /etc/nixos's pointer from the config project.
+      "L /etc/nixos - - - - /home/stellanova/Projects/stellyrland"
+    ];
+
     environment.persistence."/persist" = {
       hideMounts = true;
       directories = [
-        "/etc/nixos"
         "/var/lib/sbctl"
         "/var/lib/nixos"
         "/var/lib/postgresql"
