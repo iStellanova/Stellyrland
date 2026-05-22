@@ -24,8 +24,6 @@ in {
       hyprshot # Screenshot utility for Hyprland
       cliphist # Clipboard history utility
       wl-clipboard # Clipboard utility for Wayland
-      nautilus # File manager
-      sushi # Preview utility for nautilus
       file-roller # Archive utility
       libnotify # Notification utility
       udiskie # Disk utility

@@ -70,12 +70,14 @@
       nix-index.enable = true;
       ns.enable = true;
       yazi.enable = true;
+      nautilus.enable = true;
       zed.enable = true;
     };
     # Service Aspects
     services = {
       greetd.enable = true;
-      desktop-services.enable = true;
+      flatpak.enable = true;
+      seahorse.enable = true;
       coolercontrol.enable = true;
       lact.enable = true;
       openrgb.enable = true;
