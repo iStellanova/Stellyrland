@@ -34,7 +34,6 @@ in {
         vesktop.enable = lib.mkForce false;
         zed.enable = lib.mkForce false;
         noctalia-shell.enable = lib.mkForce false;
-        antigravity.enable = lib.mkForce false;
         cava.enable = lib.mkForce false;
         gsr.enable = lib.mkForce false;
         kitty.enable = lib.mkForce false;

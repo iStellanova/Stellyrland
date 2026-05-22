@@ -23,7 +23,6 @@
     programs = {
       aerospace.enable = true;
       aesthetic.enable = true;
-      antigravity.enable = true;
       browser.enable = true;
       background-sounds.enable = true;
       maintenance.enable = true;

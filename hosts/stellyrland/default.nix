@@ -61,7 +61,6 @@
       bitwarden.enable = true;
       vesktop.enable = true;
       noctalia-shell.enable = true;
-      antigravity.enable = true;
       btop.enable = true;
       cava.enable = true;
       fastfetch.enable = true;
