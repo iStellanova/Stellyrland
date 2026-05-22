@@ -1,12 +1,17 @@
-{lib, ...}: {
+{
+  nixosIdentity,
+  darwinIdentity,
+  lib,
+  ...
+}: {
   config = {
     # Home Manager Kitty Settings
-    flake.modules.homeManager.default = {
-      osConfig,
-      identity,
-      ...
-    }: let
+    flake.modules.homeManager.default = {osConfig, ...}: let
       isDarwin = osConfig ? system.defaults;
+      identity =
+        if isDarwin
+        then darwinIdentity
+        else nixosIdentity;
     in
       lib.mkIf (osConfig ? aspects.programs.kitty && osConfig.aspects.programs.kitty.enable) {
         programs.kitty = {

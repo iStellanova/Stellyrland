@@ -116,6 +116,7 @@
         inputs.flake-parts.flakeModules.modules
 
         # Local dendritic configurations and builders
+        ./flake/identity.nix
         ./flake/dendritic.nix
         ./flake/hosts.nix
         ./flake/treefmt.nix

@@ -1,17 +1,16 @@
-_: {
+{nixosIdentity, ...}: {
   config = {
     # NixOS Discord Music RPC Settings
     flake.modules.nixos.default = {
       config,
       lib,
       pkgs,
-      identity,
       ...
     }: {
       options.aspects.programs.discord-music-rpc.enable = lib.mkEnableOption "Discord Rich Presence for music players";
 
       config = lib.mkIf config.aspects.programs.discord-music-rpc.enable {
-        home-manager.users.${identity.name} = {
+        home-manager.users.${nixosIdentity.name} = {
           home.packages = [pkgs.mprisence];
 
           systemd.user.services.mprisence = {

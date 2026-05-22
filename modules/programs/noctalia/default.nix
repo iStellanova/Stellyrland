@@ -1,4 +1,9 @@
-_: {
+{
+  nixosIdentity,
+  darwinIdentity,
+  inputs,
+  ...
+}: {
   config = {
     # NixOS Noctalia Shell Settings
     flake.modules.nixos.default = {lib, ...}: {
@@ -8,11 +13,14 @@ _: {
     # Home Manager Noctalia Settings
     flake.modules.homeManager.default = {
       osConfig,
-      inputs,
-      identity,
       lib,
       ...
     }: let
+      isDarwin = osConfig ? system.defaults;
+      identity =
+        if isDarwin
+        then darwinIdentity
+        else nixosIdentity;
       wallpaperDir = "${identity.home}/Pictures/wallpapers";
       defaultWallpaper = "${wallpaperDir}/wallpaper.png";
     in {

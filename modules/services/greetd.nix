@@ -1,11 +1,10 @@
-_: {
+{nixosIdentity, ...}: {
   config = {
     # NixOS Greetd Settings
     flake.modules.nixos.default = {
       config,
       lib,
       pkgs,
-      identity,
       ...
     }: {
       options.aspects.services.greetd.enable = lib.mkEnableOption "greetd login manager with regreet";
@@ -20,7 +19,7 @@ _: {
           settings = {
             default_session = {
               command = let
-                wallpaper = "${identity.outPath}/wallpapers/login-wallpaper.png";
+                wallpaper = "${nixosIdentity.outPath}/wallpapers/login-wallpaper.png";
                 hyprlandPkg =
                   if config.aspects.desktop.hyprland.enable
                   then config.programs.hyprland.package
@@ -71,7 +70,7 @@ _: {
                   mkdir -p $HOME/.config/hypr
                   mkdir -p $HOME/.cache/regreet
                   printf "%s\n%s\n" \
-                    "last_username = \"${identity.name}\"" \
+                    "last_username = \"${nixosIdentity.name}\"" \
                     "last_session = \"${hyprlandPkg}/share/wayland-sessions/hyprland.desktop\"" \
                     > "$HOME/.cache/regreet/cache.toml"
                   ln -sf ${greetdHyprConfig} $HOME/.config/hypr/hyprland.conf
