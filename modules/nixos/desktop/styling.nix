@@ -12,10 +12,7 @@
     catppuccin.flavor = "macchiato";
     catppuccin.accent = "flamingo";
 
-    home-manager.users.${identity.name} = {
-      pkgs,
-      ...
-    }: {
+    home-manager.users.${identity.name} = {pkgs, ...}: {
       # Catppuccin home-manager configuration.
       catppuccin.flavor = "macchiato";
       catppuccin.accent = "flamingo";
