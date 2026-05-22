@@ -23,7 +23,6 @@
         "gimp" # GIMP - Image Editor
         "github" # GitHub Desktop
         "quicken" # Quicken
-        "utm" # UTM - Virtual Machine Manager
         "webex" # WebEx
         "zoom" # Zoom
       ];
