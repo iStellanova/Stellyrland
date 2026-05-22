@@ -25,6 +25,9 @@
       aesthetic.enable = true;
       antigravity.enable = true;
       browser.enable = true;
+      background-sounds.enable = true;
+      media.enable = true;
+      media-editing.enable = true;
       btop.enable = true;
       cava.enable = true;
       cli.enable = true;
