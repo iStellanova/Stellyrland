@@ -19,7 +19,9 @@ in {
       # 1. Disable GUI-heavy aspects.
       aspects.desktop.hyprland.enable = lib.mkForce false;
       aspects.desktop.styling.enable = lib.mkForce false;
-      aspects.services.desktop-services.enable = lib.mkForce false;
+      aspects.services.flatpak.enable = lib.mkForce false;
+      aspects.services.seahorse.enable = lib.mkForce false;
+      aspects.programs.nautilus.enable = lib.mkForce false;
 
       # 2. Disable login manager (no GUI, no Hyprland to hand off to).
       aspects.services.greetd.enable = lib.mkForce false;
