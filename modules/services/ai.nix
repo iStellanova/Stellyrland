@@ -1,7 +1,7 @@
 {inputs, ...}: {
   config = {
     # NixOS Cognitive AI Stack Settings
-    flake.modules.nixos.default = {
+    flake.modules.nixos.ai = {
       config,
       lib,
       pkgs,

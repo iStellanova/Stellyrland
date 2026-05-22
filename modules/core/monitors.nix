@@ -1,6 +1,6 @@
 _: {
   config = {
-    flake.modules.nixos.default = {lib, ...}: {
+    flake.modules.nixos.monitors = {lib, ...}: {
       options.aspects.core.monitors = lib.mkOption {
         type = lib.types.attrsOf lib.types.str;
         default = {
@@ -11,7 +11,7 @@ _: {
       };
     };
 
-    flake.modules.darwin.default = {lib, ...}: {
+    flake.modules.darwin.monitors = {lib, ...}: {
       options.aspects.core.monitors = lib.mkOption {
         type = lib.types.attrsOf lib.types.str;
         default = {

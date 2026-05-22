@@ -5,7 +5,7 @@
 }: {
   config = {
     # NixOS-only users configuration
-    flake.modules.nixos.default = {
+    flake.modules.nixos.users = {
       config,
       pkgs,
       ...

@@ -1,12 +1,12 @@
 _: {
   config = {
     # NixOS Options Declaration
-    flake.modules.nixos.default = {lib, ...}: {
+    flake.modules.nixos.writing = {lib, ...}: {
       options.aspects.programs.writing.enable = lib.mkEnableOption "Writing tools";
     };
 
     # Darwin Writing Settings
-    flake.modules.darwin.default = {
+    flake.modules.darwin.writing = {
       config,
       lib,
       ...

@@ -1,12 +1,12 @@
 _: {
   config = {
     # NixOS Zed Settings
-    flake.modules.nixos.default = {lib, ...}: {
+    flake.modules.nixos.zed = {lib, ...}: {
       options.aspects.programs.zed.enable = lib.mkEnableOption "Zed editor";
     };
 
     # Darwin Zed Settings
-    flake.modules.darwin.default = {
+    flake.modules.darwin.zed = {
       config,
       lib,
       ...
@@ -19,7 +19,7 @@ _: {
     };
 
     # Home Manager Zed Settings
-    flake.modules.homeManager.default = {
+    flake.modules.homeManager.zed = {
       osConfig,
       pkgs,
       lib,

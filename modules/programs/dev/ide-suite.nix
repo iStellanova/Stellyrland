@@ -5,7 +5,7 @@
 }: {
   config = {
     # NixOS IDE Suite Settings
-    flake.modules.nixos.default = {
+    flake.modules.nixos.ide-suite = {
       config,
       lib,
       pkgs,
@@ -25,7 +25,7 @@
     };
 
     # Darwin IDE Suite Settings
-    flake.modules.darwin.default = {
+    flake.modules.darwin.ide-suite = {
       config,
       lib,
       pkgs,

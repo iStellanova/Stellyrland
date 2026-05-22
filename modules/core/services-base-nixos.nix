@@ -1,7 +1,7 @@
 _: {
   config = {
     # NixOS base system services
-    flake.modules.nixos.default = {
+    flake.modules.nixos.services-base = {
       config,
       lib,
       ...

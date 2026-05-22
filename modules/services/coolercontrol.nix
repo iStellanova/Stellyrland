@@ -1,7 +1,7 @@
 _: {
   config = {
     # NixOS CoolerControl Settings
-    flake.modules.nixos.default = {
+    flake.modules.nixos.coolercontrol = {
       config,
       lib,
       pkgs,

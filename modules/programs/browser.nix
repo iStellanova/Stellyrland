@@ -5,7 +5,7 @@
 }: {
   config = {
     # NixOS Zen Browser Settings
-    flake.modules.nixos.default = {
+    flake.modules.nixos.browser = {
       config,
       lib,
       pkgs,
@@ -88,7 +88,7 @@
     };
 
     # Darwin Zen Browser Settings
-    flake.modules.darwin.default = {
+    flake.modules.darwin.browser = {
       config,
       lib,
       ...

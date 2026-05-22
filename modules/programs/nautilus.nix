@@ -1,6 +1,6 @@
 _: {
   config = {
-    flake.modules.nixos.default = {
+    flake.modules.nixos.nautilus = {
       config,
       lib,
       pkgs,

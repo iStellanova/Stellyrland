@@ -1,7 +1,7 @@
 {nixosIdentity, ...}: {
   config = {
     # NixOS Cloud Storage Settings
-    flake.modules.nixos.default = {
+    flake.modules.nixos.cloud-storage = {
       config,
       lib,
       pkgs,
@@ -20,7 +20,7 @@
     };
 
     # Darwin Cloud Storage Settings
-    flake.modules.darwin.default = {
+    flake.modules.darwin.cloud-storage = {
       config,
       lib,
       ...

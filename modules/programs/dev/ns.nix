@@ -1,7 +1,7 @@
 {lib, ...}: {
   config = {
     # Home Manager Nix Search script Settings
-    flake.modules.homeManager.default = {
+    flake.modules.homeManager.ns = {
       osConfig,
       pkgs,
       ...
@@ -21,12 +21,12 @@
       };
 
     # NixOS Options Declaration
-    flake.modules.nixos.default = {lib, ...}: {
+    flake.modules.nixos.ns = {lib, ...}: {
       options.aspects.programs.ns.enable = lib.mkEnableOption "Nix Search script";
     };
 
     # Darwin Options Declaration
-    flake.modules.darwin.default = {lib, ...}: {
+    flake.modules.darwin.ns = {lib, ...}: {
       options.aspects.programs.ns.enable = lib.mkEnableOption "Nix Search script";
     };
   };

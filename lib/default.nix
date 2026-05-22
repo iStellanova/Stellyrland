@@ -7,13 +7,11 @@
     res = lib.flatten (lib.mapAttrsToList (
         name: type: let
           fullPath = path + "/${name}";
-          isDefault = builtins.pathExists (fullPath + "/default.nix");
         in
-          if type == "directory"
-          then
-            if isDefault
-            then [(fullPath + "/default.nix")]
-            else (import ./default.nix {inherit lib;}).scan fullPath
+          if lib.hasPrefix "_" name || lib.hasPrefix "." name
+          then []
+          else if type == "directory"
+          then (import ./default.nix {inherit lib;}).scan fullPath
           else if lib.hasSuffix ".nix" name
           then [fullPath]
           else []

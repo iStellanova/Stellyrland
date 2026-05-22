@@ -6,7 +6,7 @@
 }: {
   config = {
     # NixOS Core System settings
-    flake.modules.nixos.default = {config, ...}: {
+    flake.modules.nixos.core = {config, ...}: {
       options.aspects.core.enable = lib.mkEnableOption "Core system configuration";
 
       config = lib.mkIf config.aspects.core.enable {
@@ -44,7 +44,7 @@
     };
 
     # Darwin Core System settings
-    flake.modules.darwin.default = {config, ...}: {
+    flake.modules.darwin.core = {config, ...}: {
       options.aspects.core.enable = lib.mkEnableOption "Core system configuration";
 
       config = lib.mkIf config.aspects.core.enable {
@@ -53,7 +53,7 @@
     };
 
     # Home Manager Core Settings
-    flake.modules.homeManager.default = {osConfig, ...}: let
+    flake.modules.homeManager.core = {osConfig, ...}: let
       isDarwin = osConfig ? system.defaults;
       identity =
         if isDarwin

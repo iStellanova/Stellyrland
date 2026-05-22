@@ -6,7 +6,7 @@
 }: {
   config = {
     # Home Manager Kitty Settings
-    flake.modules.homeManager.default = {osConfig, ...}: let
+    flake.modules.homeManager.kitty = {osConfig, ...}: let
       isDarwin = osConfig ? system.defaults;
       identity =
         if isDarwin
@@ -48,12 +48,12 @@
       };
 
     # NixOS Options Declaration
-    flake.modules.nixos.default = {lib, ...}: {
+    flake.modules.nixos.kitty = {lib, ...}: {
       options.aspects.programs.kitty.enable = lib.mkEnableOption "Kitty terminal emulator";
     };
 
     # Darwin Options Declaration
-    flake.modules.darwin.default = {lib, ...}: {
+    flake.modules.darwin.kitty = {lib, ...}: {
       options.aspects.programs.kitty.enable = lib.mkEnableOption "Kitty terminal emulator";
     };
   };

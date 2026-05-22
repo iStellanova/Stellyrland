@@ -1,7 +1,7 @@
 {lib, ...}: {
   config = {
     # System-level Linux Font settings
-    flake.modules.nixos.default = {
+    flake.modules.nixos.fonts = {
       config,
       pkgs,
       ...
@@ -20,7 +20,7 @@
     };
 
     # System-level macOS (Darwin) Font settings
-    flake.modules.darwin.default = {
+    flake.modules.darwin.fonts = {
       config,
       pkgs,
       ...

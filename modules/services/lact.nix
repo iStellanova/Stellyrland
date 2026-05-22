@@ -1,7 +1,7 @@
 _: {
   config = {
     # NixOS LACT GPU tuning Settings
-    flake.modules.nixos.default = {
+    flake.modules.nixos.lact = {
       config,
       lib,
       pkgs,

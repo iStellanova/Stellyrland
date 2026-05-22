@@ -1,7 +1,7 @@
 {lib, ...}: {
   config = {
     # NixOS system-level networking configurations
-    flake.modules.nixos.default = {
+    flake.modules.nixos.networking = {
       config,
       pkgs,
       ...
@@ -33,7 +33,7 @@
     };
 
     # Darwin system-level networking configurations
-    flake.modules.darwin.default = {
+    flake.modules.darwin.networking = {
       config,
       pkgs,
       ...

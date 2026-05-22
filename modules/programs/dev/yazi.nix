@@ -1,7 +1,7 @@
 _: {
   config = {
     # Home Manager Yazi Settings
-    flake.modules.homeManager.default = {
+    flake.modules.homeManager.yazi = {
       osConfig,
       pkgs,
       lib,
@@ -184,12 +184,12 @@ _: {
       };
 
     # NixOS Options Declaration
-    flake.modules.nixos.default = {lib, ...}: {
+    flake.modules.nixos.yazi = {lib, ...}: {
       options.aspects.programs.yazi.enable = lib.mkEnableOption "Yazi file manager";
     };
 
     # Darwin Options Declaration
-    flake.modules.darwin.default = {lib, ...}: {
+    flake.modules.darwin.yazi = {lib, ...}: {
       options.aspects.programs.yazi.enable = lib.mkEnableOption "Yazi file manager";
     };
   };

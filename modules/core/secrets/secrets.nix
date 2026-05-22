@@ -1,7 +1,7 @@
 {nixosIdentity, ...}: {
   config = {
     # NixOS Secrets Settings
-    flake.modules.nixos.default = {
+    flake.modules.nixos.secrets = {
       config,
       lib,
       ...

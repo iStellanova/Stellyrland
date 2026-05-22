@@ -1,7 +1,7 @@
 {lib, ...}: {
   config = {
     # NixOS CLI Settings
-    flake.modules.nixos.default = {
+    flake.modules.nixos.cli = {
       config,
       lib,
       pkgs,
@@ -22,7 +22,7 @@
     };
 
     # Darwin CLI Settings
-    flake.modules.darwin.default = {
+    flake.modules.darwin.cli = {
       config,
       lib,
       pkgs,
@@ -42,7 +42,7 @@
     };
 
     # Home Manager CLI Settings
-    flake.modules.homeManager.default = {
+    flake.modules.homeManager.cli = {
       osConfig,
       pkgs,
       ...

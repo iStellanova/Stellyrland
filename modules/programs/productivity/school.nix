@@ -5,7 +5,7 @@
 }: {
   config = {
     # NixOS School Settings
-    flake.modules.nixos.default = {
+    flake.modules.nixos.school = {
       config,
       lib,
       pkgs,
@@ -21,7 +21,7 @@
     };
 
     # Darwin School Settings
-    flake.modules.darwin.default = {
+    flake.modules.darwin.school = {
       config,
       lib,
       pkgs,
