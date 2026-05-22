@@ -52,6 +52,7 @@
       ide-suite.enable = true;
       office-suite.enable = true;
       vesktop.enable = true;
+      utils.enable = true;
       zed.enable = true;
     };
   };
