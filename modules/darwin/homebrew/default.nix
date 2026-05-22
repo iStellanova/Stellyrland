@@ -17,7 +17,6 @@
       casks = [
         "background-music" # Background music
         "balenaetcher" # Balena Etcher
-        "cleanmymac" # CleanMyMac
         "craft" # Craft - Notes Application
         "font-sf-pro" # SF Pro font
         "gimp" # GIMP - Image Editor
