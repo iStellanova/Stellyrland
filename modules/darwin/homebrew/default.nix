@@ -22,7 +22,6 @@
         "font-sf-pro" # SF Pro font
         "gimp" # GIMP - Image Editor
         "github" # GitHub Desktop
-        "google-drive" # Google Drive
         "quicken" # Quicken
         "utm" # UTM - Virtual Machine Manager
         "webex" # WebEx
@@ -34,7 +33,6 @@
         "Beat" = 1549538329; # Beat - Manuscripter
         "Dynamic wallpaper" = 1582358382; # Dynamic wallpaper - Wallpaper manager
         "Essayist" = 1537845384; # Essayist - Writing assistant
-        "OneDrive" = 823766827; # OneDrive - Cloud storage
         "School Assistant" = 1465687472; # School Assistant - School management
         "Xcode" = 497799835; # Xcode - Apple IDE
       };
