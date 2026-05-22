@@ -39,6 +39,7 @@
       nixvim.enable = true;
       ai-tools.enable = true;
       bitwarden.enable = true;
+      discord-music-rpc.enable = true;
       vesktop.enable = true;
       zed.enable = true;
     };
