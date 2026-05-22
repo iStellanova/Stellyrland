@@ -1,7 +1,4 @@
-{
-  lib,
-  ...
-}: {
+{lib, ...}: {
   config = {
     # NixOS Vesktop Settings
     flake.modules.nixos.default = {
@@ -33,10 +30,7 @@
     };
 
     # Home Manager Vesktop Settings
-    flake.modules.homeManager.default = {
-      osConfig,
-      ...
-    }:
+    flake.modules.homeManager.default = {osConfig, ...}:
       lib.mkIf (osConfig ? aspects.programs.vesktop && osConfig.aspects.programs.vesktop.enable) {
         # Vesktop configuration (Electron wrapper settings)
         xdg.configFile."vesktop/settings.json".text = builtins.toJSON {

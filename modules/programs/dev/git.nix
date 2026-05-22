@@ -1,7 +1,4 @@
-{
-  lib,
-  ...
-}: {
+{lib, ...}: {
   config = {
     # Home Manager Git/SSH Settings
     flake.modules.homeManager.default = {
@@ -48,18 +45,12 @@
       };
 
     # NixOS Options Declaration
-    flake.modules.nixos.default = {
-      lib,
-      ...
-    }: {
+    flake.modules.nixos.default = {lib, ...}: {
       options.aspects.programs.git.enable = lib.mkEnableOption "Git and SSH identity configuration";
     };
 
     # Darwin Options Declaration
-    flake.modules.darwin.default = {
-      lib,
-      ...
-    }: {
+    flake.modules.darwin.default = {lib, ...}: {
       options.aspects.programs.git.enable = lib.mkEnableOption "Git and SSH identity configuration";
     };
   };

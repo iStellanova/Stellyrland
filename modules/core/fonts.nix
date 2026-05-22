@@ -1,7 +1,4 @@
-{
-  lib,
-  ...
-}: {
+{lib, ...}: {
   config = {
     # System-level Linux Font settings
     flake.modules.nixos.default = {

@@ -11,7 +11,7 @@ _: {
       config = lib.mkIf config.aspects.core.impermanence.enable {
         systemd.tmpfiles.rules = [
           # Returns /etc/nixos's pointer from the config project.
-          "L /etc/nixos - - - - /home/stellanova/Projects/stellyrland"
+          "L+ /etc/nixos - - - - /home/stellanova/Projects/stellyrland"
         ];
 
         environment.persistence."/persist" = {
