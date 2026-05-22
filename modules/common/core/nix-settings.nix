@@ -145,7 +145,7 @@ in {
       programs.nh = {
         enable = true;
         clean.enable = true;
-        clean.extraArgs = "--keep 20";
+        clean.extraArgs = "--keep 20 --optimise";
         flake = flakePath;
       };
     };
