@@ -1,7 +1,7 @@
 _: {
   config = {
     # NixOS kernel parameters
-    flake.modules.nixos.default = {
+    flake.modules.nixos.kernel-params = {
       config,
       lib,
       ...

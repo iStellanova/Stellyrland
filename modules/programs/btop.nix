@@ -1,7 +1,7 @@
 {lib, ...}: {
   config = {
     # Home Manager Btop Settings
-    flake.modules.homeManager.default = {osConfig, ...}:
+    flake.modules.homeManager.btop = {osConfig, ...}:
       lib.mkIf (osConfig ? aspects.programs.btop && osConfig.aspects.programs.btop.enable) {
         programs.btop = {
           enable = true;
@@ -79,12 +79,12 @@
       };
 
     # NixOS Options Declaration
-    flake.modules.nixos.default = {lib, ...}: {
+    flake.modules.nixos.btop = {lib, ...}: {
       options.aspects.programs.btop.enable = lib.mkEnableOption "Btop";
     };
 
     # Darwin Options Declaration
-    flake.modules.darwin.default = {lib, ...}: {
+    flake.modules.darwin.btop = {lib, ...}: {
       options.aspects.programs.btop.enable = lib.mkEnableOption "Btop";
     };
   };

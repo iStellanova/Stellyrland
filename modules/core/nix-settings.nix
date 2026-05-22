@@ -7,7 +7,7 @@
 }: {
   config = {
     # NixOS Core Nix Settings
-    flake.modules.nixos.default = {
+    flake.modules.nixos.nix-settings = {
       config,
       pkgs,
       ...
@@ -84,7 +84,7 @@
     };
 
     # Darwin Core Nix Settings
-    flake.modules.darwin.default = {
+    flake.modules.darwin.nix-settings = {
       config,
       pkgs,
       ...
@@ -126,7 +126,7 @@
     };
 
     # Home Manager Nix Aliases and Scripts
-    flake.modules.homeManager.default = {osConfig, ...}: let
+    flake.modules.homeManager.nix-settings = {osConfig, ...}: let
       isDarwin = osConfig ? system.defaults;
       identity =
         if isDarwin

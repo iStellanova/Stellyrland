@@ -1,7 +1,7 @@
 _: {
   config = {
     # NixOS Gaming Settings
-    flake.modules.nixos.default = {
+    flake.modules.nixos.gaming = {
       config,
       lib,
       pkgs,
@@ -29,7 +29,7 @@ _: {
     };
 
     # Darwin Gaming Settings
-    flake.modules.darwin.default = {
+    flake.modules.darwin.gaming = {
       config,
       lib,
       ...

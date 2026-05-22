@@ -1,7 +1,7 @@
 _: {
   config = {
     # Darwin Homebrew settings
-    flake.modules.darwin.default = {
+    flake.modules.darwin.homebrew = {
       config,
       lib,
       ...

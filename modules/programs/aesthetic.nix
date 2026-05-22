@@ -1,7 +1,7 @@
 _: {
   config = {
     # NixOS Aesthetic Settings
-    flake.modules.nixos.default = {
+    flake.modules.nixos.aesthetic = {
       config,
       lib,
       pkgs,
@@ -31,7 +31,7 @@ _: {
     };
 
     # Darwin Aesthetic Settings
-    flake.modules.darwin.default = {
+    flake.modules.darwin.aesthetic = {
       config,
       lib,
       pkgs,

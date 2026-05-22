@@ -1,7 +1,7 @@
 {nixosIdentity, ...}: {
   config = {
     # NixOS OpenRGB Settings
-    flake.modules.nixos.default = {
+    flake.modules.nixos.openrgb = {
       config,
       lib,
       pkgs,

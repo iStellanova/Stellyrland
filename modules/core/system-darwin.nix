@@ -1,7 +1,7 @@
 {darwinIdentity, ...}: {
   config = {
     # Darwin System Settings
-    flake.modules.darwin.default = {
+    flake.modules.darwin.system = {
       config,
       lib,
       ...

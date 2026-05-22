@@ -1,6 +1,7 @@
 {
   inputs,
   config,
+  lib,
   ...
 }: let
   mkHost = {
@@ -21,14 +22,12 @@
     coreBuilder {
       inherit system;
       modules =
-        [
-          # Consolidate and load Dendritic features compiled at the flake level
-          (
-            if isDarwin
-            then config.flake.modules.darwin.default
-            else config.flake.modules.nixos.default
-          )
-
+        (
+          if isDarwin
+          then lib.attrValues config.flake.modules.darwin
+          else lib.attrValues config.flake.modules.nixos
+        )
+        ++ [
           ../hosts/${hostname}/default.nix
           hmModule
           {
@@ -37,14 +36,13 @@
               useUserPackages = true;
               backupFileExtension = "backup";
               overwriteBackup = true;
-              sharedModules = [
-                # Pure dendritic Home Manager configurations
-                config.flake.modules.homeManager.default
-
-                inputs.catppuccin.homeModules.catppuccin
-                inputs.nix-index-database.homeModules.nix-index
-                inputs.nixvim.homeModules.nixvim
-              ];
+              sharedModules =
+                (lib.attrValues config.flake.modules.homeManager)
+                ++ [
+                  inputs.catppuccin.homeModules.catppuccin
+                  inputs.nix-index-database.homeModules.nix-index
+                  inputs.nixvim.homeModules.nixvim
+                ];
             };
           }
         ]
@@ -52,10 +50,9 @@
     };
 in {
   flake = {
-    # Export consolidated dendritic module interfaces
-    nixosModules.default = config.flake.modules.nixos.default;
-    darwinModules.default = config.flake.modules.darwin.default;
-    homeManagerModules.default = config.flake.modules.homeManager.default;
+    nixosModules.default = {imports = lib.attrValues config.flake.modules.nixos;};
+    darwinModules.default = {imports = lib.attrValues config.flake.modules.darwin;};
+    homeManagerModules.default = {imports = lib.attrValues config.flake.modules.homeManager;};
 
     nixosConfigurations.stellyrland = mkHost {
       system = "x86_64-linux";

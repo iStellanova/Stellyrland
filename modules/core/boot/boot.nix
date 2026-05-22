@@ -1,7 +1,7 @@
 _: {
   config = {
     # NixOS Bootloader Settings
-    flake.modules.nixos.default = {
+    flake.modules.nixos.boot = {
       config,
       lib,
       pkgs,

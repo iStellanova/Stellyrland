@@ -1,7 +1,7 @@
 _: {
   config = {
     # NixOS Zsh Settings
-    flake.modules.nixos.default = {
+    flake.modules.nixos.zsh = {
       config,
       lib,
       pkgs,
@@ -16,7 +16,7 @@ _: {
     };
 
     # Darwin Zsh Settings
-    flake.modules.darwin.default = {
+    flake.modules.darwin.zsh = {
       config,
       lib,
       pkgs,
@@ -31,7 +31,7 @@ _: {
     };
 
     # Home Manager Zsh Settings
-    flake.modules.homeManager.default = {
+    flake.modules.homeManager.zsh = {
       osConfig,
       pkgs,
       lib,
@@ -40,7 +40,7 @@ _: {
       isDarwin = osConfig ? system.defaults;
     in
       lib.mkIf (osConfig ? aspects.programs.zsh && osConfig.aspects.programs.zsh.enable) {
-        home.file.".p10k.zsh".text = import ./p10k.nix {inherit lib;};
+        home.file.".p10k.zsh".text = import ./_p10k.nix {inherit lib;};
 
         programs.zsh = {
           enable = true;

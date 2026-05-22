@@ -5,7 +5,7 @@
 }: {
   config = {
     # NixOS Media Editing Settings
-    flake.modules.nixos.default = {
+    flake.modules.nixos.media-editing = {
       config,
       lib,
       pkgs,
@@ -30,7 +30,7 @@
     };
 
     # Darwin Media Editing Settings
-    flake.modules.darwin.default = {
+    flake.modules.darwin.media-editing = {
       config,
       lib,
       pkgs,

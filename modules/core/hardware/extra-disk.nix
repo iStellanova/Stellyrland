@@ -1,7 +1,7 @@
 {nixosIdentity, ...}: {
   config = {
     # NixOS Extra Disk Storage
-    flake.modules.nixos.default = {
+    flake.modules.nixos.extra-disk = {
       config,
       lib,
       ...

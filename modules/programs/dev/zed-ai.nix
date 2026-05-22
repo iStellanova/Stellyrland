@@ -1,7 +1,7 @@
 {lib, ...}: {
   config = {
     # Home Manager Zed AI Settings
-    flake.modules.homeManager.default = {
+    flake.modules.homeManager.zed-ai = {
       osConfig,
       pkgs,
       ...

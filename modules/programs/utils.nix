@@ -1,7 +1,7 @@
 _: {
   config = {
     # NixOS GUI utilities Settings
-    flake.modules.nixos.default = {
+    flake.modules.nixos.utils = {
       config,
       lib,
       pkgs,
@@ -20,7 +20,7 @@ _: {
     };
 
     # Darwin GUI utilities Settings
-    flake.modules.darwin.default = {
+    flake.modules.darwin.utils = {
       config,
       lib,
       ...

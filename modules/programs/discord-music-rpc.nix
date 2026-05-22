@@ -1,7 +1,7 @@
 {nixosIdentity, ...}: {
   config = {
     # NixOS Discord Music RPC Settings
-    flake.modules.nixos.default = {
+    flake.modules.nixos.discord-music-rpc = {
       config,
       lib,
       pkgs,
@@ -33,7 +33,7 @@
     };
 
     # Darwin Discord Music RPC Settings
-    flake.modules.darwin.default = {
+    flake.modules.darwin.discord-music-rpc = {
       config,
       lib,
       ...

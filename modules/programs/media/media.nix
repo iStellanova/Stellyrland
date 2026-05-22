@@ -5,7 +5,7 @@
 }: {
   config = {
     # NixOS Media Settings
-    flake.modules.nixos.default = {
+    flake.modules.nixos.media = {
       config,
       lib,
       pkgs,
@@ -33,7 +33,7 @@
     };
 
     # Darwin Media Settings
-    flake.modules.darwin.default = {
+    flake.modules.darwin.media = {
       config,
       lib,
       pkgs,

@@ -1,7 +1,7 @@
 {lib, ...}: {
   config = {
     # NixOS XDG settings
-    flake.modules.nixos.default = {
+    flake.modules.nixos.xdg = {
       config,
       pkgs,
       ...
@@ -17,7 +17,7 @@
     };
 
     # Home Manager XDG settings
-    flake.modules.homeManager.default = {
+    flake.modules.homeManager.xdg = {
       config,
       osConfig,
       ...

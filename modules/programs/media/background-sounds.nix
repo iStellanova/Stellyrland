@@ -1,7 +1,7 @@
 {nixosIdentity, ...}: {
   config = {
     # NixOS Background Sounds Settings
-    flake.modules.nixos.default = {
+    flake.modules.nixos.background-sounds = {
       config,
       lib,
       pkgs,
@@ -17,7 +17,7 @@
     };
 
     # Darwin Background Sounds Settings
-    flake.modules.darwin.default = {
+    flake.modules.darwin.background-sounds = {
       config,
       lib,
       ...

@@ -5,7 +5,7 @@
 }: {
   config = {
     # NixOS AI Agent Tools
-    flake.modules.nixos.default = {
+    flake.modules.nixos.ai-tools = {
       config,
       lib,
       pkgs,
@@ -29,7 +29,7 @@
     };
 
     # Darwin AI Agent Tools
-    flake.modules.darwin.default = {
+    flake.modules.darwin.ai-tools = {
       config,
       lib,
       pkgs,

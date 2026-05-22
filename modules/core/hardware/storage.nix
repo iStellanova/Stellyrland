@@ -1,7 +1,7 @@
 {nixosIdentity, ...}: {
   config = {
     # NixOS Storage and Snapper configuration
-    flake.modules.nixos.default = {
+    flake.modules.nixos.storage = {
       config,
       lib,
       pkgs,

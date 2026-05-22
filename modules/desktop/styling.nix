@@ -1,7 +1,7 @@
 {nixosIdentity, ...}: {
   config = {
     # NixOS Desktop Styling Settings
-    flake.modules.nixos.default = {
+    flake.modules.nixos.styling = {
       config,
       lib,
       ...
