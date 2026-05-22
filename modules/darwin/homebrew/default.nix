@@ -13,17 +13,6 @@
         cleanup = "zap";
         upgrade = true;
       };
-
-      casks = [
-        "background-music" # Background music
-        "craft" # Craft - Notes Application
-        "gimp" # GIMP - Image Editor
-        "quicken" # Quicken
-      ];
-
-      masApps = {
-        "Dynamic wallpaper" = 1582358382; # Dynamic wallpaper - Wallpaper manager
-      };
     };
   };
 }

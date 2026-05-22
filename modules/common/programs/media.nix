@@ -21,7 +21,10 @@
     }
 
     (lib.optionalAttrs isDarwin {
-      homebrew.casks = ["vlc"];
+      homebrew.casks = [
+        "background-music"
+        "vlc"
+      ];
     })
 
     (lib.optionalAttrs (!isDarwin) {
