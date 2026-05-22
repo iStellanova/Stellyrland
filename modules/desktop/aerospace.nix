@@ -1,10 +1,9 @@
-_: {
+{darwinIdentity, ...}: {
   config = {
     # Darwin AeroSpace Settings
     flake.modules.darwin.default = {
       config,
       lib,
-      identity,
       ...
     }: {
       options.aspects.programs.aerospace.enable = lib.mkEnableOption "AeroSpace window manager";
@@ -17,7 +16,7 @@ _: {
         ];
 
         # Configure AeroSpace
-        home-manager.users.${identity.name} = {
+        home-manager.users.${darwinIdentity.name} = {
           home.file.".aerospace.toml".text = ''
             # Config version for compatibility and deprecations
             config-version = 2

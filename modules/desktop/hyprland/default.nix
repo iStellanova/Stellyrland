@@ -1,10 +1,13 @@
-{lib, ...}: {
+{
+  inputs,
+  lib,
+  ...
+}: {
   config = {
     # System-level Linux configuration for Hyprland
     flake.modules.nixos.default = {
       config,
       pkgs,
-      inputs,
       ...
     }: {
       options.aspects.desktop.hyprland.enable = lib.mkEnableOption "Hyprland desktop environment";
@@ -62,7 +65,6 @@
     # User-level Home Manager configuration for Hyprland
     flake.modules.homeManager.default = {
       pkgs,
-      inputs,
       osConfig,
       ...
     }: {

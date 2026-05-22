@@ -1,11 +1,11 @@
-{lib, ...}: {
+{
+  nixosIdentity,
+  lib,
+  ...
+}: {
   config = {
     # Home Manager Git/SSH Settings
-    flake.modules.homeManager.default = {
-      osConfig,
-      identity,
-      ...
-    }:
+    flake.modules.homeManager.default = {osConfig, ...}:
       lib.mkIf (osConfig ? aspects.programs.git && osConfig.aspects.programs.git.enable) {
         programs.ssh = {
           enable = true;
@@ -14,7 +14,7 @@
           settings = {
             "stellyrland" = {
               HostName = "stellyrland.tailb15b96.ts.net";
-              User = identity.nixosName;
+              User = nixosIdentity.nixosName;
               IdentityFile = "~/.ssh/stellacode";
             };
             "github.com" = {
@@ -34,8 +34,8 @@
           enable = true;
           settings = {
             user = {
-              name = identity.gitName;
-              inherit (identity) email;
+              name = nixosIdentity.gitName;
+              inherit (nixosIdentity) email;
             };
             # Bootstrap: on a fresh machine this file configures the SSH key
             # so the private identity flake can be pulled before Nix manages git.

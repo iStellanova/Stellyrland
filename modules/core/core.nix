@@ -1,4 +1,9 @@
-{lib, ...}: {
+{
+  nixosIdentity,
+  darwinIdentity,
+  lib,
+  ...
+}: {
   config = {
     # NixOS Core System settings
     flake.modules.nixos.default = {config, ...}: {
@@ -48,11 +53,13 @@
     };
 
     # Home Manager Core Settings
-    flake.modules.homeManager.default = {
-      osConfig,
-      identity,
-      ...
-    }:
+    flake.modules.homeManager.default = {osConfig, ...}: let
+      isDarwin = osConfig ? system.defaults;
+      identity =
+        if isDarwin
+        then darwinIdentity
+        else nixosIdentity;
+    in
       lib.mkIf (osConfig ? aspects.core && osConfig.aspects.core.enable) {
         home.username = identity.name;
         home.homeDirectory = identity.home;

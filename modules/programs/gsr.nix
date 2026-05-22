@@ -1,4 +1,9 @@
-{lib, ...}: {
+{
+  nixosIdentity,
+  darwinIdentity,
+  lib,
+  ...
+}: {
   config = {
     # NixOS GSR Settings
     flake.modules.nixos.default = {
@@ -16,11 +21,13 @@
     };
 
     # Home Manager GSR Settings
-    flake.modules.homeManager.default = {
-      osConfig,
-      identity,
-      ...
-    }:
+    flake.modules.homeManager.default = {osConfig, ...}: let
+      isDarwin = osConfig ? system.defaults;
+      identity =
+        if isDarwin
+        then darwinIdentity
+        else nixosIdentity;
+    in
       lib.mkIf (osConfig ? aspects.programs.gsr && osConfig.aspects.programs.gsr.enable) {
         # GSR configuration
         xdg.configFile."gpu-screen-recorder/config".text = ''

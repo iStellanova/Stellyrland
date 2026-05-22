@@ -22,7 +22,7 @@
   in
     res;
 
-  # mkIdentity - Helper to format identity data for specialArgs.
+  # mkIdentity - Formats stellyrdata identity for use in flake-parts let-bindings.
   mkIdentity = identityInput: isDarwin: {
     name =
       if isDarwin

@@ -1,7 +1,5 @@
-{identity, ...}: {
+_: {
   system.stateVersion = 5;
-  # Pull the Name from Identity Flake
-  system.primaryUser = identity.name;
 
   # Networking
   networking.computerName = "Stellyrtop";
@@ -54,11 +52,5 @@
       utils.enable = true;
       zed.enable = true;
     };
-  };
-
-  # Define the user so home-manager can link user packages correctly
-  users.users.${identity.name} = {
-    inherit (identity) name;
-    inherit (identity) home;
   };
 }

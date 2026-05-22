@@ -1,5 +1,4 @@
 {
-  self,
   inputs,
   config,
   ...
@@ -10,7 +9,6 @@
     hostname,
     extraModules ? [],
   }: let
-    identity = self.lib.mkIdentity inputs.stellyrdata isDarwin;
     coreBuilder =
       if isDarwin
       then inputs.nix-darwin.lib.darwinSystem
@@ -22,11 +20,6 @@
   in
     coreBuilder {
       inherit system;
-      specialArgs = {
-        inherit inputs;
-        inherit (self) lib;
-        inherit identity isDarwin;
-      };
       modules =
         [
           # Consolidate and load Dendritic features compiled at the flake level
@@ -44,9 +37,6 @@
               useUserPackages = true;
               backupFileExtension = "backup";
               overwriteBackup = true;
-              extraSpecialArgs = {
-                inherit inputs identity;
-              };
               sharedModules = [
                 # Pure dendritic Home Manager configurations
                 config.flake.modules.homeManager.default
