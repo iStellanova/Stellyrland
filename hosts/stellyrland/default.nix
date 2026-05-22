@@ -46,6 +46,7 @@
       ai-tools.enable = true;
       aesthetic.enable = true;
       background-sounds.enable = true;
+      maintenance.enable = true;
       media.enable = true;
       media-editing.enable = true;
       utils.enable = true;
