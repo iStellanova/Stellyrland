@@ -3,7 +3,6 @@
     ./hardware-configuration.nix
   ];
 
-  # Aspects
   # Every attribute corresponds to an enable option defined in the modules/ directory.
   aspects = {
     core = {
