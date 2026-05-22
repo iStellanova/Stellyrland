@@ -44,7 +44,6 @@ _: {
         };
 
         homebrew.casks = [
-          "davinci-resolve"
           "gimp"
           "obs"
         ];
