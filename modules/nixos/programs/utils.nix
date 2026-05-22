@@ -12,7 +12,6 @@
       planify # Task manager with Todoist support
       mission-center # Resource monitor
       proton-vpn # Official Proton VPN Linux app
-      bleachbit # Cleaning utility for files
     ];
   };
 }
