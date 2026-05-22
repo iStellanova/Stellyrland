@@ -18,6 +18,8 @@
         enable = true;
         secureBoot = true;
       };
+      kernel-params.enable = true;
+      initrd.enable = true;
       secrets.enable = true;
       kernel.enable = true;
       fonts.enable = true;
