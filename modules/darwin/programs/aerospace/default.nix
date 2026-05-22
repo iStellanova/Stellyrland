@@ -7,8 +7,11 @@
   options.aspects.programs.aerospace.enable = lib.mkEnableOption "AeroSpace window manager";
 
   config = lib.mkIf config.aspects.programs.aerospace.enable {
-    # Install AeroSpace via Homebrew as it's the recommended way for macOS
-    homebrew.casks = ["nikitabobko/tap/aerospace"];
+    homebrew.taps = ["dimentium/autoraise"];
+    homebrew.casks = [
+      "nikitabobko/tap/aerospace"
+      "dimentium/autoraise/autoraiseapp"
+    ];
 
     # Configure AeroSpace
     home-manager.users.${identity.name} = {
