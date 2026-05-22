@@ -45,7 +45,6 @@ _: {
             ani-cli
             ffmpeg
             mpv
-            nicotine-plus
           ];
         };
 
