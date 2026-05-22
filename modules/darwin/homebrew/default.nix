@@ -16,7 +16,6 @@
 
       taps = [
         "nextfire/tap"
-        "dimentium/autoraise"
         "felixkratz/formulae"
         "nikitabobko/tap"
       ];
@@ -24,7 +23,6 @@
       brews = [];
 
       casks = [
-        "dimentium/autoraise/autoraiseapp" # Auto-raise
         "background-music" # Background music
         "balenaetcher" # Balena Etcher
         "cleanmymac" # CleanMyMac
