@@ -112,7 +112,11 @@
       ];
 
       imports = [
-        ./flake/lib.nix
+        # Load the flake-parts standard options for modular outputs
+        inputs.flake-parts.flakeModules.modules
+
+        # Local dendritic configurations and builders
+        ./flake/dendritic.nix
         ./flake/hosts.nix
         ./flake/treefmt.nix
       ];

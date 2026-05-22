@@ -79,10 +79,10 @@
       coolercontrol.enable = true;
       lact.enable = true;
       openrgb.enable = true;
-      ai = {
-        enable = true;
-        openWebUI.port = 8090;
-      };
+      # ai = {
+      #  enable = true;
+      #  openWebUI.port = 8090;
+      #};
     };
   };
 
