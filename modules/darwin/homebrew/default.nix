@@ -29,7 +29,6 @@
         "dimentium/autoraise/autoraiseapp" # Auto-raise
         "background-music" # Background music
         "balenaetcher" # Balena Etcher
-        "bitwarden" # Bitwarden
         "claude" # Claude
         "cleanmymac" # CleanMyMac
         "clion" # IntelliJ CLion
