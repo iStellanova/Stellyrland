@@ -1,13 +1,7 @@
-{
-  lib,
-  ...
-}: {
+{lib, ...}: {
   config = {
     # Home Manager Fastfetch Settings
-    flake.modules.homeManager.default = {
-      osConfig,
-      ...
-    }: let
+    flake.modules.homeManager.default = {osConfig, ...}: let
       isDarwin = osConfig ? system.defaults;
     in
       lib.mkIf (osConfig ? aspects.programs.fastfetch && osConfig.aspects.programs.fastfetch.enable) {
@@ -124,18 +118,12 @@
       };
 
     # NixOS Options Declaration
-    flake.modules.nixos.default = {
-      lib,
-      ...
-    }: {
+    flake.modules.nixos.default = {lib, ...}: {
       options.aspects.programs.fastfetch.enable = lib.mkEnableOption "Fastfetch";
     };
 
     # Darwin Options Declaration
-    flake.modules.darwin.default = {
-      lib,
-      ...
-    }: {
+    flake.modules.darwin.default = {lib, ...}: {
       options.aspects.programs.fastfetch.enable = lib.mkEnableOption "Fastfetch";
     };
   };

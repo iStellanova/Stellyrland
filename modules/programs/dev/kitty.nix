@@ -1,7 +1,4 @@
-{
-  lib,
-  ...
-}: {
+{lib, ...}: {
   config = {
     # Home Manager Kitty Settings
     flake.modules.homeManager.default = {
@@ -46,18 +43,12 @@
       };
 
     # NixOS Options Declaration
-    flake.modules.nixos.default = {
-      lib,
-      ...
-    }: {
+    flake.modules.nixos.default = {lib, ...}: {
       options.aspects.programs.kitty.enable = lib.mkEnableOption "Kitty terminal emulator";
     };
 
     # Darwin Options Declaration
-    flake.modules.darwin.default = {
-      lib,
-      ...
-    }: {
+    flake.modules.darwin.default = {lib, ...}: {
       options.aspects.programs.kitty.enable = lib.mkEnableOption "Kitty terminal emulator";
     };
   };

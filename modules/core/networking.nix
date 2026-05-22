@@ -1,7 +1,4 @@
-{
-  lib,
-  ...
-}: {
+{lib, ...}: {
   config = {
     # NixOS system-level networking configurations
     flake.modules.nixos.default = {

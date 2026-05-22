@@ -1,10 +1,7 @@
 _: {
   config = {
     # NixOS Noctalia Shell Settings
-    flake.modules.nixos.default = {
-      lib,
-      ...
-    }: {
+    flake.modules.nixos.default = {lib, ...}: {
       options.aspects.programs.noctalia-shell.enable = lib.mkEnableOption "Noctalia shell";
     };
 

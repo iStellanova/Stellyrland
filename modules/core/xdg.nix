@@ -1,7 +1,4 @@
-{
-  lib,
-  ...
-}: {
+{lib, ...}: {
   config = {
     # NixOS XDG settings
     flake.modules.nixos.default = {
