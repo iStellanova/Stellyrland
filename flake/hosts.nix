@@ -1,6 +1,7 @@
 {
   self,
   inputs,
+  config,
   ...
 }: let
   mkHost = {
@@ -28,7 +29,13 @@
       };
       modules =
         [
-          ../modules/default.nix
+          # Consolidate and load Dendritic features compiled at the flake level
+          (
+            if isDarwin
+            then config.flake.modules.darwin.default
+            else config.flake.modules.nixos.default
+          )
+
           ../hosts/${hostname}/default.nix
           hmModule
           {
@@ -41,6 +48,9 @@
                 inherit inputs identity;
               };
               sharedModules = [
+                # Pure dendritic Home Manager configurations
+                config.flake.modules.homeManager.default
+
                 inputs.catppuccin.homeModules.catppuccin
                 inputs.nix-index-database.homeModules.nix-index
                 inputs.nixvim.homeModules.nixvim
@@ -52,8 +62,10 @@
     };
 in {
   flake = {
-    # Export the dendritic module framework
-    nixosModules.default = ../modules/default.nix;
+    # Export consolidated dendritic module interfaces
+    nixosModules.default = config.flake.modules.nixos.default;
+    darwinModules.default = config.flake.modules.darwin.default;
+    homeManagerModules.default = config.flake.modules.homeManager.default;
 
     nixosConfigurations.stellyrland = mkHost {
       system = "x86_64-linux";
