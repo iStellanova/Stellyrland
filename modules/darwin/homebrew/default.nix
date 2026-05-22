@@ -29,15 +29,12 @@
         "balenaetcher" # Balena Etcher
         "claude" # Claude
         "cleanmymac" # CleanMyMac
-        "clion" # IntelliJ CLion
         "craft" # Craft - Notes Application
         "font-sf-pro" # SF Pro font
         "gimp" # GIMP - Image Editor
         "github" # GitHub Desktop
         "google-drive" # Google Drive
-        "intellij-idea" # IntelliJ IDEA
         "obs" # OBS Studio
-        "pycharm" # IntelliJ PyCharm - Python IDE
         "quicken" # Quicken
         "utm" # UTM - Virtual Machine Manager
         "vlc" # VLC
