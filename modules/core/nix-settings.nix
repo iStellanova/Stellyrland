@@ -1,10 +1,15 @@
-{lib, ...}: {
+{
+  nixosIdentity,
+  darwinIdentity,
+  inputs,
+  lib,
+  ...
+}: {
   config = {
     # NixOS Core Nix Settings
     flake.modules.nixos.default = {
       config,
       pkgs,
-      inputs,
       ...
     }: {
       options.aspects.core.nix-settings = {
@@ -82,7 +87,6 @@
     flake.modules.darwin.default = {
       config,
       pkgs,
-      identity,
       ...
     }: {
       options.aspects.core.nix-settings.enable = lib.mkEnableOption "Core nix settings";
@@ -114,7 +118,7 @@
         ];
 
         environment.variables = {
-          FLAKE = "${identity.home}/Documents/GitHub/Stellyrland";
+          FLAKE = "${darwinIdentity.home}/Documents/GitHub/Stellyrland";
         };
 
         nixpkgs.config.allowUnfree = true;
@@ -122,12 +126,12 @@
     };
 
     # Home Manager Nix Aliases and Scripts
-    flake.modules.homeManager.default = {
-      osConfig,
-      identity,
-      ...
-    }: let
+    flake.modules.homeManager.default = {osConfig, ...}: let
       isDarwin = osConfig ? system.defaults;
+      identity =
+        if isDarwin
+        then darwinIdentity
+        else nixosIdentity;
       flakePath =
         if isDarwin
         then "${identity.home}/Documents/GitHub/Stellyrland"

@@ -1,11 +1,10 @@
-_: {
+{inputs, ...}: {
   config = {
     # NixOS Cognitive AI Stack Settings
     flake.modules.nixos.default = {
       config,
       lib,
       pkgs,
-      inputs,
       ...
     }: let
       cfg = config.aspects.services.ai;

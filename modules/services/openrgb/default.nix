@@ -1,11 +1,10 @@
-_: {
+{nixosIdentity, ...}: {
   config = {
     # NixOS OpenRGB Settings
     flake.modules.nixos.default = {
       config,
       lib,
       pkgs,
-      identity,
       ...
     }: let
       cfg = config.aspects.services.openrgb;
@@ -100,7 +99,7 @@ _: {
           };
         };
 
-        home-manager.users.${identity.name} = {
+        home-manager.users.${nixosIdentity.name} = {
           # Keep files in user config for GUI access
           xdg.configFile."OpenRGB/OpenRGB.json".source = ./OpenRGB.json;
 

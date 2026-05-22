@@ -1,10 +1,9 @@
-_: {
+{darwinIdentity, ...}: {
   config = {
     # Darwin System Settings
     flake.modules.darwin.default = {
       config,
       lib,
-      identity,
       ...
     }: {
       options.aspects.darwin.system.enable = lib.mkEnableOption "Darwin system configuration";
@@ -12,6 +11,13 @@ _: {
       config = lib.mkIf config.aspects.darwin.system.enable {
         # Security
         security.pam.services.sudo_local.touchIdAuth = true;
+
+        system.primaryUser = darwinIdentity.name;
+
+        users.users.${darwinIdentity.name} = {
+          inherit (darwinIdentity) name;
+          inherit (darwinIdentity) home;
+        };
 
         # System Defaults (Matched to current system settings)
         system.defaults = {
@@ -50,7 +56,7 @@ _: {
             "/Applications/Beat.app"
             "/Applications/Zed.app"
             "/Applications/Claude.app"
-            "${identity.home}/Applications/Home Manager Apps/kitty.app"
+            "${darwinIdentity.home}/Applications/Home Manager Apps/kitty.app"
             "/Applications/Zen Browser.app"
           ];
 

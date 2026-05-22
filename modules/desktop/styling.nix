@@ -1,10 +1,9 @@
-_: {
+{nixosIdentity, ...}: {
   config = {
     # NixOS Desktop Styling Settings
     flake.modules.nixos.default = {
       config,
       lib,
-      identity,
       ...
     }: {
       options.aspects.desktop.styling.enable = lib.mkEnableOption "Desktop styling (GTK, QT, Cursors)";
@@ -15,7 +14,7 @@ _: {
         catppuccin.flavor = "macchiato";
         catppuccin.accent = "flamingo";
 
-        home-manager.users.${identity.name} = {pkgs, ...}: {
+        home-manager.users.${nixosIdentity.name} = {pkgs, ...}: {
           # Catppuccin home-manager configuration.
           catppuccin.flavor = "macchiato";
           catppuccin.accent = "flamingo";

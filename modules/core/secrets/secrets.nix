@@ -1,10 +1,9 @@
-_: {
+{nixosIdentity, ...}: {
   config = {
     # NixOS Secrets Settings
     flake.modules.nixos.default = {
       config,
       lib,
-      identity,
       ...
     }: {
       options.aspects.core.secrets.enable = lib.mkEnableOption "Secure secrets management using sops-nix";
@@ -24,15 +23,15 @@ _: {
 
         # Decrypt and write the personal SSH private key dynamically on boot
         sops.secrets.stellacode = {
-          path = "/home/${identity.name}/.ssh/stellacode";
-          owner = identity.name;
+          path = "/home/${nixosIdentity.name}/.ssh/stellacode";
+          owner = nixosIdentity.name;
           mode = "0600";
         };
 
         # Ensure .ssh exists with correct ownership before sops writes the key.
         # sops-nix creates parent dirs as root:root if missing, which SSH rejects.
         systemd.tmpfiles.rules = [
-          "d /home/${identity.name}/.ssh 0700 ${identity.name} users -"
+          "d /home/${nixosIdentity.name}/.ssh 0700 ${nixosIdentity.name} users -"
         ];
       };
     };
