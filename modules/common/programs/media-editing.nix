@@ -20,6 +20,7 @@
     (lib.optionalAttrs isDarwin {
       homebrew.casks = [
         "davinci-resolve"
+        "gimp"
         "obs"
       ];
     })
@@ -27,6 +28,7 @@
     (lib.optionalAttrs (!isDarwin) {
       environment.systemPackages = with pkgs; [
         davinci-resolve
+        gimp
         obs-studio
         parabolic
       ];
