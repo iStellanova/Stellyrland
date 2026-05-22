@@ -51,18 +51,8 @@
         "DaVinci Resolve" = 571213070; # DaVinci Resolve - Video editing
         "Dynamic wallpaper" = 1582358382; # Dynamic wallpaper - Wallpaper manager
         "Essayist" = 1537845384; # Essayist - Writing assistant
-        "GarageBand" = 682658836; # GarageBand - Music production
-        "iMovie" = 408981434; # iMovie - Movie editing
-        "Keynote" = 361285480; # Keynote - Presentation software
-        "Microsoft Excel" = 462058435; # Microsoft Excel - Spreadsheet software
-        "Microsoft OneNote" = 784801555; # Microsoft OneNote - Note-taking
-        "Microsoft Outlook" = 985367838; # Microsoft Outlook - Email client
-        "Microsoft PowerPoint" = 462062816; # Microsoft PowerPoint - Presentation software
-        "Microsoft Word" = 462054704; # Microsoft Word - Word processing software
         "Noizio Lite" = 1481029536; # Noizio Lite - White Noise
-        "Numbers" = 361304891; # Numbers - Spreadsheet software
         "OneDrive" = 823766827; # OneDrive - Cloud storage
-        "Pages" = 361309726; # Pages - Word processing software
         "School Assistant" = 1465687472; # School Assistant - School management
         "Xcode" = 497799835; # Xcode - Apple IDE
       };
