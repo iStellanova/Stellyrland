@@ -38,6 +38,7 @@
       zsh.enable = true;
       nixvim.enable = true;
       ai-tools.enable = true;
+      bitwarden.enable = true;
       vesktop.enable = true;
       zed.enable = true;
     };
