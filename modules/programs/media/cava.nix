@@ -1,13 +1,7 @@
-{
-  lib,
-  ...
-}: {
+{lib, ...}: {
   config = {
     # NixOS Options Declaration
-    flake.modules.nixos.default = {
-      lib,
-      ...
-    }: {
+    flake.modules.nixos.default = {lib, ...}: {
       options.aspects.programs.cava.enable = lib.mkEnableOption "Cava";
     };
 
@@ -25,10 +19,7 @@
     };
 
     # Home Manager Cava Settings
-    flake.modules.homeManager.default = {
-      osConfig,
-      ...
-    }: let
+    flake.modules.homeManager.default = {osConfig, ...}: let
       isDarwin = osConfig ? system.defaults;
     in
       lib.mkIf (osConfig ? aspects.programs.cava && osConfig.aspects.programs.cava.enable) {

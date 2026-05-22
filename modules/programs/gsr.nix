@@ -1,7 +1,4 @@
-{
-  lib,
-  ...
-}: {
+{lib, ...}: {
   config = {
     # NixOS GSR Settings
     flake.modules.nixos.default = {

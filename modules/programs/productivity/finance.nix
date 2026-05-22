@@ -1,10 +1,7 @@
 _: {
   config = {
     # NixOS Options Declaration
-    flake.modules.nixos.default = {
-      lib,
-      ...
-    }: {
+    flake.modules.nixos.default = {lib, ...}: {
       options.aspects.programs.finance.enable = lib.mkEnableOption "Personal finance tools";
     };
 

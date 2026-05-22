@@ -183,18 +183,12 @@ _: {
       };
 
     # NixOS Options Declaration
-    flake.modules.nixos.default = {
-      lib,
-      ...
-    }: {
+    flake.modules.nixos.default = {lib, ...}: {
       options.aspects.programs.yazi.enable = lib.mkEnableOption "Yazi file manager";
     };
 
     # Darwin Options Declaration
-    flake.modules.darwin.default = {
-      lib,
-      ...
-    }: {
+    flake.modules.darwin.default = {lib, ...}: {
       options.aspects.programs.yazi.enable = lib.mkEnableOption "Yazi file manager";
     };
   };

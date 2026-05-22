@@ -1,7 +1,4 @@
-{
-  lib,
-  ...
-}: {
+{lib, ...}: {
   config = {
     # Home Manager Zed AI Settings
     flake.modules.homeManager.default = {

@@ -1,7 +1,4 @@
-{
-  lib,
-  ...
-}: {
+{lib, ...}: {
   config = {
     # NixOS Core System settings
     flake.modules.nixos.default = {config, ...}: {
