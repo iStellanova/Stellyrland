@@ -18,7 +18,6 @@
         "background-music" # Background music
         "balenaetcher" # Balena Etcher
         "craft" # Craft - Notes Application
-        "font-sf-pro" # SF Pro font
         "gimp" # GIMP - Image Editor
         "github" # GitHub Desktop
         "quicken" # Quicken
