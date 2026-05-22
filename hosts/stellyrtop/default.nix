@@ -27,6 +27,7 @@
       browser.enable = true;
       background-sounds.enable = true;
       cloud-storage.enable = true;
+      virtual-machines.enable = true;
       media.enable = true;
       media-editing.enable = true;
       btop.enable = true;
