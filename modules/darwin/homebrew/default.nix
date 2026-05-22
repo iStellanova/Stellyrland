@@ -23,7 +23,6 @@
 
       masApps = {
         "Dynamic wallpaper" = 1582358382; # Dynamic wallpaper - Wallpaper manager
-        "Xcode" = 497799835; # Xcode - Apple IDE
       };
     };
   };

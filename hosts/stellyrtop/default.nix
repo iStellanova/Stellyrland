@@ -48,7 +48,7 @@
       ai-tools.enable = true;
       bitwarden.enable = true;
       discord-music-rpc.enable = true;
-      jetbrains.enable = true;
+      ide-suite.enable = true;
       office-suite.enable = true;
       vesktop.enable = true;
       zed.enable = true;
