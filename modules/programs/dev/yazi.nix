@@ -49,7 +49,6 @@ _: {
               show_symlink = true;
               sort_by = "alphabetical";
               sort_sensitive = true;
-              sort_reverse = false;
               sort_dir_first = true;
               sort_translit = true;
               linemode = "size";
@@ -71,7 +70,7 @@ _: {
               ];
               view = [
                 {
-                  run = ''${lib.getExe pkgs.viu} -t "%s"'';
+                  run = ''${lib.getExe pkgs.viu} "%s"'';
                   block = true;
                   for = "unix";
                 }
@@ -173,6 +172,8 @@ _: {
           [
             imagemagick
             poppler-utils
+            ffmpegthumbnailer
+            fd
             viu
             hexyl
             ouch
