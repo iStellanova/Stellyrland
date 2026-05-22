@@ -1,7 +1,7 @@
 _: {
   config = {
     # NixOS Impermanence Settings
-    flake.modules.nixos.default = {
+    flake.modules.nixos.impermanence = {
       config,
       lib,
       ...

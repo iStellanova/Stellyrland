@@ -1,7 +1,7 @@
 {nixosIdentity, ...}: {
   config = {
     # NixOS Office Suite Settings
-    flake.modules.nixos.default = {
+    flake.modules.nixos.office-suite = {
       config,
       lib,
       pkgs,
@@ -17,7 +17,7 @@
     };
 
     # Darwin Office Suite Settings
-    flake.modules.darwin.default = {
+    flake.modules.darwin.office-suite = {
       config,
       lib,
       ...

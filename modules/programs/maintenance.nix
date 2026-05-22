@@ -1,7 +1,7 @@
 {nixosIdentity, ...}: {
   config = {
     # NixOS Maintenance Settings
-    flake.modules.nixos.default = {
+    flake.modules.nixos.maintenance = {
       config,
       lib,
       pkgs,
@@ -17,7 +17,7 @@
     };
 
     # Darwin Maintenance Settings
-    flake.modules.darwin.default = {
+    flake.modules.darwin.maintenance = {
       config,
       lib,
       ...

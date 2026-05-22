@@ -1,12 +1,12 @@
 _: {
   config = {
     # NixOS Options Declaration
-    flake.modules.nixos.default = {lib, ...}: {
+    flake.modules.nixos.finance = {lib, ...}: {
       options.aspects.programs.finance.enable = lib.mkEnableOption "Personal finance tools";
     };
 
     # Darwin Finance Settings
-    flake.modules.darwin.default = {
+    flake.modules.darwin.finance = {
       config,
       lib,
       ...

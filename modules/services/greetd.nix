@@ -1,7 +1,7 @@
 {nixosIdentity, ...}: {
   config = {
     # NixOS Greetd Settings
-    flake.modules.nixos.default = {
+    flake.modules.nixos.greetd = {
       config,
       lib,
       pkgs,

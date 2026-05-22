@@ -5,7 +5,7 @@
 }: {
   config = {
     # System-level Linux configuration for Hyprland
-    flake.modules.nixos.default = {
+    flake.modules.nixos.hyprland = {
       config,
       pkgs,
       ...
@@ -63,15 +63,13 @@
     };
 
     # User-level Home Manager configuration for Hyprland
-    flake.modules.homeManager.default = {
+    flake.modules.homeManager.hyprland = {
       pkgs,
       osConfig,
       ...
     }: {
       imports = [
         inputs.hyprland.homeManagerModules.default
-        ./binds.nix
-        ./rules.nix
       ];
 
       config = lib.mkIf (osConfig ? aspects.desktop.hyprland && osConfig.aspects.desktop.hyprland.enable) {

@@ -1,7 +1,7 @@
 {nixosIdentity, ...}: {
   config = {
     # NixOS Virtual Machines Settings
-    flake.modules.nixos.default = {
+    flake.modules.nixos.virtual-machines = {
       config,
       lib,
       pkgs,
@@ -19,7 +19,7 @@
     };
 
     # Darwin Virtual Machines Settings
-    flake.modules.darwin.default = {
+    flake.modules.darwin.virtual-machines = {
       config,
       lib,
       ...

@@ -1,7 +1,7 @@
 _: {
   config = {
     # NixOS initrd settings
-    flake.modules.nixos.default = {
+    flake.modules.nixos.initrd = {
       config,
       lib,
       pkgs,

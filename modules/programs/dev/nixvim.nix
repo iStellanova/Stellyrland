@@ -1,7 +1,7 @@
 {lib, ...}: {
   config = {
     # Home Manager NixVim Settings
-    flake.modules.homeManager.default = {
+    flake.modules.homeManager.nixvim = {
       osConfig,
       pkgs,
       ...
@@ -169,12 +169,12 @@
       };
 
     # NixOS Options Declaration
-    flake.modules.nixos.default = {lib, ...}: {
+    flake.modules.nixos.nixvim = {lib, ...}: {
       options.aspects.programs.nixvim.enable = lib.mkEnableOption "NixVim editor configuration";
     };
 
     # Darwin Options Declaration
-    flake.modules.darwin.default = {lib, ...}: {
+    flake.modules.darwin.nixvim = {lib, ...}: {
       options.aspects.programs.nixvim.enable = lib.mkEnableOption "NixVim editor configuration";
     };
   };

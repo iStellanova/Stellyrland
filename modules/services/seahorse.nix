@@ -1,7 +1,7 @@
 _: {
   config = {
     # NixOS Seahorse Settings
-    flake.modules.nixos.default = {
+    flake.modules.nixos.seahorse = {
       config,
       lib,
       ...

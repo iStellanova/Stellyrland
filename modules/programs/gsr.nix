@@ -6,7 +6,7 @@
 }: {
   config = {
     # NixOS GSR Settings
-    flake.modules.nixos.default = {
+    flake.modules.nixos.gsr = {
       config,
       lib,
       pkgs,
@@ -21,7 +21,7 @@
     };
 
     # Home Manager GSR Settings
-    flake.modules.homeManager.default = {osConfig, ...}: let
+    flake.modules.homeManager.gsr = {osConfig, ...}: let
       isDarwin = osConfig ? system.defaults;
       identity =
         if isDarwin

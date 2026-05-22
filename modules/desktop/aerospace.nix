@@ -1,7 +1,7 @@
 {darwinIdentity, ...}: {
   config = {
     # Darwin AeroSpace Settings
-    flake.modules.darwin.default = {
+    flake.modules.darwin.aerospace = {
       config,
       lib,
       ...

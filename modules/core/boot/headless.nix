@@ -1,7 +1,7 @@
 _: {
   config = {
     # NixOS Headless Specialisation
-    flake.modules.nixos.default = {
+    flake.modules.nixos.headless = {
       config,
       lib,
       ...
