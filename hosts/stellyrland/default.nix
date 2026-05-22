@@ -45,7 +45,9 @@
       cli.enable = true;
       ai-tools.enable = true;
       aesthetic.enable = true;
+      background-sounds.enable = true;
       media.enable = true;
+      media-editing.enable = true;
       utils.enable = true;
       browser.enable = true;
       gaming.enable = true;
