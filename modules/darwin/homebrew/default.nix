@@ -14,14 +14,6 @@
         upgrade = true;
       };
 
-      taps = [
-        "nextfire/tap"
-        "felixkratz/formulae"
-        "nikitabobko/tap"
-      ];
-
-      brews = [];
-
       casks = [
         "background-music" # Background music
         "balenaetcher" # Balena Etcher
