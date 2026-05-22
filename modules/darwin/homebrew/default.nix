@@ -27,7 +27,6 @@
         "dimentium/autoraise/autoraiseapp" # Auto-raise
         "background-music" # Background music
         "balenaetcher" # Balena Etcher
-        "claude" # Claude
         "cleanmymac" # CleanMyMac
         "craft" # Craft - Notes Application
         "font-sf-pro" # SF Pro font
