@@ -21,9 +21,7 @@
         "nikitabobko/tap"
       ];
 
-      brews = [
-        "apple-music-discord-rpc" # Discord RPC for Apple Music
-      ];
+      brews = [];
 
       casks = [
         "dimentium/autoraise/autoraiseapp" # Auto-raise
