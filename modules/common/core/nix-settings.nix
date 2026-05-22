@@ -99,8 +99,8 @@ in {
           if [[ "$1" == "check" ]]; then
             git -C $FLAKE add . && ${
           if isDarwin
-          then "nh darwin build $FLAKE"
-          else "nh os build --diff always"
+          then "nh darwin build $FLAKE && rm ./result"
+          else "nh os build --diff always && rm ./result"
         }
           else
             ${
@@ -119,8 +119,8 @@ in {
           if [[ "$1" == "check" ]]; then
             git -C $FLAKE add . && ${
           if isDarwin
-          then "nix flake update $FLAKE && nh darwin build $FLAKE"
-          else "nh os build --update --diff always"
+          then "nix flake update $FLAKE && nh darwin build $FLAKE && rm ./result"
+          else "nh os build --update --diff always && rm ./result"
         }
           else
             ${
