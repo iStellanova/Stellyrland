@@ -30,7 +30,7 @@
 
     # Noctalia shell.
     noctalia-shell = {
-      url = "github:linusammon/noctalia-shell/v5-hm";
+      url = "github:noctalia-dev/noctalia-shell/v5";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 

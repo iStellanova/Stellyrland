@@ -412,11 +412,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1779336838,
-        "narHash": "sha256-n1+l78hJRABp4cQHKeD0BVByT0vZLPqd09Tvoq8Q+d8=",
+        "lastModified": 1779507042,
+        "narHash": "sha256-7wOwi8B6D0BYsieZCnHZZj2sNUzgJhLoIVSfkwB7lxQ=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "928d72376949e222ea4f07b44828a55b0136422e",
+        "rev": "509ed3c603349a9d43de9e2ae6613baea6bd5b34",
         "type": "github"
       },
       "original": {
@@ -1150,16 +1150,16 @@
         ]
       },
       "locked": {
-        "lastModified": 1778966658,
-        "narHash": "sha256-PrhYqEl8rxo83C2wuxMXF8LWps/nQJZJSTH8WF0mDv8=",
-        "owner": "linusammon",
+        "lastModified": 1779507089,
+        "narHash": "sha256-9CI1phrcf4s4xgsS4zRXHU6w1K46fwV+FW8WQTp6jFA=",
+        "owner": "noctalia-dev",
         "repo": "noctalia-shell",
-        "rev": "82536c0133b545af6b50f0a2fe671990c6ef5296",
+        "rev": "ce1a645b7683b06e055a89e667606d0c1be521c7",
         "type": "github"
       },
       "original": {
-        "owner": "linusammon",
-        "ref": "v5-hm",
+        "owner": "noctalia-dev",
+        "ref": "v5",
         "repo": "noctalia-shell",
         "type": "github"
       }
