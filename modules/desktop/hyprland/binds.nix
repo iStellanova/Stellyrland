@@ -88,7 +88,7 @@
 
             # --- Noctalia Integration ---
             "$mainMod ALT, R, exec, systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP DISPLAY && systemctl --user restart noctalia"
-            "$mainMod ALT, E, exec, pkill -9 linux-wallpaperengine && linux-wallpaperengine --assets-dir $HOME/ExtraDisk/SteamLibrary/steamapps/common/wallpaper_engine/assets --screen-root DP-2 --screen-root DP-3 --fps 60 --silent $HOME/ExtraDisk/SteamLibrary/steamapps/workshop/content/431960/3258032485/" #Start Wallpaper Engine
+            "$mainMod ALT, E, exec, pkill -f -9 linux-wallpaperengine && linux-wallpaperengine --assets-dir $HOME/ExtraDisk/SteamLibrary/steamapps/common/wallpaper_engine/assets --screen-root DP-2 --screen-root DP-3 --fps 60 --silent $HOME/ExtraDisk/SteamLibrary/steamapps/workshop/content/431960/3258032485/" #Start Wallpaper Engine
             "$mainMod SHIFT, Tab, exec, noctalia msg panel-toggle wallpaper"
             "$mainMod SHIFT, X, exec, noctalia msg panel-toggle session"
 
