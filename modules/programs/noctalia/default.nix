@@ -51,6 +51,8 @@
                     fi
         '';
 
+        systemd.user.services.noctalia.Service.RestartSec = "3s";
+
         programs.noctalia = {
           enable = true;
           systemd.enable = true;
