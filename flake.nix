@@ -116,7 +116,7 @@
         inputs.flake-parts.flakeModules.modules
 
         # Bootstrap: scan and auto-import all modules/ — the only manual import needed
-        ./flake/dendritic.nix
+        ./bootstrap.nix
       ];
     };
 }
