@@ -249,7 +249,11 @@
             };
 
             # Performance and Compatibility
-            render.direct_scanout = false; # Set to false to prevent flickering in some full-screen apps
+            render = {
+              direct_scanout = false; # Set to false to prevent flickering in some full-screen apps
+              cm_enabled = true;
+              cm_auto_hdr = 2;
+            };
             scrolling = {
               column_width = 0.5;
               fullscreen_on_one_column = true;
