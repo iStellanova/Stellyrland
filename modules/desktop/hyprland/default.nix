@@ -50,6 +50,23 @@
           pulse.enable = true;
           alsa.enable = true;
           alsa.support32Bit = true; # Required for 32-bit games (Steam runtime) to have audio.
+          wireplumber = {
+            enable = true;
+            extraConfig = {
+              "10-ignore-vols" = {
+                "monitor.alsa.rules" = [
+                  {
+                    matches = [{"node.name" = "~alsa_input.*";}];
+                    actions = {
+                      update-props = {
+                        "node.ignore-session-volume" = true;
+                      };
+                    };
+                  }
+                ];
+              };
+            };
+          };
         };
 
         # xdg-desktop-portal for Hyprland.
@@ -98,6 +115,7 @@
             "exec-once" = [
               "dbus-update-activation-environment --systemd --all" # update the activation environment.
               "systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP" # import environment variables.
+              "wpctl set-volume @DEFAULT_AUDIO_SOURCE@ 1.0" # ensure microphone is at 100% on login.
               "systemctl --user start hyprpolkitagent" # start the Polkit agent.
               "gnome-keyring-daemon --start --components=secrets" # start the GNOME keyring daemon.
               "udiskie -a -s --file-manager nautilus" # mount removable media and open file manager.
@@ -143,6 +161,11 @@
               "OBS_USE_EGL, 1"
               "PROTON_ENABLE_HDR, 1"
               "PROTON_ENABLE_WAYLAND, 1"
+
+              # --- Vulkan & Multi-GPU Fixes ---
+              "AMD_VULKAN_ICD, RADV"
+              "RADV_PERFTEST, nggc" # Consistent with your performance-tuning (CachyOS style)
+              "VK_ICD_FILENAMES, /run/opengl-driver/share/vulkan/icd.d/radeon_icd.x86_64.json:/run/opengl-driver-32/share/vulkan/icd.d/radeon_icd.i686.json"
             ];
 
             input = {
