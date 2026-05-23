@@ -112,14 +112,11 @@
       ];
 
       imports = [
-        # Load the flake-parts standard options for modular outputs
+        # Enable the flake.modules.* option namespace
         inputs.flake-parts.flakeModules.modules
 
-        # Local dendritic configurations and builders
-        ./flake/identity.nix
+        # Bootstrap: scan and auto-import all modules/ — the only manual import needed
         ./flake/dendritic.nix
-        ./flake/hosts.nix
-        ./flake/treefmt.nix
       ];
     };
 }
