@@ -24,20 +24,44 @@ _: {
             TIMELINE_CREATE = true;
             TIMELINE_CLEANUP = true;
             TIMELINE_MIN_AGE = "1800";
-            TIMELINE_LIMIT_HOURLY = "5";
+            TIMELINE_LIMIT_HOURLY = "0";
             TIMELINE_LIMIT_DAILY = "7";
-            TIMELINE_LIMIT_WEEKLY = "2";
-            TIMELINE_LIMIT_MONTHLY = "1";
+            TIMELINE_LIMIT_WEEKLY = "0";
+            TIMELINE_LIMIT_MONTHLY = "0";
             TIMELINE_LIMIT_YEARLY = "0";
+            NUMBER_CLEANUP = true;
+            NUMBER_LIMIT = "10";
+          };
+          persist = {
+            SUBVOLUME = "/persist";
+            ALLOW_USERS = [config.identity.username];
+            TIMELINE_CREATE = true;
+            TIMELINE_CLEANUP = true;
+            TIMELINE_MIN_AGE = "1800";
+            TIMELINE_LIMIT_HOURLY = "0";
+            TIMELINE_LIMIT_DAILY = "7";
+            TIMELINE_LIMIT_WEEKLY = "0";
+            TIMELINE_LIMIT_MONTHLY = "0";
+            TIMELINE_LIMIT_YEARLY = "0";
+            NUMBER_CLEANUP = true;
+            NUMBER_LIMIT = "10";
           };
         };
+
+        # Post-switch snapshots for both /home and /persist.
+        # Runs during nixos-rebuild activation, capturing a known-good state after each successful rebuild.
+        # Uses number cleanup so these are kept independently of the daily timeline (last 10 preserved).
+        system.activationScripts.snapshot-after-rebuild = ''
+          ${pkgs.snapper}/bin/snapper -c home create --cleanup-algorithm number --description "After rebuild" || true
+          ${pkgs.snapper}/bin/snapper -c persist create --cleanup-algorithm number --description "After rebuild" || true
+        '';
 
         # Auto-scrubbing for BTRFS filesystems.
         # Periodically checks for and repairs bitrot or data corruption.
         services.btrfs.autoScrub = {
           enable = true;
           interval = "monthly";
-          fileSystems = ["/"] ++ lib.optional config.aspects.core.extra-disk.enable "${config.identity.homeDir}/ExtraDisk";
+          fileSystems = ["/"] ++ lib.optional config.aspects.core.extra-disk.enable "${config.identity.homeDir}/ExtraDisk" ++ ["/persist"];
         };
       };
     };
