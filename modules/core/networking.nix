@@ -29,6 +29,19 @@
           "net.core.default_qdisc" = "fq";
           "net.ipv4.tcp_congestion_control" = "bbr";
         };
+
+        # Firewall configuration for Tailscale & Discord voice routing
+        networking.firewall = {
+          enable = true;
+          checkReversePath = "loose";
+          allowedUDPPorts = [41641]; # Tailscale
+          allowedUDPPortRanges = [
+            {
+              from = 50000;
+              to = 65535;
+            }
+          ];
+        };
       };
     };
 

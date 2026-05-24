@@ -95,6 +95,7 @@
             zed.enable = true;
           };
           services = {
+            openssh.enable = true;
             discord-music-rpc.enable = true;
             greetd.enable = true;
             flatpak.enable = true;
