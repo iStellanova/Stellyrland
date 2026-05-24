@@ -28,6 +28,14 @@ _: {
           mode = "0600";
         };
 
+        # Decrypt the personal backup HDD keyfile dynamically on boot
+        sops.secrets.hdd-keyfile = {
+          path = "/persist/secrets/hdd-keyfile";
+          owner = "root";
+          group = "root";
+          mode = "0400";
+        };
+
         # Ensure .ssh exists with correct ownership before sops writes the key.
         # sops-nix creates parent dirs as root:root if missing, which SSH rejects.
         systemd.tmpfiles.rules = [

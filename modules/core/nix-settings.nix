@@ -149,11 +149,7 @@
             else "nh os build --diff always && rm ./result"
           }
             else
-              ${
-            if isDarwin
-            then ""
-            else "(snapper -c home create -c timeline --description \"Before rebuild\" || true) && "
-          }git -C $FLAKE add . && (cd $FLAKE && nix fmt) && ${
+              git -C $FLAKE add . && (cd $FLAKE && nix fmt) && ${
             if isDarwin
             then "nh darwin switch $FLAKE"
             else "nh os switch"
@@ -169,11 +165,7 @@
             else "nh os build --update --diff always && rm ./result"
           }
             else
-              ${
-            if isDarwin
-            then ""
-            else "(snapper -c home create -c timeline --description \"Before upgrade\" || true) && "
-          }git -C $FLAKE add . && (cd $FLAKE && nix fmt) && ${
+              git -C $FLAKE add . && (cd $FLAKE && nix fmt) && ${
             if isDarwin
             then "nh darwin switch --update $FLAKE"
             else "nh os switch --update"
