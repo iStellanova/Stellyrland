@@ -12,7 +12,7 @@ _: {
         enable = lib.mkEnableOption "Headless/Remote-only specialisation";
         disabledPorts = lib.mkOption {
           type = lib.types.listOf lib.types.str;
-          default = lib.attrNames config.aspects.core.monitors;
+          default = ["DP-2" "DP-3"];
           description = "Display ports to disable in the headless specialisation.";
         };
       };
