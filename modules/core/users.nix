@@ -1,12 +1,12 @@
 {lib, ...}: {
   config = {
-    # NixOS-only users configuration
+    # NixOS users configuration
     flake.modules.nixos.users = {
       config,
       pkgs,
       ...
     }: {
-      options.aspects.core.users.enable = lib.mkEnableOption "Core users";
+      options.aspects.core.users.enable = lib.mkEnableOption "Core users configuration";
 
       config = lib.mkIf config.aspects.core.users.enable {
         users.mutableUsers = false;
@@ -18,6 +18,18 @@
           isNormalUser = true;
           extraGroups = ["wheel" "storage" "disk" "video" "render" "networkmanager"];
           openssh.authorizedKeys.keys = config.identity.sshKeys;
+        };
+      };
+    };
+
+    # Darwin users configuration
+    flake.modules.darwin.users = {config, ...}: {
+      options.aspects.core.users.enable = lib.mkEnableOption "Core users configuration";
+
+      config = lib.mkIf config.aspects.core.users.enable {
+        users.users.${config.identity.username} = {
+          name = config.identity.username;
+          home = config.identity.homeDir;
         };
       };
     };
