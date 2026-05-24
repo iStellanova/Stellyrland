@@ -51,6 +51,7 @@
             networking.enable = true;
             storage.enable = true;
             extra-disk.enable = true;
+            hdd.enable = true;
             impermanence.enable = true;
             services-base.enable = true;
             xdg.enable = true;
