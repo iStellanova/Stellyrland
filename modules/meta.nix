@@ -1,4 +1,44 @@
-_: {
+{lib, ...}: {
+  options = {
+    hosts.nixos = lib.mkOption {
+      type = lib.types.lazyAttrsOf (lib.types.submodule {
+        options = {
+          system = lib.mkOption {
+            type = lib.types.str;
+            default = "x86_64-linux";
+            description = "The target CPU/OS architecture.";
+          };
+          modules = lib.mkOption {
+            type = lib.types.listOf lib.types.deferredModule;
+            default = [];
+            description = "List of NixOS configurations/modules for this host.";
+          };
+        };
+      });
+      default = {};
+      description = "Declarative NixOS host specifications.";
+    };
+
+    hosts.darwin = lib.mkOption {
+      type = lib.types.lazyAttrsOf (lib.types.submodule {
+        options = {
+          system = lib.mkOption {
+            type = lib.types.str;
+            default = "aarch64-darwin";
+            description = "The target Darwin CPU/OS architecture.";
+          };
+          modules = lib.mkOption {
+            type = lib.types.listOf lib.types.deferredModule;
+            default = [];
+            description = "List of Darwin configurations/modules for this host.";
+          };
+        };
+      });
+      default = {};
+      description = "Declarative Darwin host specifications.";
+    };
+  };
+
   config = {
     # NixOS level identity options
     flake.modules.nixos.meta = {lib, ...}: {
