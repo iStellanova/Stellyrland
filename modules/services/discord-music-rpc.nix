@@ -7,9 +7,9 @@ _: {
       pkgs,
       ...
     }: {
-      options.aspects.programs.discord-music-rpc.enable = lib.mkEnableOption "Discord Rich Presence for music players";
+      options.aspects.services.discord-music-rpc.enable = lib.mkEnableOption "Discord Rich Presence for music players";
 
-      config = lib.mkIf config.aspects.programs.discord-music-rpc.enable {
+      config = lib.mkIf config.aspects.services.discord-music-rpc.enable {
         home-manager.users.${config.identity.username} = {
           home.packages = [pkgs.mprisence];
 
@@ -38,9 +38,9 @@ _: {
       lib,
       ...
     }: {
-      options.aspects.programs.discord-music-rpc.enable = lib.mkEnableOption "Discord Rich Presence for music players";
+      options.aspects.services.discord-music-rpc.enable = lib.mkEnableOption "Discord Rich Presence for music players";
 
-      config = lib.mkIf config.aspects.programs.discord-music-rpc.enable {
+      config = lib.mkIf config.aspects.services.discord-music-rpc.enable {
         homebrew.brews = ["apple-music-discord-rpc"];
       };
     };

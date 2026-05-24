@@ -66,12 +66,14 @@
             nixvim.enable = true;
             ai-tools.enable = true;
             bitwarden.enable = true;
-            discord-music-rpc.enable = true;
             ide-suite.enable = true;
             office-suite.enable = true;
             vesktop.enable = true;
             utils.enable = true;
             zed.enable = true;
+          };
+          services = {
+            discord-music-rpc.enable = true;
           };
         };
       }
