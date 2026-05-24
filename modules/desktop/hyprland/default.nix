@@ -10,7 +10,21 @@
       pkgs,
       ...
     }: {
-      options.aspects.desktop.hyprland.enable = lib.mkEnableOption "Hyprland desktop environment";
+      options.aspects.desktop.hyprland = {
+        enable = lib.mkEnableOption "Hyprland desktop environment";
+        wallpaperEngine = {
+          steamLibrary = lib.mkOption {
+            type = lib.types.str;
+            default = "${config.identity.homeDir}/ExtraDisk/SteamLibrary";
+            description = "Path to the Steam library containing wallpaper_engine and workshop content.";
+          };
+          workshopId = lib.mkOption {
+            type = lib.types.str;
+            default = "";
+            description = "Workshop item ID to pass to linux-wallpaperengine. Empty disables it.";
+          };
+        };
+      };
 
       config = lib.mkIf config.aspects.desktop.hyprland.enable {
         programs.hyprland = {
@@ -321,7 +335,12 @@
           };
 
           # smw requires runtime require(); startup needs arbitrary exec-once — both must stay in extraConfig.
-          extraConfig = ''
+          extraConfig = let
+            we = osConfig.aspects.desktop.hyprland.wallpaperEngine;
+            wallpaperCmd = lib.optionalString (we.workshopId != "") ''
+              hl.exec_cmd([[sleep 3 && linux-wallpaperengine --assets-dir ${we.steamLibrary}/steamapps/common/wallpaper_engine/assets --screen-root DP-2 --screen-root DP-3 --fps 60 --silent ${we.steamLibrary}/steamapps/workshop/content/431960/${we.workshopId}/]])
+            '';
+          in ''
             hl.on("hyprland.start", function()
                 hl.exec_cmd("dbus-update-activation-environment --systemd --all")
                 hl.exec_cmd("systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP")
@@ -331,8 +350,7 @@
                 hl.exec_cmd("udiskie -a -s --file-manager nautilus")
                 hl.exec_cmd("wl-paste --type text --watch cliphist store")
                 hl.exec_cmd("wl-paste --type image --watch cliphist store")
-                hl.exec_cmd([[sleep 3 && linux-wallpaperengine --assets-dir $HOME/ExtraDisk/SteamLibrary/steamapps/common/wallpaper_engine/assets --screen-root DP-2 --screen-root DP-3 --fps 60 --silent $HOME/ExtraDisk/SteamLibrary/steamapps/workshop/content/431960/3258032485/]])
-                hl.exec_cmd("systemctl --user restart xdg-desktop-portal-hyprland")
+                ${wallpaperCmd}hl.exec_cmd("systemctl --user restart xdg-desktop-portal-hyprland")
             end)
           '';
         };
