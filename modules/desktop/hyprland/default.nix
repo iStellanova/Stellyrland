@@ -9,14 +9,24 @@
       config,
       pkgs,
       ...
-    }: {
+    }: let
+      # sdrMinLuminance defaults to 0.2 nits in the hdr CM preset — correct for LCD but
+      # prevents OLED pixels from reaching true black. Patch to 0 for OLED black levels.
+      patchedHyprland = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland.overrideAttrs (old: {
+        postPatch =
+          (old.postPatch or "")
+          + ''
+            substituteInPlace src/config/shared/monitor/MonitorRule.hpp \
+              --replace 'm_sdrMinLuminance   = 0.2F;' 'm_sdrMinLuminance   = 0.0F;'
+          '';
+      });
+    in {
       options.aspects.desktop.hyprland.enable = lib.mkEnableOption "Hyprland desktop environment";
 
       config = lib.mkIf config.aspects.desktop.hyprland.enable {
         programs.hyprland = {
           enable = true;
-          # Use the flake package.
-          package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
+          package = patchedHyprland;
           portalPackage = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
         };
 
@@ -84,7 +94,16 @@
       pkgs,
       osConfig,
       ...
-    }: {
+    }: let
+      patchedHyprland = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland.overrideAttrs (old: {
+        postPatch =
+          (old.postPatch or "")
+          + ''
+            substituteInPlace src/config/shared/monitor/MonitorRule.hpp \
+              --replace 'm_sdrMinLuminance   = 0.2F;' 'm_sdrMinLuminance   = 0.0F;'
+          '';
+      });
+    in {
       imports = [
         inputs.hyprland.homeManagerModules.default
       ];
@@ -99,7 +118,7 @@
         wayland.windowManager.hyprland = {
           enable = true;
           configType = "hyprlang";
-          package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
+          package = patchedHyprland;
           xwayland.enable = true;
           systemd.enable = true; # necessary for systemd activation.
 
