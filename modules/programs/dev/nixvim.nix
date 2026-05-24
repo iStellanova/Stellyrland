@@ -1,6 +1,9 @@
-{lib, ...}: {
+{
+  inputs,
+  lib,
+  ...
+}: {
   config = {
-    # Home Manager NixVim Settings
     flake.modules.homeManager.nixvim = {
       osConfig,
       pkgs,
@@ -9,6 +12,7 @@
       lib.mkIf (osConfig ? aspects.programs.nixvim && osConfig.aspects.programs.nixvim.enable) {
         programs.nixvim = {
           enable = true;
+          nixpkgs.source = inputs.nixpkgs;
           defaultEditor = true;
 
           viAlias = true;
