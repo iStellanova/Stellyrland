@@ -91,7 +91,7 @@ in {
         # Only the smw plugin block lives here — it requires a runtime require() call
         # that cannot be expressed in the Nix type system.
         wayland.windowManager.hyprland.extraConfig = ''
-          -- The nix derivation only installs the .so; the Lua library lives in the flake source.
+          -- TODO: remove when split-monitor-workspaces nix package installs lua/ alongside the .so
           package.path = package.path .. ";${inputs.split-monitor-workspaces}/lua/?.lua"
           local smw = require("split-monitor-workspaces")
           smw.setup({
