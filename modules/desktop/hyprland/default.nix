@@ -9,24 +9,13 @@
       config,
       pkgs,
       ...
-    }: let
-      # sdrMinLuminance defaults to 0.2 nits in the hdr CM preset — correct for LCD but
-      # prevents OLED pixels from reaching true black. Patch to 0 for OLED black levels.
-      patchedHyprland = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland.overrideAttrs (old: {
-        postPatch =
-          (old.postPatch or "")
-          + ''
-            substituteInPlace src/config/shared/monitor/MonitorRule.hpp \
-              --replace 'm_sdrMinLuminance   = 0.2F;' 'm_sdrMinLuminance   = 0.0F;'
-          '';
-      });
-    in {
+    }: {
       options.aspects.desktop.hyprland.enable = lib.mkEnableOption "Hyprland desktop environment";
 
       config = lib.mkIf config.aspects.desktop.hyprland.enable {
         programs.hyprland = {
           enable = true;
-          package = patchedHyprland;
+          package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
           portalPackage = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
         };
 
@@ -95,14 +84,51 @@
       osConfig,
       ...
     }: let
-      patchedHyprland = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland.overrideAttrs (old: {
-        postPatch =
-          (old.postPatch or "")
-          + ''
-            substituteInPlace src/config/shared/monitor/MonitorRule.hpp \
-              --replace 'm_sdrMinLuminance   = 0.2F;' 'm_sdrMinLuminance   = 0.0F;'
-          '';
-      });
+      lua = lib.generators.mkLuaInline;
+
+      # Parse the centralized legacy monitor configurations into structured Nix attribute sets (translated to Lua tables)
+      parseMonitor = name: confString: let
+        parts = lib.splitString ", " confString;
+        mode = lib.elemAt parts 0;
+        pos = lib.elemAt parts 1;
+        scale = lib.elemAt parts 2;
+
+        parsePairs = list: let
+          len = lib.length list;
+          getPair = idx:
+            if idx + 1 < len
+            then let
+              key = lib.elemAt list idx;
+              val = lib.elemAt list (idx + 1);
+              # Convert digit strings to native Nix integers, otherwise leave as string
+              parsedVal =
+                if val == "hdr"
+                then "hdr"
+                else if val == "auto"
+                then "auto"
+                else if (builtins.match "[0-9]+" val) != null
+                then lib.strings.toInt val
+                else val;
+            in
+              {"${key}" = parsedVal;} // getPair (idx + 2)
+            else {};
+        in
+          getPair 3;
+
+        extraAttrs = parsePairs parts;
+        # Automatically inject sdr_min_luminance = 0.0 for true perfect blacks if HDR is enabled
+        luminanceSetting =
+          if lib.hasInfix "cm, hdr" confString
+          then {sdr_min_luminance = 0.0;}
+          else {};
+      in
+        {
+          output = name;
+          inherit mode;
+          position = pos;
+          inherit scale;
+        }
+        // extraAttrs // luminanceSetting;
     in {
       imports = [
         inputs.hyprland.homeManagerModules.default
@@ -117,8 +143,8 @@
         # Hyprland window manager. Main Configuration.
         wayland.windowManager.hyprland = {
           enable = true;
-          configType = "hyprlang";
-          package = patchedHyprland;
+          configType = "lua";
+          package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
           xwayland.enable = true;
           systemd.enable = true; # necessary for systemd activation.
 
@@ -126,167 +152,229 @@
             inputs.split-monitor-workspaces.packages.${pkgs.stdenv.hostPlatform.system}.split-monitor-workspaces
           ];
 
+          # Declarative configuration parameters natively mapped by Home Manager
           settings = {
-            # Monitor Configuration:
-            # Centralized via aspects.core.monitors
-            monitor = (lib.mapAttrsToList (name: conf: "${name}, ${conf}") osConfig.aspects.core.monitors) ++ [", preferred, auto, 1"];
+            # Structured monitor settings mapped natively to hl.monitor({...}) in Lua
+            monitor =
+              (lib.mapAttrsToList parseMonitor osConfig.aspects.core.monitors)
+              ++ [
+                {
+                  output = "";
+                  mode = "preferred";
+                  position = "auto";
+                  scale = "1";
+                }
+              ];
 
-            "exec-once" = [
-              "dbus-update-activation-environment --systemd --all" # update the activation environment.
-              "systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP" # import environment variables.
-              "wpctl set-volume @DEFAULT_AUDIO_SOURCE@ 1.0" # ensure microphone is at 100% on login.
-              "systemctl --user start hyprpolkitagent" # start the Polkit agent.
-              "gnome-keyring-daemon --start --components=secrets" # start the GNOME keyring daemon.
-              "udiskie -a -s --file-manager nautilus" # mount removable media and open file manager.
-              "wl-paste --type text --watch cliphist store" # store text clipboard contents in cliphist.
-              "wl-paste --type image --watch cliphist store" # store image clipboard contents in cliphist.
-              "sleep 3 && linux-wallpaperengine --assets-dir $HOME/ExtraDisk/SteamLibrary/steamapps/common/wallpaper_engine/assets --screen-root DP-2 --screen-root DP-3 --fps 60 --silent $HOME/ExtraDisk/SteamLibrary/steamapps/workshop/content/431960/3258032485/" #Start Wallpaper Engine
-              "systemctl --user restart xdg-desktop-portal-hyprland" # restart the xdg-desktop-portal-hyprland service.
-            ];
-
-            plugin = {
-              split-monitor-workspaces = {
-                count = 5;
-                keep_focused = 0;
-                enable_notifications = 0;
-                enable_persistent_workspaces = 1;
-              };
-            };
-
+            # Environment variables — serialized to hl.env(key, val) calls
             env = [
-              # --- Theming & Cursors ---
-              "HYPRCURSOR_THEME, Bibata-Modern-Ice-Hypr"
-              "HYPRCURSOR_SIZE, 16"
-              "XCURSOR_THEME, Bibata-Modern-Ice"
-              "XCURSOR_SIZE, 16"
-              "GTK_THEME, catppuccin-macchiato-flamingo-standard"
-
-              # --- Toolkit Backend Overrides ---
-              "QT_QPA_PLATFORM, wayland;xcb"
-              "QT_QPA_PLATFORMTHEME, gtk3"
-              "QT_STYLE_OVERRIDE, kvantum"
-              "QT_WAYLAND_DISABLE_WINDOWDECORATION, 1"
-              "GDK_SCALE, 1.0"
-              "GTK_CSD, 0"
-
-              # --- XDG & Session Desktop ---
-              "XDG_CURRENT_DESKTOP, Hyprland"
-              "XDG_SESSION_TYPE, wayland"
-              "XDG_SESSION_DESKTOP, Hyprland"
-
-              # --- Wayland Compatibility Hacks (Electron/Firefox/Proton) ---
-              "MOZ_ENABLE_WAYLAND, 1"
-              "ELECTRON_OZONE_PLATFORM_HINT, auto"
-              "OBS_USE_EGL, 1"
-              "PROTON_ENABLE_HDR, 1"
-              "PROTON_ENABLE_WAYLAND, 1"
-
-              # --- Vulkan & Multi-GPU Fixes ---
-              "AMD_VULKAN_ICD, RADV"
-              "RADV_PERFTEST, nggc" # Consistent with your performance-tuning (CachyOS style)
-              "VK_ICD_FILENAMES, /run/opengl-driver/share/vulkan/icd.d/radeon_icd.x86_64.json:/run/opengl-driver-32/share/vulkan/icd.d/radeon_icd.i686.json"
+              {_args = ["HYPRCURSOR_THEME" "Bibata-Modern-Ice-Hypr"];}
+              {_args = ["HYPRCURSOR_SIZE" "16"];}
+              {_args = ["XCURSOR_THEME" "Bibata-Modern-Ice"];}
+              {_args = ["XCURSOR_SIZE" "16"];}
+              {_args = ["GTK_THEME" "catppuccin-macchiato-flamingo-standard"];}
+              {_args = ["QT_QPA_PLATFORM" "wayland;xcb"];}
+              {_args = ["QT_QPA_PLATFORMTHEME" "gtk3"];}
+              {_args = ["QT_STYLE_OVERRIDE" "kvantum"];}
+              {_args = ["QT_WAYLAND_DISABLE_WINDOWDECORATION" "1"];}
+              {_args = ["GDK_SCALE" "1.0"];}
+              {_args = ["GTK_CSD" "0"];}
+              {_args = ["XDG_CURRENT_DESKTOP" "Hyprland"];}
+              {_args = ["XDG_SESSION_TYPE" "wayland"];}
+              {_args = ["XDG_SESSION_DESKTOP" "Hyprland"];}
+              {_args = ["MOZ_ENABLE_WAYLAND" "1"];}
+              {_args = ["ELECTRON_OZONE_PLATFORM_HINT" "auto"];}
+              {_args = ["OBS_USE_EGL" "1"];}
+              {_args = ["PROTON_ENABLE_HDR" "1"];}
+              {_args = ["PROTON_ENABLE_WAYLAND" "1"];}
+              {_args = ["AMD_VULKAN_ICD" "RADV"];}
+              {_args = ["RADV_PERFTEST" "nggc"];}
+              {_args = ["VK_ICD_FILENAMES" "/run/opengl-driver/share/vulkan/icd.d/radeon_icd.x86_64.json:/run/opengl-driver-32/share/vulkan/icd.d/radeon_icd.i686.json"];}
             ];
 
-            input = {
-              kb_layout = "us";
-              kb_options = "caps:escape";
-              numlock_by_default = true;
-              follow_mouse = 1;
-              sensitivity = 0;
-              accel_profile = "flat";
-            };
+            # Bezier curves — serialized to hl.curve(name, {...}) calls
+            curve = [
+              {_args = ["md3_decel" (lua "{ type = \"bezier\", points = { { 0.05, 0.7  }, { 0.1,  1    } } }")];}
+              {_args = ["md3_accel" (lua "{ type = \"bezier\", points = { { 0.3,  0    }, { 0.8,  0.15 } } }")];}
+              {_args = ["hyprnostretch" (lua "{ type = \"bezier\", points = { { 0.05, 0.9  }, { 0.1,  1.0  } } }")];}
+              {_args = ["menu_decel" (lua "{ type = \"bezier\", points = { { 0.1,  1    }, { 0,    1    } } }")];}
+              {_args = ["menu_accel" (lua "{ type = \"bezier\", points = { { 0.38, 0.04 }, { 1,    0.07 } } }")];}
+              {_args = ["easeOutExpo" (lua "{ type = \"bezier\", points = { { 0.16, 1    }, { 0.3,  1    } } }")];}
+              {_args = ["softAcDecel" (lua "{ type = \"bezier\", points = { { 0.26, 0.26 }, { 0.15, 1    } } }")];}
+            ];
 
-            general = {
-              gaps_in = 4;
-              gaps_out = 8;
-              border_size = 2;
-              "col.active_border" = "rgb(8aadf4) rgb(363a4f) 45deg";
-              "col.inactive_border" = "rgba(c0c6dc33)";
-              resize_on_border = true;
-              allow_tearing = false;
-              layout = "scrolling";
-            };
-
-            decoration = {
-              rounding = 12;
-              active_opacity = 0.8;
-              inactive_opacity = 0.8;
-              fullscreen_opacity = 1.0;
-              shadow = {
-                range = 10;
-                render_power = 4;
-                sharp = false;
-                color = "rgb(363a4f)";
-                color_inactive = "rgba(0,0,0,0)";
-              };
-              blur = {
+            # Animations — serialized to hl.animation({...}) calls
+            animation = [
+              {
+                leaf = "border";
                 enabled = true;
-                size = 12;
-                passes = 3;
-                noise = 0;
-                brightness = 0.9;
-                contrast = 1.25;
-                vibrancy = 1;
-                xray = false;
-                new_optimizations = true;
-                popups = true;
-                popups_ignorealpha = 0.1;
-                special = false;
+                speed = 10;
+                bezier = "default";
+              }
+              {
+                leaf = "borderangle";
+                enabled = true;
+                speed = 100;
+                bezier = "softAcDecel";
+                style = "once";
+              }
+              {
+                leaf = "windows";
+                enabled = true;
+                speed = 3;
+                bezier = "md3_decel";
+                style = "popin 60%";
+              }
+              {
+                leaf = "windowsIn";
+                enabled = true;
+                speed = 3;
+                bezier = "hyprnostretch";
+                style = "popin 40%";
+              }
+              {
+                leaf = "windowsOut";
+                enabled = true;
+                speed = 3;
+                bezier = "md3_accel";
+                style = "popin 60%";
+              }
+              {
+                leaf = "fade";
+                enabled = true;
+                speed = 3;
+                bezier = "md3_decel";
+              }
+              {
+                leaf = "layersIn";
+                enabled = true;
+                speed = 3;
+                bezier = "menu_decel";
+                style = "popin";
+              }
+              {
+                leaf = "layersOut";
+                enabled = true;
+                speed = 1.6;
+                bezier = "menu_accel";
+              }
+              {
+                leaf = "fadeLayersIn";
+                enabled = true;
+                speed = 2;
+                bezier = "menu_decel";
+              }
+              {
+                leaf = "workspaces";
+                enabled = true;
+                speed = 5;
+                bezier = "easeOutExpo";
+                style = "slidefade 50%";
+              }
+              {
+                leaf = "specialWorkspace";
+                enabled = true;
+                speed = 3;
+                bezier = "md3_decel";
+                style = "slidefadevert 15%";
+              }
+            ];
+
+            # Structured configuration options natively mapped to hl.config({...}) in Lua
+            config = {
+              input = {
+                kb_layout = "us";
+                kb_options = "caps:escape";
+                numlock_by_default = true;
+                follow_mouse = 1;
+                sensitivity = 0;
+                accel_profile = "flat";
+              };
+              general = {
+                gaps_in = 4;
+                gaps_out = 8;
+                border_size = 2;
+                col = {
+                  active_border = {
+                    colors = ["rgb(8aadf4)" "rgb(363a4f)"];
+                    angle = 45;
+                  };
+                  inactive_border = "rgba(c0c6dc33)";
+                };
+                resize_on_border = true;
+                allow_tearing = false;
+                layout = "scrolling";
+              };
+              decoration = {
+                rounding = 12;
+                active_opacity = 0.8;
+                inactive_opacity = 0.8;
+                fullscreen_opacity = 1.0;
+                shadow = {
+                  range = 10;
+                  render_power = 4;
+                  sharp = false;
+                  color = "rgb(363a4f)";
+                  color_inactive = "rgba(0,0,0,0)";
+                };
+                blur = {
+                  enabled = true;
+                  size = 12;
+                  passes = 3;
+                  noise = 0;
+                  brightness = 0.9;
+                  contrast = 1.25;
+                  vibrancy = 1;
+                  xray = false;
+                  new_optimizations = true;
+                  popups = true;
+                  popups_ignorealpha = 0.1;
+                  special = false;
+                };
+              };
+              cursor = {
+                sync_gsettings_theme = true;
+                warp_on_change_workspace = false;
+                no_hardware_cursors = false;
+              };
+              render = {
+                direct_scanout = false;
+                cm_enabled = true;
+                cm_auto_hdr = 2;
+              };
+              scrolling = {
+                column_width = 0.5;
+                fullscreen_on_one_column = true;
+                follow_focus = true;
+                focus_fit_method = 1;
+              };
+              misc = {
+                force_default_wallpaper = 0;
+                disable_hyprland_logo = true;
+              };
+              xwayland = {
+                force_zero_scaling = true;
               };
             };
-
-            animations = {
-              enabled = true;
-              bezier = [
-                "md3_decel,     0.05, 0.7,  0.1,  1"
-                "md3_accel,     0.3,  0,    0.8,  0.15"
-                "hyprnostretch, 0.05, 0.9,  0.1,  1.0"
-                "menu_decel,    0.1,  1,    0,    1"
-                "menu_accel,    0.38, 0.04, 1,    0.07"
-                "easeOutExpo,   0.16, 1,    0.3,  1"
-                "softAcDecel,   0.26, 0.26, 0.15, 1"
-              ];
-              animation = [
-                "border,      1, 10,  default"
-                "borderangle, 1, 100, softAcDecel, once"
-                "windows,    1, 3,   md3_decel,     popin 60%"
-                "windowsIn,  1, 3,   hyprnostretch, popin 40%"
-                "windowsOut, 1, 3,   md3_accel,     popin 60%"
-                "fade,         1, 3,   md3_decel"
-                "layersIn,     1, 3,   menu_decel, popin"
-                "layersOut,    1, 1.6, menu_accel"
-                "fadeLayersIn, 1, 2,   menu_decel"
-                "workspaces,       1, 5, easeOutExpo, slidefade 50%"
-                "specialWorkspace, 1, 3, md3_decel,   slidefadevert 15%"
-              ];
-            };
-
-            cursor = {
-              sync_gsettings_theme = true;
-              warp_on_change_workspace = false;
-              no_hardware_cursors = false;
-            };
-
-            # Performance and Compatibility
-            render = {
-              direct_scanout = false; # Set to false to prevent flickering in some full-screen apps
-              cm_enabled = true;
-              cm_auto_hdr = 2;
-            };
-            scrolling = {
-              column_width = 0.5;
-              fullscreen_on_one_column = true;
-              follow_focus = true;
-              focus_fit_method = 1; # 0 = center
-            };
-
-            misc = {
-              force_default_wallpaper = 0;
-              disable_hyprland_logo = true;
-            };
-
-            xwayland.force_zero_scaling = true; # Prevents blurriness in XWayland apps on HiDPI
           };
+
+          # Startup hook — exec-once commands run at session start.
+          # These stay in extraConfig since HM's systemd.enable generates a simpler
+          # dbus hook and doesn't support arbitrary exec-once lists natively.
+          extraConfig = ''
+            hl.on("hyprland.start", function()
+                hl.exec_cmd("dbus-update-activation-environment --systemd --all")
+                hl.exec_cmd("systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP")
+                hl.exec_cmd("wpctl set-volume @DEFAULT_AUDIO_SOURCE@ 1.0")
+                hl.exec_cmd("systemctl --user start hyprpolkitagent")
+                hl.exec_cmd("gnome-keyring-daemon --start --components=secrets")
+                hl.exec_cmd("udiskie -a -s --file-manager nautilus")
+                hl.exec_cmd("wl-paste --type text --watch cliphist store")
+                hl.exec_cmd("wl-paste --type image --watch cliphist store")
+                hl.exec_cmd([[sleep 3 && linux-wallpaperengine --assets-dir $HOME/ExtraDisk/SteamLibrary/steamapps/common/wallpaper_engine/assets --screen-root DP-2 --screen-root DP-3 --fps 60 --silent $HOME/ExtraDisk/SteamLibrary/steamapps/workshop/content/431960/3258032485/]])
+                hl.exec_cmd("systemctl --user restart xdg-desktop-portal-hyprland")
+            end)
+          '';
         };
       };
     };
