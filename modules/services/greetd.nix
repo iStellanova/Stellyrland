@@ -110,13 +110,13 @@ _: {
                   })
 
                   -- Layer rules — glassmorphism blur on the regreet login window
-                  hl.layer_rule({ rule = "blur",           target = "namespace:regreet" })
-                  hl.layer_rule({ rule = "ignorealpha 0.5", target = "namespace:regreet" })
+                  hl.layer_rule({ match = { namespace = "regreet" }, blur = true })
+                  hl.layer_rule({ match = { namespace = "regreet" }, ignore_alpha = 0.5 })
 
                   -- Startup: cursor, wallpaper, regreet, then exit
                   hl.on("hyprland.start", function()
                     hl.exec_cmd("${hyprlandPkg}/bin/hyprctl setcursor Bibata-Modern-Ice 16")
-                    hl.exec_cmd("${wallpaperCmd}")
+                    hl.exec_cmd([[${wallpaperCmd}]])
                     hl.exec_cmd([[sh -c 'sleep 0.5; ${pkgs.regreet}/bin/regreet; ${hyprlandPkg}/bin/hyprctl dispatch exit']])
                   end)
                 '';
