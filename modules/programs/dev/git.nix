@@ -33,8 +33,6 @@
               name = osConfig.identity.gitName;
               email = osConfig.identity.userEmail;
             };
-            # Bootstrap: on a fresh machine this file configures the SSH key
-            # so the private identity flake can be pulled before Nix manages git.
             include.path = "~/.gitconfig-identity";
           };
         };
