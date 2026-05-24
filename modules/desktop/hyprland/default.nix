@@ -85,50 +85,6 @@
       ...
     }: let
       lua = lib.generators.mkLuaInline;
-
-      # Parse the centralized legacy monitor configurations into structured Nix attribute sets (translated to Lua tables)
-      parseMonitor = name: confString: let
-        parts = lib.splitString ", " confString;
-        mode = lib.elemAt parts 0;
-        pos = lib.elemAt parts 1;
-        scale = lib.elemAt parts 2;
-
-        parsePairs = list: let
-          len = lib.length list;
-          getPair = idx:
-            if idx + 1 < len
-            then let
-              key = lib.elemAt list idx;
-              val = lib.elemAt list (idx + 1);
-              # Convert digit strings to native Nix integers, otherwise leave as string
-              parsedVal =
-                if val == "hdr"
-                then "hdr"
-                else if val == "auto"
-                then "auto"
-                else if (builtins.match "[0-9]+" val) != null
-                then lib.strings.toInt val
-                else val;
-            in
-              {"${key}" = parsedVal;} // getPair (idx + 2)
-            else {};
-        in
-          getPair 3;
-
-        extraAttrs = parsePairs parts;
-        # Automatically inject sdr_min_luminance = 0.0 for true perfect blacks if HDR is enabled
-        luminanceSetting =
-          if lib.hasInfix "cm, hdr" confString
-          then {sdr_min_luminance = 0.0;}
-          else {};
-      in
-        {
-          output = name;
-          inherit mode;
-          position = pos;
-          inherit scale;
-        }
-        // extraAttrs // luminanceSetting;
     in {
       imports = [
         inputs.hyprland.homeManagerModules.default
@@ -155,16 +111,33 @@
           # Declarative configuration parameters natively mapped by Home Manager
           settings = {
             # Structured monitor settings mapped natively to hl.monitor({...}) in Lua
-            monitor =
-              (lib.mapAttrsToList parseMonitor osConfig.aspects.core.monitors)
-              ++ [
-                {
-                  output = "";
-                  mode = "preferred";
-                  position = "auto";
-                  scale = "1";
-                }
-              ];
+            monitor = [
+              {
+                output = "DP-2";
+                mode = "3440x1440@175";
+                position = "1440x541";
+                scale = 1;
+                bitdepth = 10;
+                cm = "hdr";
+                sdr_min_luminance = 0.0;
+              }
+              {
+                output = "DP-3";
+                mode = "2560x1440@100";
+                position = "0x0";
+                scale = 1;
+                transform = 1;
+                bitdepth = 10;
+                cm = "hdr";
+                sdr_min_luminance = 0.0;
+              }
+              {
+                output = "";
+                mode = "preferred";
+                position = "auto";
+                scale = 1;
+              }
+            ];
 
             # Environment variables — serialized to hl.env(key, val) calls
             env = [
