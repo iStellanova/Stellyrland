@@ -82,8 +82,8 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # Impermanence - opt-in persistence (wipe / on boot, keep only declared paths).
-    impermanence.url = "github:nix-community/impermanence";
+    # Preservation - declarative opt-in persistence via native systemd units.
+    preservation.url = "github:nix-community/preservation";
 
     # Sops-Nix - secure secrets management using age.
     sops-nix = {

@@ -5,7 +5,7 @@
       inputs.catppuccin.nixosModules.catppuccin
       inputs.hyprland.nixosModules.default
       inputs.disko.nixosModules.disko
-      inputs.impermanence.nixosModules.impermanence
+      inputs.preservation.nixosModules.preservation
       inputs.nix-flatpak.nixosModules.nix-flatpak
       inputs.lanzaboote.nixosModules.lanzaboote
       inputs.sops-nix.nixosModules.sops
@@ -52,7 +52,7 @@
             storage.enable = true;
             extra-disk.enable = true;
             hdd.enable = true;
-            impermanence.enable = true;
+            preservation.enable = true;
             services-base.enable = true;
             xdg.enable = true;
             headless = {
