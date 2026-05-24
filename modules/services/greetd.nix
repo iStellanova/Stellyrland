@@ -27,46 +27,99 @@ _: {
                   if config.aspects.desktop.hyprland.enable
                   then config.programs.hyprland.package
                   else pkgs.hyprland;
-                greetdHyprConfig = pkgs.writeText "greetd-hyprland.conf" ''
-                  ${lib.concatStringsSep "\n" (lib.mapAttrsToList (name: conf: "monitor=${name}, ${conf}") config.aspects.core.monitors)}
-                  monitor=, preferred, auto, 1
+                greetdHyprConfig = pkgs.writeText "greetd-hyprland.lua" ''
+                  -- Minimal Hyprland Lua config for the greetd/regreet login screen.
+                  -- Mirrors the main session's decoration and visual settings for consistency.
 
-                  misc {
-                    disable_hyprland_logo = true
-                    disable_splash_rendering = true
-                    force_default_wallpaper = 0
-                  }
+                  -- Monitor configuration
+                  hl.monitor({ output = "DP-2", mode = "3440x1440@175", position = "1440x541", scale = 1, bitdepth = 10, cm = "hdr", sdr_min_luminance = 0.0 })
+                  hl.monitor({ output = "DP-3", mode = "2560x1440@100", position = "0x0",    scale = 1, transform = 1, bitdepth = 10, cm = "hdr", sdr_min_luminance = 0.0 })
+                  hl.monitor({ output = "",     mode = "preferred",      position = "auto",   scale = 1 })
 
-                  decoration {
-                    blur {
-                      enabled = true
-                      size = 10
-                      passes = 3
-                      new_optimizations = true
-                      ignore_opacity = true
-                      vibrancy = 0.1696
-                    }
-                  }
+                  -- Environment variables
+                  hl.env("XDG_CURRENT_DESKTOP", "Hyprland")
+                  hl.env("XDG_SESSION_TYPE",    "wayland")
+                  hl.env("XDG_SESSION_DESKTOP",  "Hyprland")
+                  hl.env("GDK_BACKEND",          "wayland")
+                  hl.env("XCURSOR_THEME",        "Bibata-Modern-Ice")
+                  hl.env("XCURSOR_SIZE",         "16")
+                  hl.env("HYPRCURSOR_THEME",     "Bibata-Modern-Ice-Hypr")
+                  hl.env("HYPRCURSOR_SIZE",      "16")
+                  hl.env("XCURSOR_PATH",         "${pkgs.bibata-cursors}/share/icons")
 
-                  layerrule = blur on, match:namespace regreet
-                  layerrule = ignore_alpha 0.5, match:namespace regreet
+                  -- Bezier curves (same as main session)
+                  hl.curve("md3_decel",     { type = "bezier", points = { { 0.05, 0.7  }, { 0.1,  1    } } })
+                  hl.curve("md3_accel",     { type = "bezier", points = { { 0.3,  0    }, { 0.8,  0.15 } } })
+                  hl.curve("menu_decel",    { type = "bezier", points = { { 0.1,  1    }, { 0,    1    } } })
+                  hl.curve("menu_accel",    { type = "bezier", points = { { 0.38, 0.04 }, { 1,    0.07 } } })
 
-                  env = XDG_CURRENT_DESKTOP,Hyprland
-                  env = XDG_SESSION_TYPE,wayland
-                  env = XDG_SESSION_DESKTOP,Hyprland
-                  env = GDK_BACKEND,wayland
-                  env = XCURSOR_THEME,Bibata-Modern-Ice
-                  env = XCURSOR_SIZE,16
-                  env = HYPRCURSOR_THEME,Bibata-Modern-Ice
-                  env = HYPRCURSOR_SIZE,16
-                  env = XCURSOR_PATH,${pkgs.bibata-cursors}/share/icons
+                  -- Animations — fade & layer transitions only (no windows/workspaces at login)
+                  hl.animation({ leaf = "fade",         enabled = true, speed = 3,   bezier = "md3_decel" })
+                  hl.animation({ leaf = "layersIn",     enabled = true, speed = 3,   bezier = "menu_decel", style = "popin" })
+                  hl.animation({ leaf = "layersOut",    enabled = true, speed = 1.6, bezier = "menu_accel" })
+                  hl.animation({ leaf = "fadeLayersIn", enabled = true, speed = 2,   bezier = "menu_decel" })
 
-                  exec-once = ${hyprlandPkg}/bin/hyprctl setcursor Bibata-Modern-Ice 16
-                  exec-once = ${wallpaperCmd}
-                  exec-once = sh -c "sleep 0.5; ${pkgs.regreet}/bin/regreet; ${hyprlandPkg}/bin/hyprctl dispatch exit"
+                  hl.config({
+                    general = {
+                      border_size = 2,
+                      col = {
+                        active_border   = { colors = { "rgb(8aadf4)", "rgb(363a4f)" }, angle = 45 },
+                        inactive_border = "rgba(c0c6dc33)",
+                      },
+                      allow_tearing = false,
+                    },
+                    decoration = {
+                      rounding         = 12,
+                      active_opacity   = 1.0,
+                      inactive_opacity = 1.0,
+                      shadow = {
+                        range        = 10,
+                        render_power = 4,
+                        sharp        = false,
+                        color        = "rgb(363a4f)",
+                        color_inactive = "rgba(0,0,0,0)",
+                      },
+                      blur = {
+                        enabled          = true,
+                        size             = 12,
+                        passes           = 3,
+                        noise            = 0,
+                        brightness       = 0.9,
+                        contrast         = 1.25,
+                        vibrancy         = 1,
+                        xray             = true,  -- lets regreet layer see blurred background
+                        new_optimizations = true,
+                        popups           = true,
+                        popups_ignorealpha = 0.1,
+                      },
+                    },
+                    cursor = {
+                      sync_gsettings_theme  = true,
+                      no_hardware_cursors   = false,
+                    },
+                    render = {
+                      direct_scanout = false,
+                      cm_enabled     = true,
+                      cm_auto_hdr    = 2,
+                    },
+                    misc = {
+                      disable_hyprland_logo    = true,
+                      disable_splash_rendering = true,
+                      force_default_wallpaper  = 0,
+                    },
+                  })
+
+                  -- Layer rules — glassmorphism blur on the regreet login window
+                  hl.layer_rule({ rule = "blur",           target = "namespace:regreet" })
+                  hl.layer_rule({ rule = "ignorealpha 0.5", target = "namespace:regreet" })
+
+                  -- Startup: cursor, wallpaper, regreet, then exit
+                  hl.on("hyprland.start", function()
+                    hl.exec_cmd("${hyprlandPkg}/bin/hyprctl setcursor Bibata-Modern-Ice 16")
+                    hl.exec_cmd("${wallpaperCmd}")
+                    hl.exec_cmd([[sh -c 'sleep 0.5; ${pkgs.regreet}/bin/regreet; ${hyprlandPkg}/bin/hyprctl dispatch exit']])
+                  end)
                 '';
-                # A launcher that tricks the official start-hyprland into using this config
-                # by placing it at the default search path in a temporary HOME.
                 greetdHyprLauncher = pkgs.writeShellScript "greetd-hyprland-launcher" ''
                   export HOME=/tmp/greetd-home
                   rm -rf "$HOME"
@@ -76,7 +129,7 @@ _: {
                     "last_username = \"${config.identity.username}\"" \
                     "last_session = \"${hyprlandPkg}/share/wayland-sessions/hyprland.desktop\"" \
                     > "$HOME/.cache/regreet/cache.toml"
-                  ln -sf ${greetdHyprConfig} $HOME/.config/hypr/hyprland.conf
+                  ln -sf ${greetdHyprConfig} $HOME/.config/hypr/hyprland.lua
                   export XDG_DATA_DIRS="${hyprlandPkg}/share''${XDG_DATA_DIRS:+:$XDG_DATA_DIRS}"
                   exec ${hyprlandPkg}/bin/start-hyprland
                 '';
