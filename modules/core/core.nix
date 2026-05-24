@@ -36,27 +36,6 @@
           networking.networkmanager.enable = true;
           programs.dconf.enable = true;
           services.dbus.implementation = "broker";
-
-          services.openssh = {
-            enable = true;
-            settings = {
-              PasswordAuthentication = false;
-              KbdInteractiveAuthentication = false;
-              PermitRootLogin = "no";
-            };
-          };
-
-          networking.firewall = {
-            enable = true;
-            checkReversePath = "loose";
-            allowedUDPPorts = [41641]; # Tailscale
-            allowedUDPPortRanges = [
-              {
-                from = 50000;
-                to = 65535;
-              }
-            ];
-          };
         })
       ];
     };
@@ -65,7 +44,22 @@
     flake.modules.darwin.core = {config, ...}: {
       options.aspects = {
         core.enable = lib.mkEnableOption "Core system configuration";
-        darwin.system.enable = lib.mkEnableOption "Darwin system configuration";
+        darwin.system = {
+          enable = lib.mkEnableOption "Darwin system configuration";
+          dockApps = lib.mkOption {
+            type = lib.types.listOf lib.types.str;
+            default = [
+              "/System/Applications/App Store.app"
+              "/System/Applications/Mail.app"
+              "/System/Applications/Messages.app"
+              "/System/Applications/Passwords.app"
+              "/System/Applications/Calendar.app"
+              "/System/Applications/Music.app"
+              "/Applications/Zen Browser.app"
+            ];
+            description = "Persistent applications in the macOS Dock";
+          };
+        };
       };
 
       config = lib.mkMerge [
@@ -85,33 +79,7 @@
             dock.static-only = false;
             dock.tilesize = 117;
 
-            dock.persistent-apps = [
-              "/System/Applications/App Store.app"
-              "/System/Applications/Mail.app"
-              "/System/Applications/Messages.app"
-              "/System/Applications/Passwords.app"
-              "/System/Applications/Calendar.app"
-              "/System/Applications/Stickies.app"
-              "/Applications/DaVinci Resolve/DaVinci Resolve.app"
-              "/Applications/Quicken.app"
-              "/Applications/Microsoft Word.app"
-              "/Applications/Microsoft PowerPoint.app"
-              "/Applications/Microsoft Excel.app"
-              "/Applications/Microsoft OneNote.app"
-              "/Applications/Microsoft Outlook.app"
-              "/Applications/School Assistant.app"
-              "/System/Applications/Books.app"
-              "/Applications/Pages Creator Studio.app"
-              "/Applications/Keynote Creator Studio.app"
-              "/Applications/Numbers Creator Studio.app"
-              "/System/Applications/Music.app"
-              "/Applications/Antigravity.app"
-              "/Applications/Beat.app"
-              "/Applications/Zed.app"
-              "/Applications/Claude.app"
-              "${config.identity.homeDir}/Applications/Home Manager Apps/kitty.app"
-              "/Applications/Zen Browser.app"
-            ];
+            dock.persistent-apps = config.aspects.darwin.system.dockApps;
 
             finder.AppleShowAllExtensions = true;
             finder.FXPreferredViewStyle = "Nlsv";
