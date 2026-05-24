@@ -75,10 +75,6 @@
             }
             {
               match = {title = "^(Confirm File Replacing)$";};
-              move = "45% 30%";
-            }
-            {
-              match = {title = "^(Confirm File Replacing)$";};
               move = "18% 35%";
             }
             {

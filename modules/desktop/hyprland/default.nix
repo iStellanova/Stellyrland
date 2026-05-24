@@ -19,7 +19,6 @@
           portalPackage = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
         };
 
-        # Packages and Extras.
         environment.systemPackages = with pkgs; [
           hyprpolkitagent # PolicyKit agent for Hyprland
           hyprshot # Screenshot utility for Hyprland
@@ -33,7 +32,6 @@
           xauth # X11 authentication utility
         ];
 
-        # Enable certain graphics settings.
         hardware.graphics = {
           enable = true;
           enable32Bit = true; # Necessary for steam.
@@ -42,7 +40,6 @@
           ];
         };
 
-        # Specify AMD GPU driver for X11 and PipeWire.
         services.xserver.videoDrivers = ["amdgpu"];
         services.pipewire = {
           enable = true;
@@ -68,7 +65,6 @@
           };
         };
 
-        # xdg-desktop-portal for Hyprland.
         xdg.portal = {
           enable = true;
           xdgOpenUsePortal = true;
@@ -96,7 +92,6 @@
           screenon = "HYPRLAND_INSTANCE_SIGNATURE=$(basename /run/user/$(id -u)/hypr/*/) hyprctl dispatch dpms on";
         };
 
-        # Hyprland window manager. Main Configuration.
         wayland.windowManager.hyprland = {
           enable = true;
           configType = "lua";
@@ -108,9 +103,7 @@
             inputs.split-monitor-workspaces.packages.${pkgs.stdenv.hostPlatform.system}.split-monitor-workspaces
           ];
 
-          # Declarative configuration parameters natively mapped by Home Manager
           settings = {
-            # Structured monitor settings mapped natively to hl.monitor({...}) in Lua
             monitor = [
               {
                 output = "DP-2";
@@ -139,7 +132,6 @@
               }
             ];
 
-            # Environment variables — serialized to hl.env(key, val) calls
             env = [
               {_args = ["HYPRCURSOR_THEME" "Bibata-Modern-Ice-Hypr"];}
               {_args = ["HYPRCURSOR_SIZE" "16"];}
@@ -165,7 +157,6 @@
               {_args = ["VK_ICD_FILENAMES" "/run/opengl-driver/share/vulkan/icd.d/radeon_icd.x86_64.json:/run/opengl-driver-32/share/vulkan/icd.d/radeon_icd.i686.json"];}
             ];
 
-            # Bezier curves — serialized to hl.curve(name, {...}) calls
             curve = [
               {_args = ["md3_decel" (lua "{ type = \"bezier\", points = { { 0.05, 0.7  }, { 0.1,  1    } } }")];}
               {_args = ["md3_accel" (lua "{ type = \"bezier\", points = { { 0.3,  0    }, { 0.8,  0.15 } } }")];}
@@ -176,7 +167,6 @@
               {_args = ["softAcDecel" (lua "{ type = \"bezier\", points = { { 0.26, 0.26 }, { 0.15, 1    } } }")];}
             ];
 
-            # Animations — serialized to hl.animation({...}) calls
             animation = [
               {
                 leaf = "border";
@@ -253,7 +243,6 @@
               }
             ];
 
-            # Structured configuration options natively mapped to hl.config({...}) in Lua
             config = {
               input = {
                 kb_layout = "us";
@@ -331,9 +320,7 @@
             };
           };
 
-          # Startup hook — exec-once commands run at session start.
-          # These stay in extraConfig since HM's systemd.enable generates a simpler
-          # dbus hook and doesn't support arbitrary exec-once lists natively.
+          # smw requires runtime require(); startup needs arbitrary exec-once — both must stay in extraConfig.
           extraConfig = ''
             hl.on("hyprland.start", function()
                 hl.exec_cmd("dbus-update-activation-environment --systemd --all")

@@ -3,18 +3,9 @@
   lib,
   ...
 }: let
-  # Shorthand helpers
   lua = lib.generators.mkLuaInline;
-
-  # Build a native settings.bind entry from a key string and a Lua dispatcher expression
-  bind = key: dispatcher: {
-    _args = [key (lua dispatcher)];
-  };
-
-  # bind with extra options table (repeating, release, mouse, locked, etc.)
-  bindOpts = key: dispatcher: opts: {
-    _args = [key (lua dispatcher) (lua opts)];
-  };
+  bind = key: dispatcher: {_args = [key (lua dispatcher)];};
+  bindOpts = key: dispatcher: opts: {_args = [key (lua dispatcher) (lua opts)];};
 
   mainMod = "SUPER";
 
@@ -51,10 +42,10 @@
     (bind "${mainMod} + CTRL + down" "hl.dsp.layout(\"focus d\")")
 
     # --- Rapid Navigation (non-smw) ---
-    (bind "${mainMod} + up" "hl.dsp.exec_cmd(\"hyprctl dispatch workspace e+1\")")
+    (bind "${mainMod} + up" "hl.dsp.focus({ workspace = \"e+1\" })")
 
     # --- Special Workspaces (Scratchpads) ---
-    (bind "${mainMod} + SHIFT + S" "hl.dsp.exec_cmd(\"hyprctl dispatch movetoworkspace special:magic\")")
+    (bind "${mainMod} + SHIFT + S" "hl.dsp.window.move({ workspace = \"special:magic\" })")
     (bind "${mainMod} + F" "hl.dsp.exec_cmd(\"hyprctl dispatch movetoworkspacesilent special:minimized\")")
     (bind "${mainMod} + R" "hl.dsp.workspace.toggle_special(\"minimized\")")
 
@@ -100,11 +91,7 @@ in {
         # Only the smw plugin block lives here — it requires a runtime require() call
         # that cannot be expressed in the Nix type system.
         wayland.windowManager.hyprland.extraConfig = ''
-          -- =========================================================================
-          -- SPLIT-MONITOR-WORKSPACES PLUGIN SETUP
-          -- =========================================================================
-          -- The nix derivation only installs the .so; the Lua library lives in the
-          -- flake source. Add it to package.path so require() can find it.
+          -- The nix derivation only installs the .so; the Lua library lives in the flake source.
           package.path = package.path .. ";${inputs.split-monitor-workspaces}/lua/?.lua"
           local smw = require("split-monitor-workspaces")
           smw.setup({
@@ -116,9 +103,6 @@ in {
               monitor_priority           = { "DP-2", "DP-3" },
           })
 
-          -- =========================================================================
-          -- SMW KEYBINDINGS (require runtime smw value — cannot go in settings.bind)
-          -- =========================================================================
           local mainMod = "SUPER"
 
           -- Workspace switching (scan codes for layout independence)
@@ -164,12 +148,7 @@ in {
           hl.bind(mainMod .. " + mouse_down",   smw.cycle_workspaces("next"))
           hl.bind(mainMod .. " + mouse_up",     smw.cycle_workspaces("prev"))
 
-          -- =========================================================================
-          -- LAYOUT TOGGLE (SUPER + Space)
-          -- =========================================================================
-          -- Static hl.dsp.exec_cmd dispatcher — runs in a child process via sh,
-          -- so no IPC deadlock. Uses grep -oP (PCRE) to handle JSON whitespace
-          -- without needing any single-quote escaping in the patterns.
+          -- exec_cmd runs in a child process, avoiding IPC deadlock when querying active workspace.
           hl.bind(mainMod .. " + Space", hl.dsp.exec_cmd([[data=$(hyprctl activeworkspace -j); id=$(echo "$data" | grep '"id"' | head -1 | tr -dc '0-9'); layout=$(echo "$data" | grep tiledLayout | awk -F'"' '{print $4}'); [ "$layout" = "scrolling" ] && next=dwindle || next=scrolling; hyprctl eval "hl.workspace_rule({ workspace = '$id', layout = '$next' })"]]))
         '';
       };
