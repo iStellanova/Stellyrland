@@ -80,7 +80,6 @@
             git.enable = true;
             zsh.enable = true;
             nixvim.enable = true;
-            discord-music-rpc.enable = true;
             bitwarden.enable = true;
             vesktop.enable = true;
             noctalia-shell.enable = true;
@@ -96,6 +95,7 @@
             zed.enable = true;
           };
           services = {
+            discord-music-rpc.enable = true;
             greetd.enable = true;
             flatpak.enable = true;
             seahorse.enable = true;
