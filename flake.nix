@@ -43,9 +43,6 @@
     # Mac App Util.
     mac-app-util.url = "github:hraban/mac-app-util";
 
-    # Private data and identity from private repo.
-    stellyrdata.url = "git+ssh://git@github.com/iStellanova/stellyrdata.git";
-
     # Hyprland.
     hyprland.url = "github:hyprwm/Hyprland";
 
@@ -101,6 +98,12 @@
     echo-bridge = {
       url = "git+ssh://git@github.com/iStellanova/Project-Echo.git";
       inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    # Custom assets and wallpapers.
+    my-assets = {
+      url = "github:iStellanova/Stellyrland/assets";
+      flake = false;
     };
   };
 

@@ -20,23 +20,6 @@
   in
     res;
 
-  # mkIdentity - Formats stellyrdata identity for use in flake-parts let-bindings.
-  mkIdentity = identityInput: isDarwin: {
-    name =
-      if isDarwin
-      then identityInput.darwinName
-      else identityInput.nixosName;
-    inherit (identityInput) nixosName darwinName gitName;
-    email = identityInput.userEmail;
-    sshKeys = identityInput.sshKeys or [];
-    hashedPassword = identityInput.hashedPassword or null;
-    home =
-      if isDarwin
-      then "/Users/${identityInput.darwinName}"
-      else "/home/${identityInput.nixosName}";
-    outPath = identityInput;
-  };
-
   # mkHost - Builds a NixOS or Darwin system configuration from the dendritic module store.
   # Accepts the flake-parts top-level `config` and `inputs` so it can read
   # flake.modules.{nixos,darwin,homeManager} without circular references.

@@ -1,4 +1,4 @@
-{nixosIdentity, ...}: {
+_: {
   config = {
     # NixOS Cloud Storage Settings
     flake.modules.nixos.cloud-storage = {
@@ -10,7 +10,7 @@
       options.aspects.programs.cloud-storage.enable = lib.mkEnableOption "Cloud storage clients";
 
       config = lib.mkIf config.aspects.programs.cloud-storage.enable {
-        home-manager.users.${nixosIdentity.name} = {
+        home-manager.users.${config.identity.username} = {
           home.packages = with pkgs; [
             onedrive
             rclone

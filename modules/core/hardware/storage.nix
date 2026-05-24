@@ -1,4 +1,4 @@
-{nixosIdentity, ...}: {
+_: {
   config = {
     # NixOS Storage and Snapper configuration
     flake.modules.nixos.storage = {
@@ -20,7 +20,7 @@
         services.snapper.configs = {
           home = {
             SUBVOLUME = "/home";
-            ALLOW_USERS = [nixosIdentity.name];
+            ALLOW_USERS = [config.identity.username];
             TIMELINE_CREATE = true;
             TIMELINE_CLEANUP = true;
             TIMELINE_MIN_AGE = "1800";
@@ -37,7 +37,7 @@
         services.btrfs.autoScrub = {
           enable = true;
           interval = "monthly";
-          fileSystems = ["/"] ++ lib.optional config.aspects.core.extra-disk.enable "/home/${nixosIdentity.name}/ExtraDisk";
+          fileSystems = ["/"] ++ lib.optional config.aspects.core.extra-disk.enable "${config.identity.homeDir}/ExtraDisk";
         };
       };
     };

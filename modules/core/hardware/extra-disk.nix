@@ -1,4 +1,4 @@
-{nixosIdentity, ...}: {
+_: {
   config = {
     # NixOS Extra Disk Storage
     flake.modules.nixos.extra-disk = {
@@ -20,7 +20,7 @@
         # Extra Storage: nvme1n1 (1.8T btrfs, "Extra Drive")
         # nofail ensures the system still boots if the drive is missing.
         # x-gvfs options make the drive easily accessible and identifiable in the file manager.
-        fileSystems."/home/${nixosIdentity.name}/ExtraDisk" = {
+        fileSystems."${config.identity.homeDir}/ExtraDisk" = {
           device = "/dev/mapper/cryptextra";
           fsType = "btrfs";
           options = [

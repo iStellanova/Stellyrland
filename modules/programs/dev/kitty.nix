@@ -1,17 +1,8 @@
-{
-  nixosIdentity,
-  darwinIdentity,
-  lib,
-  ...
-}: {
+{lib, ...}: {
   config = {
     # Home Manager Kitty Settings
     flake.modules.homeManager.kitty = {osConfig, ...}: let
       isDarwin = osConfig ? system.defaults;
-      identity =
-        if isDarwin
-        then darwinIdentity
-        else nixosIdentity;
     in
       lib.mkIf (osConfig ? aspects.programs.kitty && osConfig.aspects.programs.kitty.enable) {
         programs.kitty = {
@@ -37,7 +28,7 @@
             bold_italic_font = "auto";
           };
           extraConfig = ''
-            include ${identity.home}/.config/kitty/themes/noctalia.conf
+            include ${osConfig.identity.homeDir}/.config/kitty/themes/noctalia.conf
           '';
         };
 

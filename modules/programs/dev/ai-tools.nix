@@ -1,8 +1,4 @@
-{
-  nixosIdentity,
-  darwinIdentity,
-  ...
-}: {
+_: {
   config = {
     # NixOS AI Agent Tools
     flake.modules.nixos.ai-tools = {
@@ -14,7 +10,7 @@
       options.aspects.programs.ai-tools.enable = lib.mkEnableOption "AI Agent Tools";
 
       config = lib.mkIf config.aspects.programs.ai-tools.enable {
-        home-manager.users.${nixosIdentity.name} = {
+        home-manager.users.${config.identity.username} = {
           # TODO: Antigravity 2.0 dropped at I/O 2026 (May 19) — no longer a VSCode fork.
           # Includes antigravity-cli which replaces gemini-cli — swap when packaged for NixOS.
           # Neither nixpkgs (1.20.5) nor jacopone/antigravity-nix (1.23.2) track 2.0 yet (as of May 2026).
@@ -38,7 +34,7 @@
       options.aspects.programs.ai-tools.enable = lib.mkEnableOption "AI Agent Tools";
 
       config = lib.mkIf config.aspects.programs.ai-tools.enable {
-        home-manager.users.${darwinIdentity.name} = {
+        home-manager.users.${config.identity.username} = {
           home.packages = with pkgs; [
             claude-code
             gemini-cli
