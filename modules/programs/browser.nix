@@ -1,8 +1,4 @@
-{
-  nixosIdentity,
-  inputs,
-  ...
-}: {
+{inputs, ...}: {
   config = {
     # NixOS Zen Browser Settings
     flake.modules.nixos.browser = {
@@ -21,7 +17,7 @@
       };
 
       config = lib.mkIf config.aspects.programs.browser.enable {
-        home-manager.users.${nixosIdentity.name} = {
+        home-manager.users.${config.identity.username} = {
           home.packages = [
             inputs.zen-browser.packages."${pkgs.stdenv.hostPlatform.system}".default
           ];

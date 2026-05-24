@@ -1,4 +1,4 @@
-{nixosIdentity, ...}: {
+_: {
   config = {
     # NixOS Office Suite Settings
     flake.modules.nixos.office-suite = {
@@ -10,7 +10,7 @@
       options.aspects.programs.office-suite.enable = lib.mkEnableOption "Office suite";
 
       config = lib.mkIf config.aspects.programs.office-suite.enable {
-        home-manager.users.${nixosIdentity.name} = {
+        home-manager.users.${config.identity.username} = {
           home.packages = [pkgs.freeoffice];
         };
       };

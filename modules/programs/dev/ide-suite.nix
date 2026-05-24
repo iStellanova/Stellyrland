@@ -1,8 +1,4 @@
-{
-  nixosIdentity,
-  darwinIdentity,
-  ...
-}: {
+_: {
   config = {
     # NixOS IDE Suite Settings
     flake.modules.nixos.ide-suite = {
@@ -14,7 +10,7 @@
       options.aspects.programs.ide-suite.enable = lib.mkEnableOption "IDE suite";
 
       config = lib.mkIf config.aspects.programs.ide-suite.enable {
-        home-manager.users.${nixosIdentity.name} = {
+        home-manager.users.${config.identity.username} = {
           home.packages = with pkgs; [
             jetbrains.clion
             jetbrains.idea
@@ -34,7 +30,7 @@
       options.aspects.programs.ide-suite.enable = lib.mkEnableOption "IDE suite";
 
       config = lib.mkIf config.aspects.programs.ide-suite.enable {
-        home-manager.users.${darwinIdentity.name} = {
+        home-manager.users.${config.identity.username} = {
           home.packages = with pkgs; [
             jetbrains.clion
             jetbrains.idea

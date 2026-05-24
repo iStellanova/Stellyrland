@@ -1,4 +1,4 @@
-{nixosIdentity, ...}: {
+_: {
   config = {
     # NixOS Desktop Styling Settings
     flake.modules.nixos.styling = {
@@ -14,7 +14,7 @@
         catppuccin.flavor = "macchiato";
         catppuccin.accent = "flamingo";
 
-        home-manager.users.${nixosIdentity.name} = {pkgs, ...}: {
+        home-manager.users.${config.identity.username} = {pkgs, ...}: {
           # Catppuccin home-manager configuration.
           catppuccin.flavor = "macchiato";
           catppuccin.accent = "flamingo";

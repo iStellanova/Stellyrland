@@ -1,4 +1,4 @@
-{nixosIdentity, ...}: {
+_: {
   config = {
     # NixOS Maintenance Settings
     flake.modules.nixos.maintenance = {
@@ -10,7 +10,7 @@
       options.aspects.programs.maintenance.enable = lib.mkEnableOption "System maintenance tools";
 
       config = lib.mkIf config.aspects.programs.maintenance.enable {
-        home-manager.users.${nixosIdentity.name} = {
+        home-manager.users.${config.identity.username} = {
           home.packages = [pkgs.bleachbit];
         };
       };

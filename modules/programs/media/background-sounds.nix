@@ -1,4 +1,4 @@
-{nixosIdentity, ...}: {
+_: {
   config = {
     # NixOS Background Sounds Settings
     flake.modules.nixos.background-sounds = {
@@ -10,7 +10,7 @@
       options.aspects.programs.background-sounds.enable = lib.mkEnableOption "Ambient background sound tools";
 
       config = lib.mkIf config.aspects.programs.background-sounds.enable {
-        home-manager.users.${nixosIdentity.name} = {
+        home-manager.users.${config.identity.username} = {
           home.packages = [pkgs.blanket];
         };
       };
