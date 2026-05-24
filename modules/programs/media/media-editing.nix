@@ -1,8 +1,4 @@
-{
-  nixosIdentity,
-  darwinIdentity,
-  ...
-}: {
+_: {
   config = {
     # NixOS Media Editing Settings
     flake.modules.nixos.media-editing = {
@@ -14,7 +10,7 @@
       options.aspects.programs.media-editing.enable = lib.mkEnableOption "Media editing and production tools";
 
       config = lib.mkIf config.aspects.programs.media-editing.enable {
-        home-manager.users.${nixosIdentity.name} = {
+        home-manager.users.${config.identity.username} = {
           home.packages = with pkgs; [
             losslesscut-bin
           ];
@@ -39,7 +35,7 @@
       options.aspects.programs.media-editing.enable = lib.mkEnableOption "Media editing and production tools";
 
       config = lib.mkIf config.aspects.programs.media-editing.enable {
-        home-manager.users.${darwinIdentity.name} = {
+        home-manager.users.${config.identity.username} = {
           home.packages = with pkgs; [
             losslesscut-bin
           ];

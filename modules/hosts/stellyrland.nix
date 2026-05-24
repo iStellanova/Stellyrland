@@ -18,6 +18,19 @@ in {
         inputs.nix-flatpak.nixosModules.nix-flatpak
         inputs.lanzaboote.nixosModules.lanzaboote
         inputs.sops-nix.nixosModules.sops
+        # Identity configuration
+        {
+          identity = {
+            username = "stellanova";
+            homeDir = "/home/stellanova";
+            gitName = "stellanova";
+            userEmail = "iStellanova@users.noreply.github.com";
+            sshKeys = [
+              "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAID23408QRe02peABnmkDcmpu2DVSwN3H+Jm7kcVenTDr stellanova"
+            ];
+            dataPath = inputs.my-assets;
+          };
+        }
         # Host-specific configuration
         {
           imports = [./stellyrland/_hardware-configuration.nix];

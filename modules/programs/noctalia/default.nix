@@ -1,9 +1,4 @@
-{
-  nixosIdentity,
-  darwinIdentity,
-  inputs,
-  ...
-}: {
+{inputs, ...}: {
   config = {
     # NixOS Noctalia Shell Settings
     flake.modules.nixos.noctalia = {lib, ...}: {
@@ -16,12 +11,7 @@
       lib,
       ...
     }: let
-      isDarwin = osConfig ? system.defaults;
-      identity =
-        if isDarwin
-        then darwinIdentity
-        else nixosIdentity;
-      wallpaperDir = "${identity.home}/Pictures/wallpapers";
+      wallpaperDir = "${osConfig.identity.homeDir}/Pictures/wallpapers";
       defaultWallpaper = "${wallpaperDir}/wallpaper.png";
     in {
       imports = [
@@ -29,7 +19,9 @@
       ];
 
       config = lib.mkIf (osConfig ? aspects.programs.noctalia-shell && osConfig.aspects.programs.noctalia-shell.enable) {
-        home.file."Pictures/wallpapers/wallpaper.png".source = "${identity.outPath}/wallpapers/wallpaper.png";
+        home.file = lib.mkIf (osConfig.identity.dataPath != null) {
+          "Pictures/wallpapers/wallpaper.png".source = "${osConfig.identity.dataPath}/wallpapers/wallpaper.png";
+        };
 
         home.activation.noctaliaWallpaper = lib.hm.dag.entryAfter ["writeBoundary"] ''
                     state="$HOME/.local/state/noctalia/settings.toml"
@@ -62,7 +54,7 @@
             shell = {
               scale = 1.0;
               font = "JetBrainsMono Nerd Font";
-              avatar_path = "${identity.outPath}/icons/avatar.png";
+              avatar_path = lib.optionalString (osConfig.identity.dataPath != null) "${osConfig.identity.dataPath}/icons/avatar.png";
               password_style = "random";
               settings_show_advanced = true;
               panel.transparency_mode = "glass";
@@ -132,7 +124,10 @@
               launcher = {
                 anchor = false;
                 capsule = true;
-                custom_image = "${identity.outPath}/icons/nix-snowflake-white.svg";
+                custom_image =
+                  if osConfig.identity.dataPath != null
+                  then "${osConfig.identity.dataPath}/icons/nix-snowflake-white.svg"
+                  else "";
                 glyph = "brand-snowflake";
               };
 

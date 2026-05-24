@@ -1,9 +1,4 @@
-{
-  nixosIdentity,
-  darwinIdentity,
-  lib,
-  ...
-}: {
+{lib, ...}: {
   config = {
     # NixOS Core System settings
     flake.modules.nixos.core = {config, ...}: {
@@ -53,16 +48,10 @@
     };
 
     # Home Manager Core Settings
-    flake.modules.homeManager.core = {osConfig, ...}: let
-      isDarwin = osConfig ? system.defaults;
-      identity =
-        if isDarwin
-        then darwinIdentity
-        else nixosIdentity;
-    in
+    flake.modules.homeManager.core = {osConfig, ...}:
       lib.mkIf (osConfig ? aspects.core && osConfig.aspects.core.enable) {
-        home.username = identity.name;
-        home.homeDirectory = identity.home;
+        home.username = osConfig.identity.username;
+        home.homeDirectory = osConfig.identity.homeDir;
         home.stateVersion = "25.11";
         home.sessionPath = ["$HOME/.local/state/nix/profiles/scratch/bin"];
       };

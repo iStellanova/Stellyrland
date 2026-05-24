@@ -1,4 +1,4 @@
-{darwinIdentity, ...}: {
+_: {
   config = {
     # Darwin System Settings
     flake.modules.darwin.system = {
@@ -12,11 +12,11 @@
         # Security
         security.pam.services.sudo_local.touchIdAuth = true;
 
-        system.primaryUser = darwinIdentity.name;
+        system.primaryUser = config.identity.username;
 
-        users.users.${darwinIdentity.name} = {
-          inherit (darwinIdentity) name;
-          inherit (darwinIdentity) home;
+        users.users.${config.identity.username} = {
+          name = config.identity.username;
+          home = config.identity.homeDir;
         };
 
         # System Defaults (Matched to current system settings)
@@ -54,7 +54,7 @@
             "/Applications/Beat.app"
             "/Applications/Zed.app"
             "/Applications/Claude.app"
-            "${darwinIdentity.home}/Applications/Home Manager Apps/kitty.app"
+            "${config.identity.homeDir}/Applications/Home Manager Apps/kitty.app"
             "/Applications/Zen Browser.app"
           ];
 

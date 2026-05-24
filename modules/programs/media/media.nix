@@ -1,8 +1,4 @@
-{
-  nixosIdentity,
-  darwinIdentity,
-  ...
-}: {
+_: {
   config = {
     # NixOS Media Settings
     flake.modules.nixos.media = {
@@ -14,7 +10,7 @@
       options.aspects.programs.media.enable = lib.mkEnableOption "Media players and consumption tools";
 
       config = lib.mkIf config.aspects.programs.media.enable {
-        home-manager.users.${nixosIdentity.name} = {
+        home-manager.users.${config.identity.username} = {
           home.packages = with pkgs; [
             ani-cli
             ffmpeg
@@ -42,7 +38,7 @@
       options.aspects.programs.media.enable = lib.mkEnableOption "Media players and consumption tools";
 
       config = lib.mkIf config.aspects.programs.media.enable {
-        home-manager.users.${darwinIdentity.name} = {
+        home-manager.users.${config.identity.username} = {
           home.packages = with pkgs; [
             ani-cli
             ffmpeg

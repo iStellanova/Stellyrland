@@ -1,9 +1,4 @@
-{
-  nixosIdentity,
-  darwinIdentity,
-  lib,
-  ...
-}: {
+{lib, ...}: {
   config = {
     # NixOS GSR Settings
     flake.modules.nixos.gsr = {
@@ -21,13 +16,7 @@
     };
 
     # Home Manager GSR Settings
-    flake.modules.homeManager.gsr = {osConfig, ...}: let
-      isDarwin = osConfig ? system.defaults;
-      identity =
-        if isDarwin
-        then darwinIdentity
-        else nixosIdentity;
-    in
+    flake.modules.homeManager.gsr = {osConfig, ...}:
       lib.mkIf (osConfig ? aspects.programs.gsr && osConfig.aspects.programs.gsr.enable) {
         # GSR configuration
         xdg.configFile."gpu-screen-recorder/config".text = ''
@@ -63,10 +52,10 @@
           main.video_width 1920
           record.container mp4
           record.pause_unpause_recording_hotkey 0 0
-          record.save_directory ${identity.home}/Videos
+          record.save_directory ${osConfig.identity.homeDir}/Videos
           record.start_stop_recording_hotkey 0 0
           replay.container mp4
-          replay.save_directory ${identity.home}/Videos
+          replay.save_directory ${osConfig.identity.homeDir}/Videos
           replay.save_recording_hotkey 0 0
           replay.start_stop_recording_hotkey 0 0
           replay.time 30

@@ -12,6 +12,19 @@ in {
       isDarwin = true;
       extraModules = [
         inputs.mac-app-util.darwinModules.default
+        # Identity configuration
+        {
+          identity = {
+            username = "stellanova";
+            homeDir = "/Users/stellanova";
+            gitName = "stellanova";
+            userEmail = "iStellanova@users.noreply.github.com";
+            sshKeys = [
+              "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAID23408QRe02peABnmkDcmpu2DVSwN3H+Jm7kcVenTDr stellanova"
+            ];
+            dataPath = inputs.my-assets;
+          };
+        }
         # Host-specific configuration
         {
           system.stateVersion = 5;

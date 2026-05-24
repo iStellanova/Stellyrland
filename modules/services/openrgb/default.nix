@@ -1,4 +1,4 @@
-{nixosIdentity, ...}: {
+_: {
   config = {
     # NixOS OpenRGB Settings
     flake.modules.nixos.openrgb = {
@@ -99,7 +99,7 @@
           };
         };
 
-        home-manager.users.${nixosIdentity.name} = {
+        home-manager.users.${config.identity.username} = {
           # Keep files in user config for GUI access
           xdg.configFile."OpenRGB/OpenRGB.json".source = ./OpenRGB.json;
 

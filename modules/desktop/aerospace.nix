@@ -1,4 +1,4 @@
-{darwinIdentity, ...}: {
+_: {
   config = {
     # Darwin AeroSpace Settings
     flake.modules.darwin.aerospace = {
@@ -16,7 +16,7 @@
         ];
 
         # Configure AeroSpace
-        home-manager.users.${darwinIdentity.name} = {
+        home-manager.users.${config.identity.username} = {
           home.file.".aerospace.toml".text = ''
             # Config version for compatibility and deprecations
             config-version = 2

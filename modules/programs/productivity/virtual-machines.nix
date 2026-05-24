@@ -1,4 +1,4 @@
-{nixosIdentity, ...}: {
+_: {
   config = {
     # NixOS Virtual Machines Settings
     flake.modules.nixos.virtual-machines = {
@@ -12,7 +12,7 @@
       config = lib.mkIf config.aspects.programs.virtual-machines.enable {
         virtualisation.libvirtd.enable = true;
 
-        home-manager.users.${nixosIdentity.name} = {
+        home-manager.users.${config.identity.username} = {
           home.packages = [pkgs.virt-manager];
         };
       };

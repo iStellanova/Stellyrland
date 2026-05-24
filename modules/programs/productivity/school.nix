@@ -1,8 +1,4 @@
-{
-  nixosIdentity,
-  darwinIdentity,
-  ...
-}: {
+_: {
   config = {
     # NixOS School Settings
     flake.modules.nixos.school = {
@@ -14,7 +10,7 @@
       options.aspects.programs.school.enable = lib.mkEnableOption "School tools";
 
       config = lib.mkIf config.aspects.programs.school.enable {
-        home-manager.users.${nixosIdentity.name} = {
+        home-manager.users.${config.identity.username} = {
           home.packages = [pkgs.zoom-us];
         };
       };
@@ -30,7 +26,7 @@
       options.aspects.programs.school.enable = lib.mkEnableOption "School tools";
 
       config = lib.mkIf config.aspects.programs.school.enable {
-        home-manager.users.${darwinIdentity.name} = {
+        home-manager.users.${config.identity.username} = {
           home.packages = [pkgs.zoom-us];
         };
 

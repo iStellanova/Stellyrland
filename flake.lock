@@ -830,6 +830,23 @@
         "type": "github"
       }
     },
+    "my-assets": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1779598515,
+        "narHash": "sha256-e/DpDu+HvsW552J80DGRYYe0d2h6xDsljxPcBUCD5Vg=",
+        "owner": "iStellanova",
+        "repo": "Stellyrland",
+        "rev": "cca4a3f026409672c2a9185b1a1e526b9ce664c8",
+        "type": "github"
+      },
+      "original": {
+        "owner": "iStellanova",
+        "ref": "assets",
+        "repo": "Stellyrland",
+        "type": "github"
+      }
+    },
     "nix-darwin": {
       "inputs": {
         "nixpkgs": [
@@ -1222,6 +1239,7 @@
         "impermanence": "impermanence",
         "lanzaboote": "lanzaboote",
         "mac-app-util": "mac-app-util",
+        "my-assets": "my-assets",
         "nix-darwin": "nix-darwin",
         "nix-flatpak": "nix-flatpak",
         "nix-index-database": "nix-index-database",
@@ -1231,7 +1249,6 @@
         "noctalia-shell": "noctalia-shell",
         "sops-nix": "sops-nix",
         "split-monitor-workspaces": "split-monitor-workspaces",
-        "stellyrdata": "stellyrdata",
         "treefmt-nix": "treefmt-nix_3",
         "zen-browser": "zen-browser"
       }
@@ -1296,21 +1313,6 @@
         "owner": "zjeffer",
         "repo": "split-monitor-workspaces",
         "type": "github"
-      }
-    },
-    "stellyrdata": {
-      "locked": {
-        "lastModified": 1779329642,
-        "narHash": "sha256-KtOhi1J3U1BRx7RumradN0h0qEMYcPE4xK/1P5iwqZc=",
-        "ref": "refs/heads/master",
-        "rev": "d8738cd605f4b3a46fab53335e3c71235407384f",
-        "revCount": 6,
-        "type": "git",
-        "url": "ssh://git@github.com/iStellanova/stellyrdata.git"
-      },
-      "original": {
-        "type": "git",
-        "url": "ssh://git@github.com/iStellanova/stellyrdata.git"
       }
     },
     "systems": {

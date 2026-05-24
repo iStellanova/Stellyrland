@@ -1,4 +1,4 @@
-{nixosIdentity, ...}: {
+_: {
   config = {
     # NixOS Greetd Settings
     flake.modules.nixos.greetd = {
@@ -19,7 +19,10 @@
           settings = {
             default_session = {
               command = let
-                wallpaper = "${nixosIdentity.outPath}/wallpapers/login-wallpaper.png";
+                wallpaperCmd =
+                  if config.identity.dataPath != null
+                  then "${pkgs.swaybg}/bin/swaybg -o \\* -i ${config.identity.dataPath}/wallpapers/login-wallpaper.png -m fill"
+                  else "${pkgs.swaybg}/bin/swaybg -o \\* -c '#1e2030'";
                 hyprlandPkg =
                   if config.aspects.desktop.hyprland.enable
                   then config.programs.hyprland.package
@@ -59,7 +62,7 @@
                   env = XCURSOR_PATH,${pkgs.bibata-cursors}/share/icons
 
                   exec-once = ${hyprlandPkg}/bin/hyprctl setcursor Bibata-Modern-Ice 16
-                  exec-once = ${pkgs.swaybg}/bin/swaybg -o \* -i ${wallpaper} -m fill
+                  exec-once = ${wallpaperCmd}
                   exec-once = sh -c "sleep 0.5; ${pkgs.regreet}/bin/regreet; ${hyprlandPkg}/bin/hyprctl dispatch exit"
                 '';
                 # A launcher that tricks the official start-hyprland into using this config
@@ -70,7 +73,7 @@
                   mkdir -p $HOME/.config/hypr
                   mkdir -p $HOME/.cache/regreet
                   printf "%s\n%s\n" \
-                    "last_username = \"${nixosIdentity.name}\"" \
+                    "last_username = \"${config.identity.username}\"" \
                     "last_session = \"${hyprlandPkg}/share/wayland-sessions/hyprland.desktop\"" \
                     > "$HOME/.cache/regreet/cache.toml"
                   ln -sf ${greetdHyprConfig} $HOME/.config/hypr/hyprland.conf
