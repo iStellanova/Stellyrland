@@ -63,7 +63,10 @@
             };
           };
           desktop = {
-            hyprland.enable = true;
+            hyprland = {
+              enable = true;
+              wallpaperEngine.workshopId = "3258032485";
+            };
             styling.enable = true;
           };
           programs = {
