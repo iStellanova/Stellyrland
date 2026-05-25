@@ -2,12 +2,10 @@ _: {
   # NixOS Cloud Storage Settings
   # Darwin Cloud Storage Settings
   flake.modules.darwin.cloud-storage = _: {
-    config = {
-      homebrew.casks = [
-        "google-drive"
-        "onedrive"
-      ];
-    };
+    homebrew.casks = [
+      "google-drive"
+      "microsoft-onedrive"
+    ];
   };
 
   # Home Manager Cloud Storage Settings
