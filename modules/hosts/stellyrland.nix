@@ -2,14 +2,6 @@
   hosts.nixos.stellyrland = {
     system = "x86_64-linux";
     modules = [
-      inputs.catppuccin.nixosModules.catppuccin
-      inputs.hyprland.nixosModules.default
-      inputs.disko.nixosModules.disko
-      inputs.preservation.nixosModules.preservation
-      inputs.nix-flatpak.nixosModules.nix-flatpak
-      inputs.lanzaboote.nixosModules.lanzaboote
-      inputs.sops-nix.nixosModules.sops
-
       # Identity configuration
       {
         identity = {

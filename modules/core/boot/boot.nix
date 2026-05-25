@@ -1,4 +1,4 @@
-_: {
+{inputs, ...}: {
   config = {
     # NixOS Bootloader Settings
     flake.modules.nixos.boot = {
@@ -7,6 +7,8 @@ _: {
       pkgs,
       ...
     }: {
+      imports = [inputs.lanzaboote.nixosModules.lanzaboote];
+
       options.aspects.core.boot = {
         enable = lib.mkEnableOption "Bootloader configuration";
         secureBoot = lib.mkEnableOption "Lanzaboote Secure Boot (disable for initial install)";

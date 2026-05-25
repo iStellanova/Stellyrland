@@ -1,4 +1,8 @@
-{lib, ...}: {
+{
+  lib,
+  inputs,
+  ...
+}: {
   config = {
     # NixOS Core and Base Services configuration
     flake.modules.nixos.core = {config, ...}: {
@@ -42,6 +46,8 @@
 
     # Darwin Core and System Defaults configuration
     flake.modules.darwin.core = {config, ...}: {
+      imports = [inputs.mac-app-util.darwinModules.default];
+
       options.aspects = {
         core.enable = lib.mkEnableOption "Core system configuration";
         darwin.system = {

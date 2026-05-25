@@ -2,8 +2,6 @@
   hosts.darwin.stellyrtop = {
     system = "aarch64-darwin";
     modules = [
-      inputs.mac-app-util.darwinModules.default
-
       # Identity configuration
       {
         identity = {
@@ -62,6 +60,7 @@
           };
           core = {
             enable = true;
+            users.enable = true;
             fonts.enable = true;
             nix-settings.enable = true;
             networking.enable = true;

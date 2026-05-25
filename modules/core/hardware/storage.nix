@@ -1,4 +1,4 @@
-_: {
+{inputs, ...}: {
   config = {
     # NixOS Storage and Snapper configuration
     flake.modules.nixos.storage = {
@@ -7,6 +7,8 @@ _: {
       pkgs,
       ...
     }: {
+      imports = [inputs.disko.nixosModules.disko];
+
       options.aspects.core.storage.enable = lib.mkEnableOption "Storage utilities (Btrfs, Snapper)";
 
       config = lib.mkIf config.aspects.core.storage.enable {
