@@ -4,8 +4,10 @@ _: {
   flake.modules.darwin.cloud-storage = _: {
     homebrew.casks = [
       "google-drive"
-      "microsoft-onedrive"
     ];
+    homebrew.masApps = {
+      "OneDrive" = 823766827;
+    };
   };
 
   # Home Manager Cloud Storage Settings
