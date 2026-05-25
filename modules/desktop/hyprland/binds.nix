@@ -81,84 +81,82 @@
     (bindOpts "${mainMod} + Super_L" "hl.dsp.exec_cmd(\"noctalia msg panel-toggle launcher\")" "{ release = true }")
   ];
 in {
-  config = {
-    # User-level Home Manager keybindings for Hyprland (Lua)
-    flake.modules.homeManager.hyprlandBinds = {osConfig, ...}:
-      lib.mkIf (osConfig ? aspects.desktop.hyprland && osConfig.aspects.desktop.hyprland.enable)
-      (let
-        we = osConfig.aspects.desktop.hyprland.wallpaperEngine;
-        # Wallpaper engine reload bind — derived from osConfig so the steam library path
-        # and workshop ID stay in one place (aspects.desktop.hyprland.wallpaperEngine.*).
-        wallpaperReloadBind = lib.optional (we.workshopId != "") (
-          bind "${mainMod} + ALT + E" "hl.dsp.exec_cmd([[pkill -f -9 linux-wallpaperengine && linux-wallpaperengine --assets-dir ${we.steamLibrary}/steamapps/common/wallpaper_engine/assets --screen-root DP-2 --screen-root DP-3 --fps 60 --silent ${we.steamLibrary}/steamapps/workshop/content/431960/${we.workshopId}/]])"
-        );
-      in {
-        # All static binds expressed natively in Nix — HM serializes these to hl.bind(...) calls.
-        wayland.windowManager.hyprland.settings.bind = staticBinds ++ wallpaperReloadBind;
+  # User-level Home Manager keybindings for Hyprland (Lua)
+  flake.modules.homeManager.hyprlandBinds = {osConfig, ...}:
+    lib.mkIf (osConfig ? aspects.desktop.hyprland && osConfig.aspects.desktop.hyprland.enable)
+    (let
+      we = osConfig.aspects.desktop.hyprland.wallpaperEngine;
+      # Wallpaper engine reload bind — derived from osConfig so the steam library path
+      # and workshop ID stay in one place (aspects.desktop.hyprland.wallpaperEngine.*).
+      wallpaperReloadBind = lib.optional (we.workshopId != "") (
+        bind "${mainMod} + ALT + E" "hl.dsp.exec_cmd([[pkill -f -9 linux-wallpaperengine && linux-wallpaperengine --assets-dir ${we.steamLibrary}/steamapps/common/wallpaper_engine/assets --screen-root DP-2 --screen-root DP-3 --fps 60 --silent ${we.steamLibrary}/steamapps/workshop/content/431960/${we.workshopId}/]])"
+      );
+    in {
+      # All static binds expressed natively in Nix — HM serializes these to hl.bind(...) calls.
+      wayland.windowManager.hyprland.settings.bind = staticBinds ++ wallpaperReloadBind;
 
-        # Only the smw plugin block lives here — it requires a runtime require() call
-        # that cannot be expressed in the Nix type system.
-        wayland.windowManager.hyprland.extraConfig = ''
-          -- TODO: remove when split-monitor-workspaces nix package installs lua/ alongside the .so
-          package.path = package.path .. ";${inputs.split-monitor-workspaces}/lua/?.lua"
-          local smw = require("split-monitor-workspaces")
-          smw.setup({
-              workspace_count              = 5,
-              keep_focused               = true,
-              enable_notifications       = false,
-              enable_persistent_workspaces = true,
-              enable_wrapping            = false,
-              monitor_priority           = { "DP-2", "DP-3" },
-          })
+      # Only the smw plugin block lives here — it requires a runtime require() call
+      # that cannot be expressed in the Nix type system.
+      wayland.windowManager.hyprland.extraConfig = ''
+        -- TODO: remove when split-monitor-workspaces nix package installs lua/ alongside the .so
+        package.path = package.path .. ";${inputs.split-monitor-workspaces}/lua/?.lua"
+        local smw = require("split-monitor-workspaces")
+        smw.setup({
+            workspace_count              = 5,
+            keep_focused               = true,
+            enable_notifications       = false,
+            enable_persistent_workspaces = true,
+            enable_wrapping            = false,
+            monitor_priority           = { "DP-2", "DP-3" },
+        })
 
-          local mainMod = "SUPER"
+        local mainMod = "SUPER"
 
-          -- Workspace switching (scan codes for layout independence)
-          hl.bind(mainMod .. " + code:10",  smw.workspace("1"))
-          hl.bind(mainMod .. " + code:11",  smw.workspace("2"))
-          hl.bind(mainMod .. " + code:12",  smw.workspace("3"))
-          hl.bind(mainMod .. " + code:13",  smw.workspace("4"))
-          hl.bind(mainMod .. " + code:14",  smw.workspace("5"))
-          hl.bind(mainMod .. " + code:15",  smw.workspace("6"))
-          hl.bind(mainMod .. " + code:16",  smw.workspace("7"))
-          hl.bind(mainMod .. " + code:17",  smw.workspace("8"))
-          hl.bind(mainMod .. " + code:18",  smw.workspace("9"))
-          hl.bind(mainMod .. " + code:19",  smw.workspace("10"))
-          hl.bind(mainMod .. " + code:20",  smw.workspace("11"))
-          hl.bind(mainMod .. " + code:21",  smw.workspace("12"))
+        -- Workspace switching (scan codes for layout independence)
+        hl.bind(mainMod .. " + code:10",  smw.workspace("1"))
+        hl.bind(mainMod .. " + code:11",  smw.workspace("2"))
+        hl.bind(mainMod .. " + code:12",  smw.workspace("3"))
+        hl.bind(mainMod .. " + code:13",  smw.workspace("4"))
+        hl.bind(mainMod .. " + code:14",  smw.workspace("5"))
+        hl.bind(mainMod .. " + code:15",  smw.workspace("6"))
+        hl.bind(mainMod .. " + code:16",  smw.workspace("7"))
+        hl.bind(mainMod .. " + code:17",  smw.workspace("8"))
+        hl.bind(mainMod .. " + code:18",  smw.workspace("9"))
+        hl.bind(mainMod .. " + code:19",  smw.workspace("10"))
+        hl.bind(mainMod .. " + code:20",  smw.workspace("11"))
+        hl.bind(mainMod .. " + code:21",  smw.workspace("12"))
 
-          -- Move window to workspace silently
-          hl.bind(mainMod .. " + SHIFT + 1",       smw.move_to_workspace_silent("1"))
-          hl.bind(mainMod .. " + SHIFT + 2",       smw.move_to_workspace_silent("2"))
-          hl.bind(mainMod .. " + SHIFT + 3",       smw.move_to_workspace_silent("3"))
-          hl.bind(mainMod .. " + SHIFT + 4",       smw.move_to_workspace_silent("4"))
-          hl.bind(mainMod .. " + SHIFT + 5",       smw.move_to_workspace_silent("5"))
-          hl.bind(mainMod .. " + SHIFT + 6",       smw.move_to_workspace_silent("6"))
-          hl.bind(mainMod .. " + SHIFT + 7",       smw.move_to_workspace_silent("7"))
-          hl.bind(mainMod .. " + SHIFT + 8",       smw.move_to_workspace_silent("8"))
-          hl.bind(mainMod .. " + SHIFT + 9",       smw.move_to_workspace_silent("9"))
-          hl.bind(mainMod .. " + SHIFT + 0",       smw.move_to_workspace_silent("10"))
-          hl.bind(mainMod .. " + SHIFT + code:20", smw.move_to_workspace_silent("11"))
-          hl.bind(mainMod .. " + SHIFT + code:21", smw.move_to_workspace_silent("12"))
+        -- Move window to workspace silently
+        hl.bind(mainMod .. " + SHIFT + 1",       smw.move_to_workspace_silent("1"))
+        hl.bind(mainMod .. " + SHIFT + 2",       smw.move_to_workspace_silent("2"))
+        hl.bind(mainMod .. " + SHIFT + 3",       smw.move_to_workspace_silent("3"))
+        hl.bind(mainMod .. " + SHIFT + 4",       smw.move_to_workspace_silent("4"))
+        hl.bind(mainMod .. " + SHIFT + 5",       smw.move_to_workspace_silent("5"))
+        hl.bind(mainMod .. " + SHIFT + 6",       smw.move_to_workspace_silent("6"))
+        hl.bind(mainMod .. " + SHIFT + 7",       smw.move_to_workspace_silent("7"))
+        hl.bind(mainMod .. " + SHIFT + 8",       smw.move_to_workspace_silent("8"))
+        hl.bind(mainMod .. " + SHIFT + 9",       smw.move_to_workspace_silent("9"))
+        hl.bind(mainMod .. " + SHIFT + 0",       smw.move_to_workspace_silent("10"))
+        hl.bind(mainMod .. " + SHIFT + code:20", smw.move_to_workspace_silent("11"))
+        hl.bind(mainMod .. " + SHIFT + code:21", smw.move_to_workspace_silent("12"))
 
-          -- Cycle workspaces
-          hl.bind(mainMod .. " + left",         smw.cycle_workspaces("prev"))
-          hl.bind(mainMod .. " + right",        smw.cycle_workspaces("next"))
-          hl.bind(mainMod .. " + Z",            smw.cycle_workspaces("prev"))
-          hl.bind(mainMod .. " + X",            smw.cycle_workspaces("next"))
-          hl.bind(mainMod .. " + bracketleft",  smw.cycle_workspaces("prev"))
-          hl.bind(mainMod .. " + bracketright", smw.cycle_workspaces("next"))
-          hl.bind(mainMod .. " + down",         smw.workspace("empty"))
-          hl.bind(mainMod .. " + grave",        smw.workspace("empty"))
-          hl.bind(mainMod .. " + SHIFT + G",    smw.grab_rogue_windows())
+        -- Cycle workspaces
+        hl.bind(mainMod .. " + left",         smw.cycle_workspaces("prev"))
+        hl.bind(mainMod .. " + right",        smw.cycle_workspaces("next"))
+        hl.bind(mainMod .. " + Z",            smw.cycle_workspaces("prev"))
+        hl.bind(mainMod .. " + X",            smw.cycle_workspaces("next"))
+        hl.bind(mainMod .. " + bracketleft",  smw.cycle_workspaces("prev"))
+        hl.bind(mainMod .. " + bracketright", smw.cycle_workspaces("next"))
+        hl.bind(mainMod .. " + down",         smw.workspace("empty"))
+        hl.bind(mainMod .. " + grave",        smw.workspace("empty"))
+        hl.bind(mainMod .. " + SHIFT + G",    smw.grab_rogue_windows())
 
-          -- Mouse scroll workspace navigation
-          hl.bind(mainMod .. " + mouse_down",   smw.cycle_workspaces("next"))
-          hl.bind(mainMod .. " + mouse_up",     smw.cycle_workspaces("prev"))
+        -- Mouse scroll workspace navigation
+        hl.bind(mainMod .. " + mouse_down",   smw.cycle_workspaces("next"))
+        hl.bind(mainMod .. " + mouse_up",     smw.cycle_workspaces("prev"))
 
-          -- exec_cmd runs in a child process, avoiding IPC deadlock when querying active workspace.
-          hl.bind(mainMod .. " + Space", hl.dsp.exec_cmd([[data=$(hyprctl activeworkspace -j); id=$(echo "$data" | grep '"id"' | head -1 | tr -dc '0-9'); layout=$(echo "$data" | grep tiledLayout | awk -F'"' '{print $4}'); [ "$layout" = "scrolling" ] && next=dwindle || next=scrolling; hyprctl eval "hl.workspace_rule({ workspace = '$id', layout = '$next' })"]]))
-        '';
-      });
-  };
+        -- exec_cmd runs in a child process, avoiding IPC deadlock when querying active workspace.
+        hl.bind(mainMod .. " + Space", hl.dsp.exec_cmd([[data=$(hyprctl activeworkspace -j); id=$(echo "$data" | grep '"id"' | head -1 | tr -dc '0-9'); layout=$(echo "$data" | grep tiledLayout | awk -F'"' '{print $4}'); [ "$layout" = "scrolling" ] && next=dwindle || next=scrolling; hyprctl eval "hl.workspace_rule({ workspace = '$id', layout = '$next' })"]]))
+      '';
+    });
 }
