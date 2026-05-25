@@ -8,8 +8,10 @@
       osConfig,
       pkgs,
       ...
-    }:
-      lib.mkIf (osConfig ? aspects.programs.nixvim && osConfig.aspects.programs.nixvim.enable) {
+    }: {
+      imports = [inputs.nixvim.homeModules.nixvim];
+
+      config = lib.mkIf (osConfig ? aspects.programs.nixvim && osConfig.aspects.programs.nixvim.enable) {
         programs.nixvim = {
           enable = true;
           nixpkgs.source = inputs.nixpkgs;
@@ -171,6 +173,7 @@
           ];
         };
       };
+    };
 
     # NixOS Options Declaration
     flake.modules.nixos.nixvim = {lib, ...}: {

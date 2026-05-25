@@ -1,19 +1,8 @@
 _: {
   config = {
     # NixOS Office Suite Settings
-    flake.modules.nixos.office-suite = {
-      config,
-      lib,
-      pkgs,
-      ...
-    }: {
+    flake.modules.nixos.office-suite = {lib, ...}: {
       options.aspects.programs.office-suite.enable = lib.mkEnableOption "Office suite";
-
-      config = lib.mkIf config.aspects.programs.office-suite.enable {
-        home-manager.users.${config.identity.username} = {
-          home.packages = [pkgs.freeoffice];
-        };
-      };
     };
 
     # Darwin Office Suite Settings
@@ -37,5 +26,18 @@ _: {
         };
       };
     };
+
+    # Home Manager Office Suite Settings
+    flake.modules.homeManager.office-suite = {
+      osConfig,
+      pkgs,
+      lib,
+      ...
+    }: let
+      isDarwin = osConfig ? system.defaults;
+    in
+      lib.mkIf (osConfig ? aspects.programs.office-suite && osConfig.aspects.programs.office-suite.enable && !isDarwin) {
+        home.packages = [pkgs.freeoffice];
+      };
   };
 }

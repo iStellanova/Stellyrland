@@ -39,13 +39,7 @@
       if isDarwin
       then inputs.home-manager.darwinModules.home-manager
       else inputs.home-manager.nixosModules.home-manager;
-    sharedHmModules =
-      (lib.attrValues config.flake.modules.homeManager)
-      ++ [
-        inputs.catppuccin.homeModules.catppuccin
-        inputs.nix-index-database.homeModules.nix-index
-        inputs.nixvim.homeModules.nixvim
-      ];
+    sharedHmModules = lib.attrValues config.flake.modules.homeManager;
   in
     coreBuilder {
       inherit system;
@@ -57,15 +51,19 @@
         )
         ++ [
           hmModule
-          {
+          ({config, ...}: {
             home-manager = {
               useGlobalPkgs = true;
               useUserPackages = true;
               backupFileExtension = "backup";
               overwriteBackup = true;
               sharedModules = sharedHmModules;
+              users.${config.identity.username} = {
+                home.username = config.identity.username;
+                home.homeDirectory = config.identity.homeDir;
+              };
             };
-          }
+          })
         ]
         ++ extraModules;
     };

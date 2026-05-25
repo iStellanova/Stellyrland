@@ -11,6 +11,7 @@
 
   # All binds whose dispatcher is a static hl.dsp.* expression.
   # smw.* binds cannot go here — smw is a runtime require() value.
+  # Wallpaper engine reload bind is derived dynamically from osConfig below.
   staticBinds = [
     # --- Core Applications ---
     (bind "${mainMod} + Q" "hl.dsp.exec_cmd(\"kitty\")")
@@ -51,7 +52,6 @@
 
     # --- Noctalia Integration ---
     (bind "${mainMod} + ALT + R" "hl.dsp.exec_cmd(\"systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP DISPLAY && systemctl --user restart noctalia\")")
-    (bind "${mainMod} + ALT + E" ''hl.dsp.exec_cmd([[pkill -f -9 linux-wallpaperengine && linux-wallpaperengine --assets-dir $HOME/ExtraDisk/SteamLibrary/steamapps/common/wallpaper_engine/assets --screen-root DP-2 --screen-root DP-3 --fps 60 --silent $HOME/ExtraDisk/SteamLibrary/steamapps/workshop/content/431960/3258032485/]])'')
     (bind "${mainMod} + SHIFT + Tab" "hl.dsp.exec_cmd(\"noctalia msg panel-toggle wallpaper\")")
     (bind "${mainMod} + SHIFT + X" "hl.dsp.exec_cmd(\"noctalia msg panel-toggle session\")")
 
@@ -84,9 +84,17 @@ in {
   config = {
     # User-level Home Manager keybindings for Hyprland (Lua)
     flake.modules.homeManager.hyprlandBinds = {osConfig, ...}:
-      lib.mkIf (osConfig ? aspects.desktop.hyprland && osConfig.aspects.desktop.hyprland.enable) {
+      lib.mkIf (osConfig ? aspects.desktop.hyprland && osConfig.aspects.desktop.hyprland.enable)
+      (let
+        we = osConfig.aspects.desktop.hyprland.wallpaperEngine;
+        # Wallpaper engine reload bind — derived from osConfig so the steam library path
+        # and workshop ID stay in one place (aspects.desktop.hyprland.wallpaperEngine.*).
+        wallpaperReloadBind = lib.optional (we.workshopId != "") (
+          bind "${mainMod} + ALT + E" "hl.dsp.exec_cmd([[pkill -f -9 linux-wallpaperengine && linux-wallpaperengine --assets-dir ${we.steamLibrary}/steamapps/common/wallpaper_engine/assets --screen-root DP-2 --screen-root DP-3 --fps 60 --silent ${we.steamLibrary}/steamapps/workshop/content/431960/${we.workshopId}/]])"
+        );
+      in {
         # All static binds expressed natively in Nix — HM serializes these to hl.bind(...) calls.
-        wayland.windowManager.hyprland.settings.bind = staticBinds;
+        wayland.windowManager.hyprland.settings.bind = staticBinds ++ wallpaperReloadBind;
 
         # Only the smw plugin block lives here — it requires a runtime require() call
         # that cannot be expressed in the Nix type system.
@@ -151,6 +159,6 @@ in {
           -- exec_cmd runs in a child process, avoiding IPC deadlock when querying active workspace.
           hl.bind(mainMod .. " + Space", hl.dsp.exec_cmd([[data=$(hyprctl activeworkspace -j); id=$(echo "$data" | grep '"id"' | head -1 | tr -dc '0-9'); layout=$(echo "$data" | grep tiledLayout | awk -F'"' '{print $4}'); [ "$layout" = "scrolling" ] && next=dwindle || next=scrolling; hyprctl eval "hl.workspace_rule({ workspace = '$id', layout = '$next' })"]]))
         '';
-      };
+      });
   };
 }

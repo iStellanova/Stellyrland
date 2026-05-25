@@ -1,4 +1,4 @@
-_: {
+{inputs, ...}: {
   config = {
     # NixOS Secrets Settings
     flake.modules.nixos.secrets = {
@@ -6,6 +6,8 @@ _: {
       lib,
       ...
     }: {
+      imports = [inputs.sops-nix.nixosModules.sops];
+
       options.aspects.core.secrets.enable = lib.mkEnableOption "Secure secrets management using sops-nix";
 
       config = lib.mkIf config.aspects.core.secrets.enable {

@@ -109,21 +109,10 @@
 
   outputs = inputs @ {flake-parts, ...}:
     flake-parts.lib.mkFlake {inherit inputs;} ({lib, ...}: {
-      systems = [
-        "x86_64-linux"
-        "aarch64-darwin"
-      ];
-
       imports =
-        [
-          # Enable the flake.modules.* option namespace
-          inputs.flake-parts.flakeModules.modules
-        ]
+        # flakeModules.modules must be declared at this level — flake-parts does not
+        # recursively process it when it arrives via a scanned module's imports.
+        [inputs.flake-parts.flakeModules.modules]
         ++ (import ./lib/default.nix {inherit lib;}).scan ./modules;
-
-      # Export the extended library as a flake output.
-      flake.lib = inputs.nixpkgs.lib.extend (
-        self: _super: import ./lib/default.nix {lib = self;}
-      );
     });
 }

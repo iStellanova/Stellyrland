@@ -10,6 +10,8 @@
       pkgs,
       ...
     }: {
+      imports = [inputs.hyprland.nixosModules.default];
+
       options.aspects.desktop.hyprland = {
         enable = lib.mkEnableOption "Hyprland desktop environment";
         wallpaperEngine = {

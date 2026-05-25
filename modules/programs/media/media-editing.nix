@@ -10,12 +10,6 @@ _: {
       options.aspects.programs.media-editing.enable = lib.mkEnableOption "Media editing and production tools";
 
       config = lib.mkIf config.aspects.programs.media-editing.enable {
-        home-manager.users.${config.identity.username} = {
-          home.packages = with pkgs; [
-            losslesscut-bin
-          ];
-        };
-
         environment.systemPackages = with pkgs; [
           davinci-resolve
           gimp
@@ -29,23 +23,27 @@ _: {
     flake.modules.darwin.media-editing = {
       config,
       lib,
-      pkgs,
       ...
     }: {
       options.aspects.programs.media-editing.enable = lib.mkEnableOption "Media editing and production tools";
 
       config = lib.mkIf config.aspects.programs.media-editing.enable {
-        home-manager.users.${config.identity.username} = {
-          home.packages = with pkgs; [
-            losslesscut-bin
-          ];
-        };
-
         homebrew.casks = [
           "gimp"
           "obs"
         ];
       };
     };
+
+    # Home Manager Media Editing Settings
+    flake.modules.homeManager.media-editing = {
+      osConfig,
+      pkgs,
+      lib,
+      ...
+    }:
+      lib.mkIf (osConfig ? aspects.programs.media-editing && osConfig.aspects.programs.media-editing.enable) {
+        home.packages = [pkgs.losslesscut-bin];
+      };
   };
 }
