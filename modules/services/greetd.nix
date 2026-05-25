@@ -117,7 +117,7 @@ _: {
                   hl.on("hyprland.start", function()
                     hl.exec_cmd("${hyprlandPkg}/bin/hyprctl setcursor Bibata-Modern-Ice 16")
                     hl.exec_cmd([[${wallpaperCmd}]])
-                    hl.exec_cmd([[sh -c '${pkgs.regreet}/bin/regreet; pkill -9 -u greeter swaybg; pkill -9 -u greeter Hyprland']])
+                    hl.exec_cmd([[sh -c '${pkgs.regreet}/bin/regreet; ${hyprlandPkg}/bin/hyprctl dispatch "hl.dsp.exit()"']])
                   end)
                 '';
                 greetdHyprLauncher = pkgs.writeShellScript "greetd-hyprland-launcher" ''
@@ -131,6 +131,7 @@ _: {
                     > "$HOME/.cache/regreet/cache.toml"
                   ln -sf ${greetdHyprConfig} $HOME/.config/hypr/hyprland.lua
                   export XDG_DATA_DIRS="${hyprlandPkg}/share''${XDG_DATA_DIRS:+:$XDG_DATA_DIRS}"
+                  export XDG_RUNTIME_DIR="''${XDG_RUNTIME_DIR:-/run/user/$(id -u)}"
                   exec ${hyprlandPkg}/bin/start-hyprland
                 '';
               in "${pkgs.dbus}/bin/dbus-run-session ${greetdHyprLauncher}";
