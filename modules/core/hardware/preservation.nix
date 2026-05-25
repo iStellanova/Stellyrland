@@ -1,4 +1,4 @@
-_: {
+{inputs, ...}: {
   config = {
     # NixOS Preservation Settings
     flake.modules.nixos.preservation = {
@@ -6,6 +6,8 @@ _: {
       lib,
       ...
     }: {
+      imports = [inputs.preservation.nixosModules.preservation];
+
       options.aspects.core.preservation.enable = lib.mkEnableOption "Opt-in persistence (wipes / on each boot, keeps only declared paths)";
 
       config = lib.mkIf config.aspects.core.preservation.enable {

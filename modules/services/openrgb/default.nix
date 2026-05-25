@@ -98,17 +98,22 @@ _: {
             RemainAfterExit = true;
           };
         };
-
-        home-manager.users.${config.identity.username} = {
-          # Keep files in user config for GUI access
-          xdg.configFile."OpenRGB/OpenRGB.json".source = ./OpenRGB.json;
-
-          programs.zsh.shellAliases = {
-            blackout = "openrgb --color 000000";
-            whiteout = "openrgb --color ffffff";
-          };
-        };
       };
     };
+
+    # Home Manager OpenRGB Settings
+    flake.modules.homeManager.openrgb = {
+      osConfig,
+      lib,
+      ...
+    }:
+      lib.mkIf (osConfig ? aspects.services.openrgb && osConfig.aspects.services.openrgb.enable) {
+        xdg.configFile."OpenRGB/OpenRGB.json".source = ./OpenRGB.json;
+
+        programs.zsh.shellAliases = {
+          blackout = "openrgb --color 000000";
+          whiteout = "openrgb --color ffffff";
+        };
+      };
   };
 }

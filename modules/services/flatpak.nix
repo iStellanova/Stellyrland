@@ -1,4 +1,4 @@
-_: {
+{inputs, ...}: {
   config = {
     # NixOS Flatpak Settings
     flake.modules.nixos.flatpak = {
@@ -6,6 +6,8 @@ _: {
       lib,
       ...
     }: {
+      imports = [inputs.nix-flatpak.nixosModules.nix-flatpak];
+
       options.aspects.services.flatpak.enable = lib.mkEnableOption "Flatpak sandboxed application support";
 
       config = lib.mkIf config.aspects.services.flatpak.enable {

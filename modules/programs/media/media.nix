@@ -10,15 +10,6 @@ _: {
       options.aspects.programs.media.enable = lib.mkEnableOption "Media players and consumption tools";
 
       config = lib.mkIf config.aspects.programs.media.enable {
-        home-manager.users.${config.identity.username} = {
-          home.packages = with pkgs; [
-            ani-cli
-            ffmpeg
-            mpv
-            nicotine-plus
-          ];
-        };
-
         environment.systemPackages = with pkgs; [
           ffmpegthumbnailer
           imv
@@ -32,25 +23,31 @@ _: {
     flake.modules.darwin.media = {
       config,
       lib,
-      pkgs,
       ...
     }: {
       options.aspects.programs.media.enable = lib.mkEnableOption "Media players and consumption tools";
 
       config = lib.mkIf config.aspects.programs.media.enable {
-        home-manager.users.${config.identity.username} = {
-          home.packages = with pkgs; [
-            ani-cli
-            ffmpeg
-            mpv
-          ];
-        };
-
         homebrew.casks = [
           "background-music"
           "vlc"
         ];
       };
     };
+
+    # Home Manager Media Settings
+    flake.modules.homeManager.media = {
+      osConfig,
+      pkgs,
+      lib,
+      ...
+    }: let
+      isDarwin = osConfig ? system.defaults;
+    in
+      lib.mkIf (osConfig ? aspects.programs.media && osConfig.aspects.programs.media.enable) {
+        home.packages = with pkgs;
+          [ani-cli ffmpeg mpv]
+          ++ lib.optionals (!isDarwin) [nicotine-plus];
+      };
   };
 }
