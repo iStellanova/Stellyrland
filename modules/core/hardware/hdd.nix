@@ -9,28 +9,50 @@ _: {
     backupScript = pkgs.writeShellScript "backup-hdd" ''
       set -euo pipefail
 
+      echo "Starting backup to encrypted HDD..."
+
+      if [ ! -f "${keyFile}" ]; then
+        echo "Error: Keyfile ${keyFile} not found!"
+        exit 1
+      fi
+
       cleanup() {
+        echo "Cleaning up..."
         ${pkgs.util-linux}/bin/umount ${mountPoint} 2>/dev/null || true
         ${pkgs.cryptsetup}/bin/cryptsetup close ${mapperName} 2>/dev/null || true
       }
       trap cleanup EXIT
 
-      ${pkgs.cryptsetup}/bin/cryptsetup open \
-        --key-file ${keyFile} \
-        /dev/disk/by-uuid/${hddUuid} \
-        ${mapperName}
+      if [ ! -e "/dev/mapper/${mapperName}" ]; then
+        echo "Opening encrypted device..."
+        ${pkgs.cryptsetup}/bin/cryptsetup open \
+          --key-file ${keyFile} \
+          /dev/disk/by-uuid/${hddUuid} \
+          ${mapperName}
+      else
+        echo "Encrypted device already open."
+      fi
 
-      ${pkgs.util-linux}/bin/mount -t btrfs \
-        -o noatime,compress=zstd:3,space_cache=v2 \
-        /dev/mapper/${mapperName} ${mountPoint}
+      if ! mountpoint -q ${mountPoint}; then
+        echo "Mounting backup HDD..."
+        ${pkgs.util-linux}/bin/mount -t btrfs \
+          -o noatime,compress=zstd:3,space_cache=v2 \
+          /dev/mapper/${mapperName} ${mountPoint}
+      else
+        echo "Backup HDD already mounted."
+      fi
 
+      echo "Ensuring target directories exist..."
       mkdir -p ${mountPoint}/home ${mountPoint}/persist
 
+      echo "Running btrbk..."
       ${pkgs.btrbk}/bin/btrbk -c /etc/btrbk/hdd.conf run
 
+      echo "Backup complete. Unmounting and closing..."
       ${pkgs.util-linux}/bin/umount ${mountPoint}
       ${pkgs.cryptsetup}/bin/cryptsetup close ${mapperName}
       trap - EXIT
+      echo "Done."
     '';
   in {
     config = {
@@ -75,9 +97,14 @@ _: {
       # The trap ensures the HDD is always locked even if btrbk fails.
       systemd.services.backup-hdd = {
         description = "Backup /home and /persist to encrypted HDD";
+        after = ["local-fs.target"];
+        unitConfig.RequiresMountsFor = ["/home" "/persist"];
         serviceConfig = {
           Type = "oneshot";
           ExecStart = "${backupScript}";
+          # Ensure the backup doesn't starve the rest of the system
+          IOWeight = 20;
+          CPUWeight = 20;
         };
       };
 
