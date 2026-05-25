@@ -176,7 +176,6 @@
               {_args = ["MOZ_ENABLE_WAYLAND" "1"];}
               {_args = ["ELECTRON_OZONE_PLATFORM_HINT" "auto"];}
               {_args = ["OBS_USE_EGL" "1"];}
-              {_args = ["PROTON_ENABLE_HDR" "1"];}
               {_args = ["PROTON_ENABLE_WAYLAND" "1"];}
               {_args = ["AMD_VULKAN_ICD" "RADV"];}
               {_args = ["RADV_PERFTEST" "nggc"];}

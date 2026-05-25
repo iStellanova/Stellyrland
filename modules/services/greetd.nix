@@ -32,8 +32,8 @@ _: {
                   -- Mirrors the main session's decoration and visual settings for consistency.
 
                   -- Monitor configuration
-                  hl.monitor({ output = "DP-2", mode = "3440x1440@175", position = "1440x541", scale = 1, bitdepth = 10, cm = "hdr", sdr_min_luminance = 0.0 })
-                  hl.monitor({ output = "DP-3", mode = "2560x1440@100", position = "0x0",    scale = 1, transform = 1, bitdepth = 10, cm = "hdr", sdr_min_luminance = 0.0 })
+                  hl.monitor({ output = "DP-2", mode = "3440x1440@175", position = "1440x541", scale = 1, bitdepth = 10, cm = "hdr",  vrr = 1, supports_wide_color = 1, sdr_min_luminance = 0.0,  sdr_max_luminance = 203, sdrbrightness = 0.75, sdrsaturation = 1.2, min_luminance = 0.0005, max_luminance = 1000, max_avg_luminance = 250 })
+                  hl.monitor({ output = "DP-3", mode = "2560x1440@100", position = "0x0",    scale = 1, transform = 1, bitdepth = 10, cm = "srgb", vrr = 1, sdr_min_luminance = 0.2, min_luminance = 0.25, max_luminance = 250, max_avg_luminance = 250 })
                   hl.monitor({ output = "",     mode = "preferred",      position = "auto",   scale = 1 })
 
                   -- Environment variables
@@ -117,8 +117,7 @@ _: {
                   hl.on("hyprland.start", function()
                     hl.exec_cmd("${hyprlandPkg}/bin/hyprctl setcursor Bibata-Modern-Ice 16")
                     hl.exec_cmd([[${wallpaperCmd}]])
-                    hl.exec_cmd("${pkgs.swayidle}/bin/swayidle -w timeout 86400 'hyprctl dispatch dpms off' resume 'hyprctl dispatch dpms on'")
-                    hl.exec_cmd([[sh -c '${pkgs.regreet}/bin/regreet; sleep 0.4; ${hyprlandPkg}/bin/hyprctl dispatch exit']])
+                    hl.exec_cmd([[sh -c '${pkgs.regreet}/bin/regreet; pkill -9 -u greeter swaybg; pkill -9 -u greeter Hyprland']])
                   end)
                 '';
                 greetdHyprLauncher = pkgs.writeShellScript "greetd-hyprland-launcher" ''
