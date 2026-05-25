@@ -103,9 +103,8 @@
       ./_rules.nix
     ];
 
-    _module.args.inputs = inputs;
-
     config = {
+      _module.args.inputs = inputs;
       programs.zsh.shellAliases = {
         screenoff = "HYPRLAND_INSTANCE_SIGNATURE=$(basename /run/user/$(id -u)/hypr/*/) hyprctl dispatch dpms off";
         screenon = "HYPRLAND_INSTANCE_SIGNATURE=$(basename /run/user/$(id -u)/hypr/*/) hyprctl dispatch dpms on";
