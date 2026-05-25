@@ -13,6 +13,11 @@
 
     options.desktop.hyprland = {
       enable = lib.mkEnableOption "Hyprland desktop environment";
+      monitorConfig = lib.mkOption {
+        type = lib.types.str;
+        default = ''hl.monitor({ output = "", mode = "preferred", position = "auto", scale = 1 })'';
+        description = "Lua monitor configuration lines shared between the Hyprland session and greetd login screen.";
+      };
       wallpaperEngine = {
         steamLibrary = lib.mkOption {
           type = lib.types.str;
@@ -122,46 +127,6 @@
         ];
 
         settings = {
-          monitor = [
-            {
-              output = "DP-2";
-              mode = "3440x1440@175";
-              position = "1440x541";
-              scale = 1;
-              bitdepth = 10;
-              cm = "hdr";
-              vrr = 1;
-              supports_wide_color = 1;
-              sdr_min_luminance = 0.0;
-              sdr_max_luminance = 203;
-              sdrbrightness = 0.75;
-              sdrsaturation = 1.2;
-              min_luminance = 0.0005;
-              max_luminance = 1000;
-              max_avg_luminance = 250;
-            }
-            {
-              output = "DP-3";
-              mode = "2560x1440@100";
-              position = "0x0";
-              scale = 1;
-              transform = 1;
-              bitdepth = 10;
-              cm = "srgb";
-              vrr = 1;
-              sdr_min_luminance = 0.2;
-              min_luminance = 0.25;
-              max_luminance = 250;
-              max_avg_luminance = 250;
-            }
-            {
-              output = "";
-              mode = "preferred";
-              position = "auto";
-              scale = 1;
-            }
-          ];
-
           env = [
             {_args = ["HYPRCURSOR_THEME" "Bibata-Modern-Ice-Hypr"];}
             {_args = ["HYPRCURSOR_SIZE" "16"];}
@@ -356,6 +321,8 @@
             hl.exec_cmd([[sleep 3 && linux-wallpaperengine --assets-dir ${we.steamLibrary}/steamapps/common/wallpaper_engine/assets --screen-root DP-2 --screen-root DP-3 --fps 60 --silent ${we.steamLibrary}/steamapps/workshop/content/431960/${we.workshopId}/]])
           '';
         in ''
+          ${osConfig.desktop.hyprland.monitorConfig}
+
           hl.on("hyprland.start", function()
               hl.exec_cmd("dbus-update-activation-environment --systemd --all")
               hl.exec_cmd("systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP")

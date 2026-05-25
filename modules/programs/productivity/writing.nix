@@ -1,8 +1,4 @@
 _: {
-  # NixOS Options Declaration
-  flake.modules.nixos.writing = _: {
-  };
-
   # Darwin Writing Settings
   flake.modules.darwin.writing = _: {
     config = {

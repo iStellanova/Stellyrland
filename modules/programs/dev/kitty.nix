@@ -1,8 +1,10 @@
 {lib, ...}: {
   # Home Manager Kitty Settings
-  flake.modules.homeManager.kitty = {osConfig, ...}: let
-    isDarwin = osConfig ? system.defaults;
-  in {
+  flake.modules.homeManager.kitty = {
+    osConfig,
+    pkgs,
+    ...
+  }: {
     programs.kitty = {
       enable = true;
       font = {
@@ -30,7 +32,7 @@
       '';
     };
 
-    xdg.terminal-exec = lib.mkIf (!isDarwin) {
+    xdg.terminal-exec = lib.mkIf (!pkgs.stdenv.isDarwin) {
       enable = true;
       settings.default = ["kitty.desktop"];
     };

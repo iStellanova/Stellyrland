@@ -75,12 +75,4 @@ _: {
       };
     };
   };
-
-  # NixOS Options Declaration
-  flake.modules.nixos.btop = _: {
-  };
-
-  # Darwin Options Declaration
-  flake.modules.darwin.btop = _: {
-  };
 }

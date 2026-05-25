@@ -1,5 +1,19 @@
 {inputs, ...}: {
-  # NixOS Noctalia Shell Settings
+  flake.modules.nixos.noctalia-shell = {lib, ...}: {
+    options.desktop.noctalia = {
+      primaryMonitor = lib.mkOption {
+        type = lib.types.str;
+        default = "";
+        description = "Primary monitor output name for Noctalia bar and notifications.";
+      };
+      secondaryMonitor = lib.mkOption {
+        type = lib.types.str;
+        default = "";
+        description = "Secondary monitor output name for Noctalia wallpaper sync.";
+      };
+    };
+  };
+
   # Home Manager Noctalia Settings
   flake.modules.homeManager.noctalia-shell = {
     osConfig,
@@ -8,6 +22,11 @@
   }: let
     wallpaperDir = "${osConfig.identity.homeDir}/Pictures/wallpapers";
     defaultWallpaper = "${wallpaperDir}/wallpaper.png";
+    primary = osConfig.desktop.noctalia.primaryMonitor;
+    secondary = osConfig.desktop.noctalia.secondaryMonitor;
+    monitorSections =
+      lib.optionalString (primary != "") "[wallpaper.monitors.${primary}]\npath = \"${defaultWallpaper}\"\n\n"
+      + lib.optionalString (secondary != "") "[wallpaper.monitors.${secondary}]\npath = \"${defaultWallpaper}\"\n\n";
   in {
     imports = [
       inputs.noctalia-shell.homeModules.default
@@ -29,12 +48,7 @@
         [wallpaper.last]
         path = "${defaultWallpaper}"
 
-        [wallpaper.monitors.DP-2]
-        path = "${defaultWallpaper}"
-
-        [wallpaper.monitors.DP-3]
-        path = "${defaultWallpaper}"
-        EOF
+        ${monitorSections}EOF
                   fi
       '';
 
@@ -74,22 +88,21 @@
             directory = wallpaperDir;
             default.path = defaultWallpaper;
             last.path = defaultWallpaper;
-            monitors = {
-              DP-2.path = defaultWallpaper;
-              DP-3.path = defaultWallpaper;
-            };
+            monitors =
+              lib.optionalAttrs (primary != "") {"${primary}".path = defaultWallpaper;}
+              // lib.optionalAttrs (secondary != "") {"${secondary}".path = defaultWallpaper;};
           };
 
-          # Notifications, only showing on main monitor.
+          # Notifications, only showing on primary monitor.
           notification = {
             background_opacity = 0.5;
-            monitors = ["DP-2"];
+            monitors = lib.optional (primary != "") primary;
           };
 
           # Main Bar settings.
           bar.main = {
             enabled = false;
-            monitor.DP-2.enabled = true;
+            monitor = lib.optionalAttrs (primary != "") {"${primary}".enabled = true;};
             position = "top";
             background_opacity = 0.5;
             center = ["media"];

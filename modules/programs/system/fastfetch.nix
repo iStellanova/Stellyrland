@@ -1,8 +1,6 @@
 _: {
   # Home Manager Fastfetch Settings
-  flake.modules.homeManager.fastfetch = {osConfig, ...}: let
-    isDarwin = osConfig ? system.defaults;
-  in {
+  flake.modules.homeManager.fastfetch = {pkgs, ...}: {
     programs.zsh.shellAliases.pf = "fastfetch";
     programs.fastfetch = {
       enable = true;
@@ -105,7 +103,7 @@ _: {
             key = "󰃶 ";
             keyColor = "34";
             text =
-              if isDarwin
+              if pkgs.stdenv.isDarwin
               then "echo $(( ($(date +%s) - $(stat -f %B /)) / 86400 )) days"
               else "echo $(( ($(date +%s) - $(stat -c %W /)) / 86400 )) days";
           }
@@ -113,13 +111,5 @@ _: {
         ];
       };
     };
-  };
-
-  # NixOS Options Declaration
-  flake.modules.nixos.fastfetch = _: {
-  };
-
-  # Darwin Options Declaration
-  flake.modules.darwin.fastfetch = _: {
   };
 }

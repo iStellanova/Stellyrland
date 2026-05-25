@@ -33,14 +33,12 @@
     pkgs,
     lib,
     ...
-  }: let
-    isDarwin = osConfig ? system.defaults;
-  in {
-    home.packages = lib.optionals (!isDarwin) [
+  }: {
+    home.packages = lib.optionals (!pkgs.stdenv.isDarwin) [
       inputs.zen-browser.packages."${pkgs.stdenv.hostPlatform.system}".default
     ];
 
-    home.file = lib.mkIf (!isDarwin) (let
+    home.file = lib.mkIf (!pkgs.stdenv.isDarwin) (let
       profile = "${osConfig.programs.browser.profileId}.Default Profile";
     in {
       ".config/zen/${profile}/user.js".text = ''
