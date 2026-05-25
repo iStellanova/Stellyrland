@@ -1,11 +1,6 @@
 _: {
   # NixOS CoolerControl Settings
-  flake.modules.nixos.coolercontrol = {
-    config,
-    lib,
-    pkgs,
-    ...
-  }: let
+  flake.modules.nixos.coolercontrol = {pkgs, ...}: let
     coolerConfig = pkgs.writeText "coolercontrol-config.toml" ''
       # ==============================================================================
       # CoolerControl Configuration - Managed by NixOS
@@ -170,9 +165,7 @@ _: {
       disable = false
     '';
   in {
-    options.aspects.services.coolercontrol.enable = lib.mkEnableOption "CoolerControl service";
-
-    config = lib.mkIf config.aspects.services.coolercontrol.enable {
+    config = {
       programs.coolercontrol.enable = true;
 
       environment.systemPackages = [

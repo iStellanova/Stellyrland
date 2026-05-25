@@ -11,7 +11,7 @@
   }: {
     imports = [inputs.hyprland.nixosModules.default];
 
-    options.aspects.desktop.hyprland = {
+    options.desktop.hyprland = {
       enable = lib.mkEnableOption "Hyprland desktop environment";
       wallpaperEngine = {
         steamLibrary = lib.mkOption {
@@ -27,7 +27,7 @@
       };
     };
 
-    config = lib.mkIf config.aspects.desktop.hyprland.enable {
+    config = {
       programs.hyprland = {
         enable = true;
         package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
@@ -99,9 +99,13 @@
   in {
     imports = [
       inputs.hyprland.homeManagerModules.default
+      ./_binds.nix
+      ./_rules.nix
     ];
 
-    config = lib.mkIf (osConfig ? aspects.desktop.hyprland && osConfig.aspects.desktop.hyprland.enable) {
+    _module.args.inputs = inputs;
+
+    config = {
       programs.zsh.shellAliases = {
         screenoff = "HYPRLAND_INSTANCE_SIGNATURE=$(basename /run/user/$(id -u)/hypr/*/) hyprctl dispatch dpms off";
         screenon = "HYPRLAND_INSTANCE_SIGNATURE=$(basename /run/user/$(id -u)/hypr/*/) hyprctl dispatch dpms on";
@@ -348,7 +352,7 @@
 
         # smw requires runtime require(); startup needs arbitrary exec-once — both must stay in extraConfig.
         extraConfig = let
-          we = osConfig.aspects.desktop.hyprland.wallpaperEngine;
+          we = osConfig.desktop.hyprland.wallpaperEngine;
           wallpaperCmd = lib.optionalString (we.workshopId != "") ''
             hl.exec_cmd([[sleep 3 && linux-wallpaperengine --assets-dir ${we.steamLibrary}/steamapps/common/wallpaper_engine/assets --screen-root DP-2 --screen-root DP-3 --fps 60 --silent ${we.steamLibrary}/steamapps/workshop/content/431960/${we.workshopId}/]])
           '';

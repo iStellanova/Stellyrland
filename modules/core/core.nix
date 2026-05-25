@@ -4,14 +4,9 @@
   ...
 }: {
   # NixOS Core and Base Services configuration
-  flake.modules.nixos.core = {config, ...}: {
-    options.aspects.core = {
-      enable = lib.mkEnableOption "Core system configuration";
-      services-base.enable = lib.mkEnableOption "Base system services";
-    };
-
+  flake.modules.nixos.core = _: {
     config = lib.mkMerge [
-      (lib.mkIf config.aspects.core.enable {
+      {
         time.timeZone = "America/Indianapolis";
         i18n.defaultLocale = "en_US.UTF-8";
 
@@ -28,9 +23,9 @@
           TimeoutStartSec = "10s";
           TimeoutStopSec = "10s";
         };
-      })
+      }
 
-      (lib.mkIf config.aspects.core.services-base.enable {
+      {
         services.udisks2.enable = true;
         services.gvfs.enable = true;
         services.libinput.enable = true;
@@ -39,7 +34,7 @@
         networking.networkmanager.enable = true;
         programs.dconf.enable = true;
         services.dbus.implementation = "broker";
-      })
+      }
     ];
   };
 
@@ -47,8 +42,7 @@
   flake.modules.darwin.core = {config, ...}: {
     imports = [inputs.mac-app-util.darwinModules.default];
 
-    options.aspects = {
-      core.enable = lib.mkEnableOption "Core system configuration";
+    options = {
       darwin.system = {
         enable = lib.mkEnableOption "Darwin system configuration";
         dockApps = lib.mkOption {
@@ -68,11 +62,11 @@
     };
 
     config = lib.mkMerge [
-      (lib.mkIf config.aspects.core.enable {
+      {
         time.timeZone = "America/Indiana/Indianapolis";
-      })
+      }
 
-      (lib.mkIf config.aspects.darwin.system.enable {
+      {
         security.pam.services.sudo_local.touchIdAuth = true;
         system.primaryUser = config.identity.username;
 
@@ -84,7 +78,7 @@
           dock.static-only = false;
           dock.tilesize = 117;
 
-          dock.persistent-apps = config.aspects.darwin.system.dockApps;
+          dock.persistent-apps = config.darwin.system.dockApps;
 
           finder.AppleShowAllExtensions = true;
           finder.FXPreferredViewStyle = "Nlsv";
@@ -118,16 +112,15 @@
 
         system.keyboard.enableKeyMapping = true;
         system.keyboard.remapCapsLockToControl = true;
-      })
+      }
     ];
   };
 
   # Home Manager Core Settings
-  flake.modules.homeManager.core = {osConfig, ...}:
-    lib.mkIf (osConfig ? aspects.core && osConfig.aspects.core.enable) {
-      home.username = osConfig.identity.username;
-      home.homeDirectory = osConfig.identity.homeDir;
-      home.stateVersion = "25.11";
-      home.sessionPath = ["$HOME/.local/state/nix/profiles/scratch/bin"];
-    };
+  flake.modules.homeManager.core = {osConfig, ...}: {
+    home.username = osConfig.identity.username;
+    home.homeDirectory = osConfig.identity.homeDir;
+    home.stateVersion = "25.11";
+    home.sessionPath = ["$HOME/.local/state/nix/profiles/scratch/bin"];
+  };
 }

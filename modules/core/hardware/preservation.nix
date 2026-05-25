@@ -1,15 +1,9 @@
 {inputs, ...}: {
   # NixOS Preservation Settings
-  flake.modules.nixos.preservation = {
-    config,
-    lib,
-    ...
-  }: {
+  flake.modules.nixos.preservation = {...}: {
     imports = [inputs.preservation.nixosModules.preservation];
 
-    options.aspects.core.preservation.enable = lib.mkEnableOption "Opt-in persistence (wipes / on each boot, keeps only declared paths)";
-
-    config = lib.mkIf config.aspects.core.preservation.enable {
+    config = {
       systemd.tmpfiles.rules = [
         # Returns /etc/nixos's pointer from the config project.
         "L+ /etc/nixos - - - - /home/stellanova/Projects/stellyrland"

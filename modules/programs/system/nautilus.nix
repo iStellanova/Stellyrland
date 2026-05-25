@@ -1,13 +1,6 @@
 _: {
-  flake.modules.nixos.nautilus = {
-    config,
-    lib,
-    pkgs,
-    ...
-  }: {
-    options.aspects.programs.nautilus.enable = lib.mkEnableOption "Nautilus file manager";
-
-    config = lib.mkIf config.aspects.programs.nautilus.enable {
+  flake.modules.nixos.nautilus = {pkgs, ...}: {
+    config = {
       environment.systemPackages = with pkgs; [
         nautilus
         sushi

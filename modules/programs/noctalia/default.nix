@@ -1,11 +1,7 @@
 {inputs, ...}: {
   # NixOS Noctalia Shell Settings
-  flake.modules.nixos.noctalia = {lib, ...}: {
-    options.aspects.programs.noctalia-shell.enable = lib.mkEnableOption "Noctalia shell";
-  };
-
   # Home Manager Noctalia Settings
-  flake.modules.homeManager.noctalia = {
+  flake.modules.homeManager.noctalia-shell = {
     osConfig,
     lib,
     ...
@@ -17,7 +13,7 @@
       inputs.noctalia-shell.homeModules.default
     ];
 
-    config = lib.mkIf (osConfig ? aspects.programs.noctalia-shell && osConfig.aspects.programs.noctalia-shell.enable) {
+    config = {
       home.file = lib.mkIf (osConfig.identity.dataPath != null) {
         "Pictures/wallpapers/wallpaper.png".source = "${osConfig.identity.dataPath}/wallpapers/wallpaper.png";
       };

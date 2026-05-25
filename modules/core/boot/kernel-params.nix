@@ -1,13 +1,7 @@
 _: {
   # NixOS kernel parameters
-  flake.modules.nixos.kernel-params = {
-    config,
-    lib,
-    ...
-  }: {
-    options.aspects.core.kernel-params.enable = lib.mkEnableOption "Hardware-specific kernel parameters";
-
-    config = lib.mkIf config.aspects.core.kernel-params.enable {
+  flake.modules.nixos.kernel-params = _: {
+    config = {
       # Kernel parameters for extreme performance and 3D V-Cache optimization.
       boot.kernelParams = [
         "acpi_enforce_resources=lax" # Allow i2c-piix4 to access SMBus for RAM RGB

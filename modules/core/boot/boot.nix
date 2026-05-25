@@ -8,12 +8,12 @@
   }: {
     imports = [inputs.lanzaboote.nixosModules.lanzaboote];
 
-    options.aspects.core.boot = {
+    options.core.boot = {
       enable = lib.mkEnableOption "Bootloader configuration";
       secureBoot = lib.mkEnableOption "Lanzaboote Secure Boot (disable for initial install)";
     };
 
-    config = lib.mkIf config.aspects.core.boot.enable {
+    config = {
       environment.systemPackages = [pkgs.efibootmgr pkgs.sbctl];
 
       # systemd-boot is managed by lanzaboote, which wraps it to produce
@@ -23,14 +23,14 @@
       # from source when not cached, which fails in the live USB environment.
       # After first boot, run nixos-rebuild with secureBoot = true to switch.
       boot.loader.systemd-boot = {
-        enable = lib.mkForce (!config.aspects.core.boot.secureBoot);
+        enable = lib.mkForce (!config.core.boot.secureBoot);
         configurationLimit = 15;
         consoleMode = "max";
       };
       boot.loader.efi.canTouchEfiVariables = true;
 
       boot.lanzaboote = {
-        enable = config.aspects.core.boot.secureBoot;
+        enable = config.core.boot.secureBoot;
         pkiBundle = "/var/lib/sbctl";
       };
     };

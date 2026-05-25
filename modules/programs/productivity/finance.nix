@@ -1,18 +1,11 @@
 _: {
   # NixOS Options Declaration
-  flake.modules.nixos.finance = {lib, ...}: {
-    options.aspects.programs.finance.enable = lib.mkEnableOption "Personal finance tools";
+  flake.modules.nixos.finance = _: {
   };
 
   # Darwin Finance Settings
-  flake.modules.darwin.finance = {
-    config,
-    lib,
-    ...
-  }: {
-    options.aspects.programs.finance.enable = lib.mkEnableOption "Personal finance tools";
-
-    config = lib.mkIf config.aspects.programs.finance.enable {
+  flake.modules.darwin.finance = _: {
+    config = {
       homebrew.casks = ["quicken"];
     };
   };

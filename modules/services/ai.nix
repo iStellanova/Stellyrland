@@ -6,11 +6,9 @@
     pkgs,
     ...
   }: let
-    cfg = config.aspects.services.ai;
+    cfg = config.services.ai;
   in {
-    options.aspects.services.ai = {
-      enable = lib.mkEnableOption "Cognitive AI Architecture Stack";
-
+    options.services.ai = {
       user = lib.mkOption {
         type = lib.types.str;
         default = "stellanova";
@@ -77,12 +75,12 @@
 
       echoProjectPath = lib.mkOption {
         type = lib.types.str;
-        default = "/home/${config.aspects.services.ai.user}/Projects/Project Echo";
+        default = "/home/${config.services.ai.user}/Projects/Project Echo";
         description = "Path to the Project Echo source directory on this machine.";
       };
     };
 
-    config = lib.mkIf cfg.enable {
+    config = {
       # 1. Native Ollama Service with ROCm Acceleration on the 7900 XTX (gfx1100)
       services.ollama = {
         enable = true;
@@ -107,7 +105,7 @@
       ];
 
       # 2. Open WebUI (Primary GUI Station)
-      services.open-webui = lib.mkIf cfg.openWebUI.enable {
+      services.open-webui = {
         enable = true;
         port = cfg.openWebUI.port;
         environment = {
@@ -117,7 +115,7 @@
       };
 
       # 3. PostgreSQL Database (Cognitive SQL Memory)
-      services.postgresql = lib.mkIf cfg.postgresql.enable {
+      services.postgresql = {
         enable = true;
         package = pkgs.postgresql_16;
         ensureDatabases = [cfg.postgresql.databaseName];
@@ -135,7 +133,7 @@
       };
 
       # Robust oneshot initialization service running as 'postgres' admin
-      systemd.services.ai-db-init = lib.mkIf cfg.postgresql.enable {
+      systemd.services.ai-db-init = {
         description = "Initialize Cognitive AI Database Schema";
         after = ["postgresql.service"];
         requires = ["postgresql.service"];

@@ -1,16 +1,8 @@
-{
-  inputs,
-  lib,
-  ...
-}: {
-  flake.modules.homeManager.nixvim = {
-    osConfig,
-    pkgs,
-    ...
-  }: {
+{inputs, ...}: {
+  flake.modules.homeManager.nixvim = {pkgs, ...}: {
     imports = [inputs.nixvim.homeModules.nixvim];
 
-    config = lib.mkIf (osConfig ? aspects.programs.nixvim && osConfig.aspects.programs.nixvim.enable) {
+    config = {
       programs.nixvim = {
         enable = true;
         nixpkgs.source = inputs.nixpkgs;
@@ -175,12 +167,10 @@
   };
 
   # NixOS Options Declaration
-  flake.modules.nixos.nixvim = {lib, ...}: {
-    options.aspects.programs.nixvim.enable = lib.mkEnableOption "NixVim editor configuration";
+  flake.modules.nixos.nixvim = _: {
   };
 
   # Darwin Options Declaration
-  flake.modules.darwin.nixvim = {lib, ...}: {
-    options.aspects.programs.nixvim.enable = lib.mkEnableOption "NixVim editor configuration";
+  flake.modules.darwin.nixvim = _: {
   };
 }

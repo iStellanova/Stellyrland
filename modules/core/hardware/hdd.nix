@@ -1,11 +1,6 @@
 _: {
   # NixOS HDD Backup configuration
-  flake.modules.nixos.hdd = {
-    config,
-    lib,
-    pkgs,
-    ...
-  }: let
+  flake.modules.nixos.hdd = {pkgs, ...}: let
     hddUuid = "0592b026-666d-4a26-b416-2f3b9c7046ae";
     mapperName = "crypthdd";
     mountPoint = "/mnt/backup-hdd";
@@ -38,9 +33,7 @@ _: {
       trap - EXIT
     '';
   in {
-    options.aspects.core.hdd.enable = lib.mkEnableOption "HDD backup (LUKS + btrfs + btrbk)";
-
-    config = lib.mkIf config.aspects.core.hdd.enable {
+    config = {
       environment.systemPackages = [pkgs.btrbk];
 
       # Prevent udisks/udiskie/file managers from showing or automounting the backup HDD.

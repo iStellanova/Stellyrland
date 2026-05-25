@@ -1,14 +1,7 @@
 _: {
   # NixOS Media Settings
-  flake.modules.nixos.media = {
-    config,
-    lib,
-    pkgs,
-    ...
-  }: {
-    options.aspects.programs.media.enable = lib.mkEnableOption "Media players and consumption tools";
-
-    config = lib.mkIf config.aspects.programs.media.enable {
+  flake.modules.nixos.media = {pkgs, ...}: {
+    config = {
       environment.systemPackages = with pkgs; [
         ffmpegthumbnailer
         imv
@@ -19,14 +12,8 @@ _: {
   };
 
   # Darwin Media Settings
-  flake.modules.darwin.media = {
-    config,
-    lib,
-    ...
-  }: {
-    options.aspects.programs.media.enable = lib.mkEnableOption "Media players and consumption tools";
-
-    config = lib.mkIf config.aspects.programs.media.enable {
+  flake.modules.darwin.media = _: {
+    config = {
       homebrew.casks = [
         "background-music"
         "vlc"
@@ -42,10 +29,9 @@ _: {
     ...
   }: let
     isDarwin = osConfig ? system.defaults;
-  in
-    lib.mkIf (osConfig ? aspects.programs.media && osConfig.aspects.programs.media.enable) {
-      home.packages = with pkgs;
-        [ani-cli ffmpeg mpv]
-        ++ lib.optionals (!isDarwin) [nicotine-plus];
-    };
+  in {
+    home.packages = with pkgs;
+      [ani-cli ffmpeg mpv]
+      ++ lib.optionals (!isDarwin) [nicotine-plus];
+  };
 }

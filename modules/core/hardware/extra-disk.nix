@@ -1,13 +1,7 @@
 _: {
   # NixOS Extra Disk Storage
-  flake.modules.nixos.extra-disk = {
-    config,
-    lib,
-    ...
-  }: {
-    options.aspects.core.extra-disk.enable = lib.mkEnableOption "Extra Disk Storage (LUKS + Btrfs)";
-
-    config = lib.mkIf config.aspects.core.extra-disk.enable {
+  flake.modules.nixos.extra-disk = {config, ...}: {
+    config = {
       # LUKS Decryption for Extra Disk (Sabrent SB-RKT4P-2TB nvme0n1)
       # Automatically decrypted at boot stage 1 using systemd-cryptsetup and the TPM2 chip.
       boot.initrd.luks.devices."cryptextra" = {

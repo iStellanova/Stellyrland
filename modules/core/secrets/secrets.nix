@@ -1,15 +1,9 @@
 {inputs, ...}: {
   # NixOS Secrets Settings
-  flake.modules.nixos.secrets = {
-    config,
-    lib,
-    ...
-  }: {
+  flake.modules.nixos.secrets = {config, ...}: {
     imports = [inputs.sops-nix.nixosModules.sops];
 
-    options.aspects.core.secrets.enable = lib.mkEnableOption "Secure secrets management using sops-nix";
-
-    config = lib.mkIf config.aspects.core.secrets.enable {
+    config = {
       # Specify the decrypt key file location (directly in persistent storage to bypass impermanence race condition)
       sops.age.sshKeyPaths = ["/persist/etc/ssh/ssh_host_ed25519_key"];
 

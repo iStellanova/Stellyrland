@@ -1,15 +1,9 @@
 {inputs, ...}: {
   # NixOS Flatpak Settings
-  flake.modules.nixos.flatpak = {
-    config,
-    lib,
-    ...
-  }: {
+  flake.modules.nixos.flatpak = {...}: {
     imports = [inputs.nix-flatpak.nixosModules.nix-flatpak];
 
-    options.aspects.services.flatpak.enable = lib.mkEnableOption "Flatpak sandboxed application support";
-
-    config = lib.mkIf config.aspects.services.flatpak.enable {
+    config = {
       services.flatpak = {
         enable = true;
         update.onActivation = true;
