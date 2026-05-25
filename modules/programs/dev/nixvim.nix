@@ -165,12 +165,4 @@
       };
     };
   };
-
-  # NixOS Options Declaration
-  flake.modules.nixos.nixvim = _: {
-  };
-
-  # Darwin Options Declaration
-  flake.modules.darwin.nixvim = _: {
-  };
 }

@@ -1,14 +1,12 @@
 _: {
   # Home Manager Yazi Settings
   flake.modules.homeManager.yazi = {
-    osConfig,
     pkgs,
     lib,
     ...
   }: let
-    isDarwin = osConfig ? system.defaults;
     openCmd =
-      if isDarwin
+      if pkgs.stdenv.isDarwin
       then ''/usr/bin/open "%s"''
       else ''${lib.getExe' pkgs.xdg-utils "xdg-open"} "%s"'';
   in {
@@ -178,14 +176,6 @@ _: {
         epr
         mpv
       ]
-      ++ lib.optionals (!isDarwin) [xdg-utils];
-  };
-
-  # NixOS Options Declaration
-  flake.modules.nixos.yazi = _: {
-  };
-
-  # Darwin Options Declaration
-  flake.modules.darwin.yazi = _: {
+      ++ lib.optionals (!pkgs.stdenv.isDarwin) [xdg-utils];
   };
 }

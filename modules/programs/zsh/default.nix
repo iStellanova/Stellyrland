@@ -17,14 +17,11 @@ _: {
 
   # Home Manager Zsh Settings
   flake.modules.homeManager.zsh = {
-    osConfig,
     pkgs,
     lib,
     enabledAspects,
     ...
-  }: let
-    isDarwin = osConfig ? system.defaults;
-  in {
+  }: {
     home.file.".p10k.zsh".text = import ./_p10k.nix {inherit lib;};
 
     programs.zsh = {
@@ -83,14 +80,14 @@ _: {
             elif [ -d "$1" ]; then builtin cd "$1"
             else z "$@" && printf "\U000F17A9 " && pwd; fi
           }
-          ${lib.optionalString (!isDarwin) ''
+          ${lib.optionalString (!pkgs.stdenv.isDarwin) ''
             open() { xdg-open "$@" >/dev/null 2>&1 &; }
           ''}
 
           # Clipboard utilities for Wayland/Hyprland
           # cp2c: Copy file content to clipboard
           # c2f: Create file from clipboard content
-          ${lib.optionalString (!isDarwin && builtins.elem "hyprland" enabledAspects) ''
+          ${lib.optionalString (!pkgs.stdenv.isDarwin && builtins.elem "hyprland" enabledAspects) ''
             cp2c() { if [[ -z "$1" ]]; then echo "Usage: cp2c <file>" >&2; return 1; fi; wl-copy < "$1"; }
             c2f() { if [[ -z "$1" ]]; then echo "Usage: create-from-clip <filename>" >&2; return 1; fi; wl-paste > "$1"; }
           ''}
