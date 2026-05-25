@@ -28,13 +28,9 @@
 
   # Home Manager CLI Settings
   flake.modules.homeManager.cli = {
-    osConfig,
     pkgs,
-    enabledAspects,
     ...
-  }: let
-    isDarwin = osConfig ? system.defaults;
-  in {
+  }: {
     programs.fzf.enable = true;
     programs.zoxide.enable = true;
     programs.jq.enable = true;
@@ -82,7 +78,7 @@
         grep = "rg";
         man = "tldr";
       }
-      // lib.optionalAttrs (!isDarwin) {
+      // lib.optionalAttrs (!pkgs.stdenv.isDarwin) {
         # Environment switching aliases (Linux only)
         # Sets the 'headless' specialisation as the default boot entry and reboots.
         reboot-headless = "sudo /run/current-system/specialisation/headless/bin/switch-to-configuration boot && sudo reboot";
@@ -93,17 +89,10 @@
     # fd - fast directory search
     programs.fd.enable = true;
 
-    # comma - command line interface for managing dotfiles
-    home.packages = lib.optionals (!(builtins.elem "nix-index" enabledAspects)) [
-      pkgs.comma
-    ];
-
     # direnv - environment variable management
     programs.direnv = {
       enable = true;
       nix-direnv.enable = true;
     };
-    # nix-index - index for nix package search
-    programs.nix-index.enable = true;
   };
 }

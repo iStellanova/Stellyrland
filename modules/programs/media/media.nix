@@ -23,15 +23,12 @@ _: {
 
   # Home Manager Media Settings
   flake.modules.homeManager.media = {
-    osConfig,
     pkgs,
     lib,
     ...
-  }: let
-    isDarwin = osConfig ? system.defaults;
-  in {
+  }: {
     home.packages = with pkgs;
       [ani-cli ffmpeg mpv]
-      ++ lib.optionals (!isDarwin) [nicotine-plus];
+      ++ lib.optionals (!pkgs.stdenv.isDarwin) [nicotine-plus];
   };
 }

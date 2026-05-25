@@ -1,8 +1,4 @@
 _: {
-  # NixOS Options Declaration
-  flake.modules.nixos.cava = _: {
-  };
-
   # Darwin Cava Settings
   flake.modules.darwin.cava = _: {
     config = {
@@ -11,15 +7,13 @@ _: {
   };
 
   # Home Manager Cava Settings
-  flake.modules.homeManager.cava = {osConfig, ...}: let
-    isDarwin = osConfig ? system.defaults;
-  in {
+  flake.modules.homeManager.cava = {pkgs, ...}: {
     programs.cava = {
       enable = true;
       settings = {
         general.live-config = 1;
         input.method =
-          if isDarwin
+          if pkgs.stdenv.isDarwin
           then "portaudio"
           else "pulse";
         input.source = "auto";

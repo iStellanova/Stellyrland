@@ -13,12 +13,4 @@ _: {
       })
     ];
   };
-
-  # NixOS Options Declaration
-  flake.modules.nixos.ns = _: {
-  };
-
-  # Darwin Options Declaration
-  flake.modules.darwin.ns = _: {
-  };
 }

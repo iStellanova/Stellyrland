@@ -35,12 +35,4 @@ _: {
       };
     };
   };
-
-  # NixOS Options Declaration
-  flake.modules.nixos.git = _: {
-  };
-
-  # Darwin Options Declaration
-  flake.modules.darwin.git = _: {
-  };
 }

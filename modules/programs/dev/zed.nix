@@ -1,35 +1,18 @@
 _: {
-  # NixOS Zed Settings
-  flake.modules.nixos.zed = _: {
-  };
-
-  # Darwin Zed Settings
-  flake.modules.darwin.zed = _: {
-    config = {
-      homebrew.casks = ["zed"];
-    };
-  };
-
   # Home Manager Zed Settings
   flake.modules.homeManager.zed = {
-    osConfig,
     pkgs,
     lib,
     ...
-  }: let
-    isDarwin = osConfig ? system.defaults;
-  in {
-    home.packages = lib.optionals (!isDarwin) [
+  }: {
+    home.packages = lib.optionals (!pkgs.stdenv.isDarwin) [
       pkgs.nil
       pkgs.nixfmt
     ];
 
     programs.zed-editor = {
       enable = true;
-      package =
-        if isDarwin
-        then null
-        else pkgs.zed-editor;
+      package = pkgs.zed-editor;
       mutableUserSettings = false;
       mutableUserKeymaps = false;
       mutableUserTasks = false;

@@ -121,10 +121,13 @@
   };
 
   # Home Manager Nix Aliases and Scripts
-  flake.modules.homeManager.nix-settings = {osConfig, ...}: let
-    isDarwin = osConfig ? system.defaults;
+  flake.modules.homeManager.nix-settings = {
+    osConfig,
+    pkgs,
+    ...
+  }: let
     flakePath =
-      if isDarwin
+      if pkgs.stdenv.isDarwin
       then "${osConfig.identity.homeDir}/Documents/GitHub/Stellyrland"
       else "/etc/nixos";
   in {
@@ -140,13 +143,13 @@
       rebuild() {
         if [[ "$1" == "check" ]]; then
           git -C $FLAKE add . && ${
-        if isDarwin
+        if pkgs.stdenv.isDarwin
         then "nh darwin build $FLAKE && rm ./result"
         else "nh os build --diff always && rm ./result"
       }
         else
           git -C $FLAKE add . && (cd $FLAKE && nix fmt) && ${
-        if isDarwin
+        if pkgs.stdenv.isDarwin
         then "nh darwin switch $FLAKE"
         else "nh os switch"
       }
@@ -156,13 +159,13 @@
       upgrade() {
         if [[ "$1" == "check" ]]; then
           git -C $FLAKE add . && ${
-        if isDarwin
+        if pkgs.stdenv.isDarwin
         then "nix flake update $FLAKE && nh darwin build $FLAKE && rm ./result"
         else "nh os build --update --diff always && rm ./result"
       }
         else
           git -C $FLAKE add . && (cd $FLAKE && nix fmt) && ${
-        if isDarwin
+        if pkgs.stdenv.isDarwin
         then "nh darwin switch --update $FLAKE"
         else "nh os switch --update"
       }
