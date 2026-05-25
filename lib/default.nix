@@ -29,6 +29,7 @@
   }: {
     system,
     isDarwin,
+    aspects ? [],
     extraModules ? [],
   }: let
     coreBuilder =
@@ -39,25 +40,45 @@
       if isDarwin
       then inputs.home-manager.darwinModules.home-manager
       else inputs.home-manager.nixosModules.home-manager;
-    sharedHmModules = lib.attrValues config.flake.modules.homeManager;
+
+    # Dynamically resolve OS modules based on enabled aspects.
+    # Fallback: if aspects is empty, we import all modules to support legacy toggle setups.
+    osRegistry =
+      if isDarwin
+      then config.flake.modules.darwin
+      else config.flake.modules.nixos;
+
+    activeOSModules =
+      (
+        if aspects == []
+        then lib.attrValues osRegistry
+        else map (name: osRegistry.${name}) (lib.filter (name: osRegistry ? ${name}) aspects)
+      )
+      ++ lib.optional (osRegistry ? meta) osRegistry.meta;
+
+    # Dynamically resolve Home Manager modules based on enabled aspects.
+    hmRegistry = config.flake.modules.homeManager;
+    activeHmModules =
+      if aspects == []
+      then lib.attrValues hmRegistry
+      else map (name: hmRegistry.${name}) (lib.filter (name: hmRegistry ? ${name}) aspects);
   in
     coreBuilder {
       inherit system;
       modules =
-        (
-          if isDarwin
-          then lib.attrValues config.flake.modules.darwin
-          else lib.attrValues config.flake.modules.nixos
-        )
+        activeOSModules
         ++ [
           hmModule
           ({config, ...}: {
+            # Inject enabledAspects list into module arguments for safe cross-aspect querying
+            _module.args.enabledAspects = aspects;
+
             home-manager = {
               useGlobalPkgs = true;
               useUserPackages = true;
               backupFileExtension = "backup";
               overwriteBackup = true;
-              sharedModules = sharedHmModules;
+              sharedModules = activeHmModules ++ [{_module.args.enabledAspects = aspects;}];
               users.${config.identity.username} = {
                 home.username = config.identity.username;
                 home.homeDirectory = config.identity.homeDir;

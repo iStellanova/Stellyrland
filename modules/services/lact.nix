@@ -1,11 +1,6 @@
 _: {
   # NixOS LACT GPU tuning Settings
-  flake.modules.nixos.lact = {
-    config,
-    lib,
-    pkgs,
-    ...
-  }: let
+  flake.modules.nixos.lact = {pkgs, ...}: let
     gpuConfig = {
       fan_control_enabled = true;
       fan_control_settings = {
@@ -58,9 +53,7 @@ _: {
       sed "s/'\([0-9]*\)':/\1:/g" ${yamlFile} > $out
     '';
   in {
-    options.aspects.services.lact.enable = lib.mkEnableOption "LACT GPU tuning service";
-
-    config = lib.mkIf config.aspects.services.lact.enable {
+    config = {
       # Enable the LACT daemon
       services.lact.enable = true;
 

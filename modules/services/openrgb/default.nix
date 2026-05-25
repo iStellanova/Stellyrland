@@ -1,16 +1,7 @@
 _: {
   # NixOS OpenRGB Settings
-  flake.modules.nixos.openrgb = {
-    config,
-    lib,
-    pkgs,
-    ...
-  }: let
-    cfg = config.aspects.services.openrgb;
-  in {
-    options.aspects.services.openrgb.enable = lib.mkEnableOption "OpenRGB service";
-
-    config = lib.mkIf cfg.enable {
+  flake.modules.nixos.openrgb = {pkgs, ...}: {
+    config = {
       services.hardware.openrgb = {
         enable = true;
         package = pkgs.openrgb-with-all-plugins;
@@ -101,17 +92,12 @@ _: {
   };
 
   # Home Manager OpenRGB Settings
-  flake.modules.homeManager.openrgb = {
-    osConfig,
-    lib,
-    ...
-  }:
-    lib.mkIf (osConfig ? aspects.services.openrgb && osConfig.aspects.services.openrgb.enable) {
-      xdg.configFile."OpenRGB/OpenRGB.json".source = ./OpenRGB.json;
+  flake.modules.homeManager.openrgb = _: {
+    xdg.configFile."OpenRGB/OpenRGB.json".source = ./OpenRGB.json;
 
-      programs.zsh.shellAliases = {
-        blackout = "openrgb --color 000000";
-        whiteout = "openrgb --color ffffff";
-      };
+    programs.zsh.shellAliases = {
+      blackout = "openrgb --color 000000";
+      whiteout = "openrgb --color ffffff";
     };
+  };
 }

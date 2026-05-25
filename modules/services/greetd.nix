@@ -2,13 +2,11 @@ _: {
   # NixOS Greetd Settings
   flake.modules.nixos.greetd = {
     config,
-    lib,
     pkgs,
+    enabledAspects,
     ...
   }: {
-    options.aspects.services.greetd.enable = lib.mkEnableOption "greetd login manager with regreet";
-
-    config = lib.mkIf config.aspects.services.greetd.enable {
+    config = {
       # Accounts service is required for regreet to list users.
       services.accounts-daemon.enable = true;
 
@@ -23,7 +21,7 @@ _: {
                 then "${pkgs.swaybg}/bin/swaybg -o \\* -i ${config.identity.dataPath}/wallpapers/login-wallpaper.png -m fill"
                 else "${pkgs.swaybg}/bin/swaybg -o \\* -c '#1e2030'";
               hyprlandPkg =
-                if config.aspects.desktop.hyprland.enable
+                if builtins.elem "hyprland" enabledAspects
                 then config.programs.hyprland.package
                 else pkgs.hyprland;
               greetdHyprConfig = pkgs.writeText "greetd-hyprland.lua" ''
@@ -139,7 +137,9 @@ _: {
         };
       };
 
-      systemd.services.greetd.environment.HYPRLAND_STARTED_WITH_HYPRLAND_START = "1";
+      systemd.services.greetd.environment = {
+        HYPRLAND_STARTED_WITH_HYPRLAND_START = "1";
+      };
 
       # regreet (login manager) for Hyprland.
       programs.regreet = {

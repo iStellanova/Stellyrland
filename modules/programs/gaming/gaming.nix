@@ -1,14 +1,7 @@
 _: {
   # NixOS Gaming Settings
-  flake.modules.nixos.gaming = {
-    config,
-    lib,
-    pkgs,
-    ...
-  }: {
-    options.aspects.programs.gaming.enable = lib.mkEnableOption "Gaming suite (Steam, Gamemode, etc.)";
-
-    config = lib.mkIf config.aspects.programs.gaming.enable {
+  flake.modules.nixos.gaming = {pkgs, ...}: {
+    config = {
       programs.gamemode.enable = true;
       programs.steam = {
         enable = true;
@@ -28,14 +21,8 @@ _: {
   };
 
   # Darwin Gaming Settings
-  flake.modules.darwin.gaming = {
-    config,
-    lib,
-    ...
-  }: {
-    options.aspects.programs.gaming.enable = lib.mkEnableOption "Gaming suite (Steam, Gamemode, etc.)";
-
-    config = lib.mkIf config.aspects.programs.gaming.enable {
+  flake.modules.darwin.gaming = _: {
+    config = {
       homebrew.casks = ["steam" "prismlauncher"];
     };
   };

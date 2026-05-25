@@ -1,9 +1,7 @@
-{lib, ...}: {
+_: {
   # Darwin Homebrew settings
-  flake.modules.darwin.homebrew = {config, ...}: {
-    options.aspects.darwin.homebrew.enable = lib.mkEnableOption "Darwin homebrew configuration";
-
-    config = lib.mkIf config.aspects.darwin.homebrew.enable {
+  flake.modules.darwin.homebrew = _: {
+    config = {
       homebrew = {
         enable = true;
         onActivation = {

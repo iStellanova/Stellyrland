@@ -8,6 +8,11 @@
             default = "x86_64-linux";
             description = "The target CPU/OS architecture.";
           };
+          aspects = lib.mkOption {
+            type = lib.types.listOf lib.types.str;
+            default = [];
+            description = "List of active dendritic aspects for this host.";
+          };
           modules = lib.mkOption {
             type = lib.types.listOf lib.types.deferredModule;
             default = [];
@@ -26,6 +31,11 @@
             type = lib.types.str;
             default = "aarch64-darwin";
             description = "The target Darwin CPU/OS architecture.";
+          };
+          aspects = lib.mkOption {
+            type = lib.types.listOf lib.types.str;
+            default = [];
+            description = "List of active dendritic aspects for this host.";
           };
           modules = lib.mkOption {
             type = lib.types.listOf lib.types.deferredModule;

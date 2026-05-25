@@ -9,7 +9,7 @@
     pkgs,
     ...
   }: {
-    options.aspects.core.nix-settings = {
+    options.core.nix-settings = {
       enable = lib.mkEnableOption "Core nix settings";
       cores = lib.mkOption {
         type = lib.types.ints.unsigned;
@@ -18,7 +18,7 @@
       };
     };
 
-    config = lib.mkIf config.aspects.core.nix-settings.enable {
+    config = {
       nixpkgs.overlays = [
         (_final: prev: {
           unity-test = prev.unity-test.overrideAttrs (_old: {doCheck = false;});
@@ -40,7 +40,7 @@
         min-free = 2147483648; # 2GB
         max-free = 5368709120; # 5GB
         builders-use-substitutes = true;
-        cores = config.aspects.core.nix-settings.cores;
+        cores = config.core.nix-settings.cores;
         substituters = [
           "https://cache.nixos.org"
           "https://hyprland.cachix.org"
@@ -86,9 +86,7 @@
     pkgs,
     ...
   }: {
-    options.aspects.core.nix-settings.enable = lib.mkEnableOption "Core nix settings";
-
-    config = lib.mkIf config.aspects.core.nix-settings.enable {
+    config = {
       nixpkgs.overlays = [
         (_final: prev: {
           unity-test = prev.unity-test.overrideAttrs (_old: {doCheck = false;});
@@ -129,63 +127,62 @@
       if isDarwin
       then "${osConfig.identity.homeDir}/Documents/GitHub/Stellyrland"
       else "/etc/nixos";
-  in
-    lib.mkIf (osConfig ? aspects.core.nix-settings && osConfig.aspects.core.nix-settings.enable) {
-      programs.zsh.shellAliases = {
-        clean = "nh clean all --keep 20";
-        cdn = "cd $FLAKE";
-        nixinfo = "nh os info";
-        nix-list = "nix profile list --profile ~/.local/state/nix/profiles/scratch";
-        nix-clear = "rm -rf ~/.local/state/nix/profiles/scratch && nh clean all --keep 20";
-      };
-
-      programs.zsh.initContent = ''
-        rebuild() {
-          if [[ "$1" == "check" ]]; then
-            git -C $FLAKE add . && ${
-          if isDarwin
-          then "nh darwin build $FLAKE && rm ./result"
-          else "nh os build --diff always && rm ./result"
-        }
-          else
-            git -C $FLAKE add . && (cd $FLAKE && nix fmt) && ${
-          if isDarwin
-          then "nh darwin switch $FLAKE"
-          else "nh os switch"
-        }
-          fi
-        }
-
-        upgrade() {
-          if [[ "$1" == "check" ]]; then
-            git -C $FLAKE add . && ${
-          if isDarwin
-          then "nix flake update $FLAKE && nh darwin build $FLAKE && rm ./result"
-          else "nh os build --update --diff always && rm ./result"
-        }
-          else
-            git -C $FLAKE add . && (cd $FLAKE && nix fmt) && ${
-          if isDarwin
-          then "nh darwin switch --update $FLAKE"
-          else "nh os switch --update"
-        }
-          fi
-        }
-
-        nix-add() { local profile="$HOME/.local/state/nix/profiles/scratch"; NIXPKGS_ALLOW_UNFREE=1 nix profile add --profile "$profile" --impure nixpkgs#$1; }
-        nix-remove() {
-          if [[ ! -d ~/.local/state/nix/profiles/scratch ]]; then echo "Scratch profile doesn't exist"; return 1; fi
-          nix profile remove --profile ~/.local/state/nix/profiles/scratch $1
-        }
-
-        export PATH="$HOME/.local/state/nix/profiles/scratch/bin:$PATH"
-      '';
-
-      programs.nh = {
-        enable = true;
-        clean.enable = true;
-        clean.extraArgs = "--keep 20 --optimise";
-        flake = flakePath;
-      };
+  in {
+    programs.zsh.shellAliases = {
+      clean = "nh clean all --keep 20";
+      cdn = "cd $FLAKE";
+      nixinfo = "nh os info";
+      nix-list = "nix profile list --profile ~/.local/state/nix/profiles/scratch";
+      nix-clear = "rm -rf ~/.local/state/nix/profiles/scratch && nh clean all --keep 20";
     };
+
+    programs.zsh.initContent = ''
+      rebuild() {
+        if [[ "$1" == "check" ]]; then
+          git -C $FLAKE add . && ${
+        if isDarwin
+        then "nh darwin build $FLAKE && rm ./result"
+        else "nh os build --diff always && rm ./result"
+      }
+        else
+          git -C $FLAKE add . && (cd $FLAKE && nix fmt) && ${
+        if isDarwin
+        then "nh darwin switch $FLAKE"
+        else "nh os switch"
+      }
+        fi
+      }
+
+      upgrade() {
+        if [[ "$1" == "check" ]]; then
+          git -C $FLAKE add . && ${
+        if isDarwin
+        then "nix flake update $FLAKE && nh darwin build $FLAKE && rm ./result"
+        else "nh os build --update --diff always && rm ./result"
+      }
+        else
+          git -C $FLAKE add . && (cd $FLAKE && nix fmt) && ${
+        if isDarwin
+        then "nh darwin switch --update $FLAKE"
+        else "nh os switch --update"
+      }
+        fi
+      }
+
+      nix-add() { local profile="$HOME/.local/state/nix/profiles/scratch"; NIXPKGS_ALLOW_UNFREE=1 nix profile add --profile "$profile" --impure nixpkgs#$1; }
+      nix-remove() {
+        if [[ ! -d ~/.local/state/nix/profiles/scratch ]]; then echo "Scratch profile doesn't exist"; return 1; fi
+        nix profile remove --profile ~/.local/state/nix/profiles/scratch $1
+      }
+
+      export PATH="$HOME/.local/state/nix/profiles/scratch/bin:$PATH"
+    '';
+
+    programs.nh = {
+      enable = true;
+      clean.enable = true;
+      clean.extraArgs = "--keep 20 --optimise";
+      flake = flakePath;
+    };
+  };
 }

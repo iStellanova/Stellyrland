@@ -12,7 +12,7 @@ in {
       lib.mapAttrs (
         _name: host:
           mkHost {inherit config inputs;} {
-            inherit (host) system;
+            inherit (host) system aspects;
             isDarwin = false;
             extraModules = host.modules;
           }
@@ -23,7 +23,7 @@ in {
       lib.mapAttrs (
         _name: host:
           mkHost {inherit config inputs;} {
-            inherit (host) system;
+            inherit (host) system aspects;
             isDarwin = true;
             extraModules = host.modules;
           }
