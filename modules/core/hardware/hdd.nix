@@ -44,6 +44,12 @@ _: {
       config = lib.mkIf config.aspects.core.hdd.enable {
         environment.systemPackages = [pkgs.btrbk];
 
+        # Prevent udisks/udiskie/file managers from showing or automounting the backup HDD.
+        # This keeps the disk completely isolated for the systemd backup service.
+        services.udev.extraRules = ''
+          SUBSYSTEM=="block", ENV{ID_FS_UUID}=="${hddUuid}", ENV{UDISKS_IGNORE}="1"
+        '';
+
         # btrbk config: weekly snapshots of /home and /persist sent to the HDD.
         # snapshot_preserve keeps a small local buffer; target_preserve owns long-term history.
         # Adjust target_preserve to taste — the HDD is 1.8T so space is not a concern.
