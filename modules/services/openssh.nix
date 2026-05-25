@@ -1,13 +1,7 @@
 _: {
   # NixOS SSH Server settings
-  flake.modules.nixos.openssh = {
-    config,
-    lib,
-    ...
-  }: {
-    options.aspects.services.openssh.enable = lib.mkEnableOption "Secure Shell (SSH) daemon";
-
-    config = lib.mkIf config.aspects.services.openssh.enable {
+  flake.modules.nixos.openssh = _: {
+    config = {
       services.openssh = {
         enable = true;
         settings = {
@@ -20,14 +14,8 @@ _: {
   };
 
   # Darwin SSH Server settings
-  flake.modules.darwin.openssh = {
-    config,
-    lib,
-    ...
-  }: {
-    options.aspects.services.openssh.enable = lib.mkEnableOption "Secure Shell (SSH) daemon";
-
-    config = lib.mkIf config.aspects.services.openssh.enable {
+  flake.modules.darwin.openssh = _: {
+    config = {
       # macOS manages SSH via standard built-in Remote Login.
       # This stub ensures full cross-platform compile compatibility.
     };

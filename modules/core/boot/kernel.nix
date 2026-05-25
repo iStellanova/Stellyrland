@@ -1,14 +1,11 @@
 _: {
   # NixOS Custom Kernel Settings
   flake.modules.nixos.kernel = {
-    config,
     lib,
     pkgs,
     ...
   }: {
-    options.aspects.core.kernel.enable = lib.mkEnableOption "Custom stripped kernel";
-
-    config = lib.mkIf config.aspects.core.kernel.enable {
+    config = {
       # ─────────────────────────────────────────────────────────────────────────
       # Kernel Package: CachyOS BORE + LTO (Branded)
       # ─────────────────────────────────────────────────────────────────────────

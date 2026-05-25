@@ -1,14 +1,7 @@
 _: {
   # NixOS initrd settings
-  flake.modules.nixos.initrd = {
-    config,
-    lib,
-    pkgs,
-    ...
-  }: {
-    options.aspects.core.initrd.enable = lib.mkEnableOption "Initrd configuration (LUKS, rollback, systemd initrd)";
-
-    config = lib.mkIf config.aspects.core.initrd.enable {
+  flake.modules.nixos.initrd = {pkgs, ...}: {
+    config = {
       boot.tmp.useTmpfs = true;
       boot.tmp.tmpfsSize = "50%";
 

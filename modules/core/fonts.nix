@@ -1,13 +1,7 @@
-{lib, ...}: {
+_: {
   # System-level Linux Font settings
-  flake.modules.nixos.fonts = {
-    config,
-    pkgs,
-    ...
-  }: {
-    options.aspects.core.fonts.enable = lib.mkEnableOption "Core fonts";
-
-    config = lib.mkIf config.aspects.core.fonts.enable {
+  flake.modules.nixos.fonts = {pkgs, ...}: {
+    config = {
       fonts.packages = with pkgs; [
         nerd-fonts.jetbrains-mono
         nerd-fonts.noto
@@ -19,14 +13,8 @@
   };
 
   # System-level macOS (Darwin) Font settings
-  flake.modules.darwin.fonts = {
-    config,
-    pkgs,
-    ...
-  }: {
-    options.aspects.core.fonts.enable = lib.mkEnableOption "Core fonts";
-
-    config = lib.mkIf config.aspects.core.fonts.enable {
+  flake.modules.darwin.fonts = {pkgs, ...}: {
+    config = {
       fonts.packages = with pkgs; [
         nerd-fonts.jetbrains-mono
         nerd-fonts.noto

@@ -4,13 +4,12 @@
     config,
     lib,
     pkgs,
+    enabledAspects,
     ...
   }: {
     imports = [inputs.disko.nixosModules.disko];
 
-    options.aspects.core.storage.enable = lib.mkEnableOption "Storage utilities (Btrfs, Snapper)";
-
-    config = lib.mkIf config.aspects.core.storage.enable {
+    config = {
       environment.systemPackages = with pkgs; [
         btrfs-assistant # GUI manager for Btrfs and Snapper
         btrfs-progs # Userspace utilities for the btrfs filesystem
@@ -62,7 +61,7 @@
       services.btrfs.autoScrub = {
         enable = true;
         interval = "monthly";
-        fileSystems = ["/"] ++ lib.optional config.aspects.core.extra-disk.enable "${config.identity.homeDir}/ExtraDisk" ++ ["/persist"];
+        fileSystems = ["/"] ++ lib.optional (builtins.elem "extra-disk" enabledAspects) "${config.identity.homeDir}/ExtraDisk" ++ ["/persist"];
       };
     };
   };

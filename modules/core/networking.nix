@@ -1,13 +1,7 @@
-{lib, ...}: {
+_: {
   # NixOS system-level networking configurations
-  flake.modules.nixos.networking = {
-    config,
-    pkgs,
-    ...
-  }: {
-    options.aspects.core.networking.enable = lib.mkEnableOption "Core networking services (Tailscale)";
-
-    config = lib.mkIf config.aspects.core.networking.enable {
+  flake.modules.nixos.networking = {pkgs, ...}: {
+    config = {
       services.tailscale = {
         enable = true;
         interfaceName = "userspace-networking";
@@ -45,14 +39,8 @@
   };
 
   # Darwin system-level networking configurations
-  flake.modules.darwin.networking = {
-    config,
-    pkgs,
-    ...
-  }: {
-    options.aspects.core.networking.enable = lib.mkEnableOption "Core networking services (Tailscale)";
-
-    config = lib.mkIf config.aspects.core.networking.enable {
+  flake.modules.darwin.networking = {pkgs, ...}: {
+    config = {
       services.tailscale = {
         enable = true;
       };

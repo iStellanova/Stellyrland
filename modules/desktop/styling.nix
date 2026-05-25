@@ -1,30 +1,19 @@
 {inputs, ...}: {
   # NixOS Desktop Styling Settings
-  flake.modules.nixos.styling = {
-    config,
-    lib,
-    ...
-  }: {
+  flake.modules.nixos.styling = {...}: {
     imports = [inputs.catppuccin.nixosModules.catppuccin];
 
-    options.aspects.desktop.styling.enable = lib.mkEnableOption "Desktop styling (GTK, QT, Cursors)";
-
-    config = lib.mkIf config.aspects.desktop.styling.enable {
+    config = {
       catppuccin.flavor = "macchiato";
       catppuccin.accent = "flamingo";
     };
   };
 
   # Home Manager Desktop Styling Settings
-  flake.modules.homeManager.styling = {
-    osConfig,
-    pkgs,
-    lib,
-    ...
-  }: {
+  flake.modules.homeManager.styling = {pkgs, ...}: {
     imports = [inputs.catppuccin.homeModules.catppuccin];
 
-    config = lib.mkIf (osConfig ? aspects.desktop.styling && osConfig.aspects.desktop.styling.enable) {
+    config = {
       # Catppuccin home-manager configuration.
       catppuccin.flavor = "macchiato";
       catppuccin.accent = "flamingo";

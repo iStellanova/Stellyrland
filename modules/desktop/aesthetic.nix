@@ -1,14 +1,7 @@
 _: {
   # NixOS Aesthetic Settings
-  flake.modules.nixos.aesthetic = {
-    config,
-    lib,
-    pkgs,
-    ...
-  }: {
-    options.aspects.programs.aesthetic.enable = lib.mkEnableOption "Aesthetic and toy CLI utilities";
-
-    config = lib.mkIf config.aspects.programs.aesthetic.enable {
+  flake.modules.nixos.aesthetic = {pkgs, ...}: {
+    config = {
       environment.systemPackages = with pkgs; [
         peaclock # A colorful clock, timer, and stopwatch for the terminal
 
@@ -30,15 +23,8 @@ _: {
   };
 
   # Darwin Aesthetic Settings
-  flake.modules.darwin.aesthetic = {
-    config,
-    lib,
-    pkgs,
-    ...
-  }: {
-    options.aspects.programs.aesthetic.enable = lib.mkEnableOption "Aesthetic and toy CLI utilities";
-
-    config = lib.mkIf config.aspects.programs.aesthetic.enable {
+  flake.modules.darwin.aesthetic = {pkgs, ...}: {
+    config = {
       environment.systemPackages = with pkgs; [
         peaclock # A colorful clock, timer, and stopwatch for the terminal
 

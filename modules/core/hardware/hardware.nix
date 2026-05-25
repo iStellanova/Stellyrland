@@ -1,14 +1,7 @@
 _: {
   # NixOS Core Hardware Settings
-  flake.modules.nixos.hardware = {
-    config,
-    lib,
-    pkgs,
-    ...
-  }: {
-    options.aspects.core.hardware.enable = lib.mkEnableOption "Core hardware settings";
-
-    config = lib.mkIf config.aspects.core.hardware.enable {
+  flake.modules.nixos.hardware = {pkgs, ...}: {
+    config = {
       environment.systemPackages = [pkgs.usbutils];
 
       # Firmware updates for AMDGPU and other hardware.

@@ -1,18 +1,14 @@
 _: {
   # NixOS Office Suite Settings
-  flake.modules.nixos.office-suite = {lib, ...}: {
-    options.aspects.programs.office-suite.enable = lib.mkEnableOption "Office suite";
+  flake.modules.nixos.office-suite = {pkgs, ...}: {
+    config = {
+      environment.systemPackages = [pkgs.freeoffice];
+    };
   };
 
   # Darwin Office Suite Settings
-  flake.modules.darwin.office-suite = {
-    config,
-    lib,
-    ...
-  }: {
-    options.aspects.programs.office-suite.enable = lib.mkEnableOption "Office suite";
-
-    config = lib.mkIf config.aspects.programs.office-suite.enable {
+  flake.modules.darwin.office-suite = _: {
+    config = {
       homebrew.masApps = {
         "Keynote" = 361285480;
         "Microsoft Excel" = 462058435;
@@ -25,17 +21,4 @@ _: {
       };
     };
   };
-
-  # Home Manager Office Suite Settings
-  flake.modules.homeManager.office-suite = {
-    osConfig,
-    pkgs,
-    lib,
-    ...
-  }: let
-    isDarwin = osConfig ? system.defaults;
-  in
-    lib.mkIf (osConfig ? aspects.programs.office-suite && osConfig.aspects.programs.office-suite.enable && !isDarwin) {
-      home.packages = [pkgs.freeoffice];
-    };
 }

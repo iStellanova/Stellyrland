@@ -1,6 +1,48 @@
 {inputs, ...}: {
   hosts.darwin.stellyrtop = {
     system = "aarch64-darwin";
+
+    aspects = [
+      "core"
+      "homebrew"
+      "users"
+      "fonts"
+      "nix-settings"
+      "networking"
+      "aerospace"
+      "aesthetic"
+      "browser"
+      "background-sounds"
+      "maintenance"
+      "finance"
+      "school"
+      "writing"
+      "cloud-storage"
+      "virtual-machines"
+      "media"
+      "media-editing"
+      "btop"
+      "cava"
+      "cli"
+      "fastfetch"
+      "gaming"
+      "git"
+      "kitty"
+      "nix-index"
+      "ns"
+      "yazi"
+      "zsh"
+      "nixvim"
+      "ai-tools"
+      "bitwarden"
+      "ide-suite"
+      "office-suite"
+      "vesktop"
+      "utils"
+      "zed"
+      "discord-music-rpc"
+    ];
+
     modules = [
       # Identity configuration
       {
@@ -26,82 +68,34 @@
           localHostName = "stellyrtop";
         };
 
-        aspects = {
-          darwin = {
-            system.enable = true;
-            system.dockApps = [
-              "/System/Applications/App Store.app"
-              "/System/Applications/Mail.app"
-              "/System/Applications/Messages.app"
-              "/System/Applications/Passwords.app"
-              "/System/Applications/Calendar.app"
-              "/System/Applications/Stickies.app"
-              "/Applications/DaVinci Resolve/DaVinci Resolve.app"
-              "/Applications/Quicken.app"
-              "/Applications/Microsoft Word.app"
-              "/Applications/Microsoft PowerPoint.app"
-              "/Applications/Microsoft Excel.app"
-              "/Applications/Microsoft OneNote.app"
-              "/Applications/Microsoft Outlook.app"
-              "/Applications/School Assistant.app"
-              "/System/Applications/Books.app"
-              "/Applications/Pages Creator Studio.app"
-              "/Applications/Keynote Creator Studio.app"
-              "/Applications/Numbers Creator Studio.app"
-              "/System/Applications/Music.app"
-              "/Applications/Antigravity.app"
-              "/Applications/Beat.app"
-              "/Applications/Zed.app"
-              "/Applications/Claude.app"
-              "/Users/stellanova/Applications/Home Manager Apps/kitty.app"
-              "/Applications/Zen Browser.app"
-            ];
-            homebrew.enable = true;
-          };
-          core = {
-            enable = true;
-            users.enable = true;
-            fonts.enable = true;
-            nix-settings.enable = true;
-            networking.enable = true;
-          };
-          programs = {
-            aerospace.enable = true;
-            aesthetic.enable = true;
-            browser.enable = true;
-            background-sounds.enable = true;
-            maintenance.enable = true;
-            finance.enable = true;
-            school.enable = true;
-            writing.enable = true;
-            cloud-storage.enable = true;
-            virtual-machines.enable = true;
-            media.enable = true;
-            media-editing.enable = true;
-            btop.enable = true;
-            cava.enable = true;
-            cli.enable = true;
-            fastfetch.enable = true;
-            gaming.enable = true;
-            git.enable = true;
-            kitty.enable = true;
-            nix-index.enable = true;
-            ns.enable = true;
-            yazi.enable = true;
-            zsh.enable = true;
-            nixvim.enable = true;
-            ai-tools.enable = true;
-            bitwarden.enable = true;
-            ide-suite.enable = true;
-            office-suite.enable = true;
-            vesktop.enable = true;
-            utils.enable = true;
-            zed.enable = true;
-          };
-          services = {
-            discord-music-rpc.enable = true;
-          };
-        };
+        # Directly configure custom overrides using option namespaces
+        darwin.system.dockApps = [
+          "/System/Applications/App Store.app"
+          "/System/Applications/Mail.app"
+          "/System/Applications/Messages.app"
+          "/System/Applications/Passwords.app"
+          "/System/Applications/Calendar.app"
+          "/System/Applications/Stickies.app"
+          "/Applications/DaVinci Resolve/DaVinci Resolve.app"
+          "/Applications/Quicken.app"
+          "/Applications/Microsoft Word.app"
+          "/Applications/Microsoft PowerPoint.app"
+          "/Applications/Microsoft Excel.app"
+          "/Applications/Microsoft OneNote.app"
+          "/Applications/Microsoft Outlook.app"
+          "/Applications/School Assistant.app"
+          "/System/Applications/Books.app"
+          "/Applications/Pages Creator Studio.app"
+          "/Applications/Keynote Creator Studio.app"
+          "/Applications/Numbers Creator Studio.app"
+          "/System/Applications/Music.app"
+          "/Applications/Antigravity.app"
+          "/Applications/Beat.app"
+          "/Applications/Zed.app"
+          "/Applications/Claude.app"
+          "/Users/stellanova/Applications/Home Manager Apps/kitty.app"
+          "/Applications/Zen Browser.app"
+        ];
       }
     ];
   };
