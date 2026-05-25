@@ -117,7 +117,8 @@ _: {
                   hl.on("hyprland.start", function()
                     hl.exec_cmd("${hyprlandPkg}/bin/hyprctl setcursor Bibata-Modern-Ice 16")
                     hl.exec_cmd([[${wallpaperCmd}]])
-                    hl.exec_cmd([[sh -c 'sleep 0.5; ${pkgs.regreet}/bin/regreet; ${hyprlandPkg}/bin/hyprctl dispatch exit']])
+                    hl.exec_cmd("${pkgs.swayidle}/bin/swayidle -w timeout 86400 'hyprctl dispatch dpms off' resume 'hyprctl dispatch dpms on'")
+                    hl.exec_cmd([[sh -c '${pkgs.regreet}/bin/regreet; sleep 0.4; ${hyprlandPkg}/bin/hyprctl dispatch exit']])
                   end)
                 '';
                 greetdHyprLauncher = pkgs.writeShellScript "greetd-hyprland-launcher" ''
