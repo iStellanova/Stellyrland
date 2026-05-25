@@ -126,7 +126,15 @@
                 scale = 1;
                 bitdepth = 10;
                 cm = "hdr";
+                vrr = 1;
+                supports_wide_color = 1;
                 sdr_min_luminance = 0.0;
+                sdr_max_luminance = 203;
+                sdrbrightness = 0.75;
+                sdrsaturation = 1.2;
+                min_luminance = 0.0005;
+                max_luminance = 1000;
+                max_avg_luminance = 250;
               }
               {
                 output = "DP-3";
@@ -135,8 +143,12 @@
                 scale = 1;
                 transform = 1;
                 bitdepth = 10;
-                cm = "hdr";
-                sdr_min_luminance = 0.0;
+                cm = "srgb";
+                vrr = 1;
+                sdr_min_luminance = 0.2;
+                min_luminance = 0.25;
+                max_luminance = 250;
+                max_avg_luminance = 250;
               }
               {
                 output = "";
