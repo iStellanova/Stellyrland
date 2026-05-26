@@ -1,5 +1,4 @@
 _: {
-  # NixOS Cloud Storage Settings
   # Darwin Cloud Storage Settings
   flake.modules.darwin.cloud-storage = _: {
     homebrew.casks = [

@@ -5,37 +5,24 @@
 }: {
   # NixOS Core and Base Services configuration
   flake.modules.nixos.core = _: {
-    config = lib.mkMerge [
-      {
-        time.timeZone = "America/Indianapolis";
-        i18n.defaultLocale = "en_US.UTF-8";
+    config = {
+      time.timeZone = "America/Indianapolis";
+      i18n.defaultLocale = "en_US.UTF-8";
 
-        security.sudo-rs = {
-          enable = true;
-          extraConfig = "Defaults pwfeedback";
-        };
+      security.sudo-rs = {
+        enable = true;
+        extraConfig = "Defaults pwfeedback";
+      };
 
-        system.stateVersion = "25.11";
-        programs.ssh.startAgent = true;
-        services.gnome.gcr-ssh-agent.enable = false;
-        systemd.oomd.enable = true;
-        systemd.services."systemd-udevd".serviceConfig = {
-          TimeoutStartSec = "10s";
-          TimeoutStopSec = "10s";
-        };
-      }
-
-      {
-        services.udisks2.enable = true;
-        services.gvfs.enable = true;
-        services.libinput.enable = true;
-        services.gnome.gnome-keyring.enable = true;
-        security.polkit.enable = true;
-        networking.networkmanager.enable = true;
-        programs.dconf.enable = true;
-        services.dbus.implementation = "broker";
-      }
-    ];
+      system.stateVersion = "25.11";
+      programs.ssh.startAgent = true;
+      services.gnome.gcr-ssh-agent.enable = false;
+      systemd.oomd.enable = true;
+      systemd.services."systemd-udevd".serviceConfig = {
+        TimeoutStartSec = "10s";
+        TimeoutStopSec = "10s";
+      };
+    };
   };
 
   # Darwin Core and System Defaults configuration
@@ -61,59 +48,55 @@
       };
     };
 
-    config = lib.mkMerge [
-      {
-        time.timeZone = "America/Indiana/Indianapolis";
-      }
+    config = {
+      time.timeZone = "America/Indiana/Indianapolis";
 
-      {
-        security.pam.services.sudo_local.touchIdAuth = true;
-        system.primaryUser = config.identity.username;
+      security.pam.services.sudo_local.touchIdAuth = true;
+      system.primaryUser = config.identity.username;
 
-        system.defaults = {
-          dock.autohide = false;
-          dock.mru-spaces = false;
-          dock.orientation = "bottom";
-          dock.show-recents = false;
-          dock.static-only = false;
-          dock.tilesize = 117;
+      system.defaults = {
+        dock.autohide = false;
+        dock.mru-spaces = false;
+        dock.orientation = "bottom";
+        dock.show-recents = false;
+        dock.static-only = false;
+        dock.tilesize = 117;
 
-          dock.persistent-apps = config.darwin.system.dockApps;
+        dock.persistent-apps = config.darwin.system.dockApps;
 
-          finder.AppleShowAllExtensions = true;
-          finder.FXPreferredViewStyle = "Nlsv";
-          finder.AppleShowAllFiles = true;
-          finder.ShowPathbar = true;
-          finder.ShowStatusBar = false;
-          finder._FXShowPosixPathInTitle = true;
+        finder.AppleShowAllExtensions = true;
+        finder.FXPreferredViewStyle = "Nlsv";
+        finder.AppleShowAllFiles = true;
+        finder.ShowPathbar = true;
+        finder.ShowStatusBar = false;
+        finder._FXShowPosixPathInTitle = true;
 
-          loginwindow.GuestEnabled = false;
-          loginwindow.SHOWFULLNAME = true;
+        loginwindow.GuestEnabled = false;
+        loginwindow.SHOWFULLNAME = true;
 
-          NSGlobalDomain.AppleInterfaceStyle = "Dark";
-          NSGlobalDomain.AppleKeyboardUIMode = 3;
-          NSGlobalDomain.AppleMeasurementUnits = "Inches";
-          NSGlobalDomain.AppleMetricUnits = 0;
-          NSGlobalDomain.AppleShowAllExtensions = true;
-          NSGlobalDomain.AppleTemperatureUnit = "Fahrenheit";
+        NSGlobalDomain.AppleInterfaceStyle = "Dark";
+        NSGlobalDomain.AppleKeyboardUIMode = 3;
+        NSGlobalDomain.AppleMeasurementUnits = "Inches";
+        NSGlobalDomain.AppleMetricUnits = 0;
+        NSGlobalDomain.AppleShowAllExtensions = true;
+        NSGlobalDomain.AppleTemperatureUnit = "Fahrenheit";
 
-          NSGlobalDomain.InitialKeyRepeat = 25;
-          NSGlobalDomain.KeyRepeat = 2;
-          NSGlobalDomain."com.apple.swipescrolldirection" = true;
-          NSGlobalDomain."com.apple.mouse.tapBehavior" = 1;
+        NSGlobalDomain.InitialKeyRepeat = 25;
+        NSGlobalDomain.KeyRepeat = 2;
+        NSGlobalDomain."com.apple.swipescrolldirection" = true;
+        NSGlobalDomain."com.apple.mouse.tapBehavior" = 1;
 
-          trackpad.Clicking = true;
-          trackpad.TrackpadThreeFingerDrag = true;
+        trackpad.Clicking = true;
+        trackpad.TrackpadThreeFingerDrag = true;
 
-          menuExtraClock.ShowAMPM = true;
-          menuExtraClock.ShowDate = 1;
-          menuExtraClock.ShowDayOfWeek = true;
-        };
+        menuExtraClock.ShowAMPM = true;
+        menuExtraClock.ShowDate = 1;
+        menuExtraClock.ShowDayOfWeek = true;
+      };
 
-        system.keyboard.enableKeyMapping = true;
-        system.keyboard.remapCapsLockToControl = true;
-      }
-    ];
+      system.keyboard.enableKeyMapping = true;
+      system.keyboard.remapCapsLockToControl = true;
+    };
   };
 
   # Home Manager Core Settings

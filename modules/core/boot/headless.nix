@@ -7,13 +7,10 @@ _: {
   }: let
     cfg = config.core.headless;
   in {
-    options.core.headless = {
-      enable = lib.mkEnableOption "Headless/Remote-only specialisation";
-      disabledPorts = lib.mkOption {
-        type = lib.types.listOf lib.types.str;
-        default = ["DP-2" "DP-3"];
-        description = "Display ports to disable in the headless specialisation.";
-      };
+    options.core.headless.disabledPorts = lib.mkOption {
+      type = lib.types.listOf lib.types.str;
+      default = ["DP-2" "DP-3"];
+      description = "Display ports to disable in the headless specialisation.";
     };
 
     config = {

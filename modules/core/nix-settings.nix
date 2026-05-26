@@ -9,13 +9,10 @@
     pkgs,
     ...
   }: {
-    options.core.nix-settings = {
-      enable = lib.mkEnableOption "Core nix settings";
-      cores = lib.mkOption {
-        type = lib.types.ints.unsigned;
-        default = 0;
-        description = "Cores available to the Nix daemon per build (0 = all cores).";
-      };
+    options.core.nix-settings.cores = lib.mkOption {
+      type = lib.types.ints.unsigned;
+      default = 0;
+      description = "Cores available to the Nix daemon per build (0 = all cores).";
     };
 
     config = {
@@ -177,8 +174,6 @@
         if [[ ! -d ~/.local/state/nix/profiles/scratch ]]; then echo "Scratch profile doesn't exist"; return 1; fi
         nix profile remove --profile ~/.local/state/nix/profiles/scratch $1
       }
-
-      export PATH="$HOME/.local/state/nix/profiles/scratch/bin:$PATH"
     '';
 
     programs.nh = {

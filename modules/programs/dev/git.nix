@@ -12,7 +12,6 @@ _: {
           IdentityFile = "~/.ssh/stellacode";
         };
         "github.com" = {
-          HostName = "github.com";
           User = "git";
           IdentityFile = "~/.ssh/stellacode";
           AddKeysToAgent = "yes";

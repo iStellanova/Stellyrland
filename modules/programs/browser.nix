@@ -1,26 +1,21 @@
-{inputs, ...}: {
+{inputs, ...}: let
+  browserOptions = lib: {
+    enable = lib.mkEnableOption "Zen Browser";
+    profileId = lib.mkOption {
+      type = lib.types.str;
+      default = "0ubhpx7e";
+      description = "Zen profile directory ID (the hash before .Default Profile)";
+    };
+  };
+in {
   # NixOS Zen Browser options declaration
   flake.modules.nixos.browser = {lib, ...}: {
-    options.programs.browser = {
-      enable = lib.mkEnableOption "Zen Browser";
-      profileId = lib.mkOption {
-        type = lib.types.str;
-        default = "0ubhpx7e";
-        description = "Zen profile directory ID (the hash before .Default Profile)";
-      };
-    };
+    options.programs.browser = browserOptions lib;
   };
 
   # Darwin Zen Browser Settings
   flake.modules.darwin.browser = {lib, ...}: {
-    options.programs.browser = {
-      enable = lib.mkEnableOption "Zen Browser";
-      profileId = lib.mkOption {
-        type = lib.types.str;
-        default = "0ubhpx7e";
-        description = "Zen profile directory ID (the hash before .Default Profile)";
-      };
-    };
+    options.programs.browser = browserOptions lib;
 
     config = {
       homebrew.casks = ["zen"];
