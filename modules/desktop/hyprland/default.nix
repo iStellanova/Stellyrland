@@ -111,8 +111,8 @@
     config = {
       _module.args.inputs = inputs;
       programs.zsh.shellAliases = {
-        screenoff = "HYPRLAND_INSTANCE_SIGNATURE=$(basename /run/user/$(id -u)/hypr/*/) hyprctl dispatch dpms off";
-        screenon = "HYPRLAND_INSTANCE_SIGNATURE=$(basename /run/user/$(id -u)/hypr/*/) hyprctl dispatch dpms on";
+        screenoff = "HYPRLAND_INSTANCE_SIGNATURE=$(basename /run/user/$(id -u)/hypr/*/) hyprctl eval \"hl.dispatch(hl.dsp.dpms({ action = 'off' }))\"";
+        screenon = "HYPRLAND_INSTANCE_SIGNATURE=$(basename /run/user/$(id -u)/hypr/*/) hyprctl eval \"hl.dispatch(hl.dsp.dpms({ action = 'on' }))\"";
       };
 
       wayland.windowManager.hyprland = {
