@@ -84,10 +84,10 @@
         NSGlobalDomain.InitialKeyRepeat = 25;
         NSGlobalDomain.KeyRepeat = 2;
         NSGlobalDomain."com.apple.swipescrolldirection" = true;
-        NSGlobalDomain."com.apple.mouse.tapBehavior" = 1;
 
-        trackpad.Clicking = true;
-        trackpad.TrackpadThreeFingerDrag = true;
+        trackpad.Clicking = false;
+        trackpad.TrackpadThreeFingerDrag = false;
+        trackpad.TrackpadThreeFingerHorizSwipeGesture = 2;
 
         menuExtraClock.ShowAMPM = true;
         menuExtraClock.ShowDate = 1;
@@ -96,6 +96,7 @@
 
       system.keyboard.enableKeyMapping = true;
       system.keyboard.remapCapsLockToControl = true;
+
     };
   };
 
