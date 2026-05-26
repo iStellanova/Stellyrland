@@ -87,7 +87,7 @@
 
         trackpad.Clicking = false;
         trackpad.TrackpadThreeFingerDrag = false;
-        trackpad.TrackpadThreeFingerHorizSwipeGesture = 2;
+        trackpad.TrackpadThreeFingerHorizSwipeGesture = 0;
 
         menuExtraClock.ShowAMPM = true;
         menuExtraClock.ShowDate = 1;
@@ -97,6 +97,11 @@
       system.keyboard.enableKeyMapping = true;
       system.keyboard.remapCapsLockToControl = true;
 
+      system.activationScripts.postActivation.text = lib.mkAfter ''
+        sudo -u ${config.identity.username} defaults write com.apple.AppleMultitouchTrackpad TrackpadFourFingerHorizSwipeGesture -int 2
+        sudo -u ${config.identity.username} defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad TrackpadFourFingerHorizSwipeGesture -int 2
+        /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
+      '';
     };
   };
 
