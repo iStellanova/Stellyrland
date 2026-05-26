@@ -91,7 +91,6 @@
           "/System/Applications/Music.app"
           "/Applications/Antigravity.app"
           "/Applications/Beat.app"
-          "/Applications/Zed.app"
           "/Applications/Claude.app"
           "/Users/stellanova/Applications/Home Manager Apps/kitty.app"
           "/Applications/Zen Browser.app"
