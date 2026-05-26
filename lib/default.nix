@@ -2,23 +2,26 @@
   # scan - The core engine of the "Dendritic" configuration pattern.
   # This function recursively searches a directory for .nix files and default.nix folders,
   # allowing for zero-boilerplate module discovery and automatic inclusion in the system flake.
-  scan = path: let
-    items = builtins.readDir path;
-    res = lib.flatten (lib.mapAttrsToList (
-        name: type: let
-          fullPath = path + "/${name}";
-        in
-          if lib.hasPrefix "_" name || lib.hasPrefix "." name
-          then []
-          else if type == "directory"
-          then (import ./default.nix {inherit lib;}).scan fullPath
-          else if lib.hasSuffix ".nix" name
-          then [fullPath]
-          else []
-      )
-      items);
+  scan = let
+    scan' = path: let
+      items = builtins.readDir path;
+      res = lib.flatten (lib.mapAttrsToList (
+          name: type: let
+            fullPath = path + "/${name}";
+          in
+            if lib.hasPrefix "_" name || lib.hasPrefix "." name
+            then []
+            else if type == "directory"
+            then scan' fullPath
+            else if lib.hasSuffix ".nix" name
+            then [fullPath]
+            else []
+        )
+        items);
+    in
+      res;
   in
-    res;
+    scan';
 
   # mkHost - Builds a NixOS or Darwin system configuration from the dendritic module store.
   # Accepts the flake-parts top-level `config` and `inputs` so it can read
@@ -48,20 +51,22 @@
       then config.flake.modules.darwin
       else config.flake.modules.nixos;
 
-    activeOSModules =
+    activeOSModules = lib.unique (
       (
         if aspects == []
         then lib.attrValues osRegistry
         else map (name: osRegistry.${name}) (lib.filter (name: osRegistry ? ${name}) aspects)
       )
-      ++ lib.optional (osRegistry ? meta) osRegistry.meta;
+      ++ lib.optional (osRegistry ? meta) osRegistry.meta
+    );
 
     # Dynamically resolve Home Manager modules based on enabled aspects.
     hmRegistry = config.flake.modules.homeManager;
-    activeHmModules =
+    activeHmModules = lib.unique (
       if aspects == []
       then lib.attrValues hmRegistry
-      else map (name: hmRegistry.${name}) (lib.filter (name: hmRegistry ? ${name}) aspects);
+      else map (name: hmRegistry.${name}) (lib.filter (name: hmRegistry ? ${name}) aspects)
+    );
   in
     coreBuilder {
       inherit system;
