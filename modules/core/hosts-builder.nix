@@ -1,11 +1,9 @@
 {
   config,
-  lib,
   inputs,
   ...
 }: let
-  # Import the standard stellyrland host builder cleanly once.
-  inherit ((import ../../lib/default.nix {inherit lib;})) mkHost;
+  inherit (config.flake.lib) mkHost;
 in {
   config.flake = {
     nixosConfigurations =
