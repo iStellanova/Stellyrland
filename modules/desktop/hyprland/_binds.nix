@@ -48,8 +48,6 @@
 
     # --- Special Workspaces (Scratchpads) ---
     (bind "${mainMod} + SHIFT + S" "hl.dsp.window.move({ workspace = \"special:magic\" })")
-    (bind "${mainMod} + F" "hl.dsp.exec_cmd(\"hyprctl dispatch movetoworkspacesilent special:minimized\")")
-    (bind "${mainMod} + R" "hl.dsp.workspace.toggle_special(\"minimized\")")
 
     # --- Noctalia Integration ---
     (bind "${mainMod} + ALT + R" "hl.dsp.exec_cmd(\"systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP DISPLAY && systemctl --user restart noctalia\")")
