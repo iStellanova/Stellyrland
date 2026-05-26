@@ -1,6 +1,7 @@
 {
   config,
   inputs,
+  lib,
   ...
 }: let
   inherit (config.flake.lib) mkHost;

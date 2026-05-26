@@ -8,7 +8,6 @@
         zip
         croc
         kitty.terminfo
-        efibootmgr
       ];
     };
   };

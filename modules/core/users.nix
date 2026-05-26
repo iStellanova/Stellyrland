@@ -13,7 +13,7 @@ _: {
       users.users.${config.identity.username} = {
         home = config.identity.homeDir;
         shell = pkgs.zsh;
-        hashedPassword = lib.mkIf (!builtins.elem "secrets" enabledAspects) (config.identity.hashedPassword or null);
+        hashedPassword = lib.mkIf (!builtins.elem "secrets" enabledAspects) config.identity.hashedPassword;
         hashedPasswordFile = lib.mkIf (builtins.elem "secrets" enabledAspects) config.sops.secrets.user-password.path;
         isNormalUser = true;
         extraGroups = ["wheel" "storage" "disk" "video" "render" "networkmanager"];
