@@ -10,7 +10,6 @@ _: {
       # Accounts service is required for regreet to list users.
       services.accounts-daemon.enable = true;
 
-      # greetd (login manager) for Hyprland.
       services.greetd = {
         enable = true;
         settings = {
@@ -139,7 +138,6 @@ _: {
         HYPRLAND_STARTED_WITH_HYPRLAND_START = "1";
       };
 
-      # regreet (login manager) for Hyprland.
       programs.regreet = {
         enable = true;
         theme = {
@@ -149,18 +147,15 @@ _: {
             variant = "macchiato";
           };
         };
-        # Bibata cursor theme for regreet.
         cursorTheme = {
           package = pkgs.bibata-cursors;
           name = "Bibata-Modern-Ice";
         };
-        # JetBrains Mono font for regreet.
         font = {
           package = pkgs.nerd-fonts.jetbrains-mono;
           name = "JetBrainsMono Nerd Font";
           size = 12;
         };
-        # GTK theme settings for regreet.
         settings = {
           appearance = {
             greeting_msg = "Welcome back, Stellanova";
@@ -170,7 +165,6 @@ _: {
             application_prefer_dark_theme = true;
           };
         };
-        # Custom CSS for regreet window.
         extraCss = ''
           window, .main-window {
             background-color: transparent;

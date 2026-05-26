@@ -1,4 +1,5 @@
 _: {
+  # NixOS Nautilus Settings
   flake.modules.nixos.nautilus = {pkgs, ...}: {
     config = {
       environment.systemPackages = with pkgs; [

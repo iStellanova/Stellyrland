@@ -8,10 +8,7 @@
   }: {
     imports = [inputs.lanzaboote.nixosModules.lanzaboote];
 
-    options.core.boot = {
-      enable = lib.mkEnableOption "Bootloader configuration";
-      secureBoot = lib.mkEnableOption "Lanzaboote Secure Boot (disable for initial install)";
-    };
+    options.core.boot.secureBoot = lib.mkEnableOption "Lanzaboote Secure Boot (disable for initial install)";
 
     config = {
       environment.systemPackages = [pkgs.efibootmgr pkgs.sbctl];

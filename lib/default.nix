@@ -3,23 +3,23 @@
   # This function recursively searches a directory for .nix files and default.nix folders,
   # allowing for zero-boilerplate module discovery and automatic inclusion in the system flake.
   scan = let
-    scan' = path: let
-      items = builtins.readDir path;
-      res = lib.flatten (lib.mapAttrsToList (
-          name: type: let
-            fullPath = path + "/${name}";
-          in
-            if lib.hasPrefix "_" name || lib.hasPrefix "." name
-            then []
-            else if type == "directory"
-            then scan' fullPath
-            else if lib.hasSuffix ".nix" name
-            then [fullPath]
-            else []
-        )
-        items);
-    in
-      res;
+    scan' = path:
+      lib.concatMap (
+        {
+          name,
+          value,
+        }: let
+          fullPath = path + "/${name}";
+        in
+          if lib.hasPrefix "_" name || lib.hasPrefix "." name
+          then []
+          else if value == "directory"
+          then scan' fullPath
+          else if lib.hasSuffix ".nix" name
+          then [fullPath]
+          else []
+      )
+      (lib.attrsToList (builtins.readDir path));
   in
     scan';
 
@@ -51,22 +51,20 @@
       then config.flake.modules.darwin
       else config.flake.modules.nixos;
 
-    activeOSModules = lib.unique (
-      (
-        if aspects == []
-        then lib.attrValues osRegistry
-        else map (name: osRegistry.${name}) (lib.filter (name: osRegistry ? ${name}) aspects)
-      )
-      ++ lib.optional (osRegistry ? meta) osRegistry.meta
-    );
+    activeOSModules =
+      if aspects == []
+      then lib.attrValues osRegistry
+      else
+        map (name: osRegistry.${name}) (lib.filter (name: osRegistry ? ${name}) aspects)
+        # meta is always injected; append only if not already resolved via aspects.
+        ++ lib.optional (osRegistry ? meta && !(builtins.elem "meta" aspects)) osRegistry.meta;
 
     # Dynamically resolve Home Manager modules based on enabled aspects.
     hmRegistry = config.flake.modules.homeManager;
-    activeHmModules = lib.unique (
+    activeHmModules =
       if aspects == []
       then lib.attrValues hmRegistry
-      else map (name: hmRegistry.${name}) (lib.filter (name: hmRegistry ? ${name}) aspects)
-    );
+      else map (name: hmRegistry.${name}) (lib.filter (name: hmRegistry ? ${name}) aspects);
   in
     coreBuilder {
       inherit system;

@@ -1,19 +1,16 @@
-_: {
-  # NixOS Zsh Settings
-  flake.modules.nixos.zsh = {pkgs, ...}: {
+_: let
+  zshOsPkg = {pkgs, ...}: {
     config = {
       programs.zsh.enable = true;
       environment.systemPackages = [pkgs.zsh-completions];
     };
   };
+in {
+  # NixOS Zsh Settings
+  flake.modules.nixos.zsh = zshOsPkg;
 
   # Darwin Zsh Settings
-  flake.modules.darwin.zsh = {pkgs, ...}: {
-    config = {
-      programs.zsh.enable = true;
-      environment.systemPackages = [pkgs.zsh-completions];
-    };
-  };
+  flake.modules.darwin.zsh = zshOsPkg;
 
   # Home Manager Zsh Settings
   flake.modules.homeManager.zsh = {
