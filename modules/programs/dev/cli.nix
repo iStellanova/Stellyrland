@@ -27,10 +27,7 @@
   };
 
   # Home Manager CLI Settings
-  flake.modules.homeManager.cli = {
-    pkgs,
-    ...
-  }: {
+  flake.modules.homeManager.cli = {pkgs, ...}: {
     programs.fzf.enable = true;
     programs.zoxide.enable = true;
     programs.jq.enable = true;
