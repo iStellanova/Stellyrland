@@ -5,6 +5,7 @@ _: {
       environment.systemPackages = with pkgs; [
         nautilus
         sushi
+        evince
       ];
 
       services.gnome.tinysparql.enable = true;
