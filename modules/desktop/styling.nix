@@ -5,7 +5,7 @@
 
     config = {
       catppuccin.flavor = "macchiato";
-      catppuccin.accent = "flamingo";
+      catppuccin.accent = "sapphire";
     };
   };
 
@@ -16,7 +16,7 @@
     config = {
       # Catppuccin home-manager configuration.
       catppuccin.flavor = "macchiato";
-      catppuccin.accent = "flamingo";
+      catppuccin.accent = "sapphire";
 
       # Hybrid Theming Strategy:
       # We enable the Catppuccin flake for core toolkits (GTK/QT) to ensure
@@ -33,13 +33,19 @@
       gtk = {
         enable = true;
         theme = {
-          name = "catppuccin-macchiato-flamingo-standard";
+          name = "catppuccin-macchiato-sapphire-standard";
           package = pkgs.catppuccin-gtk.override {
-            accents = ["flamingo"];
+            accents = ["sapphire"];
             variant = "macchiato";
           };
         };
-        gtk4.theme = null;
+        gtk4.theme = {
+          name = "catppuccin-macchiato-sapphire-standard";
+          package = pkgs.catppuccin-gtk.override {
+            accents = ["sapphire"];
+            variant = "macchiato";
+          };
+        };
 
         # Icon Theme.
         iconTheme = {
@@ -62,6 +68,7 @@
       dconf.settings = {
         "org/gnome/desktop/interface" = {
           color-scheme = "prefer-dark";
+          accent-color = "blue";
           icon-theme = "Colloid-Catppuccin-Dark";
           cursor-theme = "Bibata-Modern-Ice";
           cursor-size = 16;
