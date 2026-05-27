@@ -18,10 +18,6 @@
       catppuccin.flavor = "macchiato";
       catppuccin.accent = "sapphire";
 
-      # Hybrid Theming Strategy:
-      # We enable the Catppuccin flake for core toolkits (GTK/QT) to ensure
-      # consistency in complex apps, but keep it DISABLED for terminal/shell
-      # apps (Kitty, Btop, Yazi, Zsh) to allow Noctalia to handle them dynamically.
       catppuccin.kvantum.enable = true;
 
       # Apps handled by Noctalia - Keep these disabled in the flake to avoid conflicts.

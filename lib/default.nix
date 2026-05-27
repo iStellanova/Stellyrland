@@ -1,7 +1,5 @@
 {lib, ...}: {
-  # scan - The core engine of the "Dendritic" configuration pattern.
-  # This function recursively searches a directory for .nix files and default.nix folders,
-  # allowing for zero-boilerplate module discovery and automatic inclusion in the system flake.
+  # Lib scanner for the directory tree. Grabs all the nix files, ignores "_" files that go unused or have alternative imports. Excluded from auto-imports.
   scan = let
     scan' = path:
       lib.concatMap (
@@ -23,9 +21,7 @@
   in
     scan';
 
-  # mkHost - Builds a NixOS or Darwin system configuration from the dendritic module store.
-  # Accepts the flake-parts top-level `config` and `inputs` so it can read
-  # flake.modules.{nixos,darwin,homeManager} without circular references.
+  # mkHost - Creates a host based on imported aspects with their respective architectures.
   mkHost = {
     config,
     inputs,
@@ -45,7 +41,6 @@
       else inputs.home-manager.nixosModules.home-manager;
 
     # Dynamically resolve OS modules based on enabled aspects.
-    # Fallback: if aspects is empty, we import all modules to support legacy toggle setups.
     osRegistry =
       if isDarwin
       then config.flake.modules.darwin

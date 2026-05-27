@@ -29,7 +29,7 @@ _: {
           patch = null;
           structuredExtraConfig = with lib.kernel; {
             # ── Scheduler & Performance ───────────────────────────────────────
-            # We use the expected name here to pass the check, but rename in postInstall
+            # use the expected name here to pass the check, but rename in postInstall
             LOCALVERSION = lib.mkForce (freeform "-stellyrkernel");
             LOCALVERSION_AUTO = lib.mkForce no;
             SCHED_BORE = yes;
