@@ -1,63 +1,120 @@
-# Stellyrland Nix Configuration
+<p align="center">
+  <img src="https://img.shields.io/badge/NixOS-68ac0b9-8aadf4?style=for-the-badge&logo=nixos&logoColor=24273a" />&nbsp;
+  <img src="https://img.shields.io/badge/Home_Manager-1a95e2e-c6a0f6?style=for-the-badge&logo=nixos&logoColor=24273a" />&nbsp;
+  <img src="https://img.shields.io/badge/flake--parts-f7c1a2d-f5a97f?style=for-the-badge&logo=nixos&logoColor=24273a" />
+  <br/>
+  <img src="https://img.shields.io/badge/Hyprland-864dc89-7dc4e4?style=for-the-badge&logoColor=24273a" />&nbsp;
+  <img src="https://img.shields.io/badge/nix--darwin-56c666e-a6da95?style=for-the-badge&logoColor=24273a" />&nbsp;
+  <img src="https://img.shields.io/badge/Catppuccin-Macchiato_Sapphire-7dc4e4?style=for-the-badge&logo=catppuccin&logoColor=24273a" />
+</p>
+
+<h2 align="center">Stellyrland</h2>
 
 This is my personal configuration for my systems, managed by the nix language and its package manager.
 I stick to the dendritic style. Documentation will explain all concepts I use here.
 I use this to tinker, deploy, and manage my computers from home and remote. :)
 
-![Stellyrland Desktop](https://raw.githubusercontent.com/iStellanova/Stellyrland/assets/assets/screenshot.png)
+<table align="center">
+  <tr>
+    <td colspan="2" align="center">
+      <img src="https://raw.githubusercontent.com/iStellanova/Stellyrland/assets/assets/2026-05-26-052047_hyprshot.png" width="100%" />
+    </td>
+  </tr>
+  <tr>
+    <td align="center" width="50%">
+      <img src="https://raw.githubusercontent.com/iStellanova/Stellyrland/assets/assets/2026-05-27-030856_hyprshot.png" width="100%" />
+    </td>
+    <td align="center" width="50%">
+      <img src="https://raw.githubusercontent.com/iStellanova/Stellyrland/assets/assets/2026-05-26-051605_hyprshot.png" width="100%" />
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="https://raw.githubusercontent.com/iStellanova/Stellyrland/assets/assets/2026-05-26-051516_hyprshot.png" width="100%" />
+    </td>
+    <td align="center">
+      <img src="https://raw.githubusercontent.com/iStellanova/Stellyrland/assets/assets/2026-05-26-051956_hyprshot.png" width="100%" />
+    </td>
+  </tr>
+</table>
 
-- **Note:** This is a personal configuration. This is not meant to be forked or used by others.
+> **Note:**<br>
+> This is a personal configuration. This is not meant to be forked or used by others.
 
-## ✨ Concepts Utilized
+<p align="center"><strong>DOCUMENTATION</strong></p>
+<p align="center">
+  <a href="./docs/concepts.md">CONCEPTS</a> &nbsp;&bull;&nbsp;
+  <a href="./docs/">GENERAL</a> &nbsp;&bull;&nbsp;
+  <a href="./docs/troubleshooting/">DEBUG</a>
+</p>
 
-I make use of various concepts, each of the big ones I'll explain here.
+## 🏗️ Architecture
 
-### Dendritic Configuration
-I use the dendritic pattern, which condenses the "features" I use into specific single files. Things such as git, networking, and gaming configurations live in their own, single files. These individual files are then defined as single, individual "aspects" that I can enable in bulk from a single host-machine specific configuration.
+```mermaid
+flowchart TD
+    IN["flake inputs"]
 
-I chose this as it makes maintaining my systems much cleaner. I can enable aspects defined in my configurations on different machines as I please without having to write new host-specific configurations. I just tell it to enable my git aspect and it's there. Quite convenient, no matter the machine.
-### Flakes
-I use nix flakes, which consist of inputs and outputs. This feature allows me to input various systems and libraries, such as nix packages, home-manager, github controlled projects, and my identity from a private repository I keep. It then outputs these libraries and configurations into a buildable system using the wider range of configurations listed dendritically. Using an input and output system allows me to version control and define what my configuration imports in order to get the result I want.
-### Darwin
-Nix-Darwin is my Macbook configuration. I not only manage my NixOS Linux system declaratively, but also my Macbook Pro. I define programs, system defaults, ssh keys, and more using it. This is a must for my Macbook, as typical Nix is made for other architectures and kernels.
-### Private Identity
-I have a custom flake outside of this repo keeping my identity separate. It is imported using the main flake in this configuration with private keys that allow me access to import that information. This is to keep it out of public prying eyes.
-### Overall Declarative Nature
-I love declarative deployment. Defining my system this way keeps it organized and exactly the way I want it. It is a different way of thinking about programming, but certainly one I prefer over imperative management. Nix is not exclusively declarative, I can nix-shell or nix-env imperative projects and packages I wish to run in certain points as I please.
+    subgraph SCAN["flake.nix: (lib/scan /modules)"]
+        CORE["core/"]
+        DESK["desktop/"]
+        PROG["programs/"]
+        SERV["services/"]
+    end
 
-## 📖 Documentation
+    IN --> SCAN
+    SCAN --> NS["flake.modules: (nixos / darwin / homeManager)"]
+    NS --> MK["lib/mkHost: assembles by modules"]
+    MK --> SL["stellyrland: NixOS x86_64"]
+    MK --> ST["stellyrtop: macOS Darwin aarch64"]
 
-- [Workflow Journey](./docs/workflow-journey.md)
-- [Multi-System Management](./docs/multi-systems.md)
-
-### 🔧 Troubleshooting
-- [GPU White Screen](./docs/troubleshooting/gpu-whitescreen.md)
-- [GPU Snow Artifacts](./docs/troubleshooting/gpu-snow.md)
-- [Boot Loss](./docs/troubleshooting/boot-loss.md)
+    style IN fill:#363a4f,color:#cad3f5,stroke:#5b6078
+    style NS fill:#363a4f,color:#cad3f5,stroke:#5b6078
+    style MK fill:#363a4f,color:#cad3f5,stroke:#5b6078
+    style CORE fill:#24273a,color:#8aadf4,stroke:#494d64
+    style DESK fill:#24273a,color:#7dc4e4,stroke:#494d64
+    style PROG fill:#24273a,color:#c6a0f6,stroke:#494d64
+    style SERV fill:#24273a,color:#a6da95,stroke:#494d64
+    style SL fill:#1e2030,color:#8aadf4,stroke:#8aadf4
+    style ST fill:#1e2030,color:#a6da95,stroke:#a6da95
+```
 
 ## 📂 Project Structure
 
 ```text
-/etc/nixos/
-├── flake.nix               # Entry point using flake-parts
+.
+├── flake.nix               # Flake entry point using flake-parts & dynamic scanning
 ├── flake.lock              # Lockfile for flake inputs
-├── flake/                  # Flake-related logic (Hosts, Lib, Treefmt)
-├── hosts/                  # Machine-specific entry points
-│   ├── stellyrland/        # Primary NixOS workstation configuration
-│   └── stellyrtop/         # Secondary macOS (Darwin) configuration
-├── modules/                # Self-contained feature modules (Aspects)
-│   ├── common/             # Shared across all platforms (NixOS/Darwin)
-│   │   ├── core/           # Shared core settings (Nix, Fonts, Networking)
-│   │   └── programs/       # Shared CLI & TUI apps (Git, Zsh, Nixvim, etc.)
-│   ├── darwin/             # macOS specific modules
-│   └── nixos/              # NixOS specific modules
-│       ├── core/           # Base system (Boot, Hardware, Storage, Users)
-│       ├── desktop/        # UI & Theming (Hyprland, Styling)
-│       ├── programs/       # GUI Applications (Zed, Gaming, Browser)
-│       └── services/       # Background daemons (Lact, OpenRGB, AI)
-├── docs/                   # Documentation and troubleshooting guides
+├── docs/                   # System documentation & troubleshooting guides
+│   └── troubleshooting/    # Troubleshooting articles (Boot loss, GPU, etc.)
 ├── lib/                    # Custom Nix helpers
-└── README.md
+│   └── default.nix         # Dendritic scan engine & dynamic host builder (mkHost)
+├── secrets/                # Encrypted SOPS credentials & repository secrets
+│   └── secrets.yaml
+└── modules/                # All modular NixOS, Darwin & Home Manager aspects
+    ├── flake-config.nix    # Target architectures and flake system configuration
+    ├── meta.nix            # Global identity & host options schema definitions
+    ├── treefmt.nix         # Repository-wide formatting rules orchestration
+    ├── hosts/              # Target machine specifications & environment profiles
+    │   ├── stellyrland.nix # NixOS Workstation configuration (AMD Ryzen 9/7900XTX)
+    │   ├── stellyrtop.nix  # macOS MacBook Pro configuration (Apple M4)
+    │   └── stellyrland/    # Workstation local hardware configurations & mounts
+    ├── core/               # Hardwired base system settings & foundational options
+    │   ├── boot/           # UKI generation, kernel params, Secure Boot & headless ports
+    │   ├── hardware/       # Btrfs snapper mounts, HDD preservation & extra disks
+    │   ├── secrets/        # SOPS secrets decryption configurations
+    │   └── *.nix           # Networking, fonts, Homebrew, OOMD, base services, users & builder
+    ├── desktop/            # Graphical window managers & desktop UI components
+    │   ├── hyprland/       # Hyprland tiling window manager keybinds & rules
+    │   └── *.nix           # Aerospace tiling config, styling tokens & custom aesthetic modules
+    ├── programs/           # Feature toggle aspects (CLI & TUI applications)
+    │   ├── zsh/            # Interactive shells and Powerlevel10k configurations
+    │   ├── dev/            # Developer tools (Zed, Nixvim, CLI tools, Git, yazi, etc.)
+    │   ├── media/          # Audio engine (Pipewire), Cava, screen recorders & editing apps
+    │   ├── productivity/   # School, writing, finance, cloud storage, VM configurations
+    │   └── *.nix           # Browser profiles (Zen Browser & general configurations)
+    └── services/           # Background daemons & external service modules
+        ├── openrgb/        # Peripheral lighting controller setups
+        └── *.nix           # Coolercontrol, flatpaks, greetd, openssh, AMD LACT & AI companion
 ```
 
 ## ✨ Notable Configurations
