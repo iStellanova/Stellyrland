@@ -1,4 +1,9 @@
 <p align="center">
+  <img src="https://raw.githubusercontent.com/iStellanova/Stellyrland/assets/icons/nix-snowflake-gradient.svg" width="140px" /><br/>
+  <img src="https://raw.githubusercontent.com/iStellanova/Stellyrland/assets/icons/stellyrland-title.svg" width="440px" />
+</p>
+
+<p align="center">
   <img src="https://img.shields.io/badge/NixOS-68ac0b9-8aadf4?style=for-the-badge&logo=nixos&logoColor=24273a" />&nbsp;
   <img src="https://img.shields.io/badge/Home_Manager-1a95e2e-c6a0f6?style=for-the-badge&logo=nixos&logoColor=24273a" />&nbsp;
   <img src="https://img.shields.io/badge/flake--parts-f7c1a2d-f5a97f?style=for-the-badge&logo=nixos&logoColor=24273a" />
@@ -8,7 +13,7 @@
   <img src="https://img.shields.io/badge/Catppuccin-Macchiato_Sapphire-7dc4e4?style=for-the-badge&logo=catppuccin&logoColor=24273a" />
 </p>
 
-<h2 align="center">Stellyrland</h2>
+---
 
 This is my personal configuration for my systems, managed by the nix language and its package manager.
 I stick to the dendritic style. Documentation will explain all concepts I use here.
@@ -160,4 +165,5 @@ More elaboration on my AI morals [here](./docs/ai.md).
 
 ## 📜 Credits & Inspiration
 - **Vimjoyer:** For popularizing the Dendritic pattern.
+- [Hand7s](https://github.com/s0me1newithhand7s) For inspiring many features I adopted.
 - [Noctalia Dev](https://github.com/noctalia-dev) for the shell components.
