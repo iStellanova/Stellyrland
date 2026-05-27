@@ -164,6 +164,5 @@ AI is utilized in the development of this system, largely for review and debuggi
 More elaboration on my AI morals [here](./docs/ai.md).
 
 ## 📜 Credits & Inspiration
-- **Vimjoyer:** For popularizing the Dendritic pattern.
+- **Vimjoyer:** For inspiring my dendritic pattern.
 - [Hand7s](https://github.com/s0me1newithhand7s) For inspiring many features I adopted.
-- [Noctalia Dev](https://github.com/noctalia-dev) for the shell components.
