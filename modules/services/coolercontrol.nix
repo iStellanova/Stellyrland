@@ -173,10 +173,7 @@ _: {
         pkgs.liquidctl
       ];
 
-      # CoolerControl Configuration Management:
-      # We use a systemd preStart script instead of environment.etc because
-      # coolercontrold requires its configuration file to be writable for runtime updates.
-      # This allows us to keep the config declarative in Nix while satisfying the daemon.
+      # using a systemd preStart script instead of environment.etc because coolercontrold needs a mutable config.
       systemd.services.coolercontrold.preStart = ''
         mkdir -p /etc/coolercontrol
         cp -f ${coolerConfig} /etc/coolercontrol/config.toml
