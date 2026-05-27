@@ -68,7 +68,7 @@ flowchart TD
 
     IN --> SCAN
     SCAN --> NS["flake.modules: (nixos / darwin / homeManager)"]
-    NS --> MK["lib/mkHost: assembles by modules"]
+    NS --> MK["lib/mkHost: assembles modules"]
     MK --> SL["stellyrland: NixOS x86_64"]
     MK --> ST["stellyrtop: macOS Darwin aarch64"]
 
@@ -89,19 +89,19 @@ flowchart TD
 .
 ├── flake.nix               # Flake entry point using flake-parts & dynamic scanning
 ├── flake.lock              # Lockfile for flake inputs
-├── docs/                   # System documentation & troubleshooting guides
-│   └── troubleshooting/    # Troubleshooting articles (Boot loss, GPU, etc.)
+├── docs/                   # System documentation & troubleshooting experience
+│   └── troubleshooting/    # Troubleshooting docs
 ├── lib/                    # Custom Nix helpers
 │   └── default.nix         # Dendritic scan engine & dynamic host builder (mkHost)
-├── secrets/                # Encrypted SOPS credentials & repository secrets
+├── secrets/                # Encrypted SOPS credentials & repo secrets
 │   └── secrets.yaml
 └── modules/                # All modular NixOS, Darwin & Home Manager aspects
     ├── flake-config.nix    # Target architectures and flake system configuration
-    ├── meta.nix            # Global identity & host options schema definitions
-    ├── treefmt.nix         # Repository-wide formatting rules orchestration
+    ├── meta.nix            # Repo-wide identity & host options schema definitions
+    ├── treefmt.nix         # Repo-wide formatting rules orchestration
     ├── hosts/              # Target machine specifications & environment profiles
-    │   ├── stellyrland.nix # NixOS Workstation configuration (AMD Ryzen 9/7900XTX)
-    │   ├── stellyrtop.nix  # macOS MacBook Pro configuration (Apple M4)
+    │   ├── stellyrland.nix # NixOS Workstation configuration (x86_64)
+    │   ├── stellyrtop.nix  # macOS MacBook Pro configuration (aarch64)
     │   └── stellyrland/    # Workstation local hardware configurations & mounts
     ├── core/               # Hardwired base system settings & foundational options
     │   ├── boot/           # UKI generation, kernel params, Secure Boot & headless ports
@@ -109,12 +109,12 @@ flowchart TD
     │   ├── secrets/        # SOPS secrets decryption configurations
     │   └── *.nix           # Networking, fonts, Homebrew, OOMD, base services, users & builder
     ├── desktop/            # Graphical window managers & desktop UI components
-    │   ├── hyprland/       # Hyprland tiling window manager keybinds & rules
-    │   └── *.nix           # Aerospace tiling config, styling tokens & custom aesthetic modules
-    ├── programs/           # Feature toggle aspects (CLI & TUI applications)
-    │   ├── zsh/            # Interactive shells and Powerlevel10k configurations
+    │   ├── hyprland/       # Hyprland window manager, keybinds & rules
+    │   └── *.nix           # Aerospace tiling config, styling & custom aesthetic modules
+    ├── programs/           # Feature toggleables
+    │   ├── zsh/            # ZShell and Powerlevel10k configurations
     │   ├── dev/            # Developer tools (Zed, Nixvim, CLI tools, Git, yazi, etc.)
-    │   ├── media/          # Audio engine (Pipewire), Cava, screen recorders & editing apps
+    │   ├── media/          # Audio (Pipewire), Cava, screen recorders & editing apps
     │   ├── productivity/   # School, writing, finance, cloud storage, VM configurations
     │   └── *.nix           # Browser profiles (Zen Browser & general configurations)
     └── services/           # Background daemons & external service modules
@@ -160,7 +160,8 @@ flowchart TD
 - **OS:** macOS (nix-darwin)
 
 ## ⚠️ AI Disclaimer
-AI is utilized in the development of this system, largely for review and debugging.
+AI is utilized in the development of this system, largely for learning, review, and debugging.
+I'm still actively learning Nix!
 More elaboration on my AI morals [here](./docs/ai.md).
 
 ## 📜 Credits & Inspiration
