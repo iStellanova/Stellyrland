@@ -69,7 +69,7 @@
         alsa.support32Bit = true; # Required for 32-bit games (Steam runtime) to have audio.
         extraConfig = {
           pipewire."99-lowlatency" = {
-            "context.properties"."default.clock.min-quantum" = 64;
+            "context.properties"."default.clock.min-quantum" = 512;
             "context.modules" = [
               {
                 name = "libpipewire-module-rt";
@@ -85,13 +85,13 @@
           };
           pipewire-pulse."99-lowlatency"."pulse.properties" = {
             "server.address" = ["unix:native"];
-            "pulse.min.req" = "64/48000";
-            "pulse.min.quantum" = "64/48000";
-            "pulse.min.frag" = "64/48000";
+            "pulse.min.req" = "512/48000";
+            "pulse.min.quantum" = "512/48000";
+            "pulse.min.frag" = "512/48000";
           };
           client."99-lowlatency"."stream.properties" = {
-            "node.latency" = "64/48000";
-            "resample.quality" = 1;
+            "node.latency" = "512/48000";
+            "resample.quality" = 4;
           };
         };
         wireplumber = {
