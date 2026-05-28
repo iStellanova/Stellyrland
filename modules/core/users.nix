@@ -4,7 +4,6 @@ _: {
     config,
     pkgs,
     lib,
-    enabledAspects,
     ...
   }: {
     config = {
@@ -13,8 +12,7 @@ _: {
       users.users.${config.identity.username} = {
         home = config.identity.homeDir;
         shell = pkgs.zsh;
-        hashedPassword = lib.mkIf (!builtins.elem "secrets" enabledAspects) config.identity.hashedPassword;
-        hashedPasswordFile = lib.mkIf (builtins.elem "secrets" enabledAspects) config.sops.secrets.user-password.path;
+        hashedPassword = lib.mkIf (config.identity.hashedPassword != null) config.identity.hashedPassword;
         isNormalUser = true;
         extraGroups = ["wheel" "storage" "disk" "video" "render" "networkmanager"];
         openssh.authorizedKeys.keys = config.identity.sshKeys;

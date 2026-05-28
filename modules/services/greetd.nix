@@ -3,7 +3,6 @@ _: {
   flake.modules.nixos.greetd = {
     config,
     pkgs,
-    enabledAspects,
     ...
   }: {
     config = {
@@ -19,10 +18,7 @@ _: {
                 if config.identity.dataPath != null
                 then "${pkgs.swaybg}/bin/swaybg -o \\* -i ${config.identity.dataPath}/wallpapers/login-wallpaper.png -m fill"
                 else "${pkgs.swaybg}/bin/swaybg -o \\* -c '#1e2030'";
-              hyprlandPkg =
-                if builtins.elem "hyprland" enabledAspects
-                then config.programs.hyprland.package
-                else pkgs.hyprland;
+              hyprlandPkg = config.programs.hyprland.package;
               greetdHyprConfig = pkgs.writeText "greetd-hyprland.lua" ''
                 -- Minimal Hyprland Lua config for the greetd/regreet login screen.
                 -- Mirrors the main session's decoration and visual settings for consistency.
