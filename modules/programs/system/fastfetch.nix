@@ -1,7 +1,12 @@
 _: {
   # Home Manager Fastfetch Settings
-  flake.modules.homeManager.fastfetch = {pkgs, ...}: {
+  flake.modules.homeManager.fastfetch = {pkgs, lib, ...}: {
     programs.zsh.shellAliases.pf = "fastfetch";
+    programs.zsh.initContent = lib.mkAfter ''
+      if [[ $(tty) == *"pts"* ]]; then
+        fastfetch
+      fi
+    '';
     programs.fastfetch = {
       enable = true;
       settings = {

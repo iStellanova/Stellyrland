@@ -16,6 +16,8 @@
         neededForUsers = true; # Critical: Decrypt before users are created!
       };
 
+      users.users.${config.identity.username}.hashedPasswordFile = config.sops.secrets.user-password.path;
+
       # Decrypt and write the personal SSH private key dynamically on boot
       sops.secrets.stellacode = {
         path = "${config.identity.homeDir}/.ssh/stellacode";
