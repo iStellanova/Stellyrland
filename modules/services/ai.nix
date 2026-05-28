@@ -73,11 +73,6 @@
         };
       };
 
-      echoProjectPath = lib.mkOption {
-        type = lib.types.str;
-        default = "/home/${config.services.ai.user}/Projects/Project Echo";
-        description = "Path to the Project Echo source directory on this machine.";
-      };
     };
 
     config = {
