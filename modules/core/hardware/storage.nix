@@ -2,9 +2,7 @@
   # NixOS Storage and Snapper configuration
   flake.modules.nixos.storage = {
     config,
-    lib,
     pkgs,
-    enabledAspects,
     ...
   }: {
     imports = [inputs.disko.nixosModules.disko];
@@ -61,7 +59,7 @@
       services.btrfs.autoScrub = {
         enable = true;
         interval = "monthly";
-        fileSystems = ["/"] ++ lib.optional (builtins.elem "extra-disk" enabledAspects) "${config.identity.homeDir}/ExtraDisk" ++ ["/persist"];
+        fileSystems = ["/" "/persist"];
       };
     };
   };

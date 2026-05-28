@@ -68,15 +68,12 @@
         ++ [
           hmModule
           ({config, ...}: {
-            # Inject enabledAspects list into module arguments for safe cross-aspect querying
-            _module.args.enabledAspects = aspects;
-
             home-manager = {
               useGlobalPkgs = true;
               useUserPackages = true;
               backupFileExtension = "backup";
               overwriteBackup = true;
-              sharedModules = activeHmModules ++ [{_module.args.enabledAspects = aspects;}];
+              sharedModules = activeHmModules;
               users.${config.identity.username} = {
                 home.username = config.identity.username;
                 home.homeDirectory = config.identity.homeDir;

@@ -125,6 +125,7 @@
   # User-level Home Manager configuration for Hyprland
   flake.modules.homeManager.hyprland = {
     pkgs,
+    lib,
     osConfig,
     ...
   }: let
@@ -142,6 +143,11 @@
         screenoff = "HYPRLAND_INSTANCE_SIGNATURE=$(basename /run/user/$(id -u)/hypr/*/) hyprctl eval \"hl.dispatch(hl.dsp.dpms({ action = 'off' }))\"";
         screenon = "HYPRLAND_INSTANCE_SIGNATURE=$(basename /run/user/$(id -u)/hypr/*/) hyprctl eval \"hl.dispatch(hl.dsp.dpms({ action = 'on' }))\"";
       };
+
+      programs.zsh.initContent = lib.mkAfter ''
+        cp2c() { if [[ -z "$1" ]]; then echo "Usage: cp2c <file>" >&2; return 1; fi; wl-copy < "$1"; }
+        c2f() { if [[ -z "$1" ]]; then echo "Usage: create-from-clip <filename>" >&2; return 1; fi; wl-paste > "$1"; }
+      '';
 
       wayland.windowManager.hyprland = {
         enable = true;

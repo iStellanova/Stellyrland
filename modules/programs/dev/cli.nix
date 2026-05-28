@@ -26,7 +26,7 @@
   };
 
   # Home Manager CLI Settings
-  flake.modules.homeManager.cli = {pkgs, ...}: {
+  flake.modules.homeManager.cli = {pkgs, lib, ...}: {
     programs.fzf.enable = true;
     programs.zoxide.enable = true;
     programs.jq.enable = true;
@@ -83,6 +83,12 @@
       };
 
     # fd - fast directory search
+    programs.zsh.initContent = lib.mkAfter ''
+      zstyle ':fzf-tab:*' fzf-command fzf
+      zstyle ':fzf-tab:*' fzf-preview 'bat --color=always --style=numbers $realpath'
+      zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --color=always $realpath'
+    '';
+
     programs.fd.enable = true;
 
     # direnv - environment variable management

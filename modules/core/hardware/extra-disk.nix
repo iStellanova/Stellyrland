@@ -13,6 +13,8 @@ _: {
       # Extra Storage: nvme1n1 (1.8T btrfs, "Extra Drive")
       # nofail ensures the system still boots if the drive is missing.
       # x-gvfs options make the drive easily accessible and identifiable in the file manager.
+      services.btrfs.autoScrub.fileSystems = ["${config.identity.homeDir}/ExtraDisk"];
+
       fileSystems."${config.identity.homeDir}/ExtraDisk" = {
         device = "/dev/mapper/cryptextra";
         fsType = "btrfs";
