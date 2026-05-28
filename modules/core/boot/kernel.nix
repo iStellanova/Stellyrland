@@ -28,6 +28,9 @@ _: {
           name = "stellyrland-super-kernel";
           patch = null;
           structuredExtraConfig = with lib.kernel; {
+            # ── Wine/Proton NT Sync ───────────────────────────────────────────
+            NTSYNC = module;
+
             # ── Scheduler & Performance ───────────────────────────────────────
             # use the expected name here to pass the check, but rename in postInstall
             LOCALVERSION = lib.mkForce (freeform "-stellyrkernel");
