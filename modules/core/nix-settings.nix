@@ -30,7 +30,7 @@
       nix.daemonCPUSchedPolicy = "batch";
       nix.daemonIOSchedPriority = 7;
       nix.settings = {
-        experimental-features = ["nix-command" "flakes"];
+        experimental-features = ["nix-command" "flakes" "pipe-operators"];
         log-lines = 25;
         auto-optimise-store = true;
         warn-dirty = false;
@@ -95,7 +95,7 @@
 
       nix.enable = lib.mkDefault false;
       nix.settings = {
-        experimental-features = ["nix-command" "flakes"];
+        experimental-features = ["nix-command" "flakes" "pipe-operators"];
         log-lines = 25;
         auto-optimise-store = true;
         warn-dirty = false;
