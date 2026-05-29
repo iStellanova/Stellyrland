@@ -60,6 +60,31 @@
         };
       };
 
+      bootstrap = {
+        rules = lib.mkOption {
+          type = lib.types.listOf (lib.types.submodule {
+            options = {
+              rule = lib.mkOption {
+                type = lib.types.str;
+                description = "Imperative behavioral rule seeded into the DB on first deployment.";
+              };
+              priority = lib.mkOption {
+                type = lib.types.int;
+                default = 0;
+                description = "Rule priority (0-10). Higher values take precedence in the system prompt.";
+              };
+            };
+          });
+          default = [
+            {
+              rule = "Never open a response by disclaiming, explaining, or qualifying your memory. Simply recall and use what you know.";
+              priority = 10;
+            }
+          ];
+          description = "Behavioral rules to seed into the cognitive DB on deployment. Uses INSERT ... ON CONFLICT DO NOTHING — safe to re-run.";
+        };
+      };
+
       postgresql = {
         enable = lib.mkOption {
           type = lib.types.bool;
@@ -72,7 +97,6 @@
           description = "The name of the PostgreSQL database for cognitive memory.";
         };
       };
-
     };
 
     config = {
@@ -176,7 +200,14 @@
               );
               ALTER TABLE traits ADD COLUMN IF NOT EXISTS daily_delta FLOAT DEFAULT 0.0;
               ALTER TABLE traits ADD COLUMN IF NOT EXISTS last_reset TIMESTAMPTZ DEFAULT now();
+
+              GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO ${cfg.user};
+              GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO ${cfg.user};
             "
+            ${lib.concatMapStrings (r: ''
+                $PSQL -c "INSERT INTO rules (rule, priority, active) SELECT '${r.rule}', ${toString r.priority}, TRUE WHERE NOT EXISTS (SELECT 1 FROM rules WHERE rule = '${r.rule}');"
+              '')
+              cfg.bootstrap.rules}
           '';
           RemainAfterExit = true;
         };
@@ -196,6 +227,7 @@
           User = cfg.user;
           ExecStart = "${inputs.echo-bridge.packages.${pkgs.stdenv.hostPlatform.system}.default}/bin/echo-bridge";
           Restart = "on-failure";
+          Environment = "PYTHONUNBUFFERED=1";
           PrivateTmp = true;
           NoNewPrivileges = true;
           ProtectSystem = "strict";
@@ -213,6 +245,7 @@
         ai-up = "sudo systemctl start ollama postgresql ai-db-init open-webui echo-memory-bridge";
         ai-down = "sudo systemctl stop ollama postgresql open-webui echo-memory-bridge";
         ai-status = "systemctl status ollama postgresql open-webui echo-memory-bridge";
+        ai-logs = "journalctl -f -b -u echo-memory-bridge";
       };
 
       # 6. System Packages (Purely Native)
@@ -223,4 +256,21 @@
       '';
     };
   };
+
+  # oterm user config — managed declaratively so the L1 face model is always
+  # the startup default without manual editing.
+  flake.modules.homeManager.ai = {
+    osConfig,
+    lib,
+    ...
+  }: let
+    cfg = osConfig.services.ai;
+  in
+    lib.mkIf cfg.oterm.enable {
+      home.file.".local/share/oterm/config.json".text = builtins.toJSON {
+        theme = "textual-dark";
+        splash-screen = true;
+        model = builtins.head cfg.models.trinity;
+      };
+    };
 }
