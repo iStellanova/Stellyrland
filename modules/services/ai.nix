@@ -205,7 +205,7 @@
                   id          SERIAL PRIMARY KEY,
                   session_id  UUID UNIQUE NOT NULL,
                   summary     TEXT NOT NULL,
-                  tags        TEXT NOT NULL DEFAULT '',
+                  tags        TEXT NOT NULL DEFAULT ${"''"},
                   created_at  TIMESTAMPTZ DEFAULT now()
               );
 
@@ -238,8 +238,6 @@
           Environment = "PYTHONUNBUFFERED=1";
           PrivateTmp = true;
           NoNewPrivileges = true;
-          ProtectSystem = "strict";
-          ProtectHome = "read-only";
         };
       };
 
