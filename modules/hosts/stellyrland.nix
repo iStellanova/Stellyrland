@@ -57,7 +57,6 @@
       "coolercontrol"
       "lact"
       "openrgb"
-      "ai"
     ];
 
     modules = [
