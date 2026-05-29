@@ -1,6 +1,10 @@
 _: {
   # Home Manager Fastfetch Settings
-  flake.modules.homeManager.fastfetch = {pkgs, lib, ...}: {
+  flake.modules.homeManager.fastfetch = {
+    pkgs,
+    lib,
+    ...
+  }: {
     programs.zsh.shellAliases.pf = "fastfetch";
     programs.zsh.initContent = lib.mkAfter ''
       if [[ $(tty) == *"pts"* ]]; then

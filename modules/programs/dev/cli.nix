@@ -1,4 +1,4 @@
-{lib, ...}: {
+_: {
   # NixOS CLI Settings
   flake.modules.nixos.cli = {pkgs, ...}: {
     config = {
@@ -26,7 +26,11 @@
   };
 
   # Home Manager CLI Settings
-  flake.modules.homeManager.cli = {pkgs, lib, ...}: {
+  flake.modules.homeManager.cli = {
+    pkgs,
+    lib,
+    ...
+  }: {
     programs.fzf.enable = true;
     programs.zoxide.enable = true;
     programs.jq.enable = true;
