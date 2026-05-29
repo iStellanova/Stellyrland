@@ -201,6 +201,14 @@
               ALTER TABLE traits ADD COLUMN IF NOT EXISTS daily_delta FLOAT DEFAULT 0.0;
               ALTER TABLE traits ADD COLUMN IF NOT EXISTS last_reset TIMESTAMPTZ DEFAULT now();
 
+              CREATE TABLE IF NOT EXISTS episodes (
+                  id          SERIAL PRIMARY KEY,
+                  session_id  UUID UNIQUE NOT NULL,
+                  summary     TEXT NOT NULL,
+                  tags        TEXT NOT NULL DEFAULT '',
+                  created_at  TIMESTAMPTZ DEFAULT now()
+              );
+
               GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO ${cfg.user};
               GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO ${cfg.user};
             "
