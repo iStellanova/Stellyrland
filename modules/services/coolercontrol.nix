@@ -1,6 +1,18 @@
 _: {
   # NixOS CoolerControl Settings
-  flake.modules.nixos.coolercontrol = {pkgs, ...}: let
+  flake.modules.nixos.coolercontrol = {
+    pkgs,
+    config,
+    ...
+  }: let
+    bunnyDir =
+      if config.identity.dataPath != null
+      then
+        pkgs.runCommand "bunny-assets" {} ''
+          mkdir -p $out
+          cp ${config.identity.dataPath}/assets/bunny.png $out/bunny.png
+        ''
+      else "";
     coolerConfig = pkgs.writeText "coolercontrol-config.toml" ''
       # ==============================================================================
       # CoolerControl Configuration - Managed by NixOS
@@ -33,7 +45,7 @@ _: {
       [device-settings]
 
       [device-settings.914e1bc3a45b7bec59de01518baf9725774b1e1ed1b3a7e86df8922b9ae00ab4]
-      lcd = { lcd = { mode = "temp", brightness = 50, orientation = 270, colors = [], temp_source = { temp_name = "temp1", device_uid = "c1c4f573af5adb37f4b2b21c38e7ab00131dec4e073a10af87799b5e930fee88" } } }
+      lcd = { lcd = { mode = "carousel", brightness = 50, orientation = 270, colors = [], carousel = { images_path = "${bunnyDir}", interval = 5 } } }
       pump = { speed_fixed = 100 }
       fan = { speed_fixed = 100 }
 
