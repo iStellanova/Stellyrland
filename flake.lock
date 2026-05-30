@@ -793,11 +793,11 @@
     "my-assets": {
       "flake": false,
       "locked": {
-        "lastModified": 1779868840,
-        "narHash": "sha256-CvDvaYPdclbjx4u/kie0sqGrJiIOOMBPhiqPJN1PIWM=",
+        "lastModified": 1780104999,
+        "narHash": "sha256-Uaf6i7SvT6vtf11G5gLtp9ofcBY4AfTD5MSLv8bN6k8=",
         "owner": "iStellanova",
         "repo": "Stellyrland",
-        "rev": "a920f96d9d0dec35e750f9127d7335434e824809",
+        "rev": "ebcdb5b76afccfe3658e5fb30ca23e4c1c9891fc",
         "type": "github"
       },
       "original": {
