@@ -32,7 +32,6 @@
       "ns"
       "yazi"
       "zsh"
-      "nixvim"
       "ai-tools"
       "bitwarden"
       "ide-suite"
