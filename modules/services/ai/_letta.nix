@@ -35,7 +35,7 @@
 
   agentInitScript = pkgs.writeShellScript "letta-agent-init" ''
         LETTA="http://127.0.0.1:${toString cfg.letta.port}"
-        LITELLM="http://127.0.0.1:${toString cfg.litellm.port}"
+        LITELLM="http://127.0.0.1:${toString (cfg.litellm.port + 1)}"
         PY="${pkgs.python3}/bin/python3"
         CURL="${pkgs.curl}/bin/curl"
 
@@ -70,6 +70,7 @@
         'model_endpoint_type': 'openai',
         'model_endpoint': os.environ['LITELLM_URL'],
         'context_window': 32768,
+        'enable_reasoner': False,
       },
       'embedding_config': {
         'embedding_model': '${cfg.models.embed}',
@@ -109,14 +110,15 @@ in {
 
     systemd.services.letta = {
       description = "Letta Agent Server";
-      after = ["ollama.service" "litellm.service" "qdrant.service" "redis-letta.service" "postgresql.service"];
-      requires = ["ollama.service" "litellm.service" "qdrant.service" "redis-letta.service" "postgresql.service"];
+      after = ["ollama.service" "litellm.service" "litellm-think-injector.service" "qdrant.service" "redis-letta.service" "postgresql.service"];
+      requires = ["ollama.service" "litellm.service" "litellm-think-injector.service" "qdrant.service" "redis-letta.service" "postgresql.service"];
       wantedBy =
         if cfg.onDemand
         then []
         else ["multi-user.target"];
       environment = {
-        OPENAI_API_BASE = "http://127.0.0.1:${toString cfg.litellm.port}/v1";
+        # Route through think-injector (litellm.port+1) so think:false is always injected
+        OPENAI_API_BASE = "http://127.0.0.1:${toString (cfg.litellm.port + 1)}/v1";
         OPENAI_API_KEY = "local-only";
         LETTA_PG_URI = "postgresql+asyncpg://${cfg.user}@localhost:5432/letta";
         LETTA_VECTOR_STORE_URI = "http://127.0.0.1:${toString cfg.qdrant.port}";
@@ -136,10 +138,9 @@ in {
         ExecStart = "${pkgs.letta}/bin/letta server --host 127.0.0.1 --port ${toString cfg.letta.port}";
         Restart = "on-failure";
         RestartSec = "5s";
-        PrivateTmp = true;
         NoNewPrivileges = true;
-        StandardOutput = "append:/tmp/letta-svc.log";
-        StandardError = "append:/tmp/letta-svc.log";
+        StandardOutput = "append:/var/lib/letta/letta.log";
+        StandardError = "append:/var/lib/letta/letta.log";
       };
     };
 

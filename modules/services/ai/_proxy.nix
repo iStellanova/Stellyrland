@@ -6,6 +6,114 @@
 }: let
   cfg = config.services.ai;
   proxyPort = cfg.letta.port + 1;
+  thinkProxyPort = cfg.litellm.port + 1;
+
+  # Routes Letta's LLM calls directly to Ollama (bypassing LiteLLM which strips think:false)
+  # and injects think:false so qwen3 doesn't enter thinking mode.
+  # Chat completions → Ollama directly (with model alias mapping + think:false)
+  # Embeddings/models → LiteLLM (unchanged)
+  thinkInjectorScript = pkgs.writeText "think-injector.py" ''
+    import json, os, uuid
+    from http.server import ThreadingHTTPServer, BaseHTTPRequestHandler
+    import httpx
+
+    OLLAMA   = os.environ["OLLAMA_UPSTREAM"]   # http://127.0.0.1:11434/v1
+    LITELLM  = os.environ["LITELLM_UPSTREAM"]  # http://127.0.0.1:4000
+    # Model alias → actual Ollama model name
+    MODELS   = json.loads(os.environ["MODEL_MAP"])
+
+    def is_chat(path: str) -> bool:
+        return "chat/completions" in path
+
+    def wrap_as_send_message(resp_json: dict) -> dict:
+        """If the model returned text instead of a tool call, convert to send_message.
+        Letta requires all responses to go through tool calls — this bridges the gap
+        when qwen3 sends a plain text reply after processing tool results."""
+        choices = resp_json.get("choices", [])
+        if not choices:
+            return resp_json
+        msg = choices[0].get("message", {})
+        if msg.get("tool_calls"):
+            return resp_json  # already has tool calls, pass through
+        content = msg.get("content") or ""
+        if not content.strip():
+            return resp_json  # empty content, pass through as-is
+        # Convert text response to send_message tool call
+        msg["tool_calls"] = [{
+            "id": f"call_{uuid.uuid4().hex[:8]}",
+            "type": "function",
+            "function": {
+                "name": "send_message",
+                "arguments": json.dumps({"message": content.strip()}),
+            },
+        }]
+        msg["content"] = None
+        choices[0]["finish_reason"] = "tool_calls"
+        print(f"[think-injector] wrapped text→send_message: {content[:60]!r}", flush=True)
+        return resp_json
+
+    class Handler(BaseHTTPRequestHandler):
+        def do_POST(self):
+            n = int(self.headers.get("Content-Length", 0))
+            body = json.loads(self.rfile.read(n))
+
+            if is_chat(self.path):
+                # Map alias → real model name, inject think:false, send direct to Ollama
+                alias = body.get("model", "")
+                body["model"] = MODELS.get(alias, alias)
+                body["think"] = False
+                upstream = f"{OLLAMA}/chat/completions"
+            else:
+                # Embeddings and other endpoints go through LiteLLM unchanged
+                upstream = f"{LITELLM}{self.path}"
+
+            data = json.dumps(body).encode()
+            streaming = body.get("stream", False)
+            with httpx.Client(timeout=300) as c:
+                if streaming:
+                    with c.stream("POST", upstream, content=data,
+                                  headers={"Content-Type": "application/json"}) as r:
+                        self.send_response(r.status_code)
+                        for k, v in r.headers.items():
+                            if k.lower() not in ("transfer-encoding", "connection", "content-length"):
+                                self.send_header(k, v)
+                        self.end_headers()
+                        for chunk in r.iter_raw():
+                            self.wfile.write(chunk)
+                            self.wfile.flush()
+                else:
+                    r = c.post(upstream, content=data,
+                               headers={"Content-Type": "application/json"})
+                    if is_chat(self.path) and r.status_code == 200:
+                        resp_json = wrap_as_send_message(r.json())
+                        resp = json.dumps(resp_json).encode()
+                    else:
+                        resp = r.content
+                    self.send_response(r.status_code)
+                    for k, v in r.headers.items():
+                        if k.lower() not in ("transfer-encoding", "connection", "content-length"):
+                            self.send_header(k, v)
+                    self.send_header("Content-Length", str(len(resp)))
+                    self.end_headers()
+                    self.wfile.write(resp)
+
+        def do_GET(self):
+            # /v1/models etc. — serve from LiteLLM so aliases are visible
+            r = httpx.get(f"{LITELLM}{self.path}", timeout=10)
+            data = r.content
+            self.send_response(r.status_code)
+            self.send_header("Content-Type", r.headers.get("content-type", "application/json"))
+            self.send_header("Content-Length", str(len(data)))
+            self.end_headers()
+            self.wfile.write(data)
+
+        def log_message(self, fmt, *args):
+            pass
+
+    port = int(os.environ["PROXY_PORT"])
+    print(f"think-injector on 127.0.0.1:{port} → Ollama:{OLLAMA} / LiteLLM:{LITELLM}", flush=True)
+    ThreadingHTTPServer(("127.0.0.1", port), Handler).serve_forever()
+  '';
 
   # Proxy: translates OpenAI chat/completions requests to Letta's native
   # /v1/agents/{id}/messages/ API, then re-emits as OpenAI SSE.
@@ -72,17 +180,26 @@
                 )
                 resp = r.json()
 
-                # Emit role chunk first
+                # Collect non-empty assistant messages; strip whitespace
+                msgs = resp.get("messages", [])
+                content_parts = [
+                    m.get("content", "").strip() for m in msgs
+                    if m.get("message_type") == "assistant_message"
+                    and m.get("content", "").strip()
+                ]
+
+                # Debug: log message types when we got no content
+                if not content_parts:
+                    types = [m.get("message_type") for m in msgs]
+                    print(f"[proxy] no content from {aid}: msg types={types}", flush=True)
+                    content_parts = ["(no response)"]
+
+                # Emit role chunk then content
                 self.wfile.write(make_chunk(cid, name))
                 self.wfile.flush()
-
-                # Emit each assistant_message as content chunks
-                msgs = resp.get("messages", [])
-                for m in msgs:
-                    if m.get("message_type") == "assistant_message":
-                        content = m.get("content") or ""
-                        self.wfile.write(make_chunk(cid, name, content=content))
-                        self.wfile.flush()
+                for content in content_parts:
+                    self.wfile.write(make_chunk(cid, name, content=content))
+                    self.wfile.flush()
 
                 # Finish
                 self.wfile.write(make_chunk(cid, name, finish="stop"))
@@ -115,6 +232,36 @@
   '';
 in {
   config = lib.mkIf cfg.letta.enable {
+    # Routes Letta's LLM chat calls directly to Ollama with think:false injected,
+    # bypassing LiteLLM which strips non-standard parameters.
+    systemd.services.litellm-think-injector = {
+      description = "Letta LLM Router (think:false injector)";
+      after = ["litellm.service" "ollama.service"];
+      requires = ["litellm.service" "ollama.service"];
+      wantedBy =
+        if cfg.onDemand
+        then []
+        else ["multi-user.target"];
+      environment = {
+        OLLAMA_UPSTREAM = "http://127.0.0.1:11434/v1";
+        LITELLM_UPSTREAM = "http://127.0.0.1:${toString cfg.litellm.port}";
+        PROXY_PORT = toString thinkProxyPort;
+        MODEL_MAP = builtins.toJSON {
+          face = cfg.models.face;
+          core = cfg.models.core;
+          code = cfg.models.code;
+        };
+      };
+      serviceConfig = {
+        Type = "simple";
+        User = cfg.user;
+        ExecStart = "${pkgs.letta}/bin/python3.11 ${thinkInjectorScript}";
+        Restart = "on-failure";
+        RestartSec = "3s";
+        NoNewPrivileges = true;
+      };
+    };
+
     systemd.services.letta-proxy = {
       description = "Letta Agent Name Proxy";
       after = ["letta.service" "letta-agent-init.service"];
@@ -134,6 +281,8 @@ in {
         Restart = "on-failure";
         RestartSec = "3s";
         NoNewPrivileges = true;
+        StandardOutput = "append:/tmp/letta-proxy.log";
+        StandardError = "append:/tmp/letta-proxy.log";
       };
     };
   };
