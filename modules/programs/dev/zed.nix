@@ -29,7 +29,7 @@ _: {
         "session" = {
           "trust_all_worktrees" = true;
         };
-        "vim_mode" = false;
+        "helix_mode" = true;
         "font_weight" = 300.0;
         "ui_font_weight" = 300.0;
         "ui_font_family" = "JetBrainsMono Nerd Font Propo";
