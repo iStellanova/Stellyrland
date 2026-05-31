@@ -8,6 +8,7 @@
 
   svcList = lib.concatStringsSep " " (
     ["ollama" "postgresql" "ai-db-init" "qdrant" "litellm"]
+    ++ lib.optional cfg.letta.enable "litellm-think-injector"
     ++ lib.optional cfg.letta.enable "redis-letta"
     ++ lib.optional cfg.letta.enable "letta"
     ++ lib.optional cfg.letta.enable "letta-agent-init"
