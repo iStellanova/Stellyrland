@@ -1,10 +1,9 @@
 _: {
   # Home Manager Helix Settings
-  # Helix is a modern modal text editor written in Rust. It's configured via programs.helix.
   flake.modules.homeManager.helix = {pkgs, ...}: {
     programs.helix = {
       enable = true;
-      # defaultEditor = true; # Uncomment this line when you want to make Helix your default editor!
+      defaultEditor = true;
 
       settings = {
         theme = "catppuccin_macchiato";
