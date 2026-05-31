@@ -35,7 +35,7 @@
       "gaming"
       "git"
       "zsh"
-      "nixvim"
+      "helix"
       "bitwarden"
       "vesktop"
       "noctalia-shell"
