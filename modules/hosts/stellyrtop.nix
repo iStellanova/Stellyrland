@@ -41,6 +41,7 @@
       "utils"
       "zed"
       "discord-music-rpc"
+      "helix"
     ];
 
     modules = [
