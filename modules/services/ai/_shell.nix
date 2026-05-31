@@ -12,6 +12,7 @@
     ++ lib.optional cfg.letta.enable "redis-letta"
     ++ lib.optional cfg.letta.enable "letta"
     ++ lib.optional cfg.letta.enable "letta-agent-init"
+    ++ lib.optional cfg.letta.enable "letta-tool-init"
     ++ lib.optional cfg.letta.enable "letta-proxy"
     ++ lib.optional cfg.searx.enable "searx"
     ++ lib.optional cfg.openWebUI.enable "open-webui"

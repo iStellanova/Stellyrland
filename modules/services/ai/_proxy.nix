@@ -17,10 +17,11 @@
     from http.server import ThreadingHTTPServer, BaseHTTPRequestHandler
     import httpx
 
-    OLLAMA   = os.environ["OLLAMA_UPSTREAM"]   # http://127.0.0.1:11434/v1
-    LITELLM  = os.environ["LITELLM_UPSTREAM"]  # http://127.0.0.1:4000
+    OLLAMA      = os.environ["OLLAMA_UPSTREAM"]   # http://127.0.0.1:11434/v1
+    LITELLM     = os.environ["LITELLM_UPSTREAM"]  # http://127.0.0.1:4000
+    DRAFT_MODEL = os.environ.get("DRAFT_MODEL", "")  # draft model for speculative decoding
     # Model alias → actual Ollama model name
-    MODELS   = json.loads(os.environ["MODEL_MAP"])
+    MODELS      = json.loads(os.environ["MODEL_MAP"])
 
     def is_chat(path: str) -> bool:
         return "chat/completions" in path
@@ -62,6 +63,10 @@
                 alias = body.get("model", "")
                 body["model"] = MODELS.get(alias, alias)
                 body["think"] = False
+                # Speculative decoding: face uses a smaller draft model (same tokenizer family)
+                # for 2-3x throughput. Ollama silently ignores this if not supported.
+                if alias == "face" and DRAFT_MODEL:
+                    body["speculative"] = DRAFT_MODEL
                 upstream = f"{OLLAMA}/chat/completions"
             else:
                 # Embeddings and other endpoints go through LiteLLM unchanged
@@ -246,6 +251,7 @@ in {
         OLLAMA_UPSTREAM = "http://127.0.0.1:11434/v1";
         LITELLM_UPSTREAM = "http://127.0.0.1:${toString cfg.litellm.port}";
         PROXY_PORT = toString thinkProxyPort;
+        DRAFT_MODEL = cfg.models.draft;
         MODEL_MAP = builtins.toJSON {
           face = cfg.models.face;
           core = cfg.models.core;

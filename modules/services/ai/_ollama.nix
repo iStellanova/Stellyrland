@@ -19,6 +19,8 @@ in {
       cfg.models.core
       cfg.models.code
       cfg.models.embed
+      cfg.models.draft
+      cfg.models.vision
     ];
   };
 
