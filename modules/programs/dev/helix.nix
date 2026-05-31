@@ -1,5 +1,5 @@
 _: {
-  programs.nixvim = {
-    enable = true;
+  flake.modules.homeManager.helix = _: {
+    programs.nixvim.enable = true;
   };
 }
