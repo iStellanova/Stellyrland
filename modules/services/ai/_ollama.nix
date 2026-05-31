@@ -14,6 +14,8 @@ in {
       OLLAMA_MAX_LOADED_MODELS = "1";
       OLLAMA_KEEP_ALIVE = "10m";
     };
+    # Declared models = installed models. Removes anything not listed.
+    syncModels = true;
     loadModels = lib.mkIf cfg.models.loadOnStartup [
       cfg.models.face
       cfg.models.core
