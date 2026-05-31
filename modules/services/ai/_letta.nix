@@ -101,6 +101,13 @@
   '';
 in {
   config = lib.mkIf cfg.letta.enable {
+    # Create /var/lib/letta on every boot. It lives on the ephemeral @ btrfs
+    # subvolume (impermanence wipes it), so StateDirectory=letta alone is not
+    # enough — this runs via tmpfiles.d before any service starts.
+    systemd.tmpfiles.rules = [
+      "d /var/lib/letta 0750 ${cfg.user} users - -"
+    ];
+
     # Redis — required by Letta's scheduler and background job queue
     services.redis.servers.letta = {
       enable = true;
