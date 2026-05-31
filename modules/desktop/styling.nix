@@ -4,6 +4,8 @@
     imports = [inputs.catppuccin.nixosModules.catppuccin];
 
     config = {
+      catppuccin.enable = true;
+      catppuccin.autoEnable = false;
       catppuccin.flavor = "macchiato";
       catppuccin.accent = "sapphire";
     };
@@ -15,6 +17,8 @@
 
     config = {
       # Catppuccin home-manager configuration.
+      catppuccin.enable = true;
+      catppuccin.autoEnable = false;
       catppuccin.flavor = "macchiato";
       catppuccin.accent = "sapphire";
 
