@@ -15,7 +15,7 @@
 
     # Home Manager.
     home-manager = {
-      url = "github:nix-community/home-manager";
+      url = "github:nix-community/home-manager/release-26.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -32,6 +32,30 @@
     noctalia-shell = {
       url = "github:noctalia-dev/noctalia-shell/v5";
       inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    # pyproject.nix + uv2nix + build-system-pkgs — PEP 517 / uv.lock packaging for Nix.
+    pyproject-nix = {
+      url = "github:pyproject-nix/pyproject.nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    uv2nix = {
+      url = "github:pyproject-nix/uv2nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.pyproject-nix.follows = "pyproject-nix";
+    };
+    pyproject-build-systems = {
+      url = "github:pyproject-nix/build-system-pkgs";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.pyproject-nix.follows = "pyproject-nix";
+      inputs.uv2nix.follows = "uv2nix";
+    };
+
+    # Letta source — agent framework with stateful memory (built via uv2nix).
+    # check-update: https://github.com/letta-ai/letta/releases
+    letta-src = {
+      url = "github:letta-ai/letta";
+      flake = false;
     };
 
     # Nix Darwin.
@@ -93,12 +117,6 @@
 
     # Nix-Flatpak - declarative Flatpak package management.
     nix-flatpak.url = "github:gmodena/nix-flatpak";
-
-    # Project Echo - Cognitive AI Bridge
-    echo-bridge = {
-      url = "git+ssh://git@github.com/iStellanova/Project-Echo.git";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
 
     # Custom assets and wallpapers.
     my-assets = {
