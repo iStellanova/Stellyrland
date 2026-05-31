@@ -7,6 +7,7 @@
       ./_litellm.nix
       ./_letta.nix
       ./_proxy.nix
+      ./_wave3.nix
       ./_memory.nix
       ./_search.nix
       ./_webui.nix
@@ -54,6 +55,24 @@
           default = "nomic-embed-text";
           description = "Embedding model used by Letta for archival memory search.";
         };
+
+        draft = lib.mkOption {
+          type = lib.types.str;
+          default = "qwen3:1.7b";
+          description = "Draft model for speculative decoding alongside face. Must share the same tokenizer. (~1GB VRAM)";
+        };
+
+        vision = lib.mkOption {
+          type = lib.types.str;
+          default = "minicpm-v:8b";
+          description = "Vision model for image analysis via the analyze_image tool. (~5GB VRAM)";
+        };
+      };
+
+      sandbox.enable = lib.mkOption {
+        type = lib.types.bool;
+        default = true;
+        description = "Enable Firejail sandboxing for the coder agent's code execution tool.";
       };
 
       litellm.port = lib.mkOption {
