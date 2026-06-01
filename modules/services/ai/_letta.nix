@@ -96,7 +96,7 @@
         }
 
         create_agent "echo"  "face" "${echoPersonaFile}"
-        create_agent "coder" "code" "${coderPersonaFile}"
+        create_agent "coder" "face" "${coderPersonaFile}"
         create_agent "core"  "core" "${corePersonaFile}"
   '';
 in {
