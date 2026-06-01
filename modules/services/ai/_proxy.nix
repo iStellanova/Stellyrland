@@ -185,18 +185,40 @@
                 )
                 resp = r.json()
 
-                # Collect non-empty assistant messages; strip whitespace
-                msgs = resp.get("messages", [])
-                content_parts = [
-                    m.get("content", "").strip() for m in msgs
-                    if m.get("message_type") == "assistant_message"
-                    and m.get("content", "").strip()
-                ]
+                # Collect content from assistant messages and send_message tool calls.
+                # Letta may use either form depending on agent state:
+                #   • assistant_message — direct text reply (simple exchanges)
+                #   • tool_call_message with send_message — after multi-step tool loops
+                msgs = resp.get("messages", []) if isinstance(resp, dict) else []
+                content_parts = []
+                for m in msgs:
+                    mtype = m.get("message_type", "")
+                    if mtype == "assistant_message":
+                        c = m.get("content", "").strip()
+                        if c:
+                            content_parts.append(c)
+                    elif mtype in ("tool_call_message", "tool_call"):
+                        for tc in m.get("tool_calls", []):
+                            fn = tc.get("function", {})
+                            if fn.get("name") == "send_message":
+                                try:
+                                    args = json.loads(fn.get("arguments", "{}"))
+                                    msg = args.get("message", "").strip()
+                                    if msg:
+                                        content_parts.append(msg)
+                                except (json.JSONDecodeError, AttributeError):
+                                    pass
 
-                # Debug: log message types when we got no content
                 if not content_parts:
                     types = [m.get("message_type") for m in msgs]
-                    print(f"[proxy] no content from {aid}: msg types={types}", flush=True)
+                    keys = list(resp.keys()) if isinstance(resp, dict) else type(resp).__name__
+                    detail = resp.get("detail", "") if isinstance(resp, dict) else ""
+                    print(
+                        f"[proxy] no content from {aid}: status={r.status_code}"
+                        f" keys={keys} msg_types={types}"
+                        + (f" detail={detail!r}" if detail else ""),
+                        flush=True,
+                    )
                     content_parts = ["(no response)"]
 
                 # Emit role chunk then content

@@ -7,7 +7,7 @@
       ./_litellm.nix
       ./_letta.nix
       ./_proxy.nix
-      ./_wave3.nix
+      ./_tools.nix
       ./_consolidation.nix
       ./_observability.nix
       ./_memory.nix
