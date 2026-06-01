@@ -18,7 +18,9 @@
     config = {
       nixpkgs.overlays = [
         (_final: prev: {
-          unity-test = prev.unity-test.overrideAttrs (_old: {doCheck = false;});
+          unity-test = prev.unity-test.overrideAttrs (_old: {
+            doCheck = false;
+          });
         })
         inputs.cachyos-kernel.overlays.default
         (_final: prev: {
@@ -30,7 +32,11 @@
       nix.daemonCPUSchedPolicy = "batch";
       nix.daemonIOSchedPriority = 7;
       nix.settings = {
-        experimental-features = ["nix-command" "flakes" "pipe-operators"];
+        experimental-features = [
+          "nix-command"
+          "flakes"
+          "pipe-operators"
+        ];
         log-lines = 25;
         auto-optimise-store = true;
         warn-dirty = false;
@@ -86,16 +92,24 @@
     config = {
       nixpkgs.overlays = [
         (_final: prev: {
-          unity-test = prev.unity-test.overrideAttrs (_old: {doCheck = false;});
+          unity-test = prev.unity-test.overrideAttrs (_old: {
+            doCheck = false;
+          });
         })
         (_final: prev: {
-          direnv = prev.direnv.overrideAttrs (_old: {doCheck = false;});
+          direnv = prev.direnv.overrideAttrs (_old: {
+            doCheck = false;
+          });
         })
       ];
 
       nix.enable = lib.mkDefault false;
       nix.settings = {
-        experimental-features = ["nix-command" "flakes" "pipe-operators"];
+        experimental-features = [
+          "nix-command"
+          "flakes"
+          "pipe-operators"
+        ];
         log-lines = 25;
         auto-optimise-store = true;
         warn-dirty = false;
