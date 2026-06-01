@@ -123,9 +123,9 @@
   '';
 
   # Python script that creates/updates tools and attaches them to agents.
-  # Safe to re-run: PUT /v1/tools/ is an upsert; attach is idempotent.
+  # Safe to re-run: PUT /v1/tools/ is an upsert; attaches are idempotent.
   toolInitPy = pkgs.writeText "letta-tool-init.py" ''
-    import json, time, urllib.request, urllib.error
+    import json, re, time, urllib.request
 
     LETTA = "http://127.0.0.1:${toString cfg.letta.port}"
 
@@ -140,7 +140,6 @@
         with urllib.request.urlopen(r, timeout=30) as resp:
             return json.load(resp)
 
-    # Wait for Letta to be healthy
     for _ in range(30):
         try:
             req("GET", "/v1/health")
@@ -152,14 +151,17 @@
 
     def upsert_tool(source_path: str) -> str:
         source_code = open(source_path).read()
-        result = req("PUT", "/v1/tools/", {
-            "source_code": source_code,
-            "source_type": "python",
-        })
+        result = req("PUT", "/v1/tools/", {"source_code": source_code, "source_type": "python"})
         tid = result["id"]
-        name = result.get("name", "?")
-        print(f"Tool upserted: {name} ({tid})")
+        print(f"Tool upserted: {result.get('name', '?')} ({tid})")
         return tid
+
+    def get_tool_id(name: str):
+        """Look up a tool ID by name — works for custom and built-in tools."""
+        for t in req("GET", "/v1/tools/?limit=100"):
+            if t.get("name") == name:
+                return t["id"]
+        return None
 
     def attach_tool(agent_name: str, tool_id: str) -> None:
         agents = req("GET", f"/v1/agents/?name={agent_name}")
@@ -167,21 +169,38 @@
             print(f"Agent {agent_name!r} not found, skipping attach")
             return
         agent_id = agents[0]["id"]
-        # Check if already attached to avoid redundant work
-        tools = req("GET", f"/v1/agents/{agent_id}/tools")
-        if any(t["id"] == tool_id for t in (tools or [])):
+        if any(t["id"] == tool_id for t in (req("GET", f"/v1/agents/{agent_id}/tools") or [])):
             print(f"Tool already attached to {agent_name}")
             return
         req("PATCH", f"/v1/agents/{agent_id}/tools/attach/{tool_id}")
         print(f"Attached tool to {agent_name}")
 
+    def update_block(block_id: str, value: str) -> None:
+        req("PATCH", f"/v1/blocks/{block_id}", {"value": value})
+
+    # --- Custom tools ---
     sandbox_id = upsert_tool("${sandboxToolSource}")
     vision_id  = upsert_tool("${visionToolSource}")
-
     attach_tool("coder", sandbox_id)
     attach_tool("echo",  vision_id)
 
-    print("Wave 3 tool init complete.")
+    # send_message_to_agent_and_wait_for_reply is attached to echo so it's available
+    # if the model ever chooses to use it voluntarily. Routing is not forced — models
+    # at this scale don't reliably follow delegation instructions. Use `code` alias
+    # to reach the coder agent directly.
+    coder_agents = req("GET", "/v1/agents/?name=coder")
+    echo_agents  = req("GET", "/v1/agents/?name=echo")
+
+    if coder_agents and echo_agents:
+        coder_id = coder_agents[0]["id"]
+        echo_id  = echo_agents[0]["id"]
+        delegate_tid = get_tool_id("send_message_to_agent_and_wait_for_reply")
+        if delegate_tid:
+            attach_tool("echo", delegate_tid)
+    else:
+        print("Skipping delegation tool attach: coder or echo agent not found")
+
+    print("Tool init complete.")
   '';
 
   toolInitScript = pkgs.writeShellScript "letta-tool-init" ''
@@ -193,7 +212,7 @@ in {
     programs.firejail.enable = lib.mkIf cfg.sandbox.enable true;
 
     systemd.services.letta-tool-init = {
-      description = "Initialize Letta Wave 3 Tools (sandbox + vision)";
+      description = "Register Letta tools and wire agent capabilities";
       after = ["letta-agent-init.service"];
       requires = ["letta.service"];
       wantedBy =

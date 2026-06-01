@@ -6,11 +6,11 @@
 }: let
   cfg = config.services.ai;
 
-  # Persona for Echo: warm, conversational, actively uses memory
+  # Persona for Echo: warm, conversational, actively uses memory.
+  # Routing rule injected into system prompt by letta-tool-init after coder's ID is known.
   echoPersona = ''
     I am Echo, a local AI assistant with persistent memory. I know who I'm talking to
-    and actively draw on past conversations. I escalate to deeper reasoning or code-focused
-    thinking when needed, but I stay light and conversational by default.
+    and actively draw on past conversations. I stay light and conversational by default.
   '';
 
   # Persona for Coder: focused, code-first, conservative memory injection
@@ -20,11 +20,11 @@
     directly technically relevant — otherwise I stay focused on the task at hand.
   '';
 
-  # Persona for Core: deep reasoning, called by Echo when needed
+  # Persona for Core: deep reasoning, patient, thorough
   corePersona = ''
-    I am Core, a deep reasoning assistant. I think carefully and thoroughly before
-    responding. I am invoked when a problem requires sustained analysis or when
-    quick answers are insufficient.
+    I am Core, a deep reasoning assistant with persistent memory. I think carefully
+    and thoroughly before responding. I am used for hard problems, sustained analysis,
+    and situations where a quick answer is not enough.
   '';
 
   # Write personas to the Nix store so the shell script can cat them without

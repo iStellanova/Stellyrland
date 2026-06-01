@@ -89,6 +89,8 @@
         ];
         core.nix-settings.cores = 24;
 
+        services.ai.models.face = "qwen3:14b";
+
         desktop.gaming.hdr.enable = true;
 
         desktop.hyprland.wallpaperEngine.workshopId = "3258032485";
