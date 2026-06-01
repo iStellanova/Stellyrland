@@ -14,6 +14,7 @@
     ++ lib.optional cfg.letta.enable "letta-agent-init"
     ++ lib.optional cfg.letta.enable "letta-tool-init"
     ++ lib.optional cfg.letta.enable "letta-proxy"
+    ++ lib.optional cfg.observability.enable "prometheus"
     ++ lib.optional cfg.searx.enable "searx"
     ++ lib.optional cfg.openWebUI.enable "open-webui"
   );
@@ -44,6 +45,7 @@ in {
     ai-status = "systemctl status ${svcList}";
     ai-logs = "journalctl -f -b -u litellm -u letta";
     ai-check-updates = "${checkUpdates}";
+    ai-consolidate = "sudo systemctl start letta-consolidate.service";
   };
 
   environment.systemPackages =
