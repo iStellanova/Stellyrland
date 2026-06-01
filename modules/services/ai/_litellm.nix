@@ -1,5 +1,6 @@
 {
   config,
+  lib,
   pkgs,
   ...
 }: let
@@ -43,6 +44,10 @@
       routing_strategy = "least-busy";
       fallbacks = [{face = ["core"];}];
       num_retries = 3;
+    };
+    litellm_settings = lib.optionalAttrs cfg.observability.enable {
+      # Expose /metrics endpoint for Prometheus scraping
+      callbacks = ["prometheus"];
     };
   };
 in {

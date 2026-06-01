@@ -8,6 +8,8 @@
       ./_letta.nix
       ./_proxy.nix
       ./_wave3.nix
+      ./_consolidation.nix
+      ./_observability.nix
       ./_memory.nix
       ./_search.nix
       ./_webui.nix
@@ -73,6 +75,41 @@
         type = lib.types.bool;
         default = true;
         description = "Enable Firejail sandboxing for the coder agent's code execution tool.";
+      };
+
+      consolidation = {
+        enable = lib.mkOption {
+          type = lib.types.bool;
+          default = true;
+          description = "Run periodic memory consolidation to compact agent conversation histories.";
+        };
+        schedule = lib.mkOption {
+          type = lib.types.str;
+          default = "Sun *-*-* 03:00:00";
+          description = "systemd OnCalendar expression for when to run consolidation.";
+        };
+      };
+
+      observability = {
+        enable = lib.mkOption {
+          type = lib.types.bool;
+          default = false;
+          description = "Enable Prometheus metrics scraping for LiteLLM.";
+        };
+        prometheusPort = lib.mkOption {
+          type = lib.types.port;
+          default = 9090;
+        };
+        grafana = lib.mkOption {
+          type = lib.types.bool;
+          default = false;
+          description = "Enable Grafana for dashboard visualization of Prometheus data.";
+        };
+        grafanaPort = lib.mkOption {
+          type = lib.types.port;
+          default = 3001;
+          description = "Port for Grafana (3001 to avoid collision with other services).";
+        };
       };
 
       litellm.port = lib.mkOption {
