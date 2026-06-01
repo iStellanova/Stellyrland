@@ -14,6 +14,7 @@
     ++ lib.optional cfg.letta.enable "letta-agent-init"
     ++ lib.optional cfg.letta.enable "letta-tool-init"
     ++ lib.optional cfg.letta.enable "letta-proxy"
+    ++ lib.optional (cfg.letta.enable && cfg.router.enable) "letta-router"
     ++ lib.optional cfg.observability.enable "prometheus"
     ++ lib.optional cfg.searx.enable "searx"
     ++ lib.optional cfg.openWebUI.enable "open-webui"
@@ -58,7 +59,11 @@ in {
       alias chat-raw="OLLAMA_HOST=127.0.0.1:11434 oterm"
     ''}
     ${lib.optionalString cfg.letta.enable ''
-      alias chat="aichat --model letta:echo"
+      alias chat="${
+        if cfg.router.enable
+        then "aichat --model router:auto"
+        else "aichat --model letta:echo"
+      }"
       alias think="aichat --model letta:core"
       alias code="aichat --model letta:coder"
     ''}

@@ -7,6 +7,7 @@
       ./_litellm.nix
       ./_letta.nix
       ./_proxy.nix
+      ./_router.nix
       ./_tools.nix
       ./_consolidation.nix
       ./_observability.nix
@@ -125,6 +126,18 @@
         port = lib.mkOption {
           type = lib.types.port;
           default = 8283;
+        };
+      };
+
+      router = {
+        enable = lib.mkOption {
+          type = lib.types.bool;
+          default = true;
+          description = "Enable the LLM-based agent router (qwen3:1.7b classifier + @prefix dispatch).";
+        };
+        port = lib.mkOption {
+          type = lib.types.port;
+          default = 8285;
         };
       };
 
@@ -247,6 +260,7 @@
   }: let
     cfg = osConfig.services.ai;
     proxyPort = toString (cfg.letta.port + 1);
+    routerPort = toString cfg.router.port;
   in {
     # oterm: direct Ollama TUI for quick model testing
     home.file.".local/share/oterm/config.json" = lib.mkIf cfg.oterm.enable {
@@ -257,23 +271,36 @@
       };
     };
 
-    # aichat: OpenAI-compatible TUI wired to Letta for memory-enhanced chat
+    # aichat: OpenAI-compatible TUI wired to Letta for memory-enhanced chat.
+    # `router:auto` is the default — qwen3:1.7b classifies each message and
+    # dispatches to echo / coder / core. Use `letta:echo` etc. to bypass routing.
     home.file.".config/aichat/config.yaml" = lib.mkIf cfg.letta.enable {
-      text = ''
-        model: letta:echo
-        clients:
-          - type: openai
-            name: letta
-            api_base: http://127.0.0.1:${proxyPort}/v1
-            api_key: local-only
-            models:
-              - name: echo
-                max_input_tokens: 32768
-              - name: coder
-                max_input_tokens: 32768
-              - name: core
-                max_input_tokens: 32768
-      '';
+      text = let
+        defaultModel =
+          if cfg.router.enable
+          then "router:auto"
+          else "letta:echo";
+        # Explicit newlines preserve the 2-space indent required by the clients: list.
+        routerClient =
+          lib.optionalString cfg.router.enable
+          "  - type: openai\n    name: router\n    api_base: http://127.0.0.1:${routerPort}/v1\n    api_key: local-only\n    models:\n      - name: auto\n        max_input_tokens: 32768\n";
+      in
+        ''
+          model: ${defaultModel}
+          clients:
+            - type: openai
+              name: letta
+              api_base: http://127.0.0.1:${proxyPort}/v1
+              api_key: local-only
+              models:
+                - name: echo
+                  max_input_tokens: 32768
+                - name: coder
+                  max_input_tokens: 32768
+                - name: core
+                  max_input_tokens: 32768
+        ''
+        + routerClient;
     };
   };
 }
