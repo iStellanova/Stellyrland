@@ -58,8 +58,9 @@ in {
       alias chat-raw="OLLAMA_HOST=127.0.0.1:11434 oterm"
     ''}
     ${lib.optionalString cfg.letta.enable ''
-      # aichat: memory-enhanced chat via Letta (echo agent)
       alias chat="aichat --model letta:echo"
+      alias think="aichat --model letta:core"
+      alias code="aichat --model letta:coder"
     ''}
   '';
 }
