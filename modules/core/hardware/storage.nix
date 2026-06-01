@@ -1,12 +1,10 @@
-{inputs, ...}: {
+_: {
   # NixOS Storage and Snapper configuration
   flake.modules.nixos.storage = {
     config,
     pkgs,
     ...
   }: {
-    imports = [inputs.disko.nixosModules.disko];
-
     config = {
       environment.systemPackages = with pkgs; [
         btrfs-assistant # GUI manager for Btrfs and Snapper

@@ -94,12 +94,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # Disko - declarative disk partitioning.
-    disko = {
-      url = "github:nix-community/disko";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     # Lanzaboote - Secure Boot for NixOS via signed UKIs.
     lanzaboote = {
       url = "github:nix-community/lanzaboote";
