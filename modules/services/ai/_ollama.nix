@@ -11,7 +11,8 @@ in {
     package = pkgs.ollama-rocm;
     rocmOverrideGfx = "11.0.0";
     environmentVariables = {
-      OLLAMA_MAX_LOADED_MODELS = "1";
+      # 2 slots: face model + draft model can coexist for speculative decoding
+      OLLAMA_MAX_LOADED_MODELS = "2";
       OLLAMA_KEEP_ALIVE = "10m";
     };
     # Declared models = installed models. Removes anything not listed.

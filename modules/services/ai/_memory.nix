@@ -16,7 +16,7 @@ in {
     };
   };
 
-  # PostgreSQL — behavioral rules, personality traits, and Letta recall memory
+  # PostgreSQL — Letta recall memory (letta DB) and pgvector extension
   services.postgresql = {
     enable = true;
     package = pkgs.postgresql_16.withPackages (ps: [ps.pgvector]);
@@ -55,27 +55,9 @@ in {
         ${pkgs.postgresql_16}/bin/psql -d letta -c "CREATE EXTENSION IF NOT EXISTS vector;"
         $PSQL -c "
           CREATE EXTENSION IF NOT EXISTS vector;
-          CREATE TABLE IF NOT EXISTS rules (
-            id        SERIAL PRIMARY KEY,
-            rule      TEXT NOT NULL,
-            priority  INT DEFAULT 0,
-            active    BOOLEAN DEFAULT TRUE
-          );
-          CREATE TABLE IF NOT EXISTS traits (
-            id          SERIAL PRIMARY KEY,
-            trait       TEXT UNIQUE NOT NULL,
-            score       FLOAT NOT NULL CHECK (score BETWEEN 0 AND 1),
-            decay_rate  FLOAT DEFAULT 0.02,
-            daily_delta FLOAT DEFAULT 0.0,
-            updated_at  TIMESTAMPTZ DEFAULT now()
-          );
           GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO ${cfg.user};
           GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO ${cfg.user};
         "
-        ${lib.concatMapStrings (r: ''
-            $PSQL -c "INSERT INTO rules (rule, priority, active) SELECT '${r.rule}', ${toString r.priority}, TRUE WHERE NOT EXISTS (SELECT 1 FROM rules WHERE rule = '${r.rule}');"
-          '')
-          cfg.bootstrap.rules}
       '';
       RemainAfterExit = true;
     };
