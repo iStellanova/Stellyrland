@@ -45,10 +45,14 @@
       fallbacks = [{face = ["core"];}];
       num_retries = 3;
     };
-    litellm_settings = lib.optionalAttrs cfg.observability.enable {
-      # Expose /metrics endpoint for Prometheus scraping
-      callbacks = ["prometheus"];
-    };
+    litellm_settings =
+      {
+        # Ollama doesn't support all OpenAI params (e.g. encoding_format: base64 for embeddings)
+        drop_params = true;
+      }
+      // lib.optionalAttrs cfg.observability.enable {
+        callbacks = ["prometheus"];
+      };
   };
 in {
   systemd.services.litellm = {

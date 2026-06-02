@@ -13,6 +13,7 @@
       ./_observability.nix
       ./_memory.nix
       ./_search.nix
+      ./_rag.nix
       ./_webui.nix
       ./_shell.nix
     ];
@@ -192,6 +193,19 @@
             priority = 10;
           }
         ];
+      };
+
+      rag = {
+        enable = lib.mkOption {
+          type = lib.types.bool;
+          default = true;
+          description = "Index ~/Documents/data into Letta archival memory at startup.";
+        };
+        docsDir = lib.mkOption {
+          type = lib.types.str;
+          default = "/home/stellanova/Documents/data";
+          description = "Directory of .md/.txt/.nix files to embed and attach to all agents.";
+        };
       };
 
       postgresql.databaseName = lib.mkOption {
