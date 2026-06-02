@@ -17,6 +17,7 @@ in {
           secret_key = "stellyrland-local-ai";
         };
         search.safe_search = 0;
+        search.formats = ["html" "json"];
         ui.default_theme = "simple";
       };
     };
