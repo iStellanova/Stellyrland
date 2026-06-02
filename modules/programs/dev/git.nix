@@ -9,11 +9,11 @@ _: {
         "stellyrland" = {
           HostName = "stellyrland.tailb15b96.ts.net";
           User = osConfig.identity.username;
-          IdentityFile = "~/.ssh/stellacode";
+          IdentityFile = "/run/secrets/stellacode";
         };
         "github.com" = {
           User = "git";
-          IdentityFile = "~/.ssh/stellacode";
+          IdentityFile = "/run/secrets/stellacode";
           AddKeysToAgent = "yes";
         };
         "*" = {

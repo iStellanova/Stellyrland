@@ -1,4 +1,11 @@
 _: {
+  flake.modules.homeManager.nautilus = _: {
+    dconf.settings."org/gnome/nautilus/preferences" = {
+      default-folder-viewer = "list-view";
+      show-hidden-files = true;
+    };
+  };
+
   # NixOS Nautilus Settings
   flake.modules.nixos.nautilus = {
     pkgs,

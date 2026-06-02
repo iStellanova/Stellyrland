@@ -20,7 +20,6 @@
 
       # Decrypt and write the personal SSH private key dynamically on boot
       sops.secrets.stellacode = {
-        path = "${config.identity.homeDir}/.ssh/stellacode";
         owner = config.identity.username;
         mode = "0600";
       };
