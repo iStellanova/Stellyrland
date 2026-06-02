@@ -59,7 +59,7 @@ _: {
       # replaced before the kernel ever pivots into it. /nix (@nix), /persist
       # (@persist), and /home (@home) are separate subvolumes and are never touched.
       boot.initrd.systemd.services.rollback = {
-        description = "Rollback BTRFS root to blank snapshot";
+        description = "Rollback BTRFS root and home to blank snapshots";
         wantedBy = ["initrd.target"];
         after = ["systemd-cryptsetup@cryptroot.service"];
         before = ["sysroot.mount"];
@@ -82,6 +82,19 @@ _: {
             btrfs subvolume snapshot /mnt/@blank /mnt/@
           else
             echo "stellyrland: @blank not found, skipping rollback"
+          fi
+
+          # Guard: only wipe @home if @home_blank exists. Same safe-seed pattern.
+          if btrfs subvolume show /mnt/@home_blank > /dev/null 2>&1; then
+            btrfs subvolume list -o /mnt/@home |
+              awk '{print $NF}' |
+              while read subvol; do
+                btrfs subvolume delete "/mnt/$subvol"
+              done
+            btrfs subvolume delete /mnt/@home
+            btrfs subvolume snapshot /mnt/@home_blank /mnt/@home
+          else
+            echo "stellyrland: @home_blank not found, skipping home rollback"
           fi
 
           umount /mnt

@@ -49,7 +49,6 @@
       "yazi"
       "nautilus"
       "zed"
-      "zed-ai"
       "openssh"
       "discord-music-rpc"
       "greetd"
@@ -88,8 +87,6 @@
           "DP-3"
         ];
         core.nix-settings.cores = 24;
-
-        services.ai.models.face = "qwen3:14b";
 
         desktop.gaming.hdr.enable = true;
 
