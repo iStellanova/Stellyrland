@@ -177,6 +177,81 @@
         return "\n".join(lines)
   '';
 
+  # Tool: read, write, and list files on the local filesystem.
+  # Runs as cfg.user so access is naturally scoped to user permissions.
+  fileToolSource = pkgs.writeText "file-tools.py" ''
+    def read_file(path: str) -> str:
+        """Read the contents of a file on the local filesystem.
+
+        You MUST call this tool when:
+        - The user asks about, mentions, or shares a file path
+        - The user asks you to look at, review, or understand code in their project
+        - You need to see actual file contents before answering a code question
+
+        Do NOT answer questions about local code from memory — always read the file first.
+
+        Args:
+            path: Absolute or home-relative path (~ is expanded)
+
+        Returns:
+            File contents as a string, or an error message
+        """
+        import os
+        try:
+            full = os.path.expanduser(path)
+            with open(full, "r", encoding="utf-8", errors="replace") as f:
+                return f.read()
+        except Exception as e:
+            return f"Error reading {path!r}: {e}"
+
+    def write_file(path: str, content: str) -> str:
+        """Write content to a file on the local filesystem. Creates the file if
+        it does not exist; overwrites it if it does.
+
+        Args:
+            path: Absolute or home-relative path (~ is expanded)
+            content: Text content to write
+
+        Returns:
+            Success message or error
+        """
+        import os
+        try:
+            full = os.path.expanduser(path)
+            os.makedirs(os.path.dirname(full) or ".", exist_ok=True)
+            with open(full, "w", encoding="utf-8") as f:
+                f.write(content)
+            return f"Written {len(content)} chars to {full}"
+        except Exception as e:
+            return f"Error writing {path!r}: {e}"
+
+    def list_directory(path: str = "~") -> str:
+        """List files and directories at the given path.
+
+        You MUST call this tool when:
+        - The user asks you to explore, browse, or look at a directory
+        - You need to understand the structure of a project before reading files
+        - The user references a folder or project by path
+
+        Args:
+            path: Absolute or home-relative path (~ is expanded, default: home)
+
+        Returns:
+            Directory listing or error
+        """
+        import os
+        try:
+            full = os.path.expanduser(path)
+            entries = sorted(os.scandir(full), key=lambda e: (not e.is_dir(), e.name))
+            lines = []
+            for e in entries:
+                kind = "/" if e.is_dir() else ""
+                lines.append(f"{e.name}{kind}")
+            return "\n".join(lines) if lines else "(empty)"
+        except Exception as e:
+            return f"Error listing {path!r}: {e}"
+  '';
+
   # Python script that creates/updates tools and attaches them to agents.
   # Safe to re-run: PUT /v1/tools/ is an upsert; attaches are idempotent.
   toolInitPy = pkgs.writeText "letta-tool-init.py" ''
@@ -237,12 +312,16 @@
     sandbox_id    = upsert_tool("${sandboxToolSource}")
     vision_id     = upsert_tool("${visionToolSource}")
     web_search_id = upsert_tool("${webSearchToolSource}")
+    file_id       = upsert_tool("${fileToolSource}")
 
     attach_tool("coder", sandbox_id)
+    attach_tool("code",  sandbox_id)
     attach_tool("echo",  vision_id)
+    attach_tool("code",  vision_id)
+    attach_tool("code",  file_id)
 
-    # Web search — all three agents get it
-    for agent in ("echo", "coder", "core"):
+    # Web search — all agents get it
+    for agent in ("echo", "coder", "core", "code"):
         attach_tool(agent, web_search_id)
 
     # send_message_to_agent_and_wait_for_reply is attached to echo so it's available

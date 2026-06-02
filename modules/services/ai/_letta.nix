@@ -27,11 +27,20 @@
     and situations where a quick answer is not enough.
   '';
 
+  # Persona for Code: devstral-backed, laser-focused on code, minimal prose
+  codePersona = ''
+    I am Code, a code-generation assistant running on Devstral. I write clean, correct
+    code and answer code questions directly. I do not editorialize or pad responses.
+    When the user mentions a file or directory, I use read_file or list_directory
+    immediately — I never answer questions about local code from memory alone.
+  '';
+
   # Write personas to the Nix store so the shell script can cat them without
   # quoting/newline issues when embedding into Python inline code.
   echoPersonaFile = pkgs.writeText "echo-persona" echoPersona;
   coderPersonaFile = pkgs.writeText "coder-persona" coderPersona;
   corePersonaFile = pkgs.writeText "core-persona" corePersona;
+  codePersonaFile = pkgs.writeText "code-persona" codePersona;
 
   # Enforces that each agent's persona block matches the Nix-defined persona +
   # bootstrap.rules on every ai-up, not just at first creation. This makes the
@@ -46,6 +55,7 @@
         "echo":  "${echoPersonaFile}",
         "coder": "${coderPersonaFile}",
         "core":  "${corePersonaFile}",
+        "code":  "${codePersonaFile}",
     }
 
     # Sorted highest-priority first; generated from cfg.bootstrap.rules at build time
@@ -152,6 +162,7 @@
         create_agent "echo"  "face" "${echoPersonaFile}"
         create_agent "coder" "face" "${coderPersonaFile}"
         create_agent "core"  "core" "${corePersonaFile}"
+        create_agent "code"  "code" "${codePersonaFile}"
   '';
 in {
   config = lib.mkIf cfg.letta.enable {

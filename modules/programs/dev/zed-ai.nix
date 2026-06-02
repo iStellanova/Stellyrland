@@ -9,21 +9,21 @@ _: {
   in
     lib.mkIf cfg.letta.enable {
       programs.zed-editor.userSettings = {
-        # Coder agent as default — IDE sessions always stay on devstral
+        # Code agent as default — IDE sessions use devstral via Letta
         "agent" = {
           "default_model" = {
             "provider" = "letta";
-            "model" = "coder";
+            "model" = "code";
           };
           "inline_assistant_model" = {
             "provider" = "letta";
-            "model" = "coder";
+            "model" = "code";
           };
         };
         "assistant" = {
           "default_model" = {
             "provider" = "letta";
-            "model" = "coder";
+            "model" = "code";
           };
         };
         "language_models" = {
@@ -33,8 +33,13 @@ _: {
               "api_key" = "local-only";
               "available_models" = [
                 {
+                  "name" = "code";
+                  "display_name" = "Code (devstral via Letta)";
+                  "max_tokens" = 32768;
+                }
+                {
                   "name" = "coder";
-                  "display_name" = "Echo Coder (devstral via Letta)";
+                  "display_name" = "Coder (face via Letta)";
                   "max_tokens" = 32768;
                 }
                 {
@@ -44,7 +49,7 @@ _: {
                 }
                 {
                   "name" = "core";
-                  "display_name" = "Echo Core (reasoning via Letta)";
+                  "display_name" = "Core (reasoning via Letta)";
                   "max_tokens" = 32768;
                 }
               ];
