@@ -122,6 +122,61 @@
             return f"Error calling vision model ({type(e).__name__}): {e}"
   '';
 
+  # Tool: search the web via local SearXNG instance (port ${toString cfg.searx.port}).
+  # All three agents have this tool; the directive docstring instructs when to call it.
+  webSearchToolSource = pkgs.writeText "web-search.py" ''
+    def web_search(query: str, num_results: int = 5) -> str:
+        """Search the web for current information and return relevant results.
+
+        You MUST call this tool when:
+        - The user asks about current events, news, weather, prices, or recent releases
+        - The [Today:] date in the user message suggests your training data may be stale
+        - The user explicitly asks you to search, look something up, or find current info
+        - You are not confident your information is accurate and up-to-date
+
+        Do NOT answer from memory when live or current information is appropriate.
+
+        Args:
+            query: Search query string
+            num_results: Number of results to return (default 5, max 10)
+
+        Returns:
+            Formatted search results with titles, URLs, and snippets
+        """
+        import json
+        import urllib.request
+        import urllib.parse
+
+        num_results = min(int(num_results), 10)
+        params = urllib.parse.urlencode({"q": query, "format": "json", "language": "en"})
+        url = f"http://127.0.0.1:${toString cfg.searx.port}/search?{params}"
+
+        try:
+            req = urllib.request.Request(url, headers={"User-Agent": "letta-agent/1.0"})
+            with urllib.request.urlopen(req, timeout=15) as r:
+                data = json.load(r)
+        except Exception as e:
+            return f"Search failed ({type(e).__name__}): {e}"
+
+        results = data.get("results", [])[:num_results]
+        if not results:
+            return f"No results found for: {query!r}"
+
+        lines = [f"Search results for: {query!r}\n"]
+        for i, result in enumerate(results, 1):
+            title   = result.get("title", "No title").strip()
+            src_url = result.get("url", "").strip()
+            snippet = result.get("content", "").strip()
+            lines.append(f"{i}. {title}")
+            if src_url:
+                lines.append(f"   URL: {src_url}")
+            if snippet:
+                lines.append(f"   {snippet}")
+            lines.append("")
+
+        return "\n".join(lines)
+  '';
+
   # Python script that creates/updates tools and attaches them to agents.
   # Safe to re-run: PUT /v1/tools/ is an upsert; attaches are idempotent.
   toolInitPy = pkgs.writeText "letta-tool-init.py" ''
@@ -179,10 +234,16 @@
         req("PATCH", f"/v1/blocks/{block_id}", {"value": value})
 
     # --- Custom tools ---
-    sandbox_id = upsert_tool("${sandboxToolSource}")
-    vision_id  = upsert_tool("${visionToolSource}")
+    sandbox_id    = upsert_tool("${sandboxToolSource}")
+    vision_id     = upsert_tool("${visionToolSource}")
+    web_search_id = upsert_tool("${webSearchToolSource}")
+
     attach_tool("coder", sandbox_id)
     attach_tool("echo",  vision_id)
+
+    # Web search — all three agents get it
+    for agent in ("echo", "coder", "core"):
+        attach_tool(agent, web_search_id)
 
     # send_message_to_agent_and_wait_for_reply is attached to echo so it's available
     # if the model ever chooses to use it voluntarily. Routing is not forced — models

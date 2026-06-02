@@ -125,6 +125,7 @@
   # Letta's /v1/chat/completions stub only returns content:null — unusable.
   proxyScript = pkgs.writeText "letta-proxy.py" ''
     import json, os, time, uuid
+    from datetime import datetime, timezone
     from http.server import ThreadingHTTPServer, BaseHTTPRequestHandler
     import httpx
 
@@ -178,9 +179,14 @@
             self.end_headers()
 
             try:
+                today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+                ctx = f"[Today: {today} — use web_search for anything current, recent, or time-sensitive]"
                 r = httpx.post(
                     f"{LETTA}/v1/agents/{aid}/messages",
-                    json={"messages": [{"role": "user", "content": user_text}]},
+                    json={
+                        "messages": [{"role": "user", "content": f"{ctx}\n{user_text}"}],
+                        "max_steps": 12,
+                    },
                     timeout=300,
                 )
                 resp = r.json()
