@@ -64,7 +64,7 @@
         existing = {}
 
     for fpath in files:
-        src_name = fpath.stem
+        src_name = fpath.relative_to(DOCS_DIR).with_suffix("").as_posix().replace("/", "_")
 
         if src_name in existing:
             try:
