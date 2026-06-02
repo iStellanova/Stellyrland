@@ -120,6 +120,10 @@
     ThreadingHTTPServer(("127.0.0.1", port), Handler).serve_forever()
   '';
 
+  # Injected into every message when rag.enable is true so the model knows
+  # it has access to indexed docs via archival_memory_search.
+  ragCtxHint = lib.optionalString cfg.rag.enable "; use archival_memory_search for ANY question involving project docs, conventions, NixOS config, or specific knowledge — your document library is indexed and searchable";
+
   # Proxy: translates OpenAI chat/completions requests to Letta's native
   # /v1/agents/{id}/messages/ API, then re-emits as OpenAI SSE.
   # Letta's /v1/chat/completions stub only returns content:null — unusable.
@@ -180,7 +184,7 @@
 
             try:
                 today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
-                ctx = f"[Today: {today} — use web_search for anything current, recent, or time-sensitive]"
+                ctx = f"[Today: {today} — use web_search for anything current, recent, or time-sensitive${ragCtxHint}]"
                 r = httpx.post(
                     f"{LETTA}/v1/agents/{aid}/messages",
                     json={
