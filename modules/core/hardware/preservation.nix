@@ -89,8 +89,15 @@
               ".var/app"
             ];
             files = [
-              ".ssh/known_hosts"
-              ".zsh_history"
+              {
+                file = ".ssh/known_hosts";
+                how = "symlink";
+                configureParent = true;
+              }
+              {
+                file = ".zsh_history";
+                how = "symlink";
+              }
             ];
           };
         };
