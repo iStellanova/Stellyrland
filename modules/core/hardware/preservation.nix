@@ -60,11 +60,12 @@
               "Videos"
 
               # Credentials
+              ".ssh"
               ".local/share/keyrings"
               ".gnupg"
 
               # Browser profile (bookmarks, history, logins, cookies)
-              ".config/zen/${config.programs.browser.profileId}.Default Profile"
+              ".config/zen"
 
               # App sessions and runtime state
               ".config/vesktop"
@@ -89,11 +90,6 @@
               ".var/app"
             ];
             files = [
-              {
-                file = ".ssh/known_hosts";
-                how = "symlink";
-                configureParent = true;
-              }
               {
                 file = ".zsh_history";
                 how = "symlink";
