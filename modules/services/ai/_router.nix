@@ -20,6 +20,11 @@
 
     PREFIX_MAP = {"@echo": "echo", "@coder": "coder", "@core": "core"}
     VALID      = {"echo", "coder", "core"}
+    SYNONYMS   = {
+        "conversation": "echo", "chat": "echo", "general": "echo", "memory": "echo", "recall": "echo",
+        "coding": "coder", "code": "coder", "technical": "coder", "implementation": "coder", "script": "coder",
+        "reasoning": "core", "analysis": "core", "complex": "core", "architecture": "core", "decision": "core",
+    }
 
     SYSTEM = (
         "Classify the user message. Reply with exactly one word — no punctuation, no explanation:\n"
@@ -52,9 +57,10 @@
             )
             raw  = r.json().get("response", "").strip().lower()
             word = re.sub(r"[^a-z]", "", raw.split()[0]) if raw.split() else ""
-            if word in VALID:
-                print(f"[router] classified → {word}", flush=True)
-                return word
+            resolved = SYNONYMS.get(word, word) if word not in VALID else word
+            if resolved in VALID:
+                print(f"[router] classified → {resolved}", flush=True)
+                return resolved
             print(f"[router] unexpected output {raw!r} → echo", flush=True)
         except Exception as e:
             print(f"[router] classifier error: {e} → echo", flush=True)
