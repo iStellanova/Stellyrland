@@ -17,7 +17,7 @@
     LETTA    = "http://127.0.0.1:${toString cfg.letta.port}"
     DOCS_DIR = pathlib.Path("${cfg.rag.docsDir}")
     EXTS     = {".md", ".txt", ".nix"}
-    AGENTS   = ("echo", "coder", "core")
+    AGENTS   = ("echo", "coder", "core", "code")
 
     client = httpx.Client(timeout=60, follow_redirects=True)
 
