@@ -49,6 +49,7 @@
       "yazi"
       "nautilus"
       "zed"
+      "zed-ai"
       "openssh"
       "discord-music-rpc"
       "greetd"
