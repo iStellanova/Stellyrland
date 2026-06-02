@@ -15,6 +15,7 @@
     ++ lib.optional cfg.letta.enable "letta-tool-init"
     ++ lib.optional cfg.letta.enable "letta-proxy"
     ++ lib.optional (cfg.letta.enable && cfg.router.enable) "letta-router"
+    ++ lib.optionals (cfg.letta.enable && cfg.rag.enable) ["letta-rag-init" "letta-rag-watch.path"]
     ++ lib.optional cfg.observability.enable "prometheus"
     ++ lib.optional cfg.searx.enable "searx"
     ++ lib.optional cfg.openWebUI.enable "open-webui"
