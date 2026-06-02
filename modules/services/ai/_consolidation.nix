@@ -7,12 +7,6 @@
   cfg = config.services.ai;
 
   consolidatePy = pkgs.writeText "letta-consolidate.py" ''
-    """
-    Compact each Letta agent's in-context message history using the native
-    /summarize endpoint. Runs on a timer to prevent context windows filling
-    up and to keep recall memory lean. Skips agents that don't have enough
-    messages to compact (< threshold).
-    """
     import json, sys, urllib.request, urllib.error
 
     LETTA = "http://127.0.0.1:${toString cfg.letta.port}"

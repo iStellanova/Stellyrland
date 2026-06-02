@@ -33,6 +33,60 @@
   coderPersonaFile = pkgs.writeText "coder-persona" coderPersona;
   corePersonaFile = pkgs.writeText "core-persona" corePersona;
 
+  # Enforces that each agent's persona block matches the Nix-defined persona +
+  # bootstrap.rules on every ai-up, not just at first creation. This makes the
+  # Nix config authoritative: changing a persona or rule takes effect on next
+  # ai-up without having to delete and recreate agents.
+  personaUpdatePy = pkgs.writeText "letta-persona-update.py" ''
+    import json, pathlib, urllib.request
+
+    LETTA = "http://127.0.0.1:${toString cfg.letta.port}"
+
+    PERSONA_FILES = {
+        "echo":  "${echoPersonaFile}",
+        "coder": "${coderPersonaFile}",
+        "core":  "${corePersonaFile}",
+    }
+
+    # Sorted highest-priority first; generated from cfg.bootstrap.rules at build time
+    RULES = ${builtins.toJSON (map (r: r.rule) (lib.sort (a: b: a.priority > b.priority) cfg.bootstrap.rules))}
+    rule_suffix = ("\n\nBehavioral rules:\n" + "\n".join(f"- {r}" for r in RULES)) if RULES else ""
+
+    def req(method, path, data=None):
+        payload = json.dumps(data).encode() if data is not None else None
+        r = urllib.request.Request(
+            f"{LETTA}{path}",
+            data=payload,
+            headers={"Content-Type": "application/json"} if payload else {},
+            method=method,
+        )
+        with urllib.request.urlopen(r, timeout=30) as resp:
+            return json.load(resp)
+
+    for agent_name, persona_file in PERSONA_FILES.items():
+        try:
+            agents = req("GET", f"/v1/agents/?name={agent_name}")
+            if not agents:
+                print(f"[persona] {agent_name}: not found, skipping")
+                continue
+            agent_id = agents[0]["id"]
+            memory = req("GET", f"/v1/agents/{agent_id}/core-memory")
+            block = next((b for b in memory.get("blocks", []) if b.get("label") == "persona"), None)
+            if not block:
+                print(f"[persona] {agent_name}: no persona block, skipping")
+                continue
+            desired = pathlib.Path(persona_file).read_text().strip() + rule_suffix
+            if block.get("value", "").strip() == desired:
+                print(f"[persona] {agent_name}: up to date")
+                continue
+            req("PATCH", f"/v1/blocks/{block['id']}", {"value": desired})
+            print(f"[persona] {agent_name}: updated")
+        except Exception as e:
+            print(f"[persona] warning: {agent_name}: {e}")
+
+    print("[persona] done.")
+  '';
+
   agentInitScript = pkgs.writeShellScript "letta-agent-init" ''
         LETTA="http://127.0.0.1:${toString cfg.letta.port}"
         LITELLM="http://127.0.0.1:${toString (cfg.litellm.port + 1)}"
@@ -164,6 +218,8 @@ in {
         Type = "oneshot";
         User = cfg.user;
         ExecStart = agentInitScript;
+        # Enforce current personas + bootstrap.rules into agent blocks on every ai-up
+        ExecStartPost = "${pkgs.letta}/bin/python3.11 ${personaUpdatePy}";
         RemainAfterExit = true;
       };
     };
