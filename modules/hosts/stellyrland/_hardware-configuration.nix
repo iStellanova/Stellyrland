@@ -46,6 +46,12 @@
     options = ["subvol=@home_snapshots" "noatime" "compress=zstd" "discard=async" "commit=60" "space_cache=v2"];
   };
 
+  fileSystems."/persist/.snapshots" = {
+    device = "/dev/mapper/cryptroot";
+    fsType = "btrfs";
+    options = ["subvol=@persist_snapshots" "noatime" "compress=zstd" "discard=async" "commit=60" "space_cache=v2"];
+  };
+
   fileSystems."/boot" = {
     device = "/dev/disk/by-label/STELLYRBOOT";
     fsType = "vfat";

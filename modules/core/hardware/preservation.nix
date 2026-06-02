@@ -1,6 +1,6 @@
 {inputs, ...}: {
   # NixOS Preservation Settings
-  flake.modules.nixos.preservation = {...}: {
+  flake.modules.nixos.preservation = {config, ...}: {
     imports = [inputs.preservation.nixosModules.preservation];
 
     config = {
@@ -50,6 +50,49 @@
               configureParent = true;
             }
           ];
+          users.${config.identity.username} = {
+            directories = [
+              # User data
+              "Projects"
+              "Documents"
+              "Pictures"
+              "Music"
+              "Videos"
+
+              # Credentials
+              ".local/share/keyrings"
+              ".gnupg"
+
+              # Browser profile (bookmarks, history, logins, cookies)
+              ".config/zen/${config.programs.browser.profileId}.Default Profile"
+
+              # App sessions and runtime state
+              ".config/vesktop"
+              ".config/gemini"
+              ".claude"
+              ".antigravity"
+              ".antigravity-ide-server"
+
+              # Editor runtime (extensions, compiled LSPs)
+              ".local/share/zed"
+
+              # Steam client data (game library lives on ExtraDisk)
+              ".local/share/Steam"
+              ".steam"
+
+              # Game launchers and saves
+              ".local/share/PrismLauncher"
+              ".config/heroic"
+              ".local/share/r2modman"
+
+              # Flatpak user app data
+              ".var/app"
+            ];
+            files = [
+              ".ssh/known_hosts"
+              ".zsh_history"
+            ];
+          };
         };
       };
     };
