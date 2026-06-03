@@ -14,6 +14,7 @@ _: {
         enable = true;
         extraPackages = with pkgs; [
           rocmPackages.clr.icd
+          rocmPackages.clr
         ];
       };
 

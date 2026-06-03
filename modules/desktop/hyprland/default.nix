@@ -48,9 +48,6 @@
       hardware.graphics = {
         enable = true;
         enable32Bit = true; # Necessary for steam.
-        extraPackages = with pkgs; [
-          rocmPackages.clr # AMD GPU driver, ROCm support.
-        ];
       };
 
       services.xserver.videoDrivers = ["amdgpu"];
@@ -159,7 +156,7 @@
             {_args = ["HYPRCURSOR_SIZE" "16"];}
             {_args = ["XCURSOR_THEME" "Bibata-Modern-Ice"];}
             {_args = ["XCURSOR_SIZE" "16"];}
-            {_args = ["GTK_THEME" "catppuccin-macchiato-flamingo-standard"];}
+            {_args = ["GTK_THEME" "catppuccin-macchiato-sapphire-standard"];}
             {_args = ["QT_QPA_PLATFORM" "wayland;xcb"];}
             {_args = ["QT_QPA_PLATFORMTHEME" "gtk3"];}
             {_args = ["QT_STYLE_OVERRIDE" "kvantum"];}

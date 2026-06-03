@@ -12,7 +12,12 @@
   };
 
   # Home Manager Desktop Styling Settings
-  flake.modules.homeManager.styling = {pkgs, ...}: {
+  flake.modules.homeManager.styling = {pkgs, ...}: let
+    catppuccinGtk = pkgs.catppuccin-gtk.override {
+      accents = ["sapphire"];
+      variant = "macchiato";
+    };
+  in {
     imports = [inputs.catppuccin.homeModules.catppuccin];
 
     config = {
@@ -34,17 +39,11 @@
         enable = true;
         theme = {
           name = "catppuccin-macchiato-sapphire-standard";
-          package = pkgs.catppuccin-gtk.override {
-            accents = ["sapphire"];
-            variant = "macchiato";
-          };
+          package = catppuccinGtk;
         };
         gtk4.theme = {
           name = "catppuccin-macchiato-sapphire-standard";
-          package = pkgs.catppuccin-gtk.override {
-            accents = ["sapphire"];
-            variant = "macchiato";
-          };
+          package = catppuccinGtk;
         };
 
         # Icon Theme.
@@ -91,7 +90,6 @@
         kdePackages.qtstyleplugin-kvantum # Qt6 kvantum plugin (QT_STYLE_OVERRIDE=kvantum)
         libsForQt5.qtstyleplugin-kvantum # Qt5 kvantum plugin
         nwg-look
-        bibata-cursors
         hyprcursor
       ];
     };
