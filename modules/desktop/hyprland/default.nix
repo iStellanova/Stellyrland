@@ -4,10 +4,7 @@
   ...
 }: {
   # System-level Linux configuration for Hyprland
-  flake.modules.nixos.hyprland = {
-    pkgs,
-    ...
-  }: {
+  flake.modules.nixos.hyprland = {pkgs, ...}: {
     imports = [inputs.hyprland.nixosModules.default];
 
     options.desktop.hyprland = {
@@ -39,9 +36,6 @@
       };
 
       environment.systemPackages = with pkgs; [
-        hyprpolkitagent # PolicyKit agent for Hyprland
-        hyprshot # Screenshot utility for Hyprland
-        cliphist # Clipboard history utility
         wl-clipboard # Clipboard utility for Wayland
         file-roller # Archive utility
         libnotify # Notification utility
@@ -354,18 +348,15 @@
             hl.exec_cmd([[sleep 3 && linux-wallpaperengine --assets-dir ${we.steamLibrary}/steamapps/common/wallpaper_engine/assets --screen-root DP-2 --screen-root DP-3 --fps 60 --silent ${we.steamLibrary}/steamapps/workshop/content/431960/${we.workshopId}/]])
           '';
         in ''
-          ${osConfig.desktop.hyprland.monitorConfig}
+                    ${osConfig.desktop.hyprland.monitorConfig}
 
-          hl.on("hyprland.start", function()
-              hl.exec_cmd("dbus-update-activation-environment --systemd --all")
-              hl.exec_cmd("systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP")
-              hl.exec_cmd("wpctl set-volume @DEFAULT_AUDIO_SOURCE@ 1.0")
-              hl.exec_cmd("systemctl --user start hyprpolkitagent")
-              hl.exec_cmd("udiskie -a -s --file-manager nautilus")
-              hl.exec_cmd("wl-paste --type text --watch cliphist store")
-              hl.exec_cmd("wl-paste --type image --watch cliphist store")
-              ${wallpaperCmd}hl.exec_cmd("systemctl --user restart xdg-desktop-portal-hyprland")
-          end)
+                    hl.on("hyprland.start", function()
+                        hl.exec_cmd("dbus-update-activation-environment --systemd --all")
+                        hl.exec_cmd("systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP")
+                        hl.exec_cmd("wpctl set-volume @DEFAULT_AUDIO_SOURCE@ 1.0")
+                        hl.exec_cmd("udiskie -a -s --file-manager nautilus")
+          ${wallpaperCmd}hl.exec_cmd("systemctl --user restart xdg-desktop-portal-hyprland")
+                    end)
         '';
       };
     };
