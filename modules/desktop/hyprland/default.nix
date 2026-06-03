@@ -5,7 +5,6 @@
 }: {
   # System-level Linux configuration for Hyprland
   flake.modules.nixos.hyprland = {
-    config,
     pkgs,
     ...
   }: {
@@ -21,7 +20,7 @@
       wallpaperEngine = {
         steamLibrary = lib.mkOption {
           type = lib.types.str;
-          default = "${config.identity.homeDir}/ExtraDisk/SteamLibrary";
+          default = "/ExtraDisk/SteamLibrary";
           description = "Path to the Steam library containing wallpaper_engine and workshop content.";
         };
         workshopId = lib.mkOption {
