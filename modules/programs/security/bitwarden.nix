@@ -1,7 +1,7 @@
 _: {
   # NixOS Bitwarden Settings
-  flake.modules.nixos.bitwarden = {pkgs, ...}: {
-    environment.systemPackages = [pkgs.bitwarden-desktop];
+  flake.modules.nixos.bitwarden = _: {
+    services.flatpak.packages = ["com.bitwarden.desktop"];
   };
 
   # Darwin Bitwarden Settings
