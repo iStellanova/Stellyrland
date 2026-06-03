@@ -66,6 +66,7 @@
             avatar_path = lib.optionalString (osConfig.identity.dataPath != null) "${osConfig.identity.dataPath}/icons/avatar.png";
             password_style = "random";
             settings_show_advanced = true;
+            setup_wizard_enabled = false;
             panel.transparency_mode = "glass";
             screen_corners.enabled = true;
           };

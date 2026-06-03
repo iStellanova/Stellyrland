@@ -15,7 +15,7 @@
 
     # Home Manager.
     home-manager = {
-      url = "github:nix-community/home-manager/release-26.05";
+      url = "github:nix-community/home-manager/master";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -90,7 +90,7 @@
 
     # NixVim - Neovim configuration system for Nix.
     nixvim = {
-      url = "github:nix-community/nixvim/nixos-26.05";
+      url = "github:nix-community/nixvim/main";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
