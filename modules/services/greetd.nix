@@ -107,7 +107,7 @@ _: {
                 hl.on("hyprland.start", function()
                   hl.exec_cmd("${hyprlandPkg}/bin/hyprctl setcursor Bibata-Modern-Ice 16")
                   hl.exec_cmd([[${wallpaperCmd}]])
-                  hl.exec_cmd([[sh -c '${pkgs.regreet}/bin/regreet; ${hyprlandPkg}/bin/hyprctl dispatch "hl.dsp.exit()"']])
+                  hl.exec_cmd([[sh -c '${pkgs.regreet}/bin/regreet; ${hyprlandPkg}/bin/hyprctl eval "hl.dsp.exit()"']])
                 end)
               '';
               greetdHyprLauncher = pkgs.writeShellScript "greetd-hyprland-launcher" ''

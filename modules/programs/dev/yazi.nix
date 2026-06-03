@@ -169,7 +169,6 @@ _: {
         imagemagick
         poppler-utils
         ffmpegthumbnailer
-        fd
         viu
         hexyl
         ouch

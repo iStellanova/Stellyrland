@@ -288,7 +288,6 @@ _: {
             LAN743X = lib.mkForce no;
             LAN865X = lib.mkForce no;
             LAN966X_SWITCH = lib.mkForce no;
-            NET_VENDOR_MICROCHIP = lib.mkForce no;
             NET_VENDOR_NETRONOME = lib.mkForce no;
             "9P_FS" = lib.mkForce no;
           };

@@ -34,30 +34,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # pyproject.nix + uv2nix + build-system-pkgs — PEP 517 / uv.lock packaging for Nix.
-    pyproject-nix = {
-      url = "github:pyproject-nix/pyproject.nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    uv2nix = {
-      url = "github:pyproject-nix/uv2nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.pyproject-nix.follows = "pyproject-nix";
-    };
-    pyproject-build-systems = {
-      url = "github:pyproject-nix/build-system-pkgs";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.pyproject-nix.follows = "pyproject-nix";
-      inputs.uv2nix.follows = "uv2nix";
-    };
-
-    # Letta source — agent framework with stateful memory (built via uv2nix).
-    # check-update: https://github.com/letta-ai/letta/releases
-    letta-src = {
-      url = "github:letta-ai/letta";
-      flake = false;
-    };
-
     # Nix Darwin.
     nix-darwin = {
       url = "github:LnL7/nix-darwin";
@@ -85,12 +61,6 @@
     # Treefmt - unified code formatter orchestration.
     treefmt-nix = {
       url = "github:numtide/treefmt-nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    # NixVim - Neovim configuration system for Nix.
-    nixvim = {
-      url = "github:nix-community/nixvim/main";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 

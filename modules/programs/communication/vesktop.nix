@@ -197,7 +197,7 @@ _: {
           settingsSync = true;
         };
       };
-      quickCss = "@import url(\"https://github.com/catppuccin/discord/blob/main/themes/macchiato.theme.css?raw=1\");";
+      quickCss = "@import url(\"https://raw.githubusercontent.com/catppuccin/discord/main/themes/macchiato.theme.css\");";
     };
   };
 }

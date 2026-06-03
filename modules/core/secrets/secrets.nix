@@ -26,7 +26,6 @@
 
       # Decrypt the personal backup HDD keyfile dynamically on boot
       sops.secrets.hdd-keyfile = {
-        path = "/persist/secrets/hdd-keyfile";
         owner = "root";
         group = "root";
         mode = "0400";
