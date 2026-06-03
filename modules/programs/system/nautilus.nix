@@ -1,10 +1,5 @@
 _: {
   flake.modules.homeManager.nautilus = {osConfig, ...}: {
-    dconf.settings."org/gnome/nautilus/preferences" = {
-      default-folder-viewer = "list-view";
-      show-hidden-files = true;
-    };
-
     home.file.".config/gtk-3.0/bookmarks".text = let
       home = osConfig.identity.homeDir;
     in ''
@@ -47,6 +42,20 @@ _: {
 
       services.gnome.tinysparql.enable = true;
       services.gnome.localsearch.enable = true;
+
+      programs.dconf.profiles.user.databases = [
+        {
+          settings."org/gnome/nautilus/preferences" = {
+            default-folder-viewer = "list-view";
+            # Tell nautilus migration already ran so it doesn't clobber the GTK4 key below
+            migrated-gtk-settings = true;
+          };
+          # nautilus 50+ reads show-hidden from here; the old show-hidden-files key is deprecated/ignored
+          settings."org/gtk/gtk4/settings/file-chooser" = {
+            show-hidden = true;
+          };
+        }
+      ];
     };
   };
 }
