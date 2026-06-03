@@ -37,7 +37,6 @@
       nixpkgs.overlays = [inputs.niri-flake.overlays.niri];
 
       environment.systemPackages = with pkgs; [
-        cliphist
         wl-clipboard
         file-roller
         libnotify
@@ -285,8 +284,6 @@
             {argv = ["systemctl" "--user" "import-environment" "WAYLAND_DISPLAY" "XDG_CURRENT_DESKTOP"];}
             {argv = ["wpctl" "set-volume" "@DEFAULT_AUDIO_SOURCE@" "1.0"];}
             {argv = ["udiskie" "-a" "-s" "--file-manager" "nautilus"];}
-            {sh = "wl-paste --type text --watch cliphist store";}
-            {sh = "wl-paste --type image --watch cliphist store";}
             {argv = ["systemctl" "--user" "restart" "xdg-desktop-portal"];}
           ]
           ++ lib.optional (we.workshopId != "") {

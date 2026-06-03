@@ -67,8 +67,19 @@
             password_style = "random";
             settings_show_advanced = true;
             setup_wizard_enabled = false;
-            panel.transparency_mode = "glass";
+            polkit_agent = true;
+            launch_apps_as_systemd_services = true;
+            screen_time_enabled = true;
+            panel = {
+              transparency_mode = "glass";
+              session_placement = "centered";
+            };
             screen_corners.enabled = true;
+            screenshot = {
+              save_to_file = true;
+              directory = "${osConfig.identity.homeDir}/Pictures/Screenshots";
+              copy_to_clipboard = true;
+            };
           };
 
           # Theme
@@ -78,7 +89,7 @@
             community_palette = "Catppuccin Lavender";
             source = "community";
             templates = {
-              builtin_ids = ["btop" "cava" "hyprland" "kitty"];
+              builtin_ids = ["btop" "cava" "hyprland" "kitty" "helix"];
               community_ids = ["yazi"];
             };
           };
@@ -114,11 +125,24 @@
             widget_spacing = 13;
           };
 
-          # AMERICAN UNITS RAAAGH
-          weather = {
-            auto_locate = true;
-            unit = "imperial";
+          idle = {
+            behavior."lock" = {
+              timeout = 900;
+              command = "noctalia:session lock";
+              enabled = true;
+            };
+            behavior."screen-off" = {
+              timeout = 3600;
+              command = "noctalia:dpms-off";
+              resume_command = "noctalia:dpms-on";
+              enabled = true;
+            };
           };
+
+          location.auto_locate = true;
+
+          # AMERICAN UNITS RAAAGH
+          weather.unit = "imperial";
 
           # Simple Visualizer
           widget = {

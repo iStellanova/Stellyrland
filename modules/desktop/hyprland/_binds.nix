@@ -55,8 +55,8 @@
     (bind "${mainMod} + SHIFT + X" "hl.dsp.exec_cmd(\"noctalia msg panel-toggle session\")")
 
     # --- Utilities ---
-    (bind "Print" "hl.dsp.exec_cmd(\"hyprshot -m region -o ~/Pictures/Screenshots\")")
-    (bind "SHIFT + Print" "hl.dsp.exec_cmd(\"hyprshot -m output -o ~/Pictures/Screenshots\")")
+    (bind "Print" "hl.dsp.exec_cmd(\"noctalia msg screenshot-region\")")
+    (bind "SHIFT + Print" "hl.dsp.exec_cmd(\"noctalia msg screenshot-fullscreen\")")
 
     # --- Legacy/Alternative Navigation ---
     (bind "ALT + SHIFT + Tab" "hl.dsp.window.cycle_next(\"prev\")")
