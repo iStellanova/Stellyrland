@@ -31,7 +31,6 @@
 
     options = {
       darwin.system = {
-        enable = lib.mkEnableOption "Darwin system configuration";
         dockApps = lib.mkOption {
           type = lib.types.listOf lib.types.str;
           default = [

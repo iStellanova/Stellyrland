@@ -12,7 +12,6 @@ _: {
 
     programs.zed-editor = {
       enable = true;
-      package = pkgs.zed-editor;
       mutableUserSettings = false;
       mutableUserKeymaps = false;
       mutableUserTasks = false;
