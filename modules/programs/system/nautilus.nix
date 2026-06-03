@@ -1,9 +1,20 @@
 _: {
-  flake.modules.homeManager.nautilus = _: {
+  flake.modules.homeManager.nautilus = {osConfig, ...}: {
     dconf.settings."org/gnome/nautilus/preferences" = {
       default-folder-viewer = "list-view";
       show-hidden-files = true;
     };
+
+    home.file.".config/gtk-3.0/bookmarks".text = let
+      home = osConfig.identity.homeDir;
+    in ''
+      file://${home}/Documents
+      file://${home}/Pictures
+      file://${home}/Music
+      file://${home}/Videos
+      file://${home}/Projects
+      file://${home}/Projects/stellyrland
+    '';
   };
 
   # NixOS Nautilus Settings
