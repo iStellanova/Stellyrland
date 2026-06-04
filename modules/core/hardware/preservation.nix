@@ -86,6 +86,12 @@
               ".config/heroic"
               ".local/share/r2modman"
 
+              # Audio session volumes and per-app mix
+              ".local/state/wireplumber"
+
+              # Music library database and cover cache
+              ".local/share/lollypop"
+
               # Flatpak user app data
               ".var/app"
             ];
