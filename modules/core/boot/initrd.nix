@@ -7,6 +7,8 @@ _: {
 
       boot.initrd.supportedFilesystems = ["zfs"];
 
+      # forceImportRoot: NixOS 26.11 changed the default to false. Keeping true on a
+      # single-machine setup — no downside, and prevents lockout if hostid ever drifts.
       boot.zfs.forceImportRoot = true;
       # Systemd initrd is required for TPM2 auto-unlock and the rollback service.
       boot.initrd.systemd.enable = true;
