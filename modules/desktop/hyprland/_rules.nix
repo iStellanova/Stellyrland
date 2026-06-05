@@ -1,9 +1,9 @@
 _: {
-  # User-level Home Manager window/layer rules for Hyprland (Native declarative)
+  # Home Manager window/layer rules for Hyprland
   wayland.windowManager.hyprland.settings = {
     # Mapped natively by Home Manager to hl.window_rule({...}) calls in Lua
     window_rule = [
-      # --- System Dialogs ---
+      # System Dialogs
       {
         match = {class = "^(xdg-desktop-portal-gtk)$";};
         float = true;
@@ -28,7 +28,7 @@ _: {
         center = true;
       }
 
-      # --- File Operation Dialogs ---
+      # File Operation Dialogs
       {
         match = {title = "^(File Operation Progress)$";};
         float = true;
@@ -48,7 +48,7 @@ _: {
         move = "18% 35%";
       }
 
-      # --- Picture-in-Picture ---
+      # Picture-in-Picture
       {
         match = {title = "^(Picture in picture)$";};
         float = true;
@@ -62,7 +62,7 @@ _: {
         size = "32% 18%";
       }
 
-      # --- Nautilus & Sushi ---
+      # Nautilus & Sushi
       {
         match = {class = "^(org.gnome.Sushi|sushi|org.gnome.NautilusPreviewer)$";};
         float = true;
@@ -76,7 +76,7 @@ _: {
         pin = true;
       }
 
-      # --- Opacity ---
+      # Opacity
       {
         match = {class = "^(org.gnome.Nautilus)$";};
         opacity = "0.85 override 0.75 override";
