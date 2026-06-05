@@ -1,16 +1,13 @@
 _: {
   # NixOS initrd settings
-  flake.modules.nixos.initrd = {
-    config,
-    pkgs,
-    ...
-  }: {
+  flake.modules.nixos.initrd = _: {
     config = {
       boot.tmp.useTmpfs = true;
       boot.tmp.tmpfsSize = "50%";
 
       boot.initrd.supportedFilesystems = ["zfs"];
 
+      boot.zfs.forceImportRoot = true;
       # Systemd initrd is required for TPM2 auto-unlock and the rollback service.
       boot.initrd.systemd.enable = true;
 
@@ -49,12 +46,6 @@ _: {
         device = "/dev/disk/by-partlabel/disk-main-root";
         allowDiscards = true;
         crypttabExtraOpts = ["tpm2-device=auto" "tpm2-pcrs=0+2+7"];
-      };
-
-      # Expose the ZFS userspace binary from the same package as the kernel module
-      # so the rollback service uses tools that match the running module version.
-      boot.initrd.systemd.extraBin = {
-        zfs = "${config.boot.zfs.package}/bin/zfs";
       };
 
       # Wipe / and /home on every boot by rolling back to blank snapshots.

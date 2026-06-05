@@ -1,9 +1,6 @@
 _: {
   # NixOS Storage and Sanoid configuration
-  flake.modules.nixos.storage = {
-    pkgs,
-    ...
-  }: {
+  flake.modules.nixos.storage = {pkgs, ...}: {
     config = {
       environment.systemPackages = with pkgs; [
         btrfs-progs # Btrfs tools retained for ExtraDisk during ZFS migration

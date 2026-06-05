@@ -80,7 +80,7 @@
         networking.hostName = "stellyrland";
 
         # Directly configure custom overrides using option namespaces
-        core.boot.secureBoot = true;
+        core.boot.secureBoot = false;
         core.headless.disabledPorts = [
           "DP-2"
           "DP-3"
