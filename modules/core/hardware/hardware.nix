@@ -1,7 +1,14 @@
 _: {
   # NixOS Core Hardware Settings
-  flake.modules.nixos.hardware = {pkgs, ...}: {
+  flake.modules.nixos.hardware = {
+    pkgs,
+    config,
+    ...
+  }: {
     config = {
+      # Use the ZFS package built against the CachyOS kernel to ensure the
+      # userspace tools and kernel module come from the same OpenZFS build.
+      boot.zfs.package = config.boot.kernelPackages.zfs_cachyos;
       environment.systemPackages = [pkgs.usbutils];
 
       # Firmware updates for AMDGPU and other hardware.

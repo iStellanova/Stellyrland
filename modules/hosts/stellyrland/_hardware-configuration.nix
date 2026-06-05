@@ -11,43 +11,31 @@
 
   boot.kernelModules = ["kvm-amd"];
 
+  # Required by ZFS to prevent pool import conflicts between machines.
+  # Generated once: head -c4 /dev/urandom | od -A none -t x4 | tr -d ' \n'
+  networking.hostId = "63d11f1d";
+
   fileSystems."/" = {
-    device = "/dev/mapper/cryptroot";
-    fsType = "btrfs";
-    options = ["subvol=@" "compress=zstd" "noatime" "discard=async" "commit=60" "space_cache=v2"];
+    device = "zroot/local/root";
+    fsType = "zfs";
     neededForBoot = true;
   };
 
   fileSystems."/nix" = {
-    device = "/dev/mapper/cryptroot";
-    fsType = "btrfs";
-    options = ["subvol=@nix" "compress=zstd" "noatime" "discard=async" "commit=60" "space_cache=v2"];
+    device = "zroot/local/nix";
+    fsType = "zfs";
     neededForBoot = true;
   };
 
   fileSystems."/persist" = {
-    device = "/dev/mapper/cryptroot";
-    fsType = "btrfs";
-    options = ["subvol=@persist" "compress=zstd" "noatime" "discard=async" "commit=60" "space_cache=v2"];
+    device = "zroot/safe/persist";
+    fsType = "zfs";
     neededForBoot = true;
   };
 
   fileSystems."/home" = {
-    device = "/dev/mapper/cryptroot";
-    fsType = "btrfs";
-    options = ["subvol=@home" "compress=zstd" "noatime" "discard=async" "commit=60" "space_cache=v2"];
-  };
-
-  fileSystems."/home/.snapshots" = {
-    device = "/dev/mapper/cryptroot";
-    fsType = "btrfs";
-    options = ["subvol=@home_snapshots" "noatime" "compress=zstd" "discard=async" "commit=60" "space_cache=v2"];
-  };
-
-  fileSystems."/persist/.snapshots" = {
-    device = "/dev/mapper/cryptroot";
-    fsType = "btrfs";
-    options = ["subvol=@persist_snapshots" "noatime" "compress=zstd" "discard=async" "commit=60" "space_cache=v2"];
+    device = "zroot/safe/home";
+    fsType = "zfs";
   };
 
   fileSystems."/boot" = {
