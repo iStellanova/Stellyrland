@@ -23,6 +23,11 @@ _: {
           "x-gvfs-name=Extra Disk"
         ];
       };
+
+      # ZFS legacy mounts land as nobody:nogroup — fix ownership so the user can write here.
+      systemd.tmpfiles.rules = [
+        "d /ExtraDisk 0755 stellanova users -"
+      ];
     };
   };
 }
