@@ -13,7 +13,6 @@
       "fonts"
       "networking"
       "storage"
-      "extra-disk"
       "preservation"
       "services-base"
       "users"
@@ -38,6 +37,8 @@
       "bitwarden"
       "vesktop"
       "noctalia-shell"
+      "extra-disk"
+      "hdd"
       "btop"
       "cava"
       "fastfetch"
@@ -80,7 +81,7 @@
         networking.hostName = "stellyrland";
 
         # Directly configure custom overrides using option namespaces
-        core.boot.secureBoot = false;
+        core.boot.secureBoot = true;
         core.headless.disabledPorts = [
           "DP-2"
           "DP-3"

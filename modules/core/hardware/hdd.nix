@@ -1,15 +1,15 @@
 _: {
   # NixOS HDD Backup configuration
   flake.modules.nixos.hdd = {pkgs, ...}: let
-    hddUuid = "0592b026-666d-4a26-b416-2f3b9c7046ae";
+    hddPartlabel = "disk-hdd-luks";
     mapperName = "crypthdd";
-    mountPoint = "/mnt/backup-hdd";
+    poolName = "zhdd";
     keyFile = "/run/secrets/hdd-keyfile";
 
     backupScript = pkgs.writeShellScript "backup-hdd" ''
       set -euo pipefail
 
-      echo "Starting backup to encrypted HDD..."
+      echo "Starting ZFS syncoid backup to encrypted HDD..."
 
       if [ ! -f "${keyFile}" ]; then
         echo "Error: Keyfile ${keyFile} not found!"
@@ -18,91 +18,69 @@ _: {
 
       cleanup() {
         echo "Cleaning up..."
-        ${pkgs.util-linux}/bin/umount ${mountPoint} 2>/dev/null || true
+        ${pkgs.zfs}/bin/zpool export ${poolName} 2>/dev/null || true
         ${pkgs.cryptsetup}/bin/cryptsetup close ${mapperName} 2>/dev/null || true
       }
       trap cleanup EXIT
 
+      # Open LUKS container
       if [ ! -e "/dev/mapper/${mapperName}" ]; then
-        echo "Opening encrypted device..."
+        echo "Opening encrypted HDD..."
         ${pkgs.cryptsetup}/bin/cryptsetup open \
           --key-file ${keyFile} \
-          /dev/disk/by-uuid/${hddUuid} \
+          /dev/disk/by-partlabel/${hddPartlabel} \
           ${mapperName}
       else
-        echo "Encrypted device already open."
+        echo "Encrypted HDD already open."
       fi
 
-      if ! mountpoint -q ${mountPoint}; then
-        echo "Mounting backup HDD..."
-        ${pkgs.util-linux}/bin/mount -t btrfs \
-          -o noatime,compress=zstd:3,space_cache=v2 \
-          /dev/mapper/${mapperName} ${mountPoint}
+      # Import ZFS pool (pool lives on the mapper device, not a directory)
+      if ! ${pkgs.zfs}/bin/zpool list ${poolName} &>/dev/null; then
+        echo "Importing ZFS pool ${poolName}..."
+        ${pkgs.zfs}/bin/zpool import -d /dev/mapper/${mapperName} ${poolName}
       else
-        echo "Backup HDD already mounted."
+        echo "ZFS pool ${poolName} already imported."
       fi
 
-      echo "Ensuring target directories exist..."
-      mkdir -p ${mountPoint}/home ${mountPoint}/persist
+      echo "Syncing zroot/safe/home → ${poolName}/home..."
+      ${pkgs.sanoid}/bin/syncoid \
+        --recursive \
+        --no-privilege-elevation \
+        --force-delete \
+        zroot/safe/home ${poolName}/home
 
-      echo "Running btrbk..."
-      ${pkgs.btrbk}/bin/btrbk -c /etc/btrbk/hdd.conf run
+      echo "Syncing zroot/safe/persist → ${poolName}/persist..."
+      ${pkgs.sanoid}/bin/syncoid \
+        --recursive \
+        --no-privilege-elevation \
+        --force-delete \
+        zroot/safe/persist ${poolName}/persist
 
-      echo "Backup complete. Unmounting and closing..."
-      ${pkgs.util-linux}/bin/umount ${mountPoint}
+      echo "Backup complete. Exporting pool and closing LUKS..."
+      ${pkgs.zfs}/bin/zpool export ${poolName}
       ${pkgs.cryptsetup}/bin/cryptsetup close ${mapperName}
       trap - EXIT
       echo "Done."
     '';
   in {
     config = {
-      environment.systemPackages = [pkgs.btrbk];
+      environment.systemPackages = [pkgs.sanoid]; # includes syncoid
 
       # Prevent udisks/udiskie/file managers from showing or automounting the backup HDD.
-      # This keeps the disk completely isolated for the systemd backup service.
       services.udev.extraRules = ''
-        SUBSYSTEM=="block", ENV{ID_FS_UUID}=="${hddUuid}", ENV{UDISKS_IGNORE}="1"
+        SUBSYSTEM=="block", ENV{ID_PART_ENTRY_NAME}=="${hddPartlabel}", ENV{UDISKS_IGNORE}="1"
+        SUBSYSTEM=="block", ENV{DM_NAME}=="${mapperName}", ENV{UDISKS_IGNORE}="1"
       '';
 
-      # btrbk config: weekly snapshots of /home and /persist sent to the HDD.
-      # snapshot_preserve keeps a small local buffer; target_preserve owns long-term history.
-      # Adjust target_preserve to taste — the HDD is 1.8T so space is not a concern.
-      environment.etc."btrbk/hdd.conf".text = ''
-        timestamp_format        long
-        snapshot_preserve_min   2d
-        snapshot_preserve       2w
-
-        target_preserve_min     no
-        target_preserve         8w 6m
-
-        volume /home
-          subvolume .
-            snapshot_dir        .btrbk_snapshots
-            target send-receive ${mountPoint}/home
-
-        volume /persist
-          subvolume .
-            snapshot_dir        .btrbk_snapshots
-            target send-receive ${mountPoint}/persist
-      '';
-
-      # Recreate the mount point and required local btrbk snapshot directories.
-      systemd.tmpfiles.rules = [
-        "d ${mountPoint} 0700 root root -"
-        "d /home/.btrbk_snapshots 0700 root root -"
-        "d /persist/.btrbk_snapshots 0700 root root -"
-      ];
-
-      # Unlock → mount → btrbk → unmount → lock.
-      # The trap ensures the HDD is always locked even if btrbk fails.
+      # Unlock → import pool → syncoid → export → lock.
+      # The trap ensures the HDD is always cleanly exported and locked even if syncoid fails.
       systemd.services.backup-hdd = {
-        description = "Backup /home and /persist to encrypted HDD";
-        after = ["local-fs.target"];
-        unitConfig.RequiresMountsFor = ["/home" "/persist"];
+        description = "Syncoid ZFS backup of home and persist to encrypted HDD";
+        after = ["local-fs.target" "zfs.target"];
+        unitConfig.RequiresMountsFor = ["/persist"];
         serviceConfig = {
           Type = "oneshot";
           ExecStart = "${backupScript}";
-          # Ensure the backup doesn't starve the rest of the system
           IOWeight = 20;
           CPUWeight = 20;
         };

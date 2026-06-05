@@ -3,7 +3,6 @@ _: {
   flake.modules.nixos.storage = {pkgs, ...}: {
     config = {
       environment.systemPackages = with pkgs; [
-        btrfs-progs # Btrfs tools retained for ExtraDisk during ZFS migration
         ntfs3g # Open source NTFS driver
       ];
 
@@ -41,11 +40,11 @@ _: {
         ${pkgs.zfs}/bin/zfs snapshot "zroot/safe/persist@rebuild-$ts" 2>/dev/null || true
       '';
 
-      # Monthly scrub of the root pool. Replaces services.btrfs.autoScrub.
+      # Monthly scrub of both pools.
       services.zfs.autoScrub = {
         enable = true;
         interval = "monthly";
-        pools = ["zroot"];
+        pools = ["zroot" "zextra"];
       };
     };
   };
