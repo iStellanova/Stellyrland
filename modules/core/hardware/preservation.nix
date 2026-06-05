@@ -7,6 +7,21 @@
       systemd.tmpfiles.rules = [
         # Returns /etc/nixos's pointer from the config project.
         "L+ /etc/nixos - - - - /home/stellanova/Projects/stellyrland"
+
+        # The @blank ZFS snapshot was taken before nixos-install ran, so the home
+        # dataset root reverts to root:root after every rollback. Preservation's
+        # tmpfiles creates subdirs fine (root can do that) but HM runs as the user
+        # and can't create ~/.cache etc. in a root-owned directory. Fix ownership.
+        "d /home/${config.identity.username} 0700 ${config.identity.username} users -"
+
+        # home-manager-stellanova.service runs at boot (before user login) and calls
+        # setupVars, which exits 1 if neither ~/.local/state/nix/profiles nor
+        # /nix/var/nix/profiles/per-user/$USER exists. After ZFS rollback both are
+        # gone; the service tries to recreate the former via `nix-env -q` but that
+        # relies on a login-shell PATH that isn't guaranteed at pre-login boot time.
+        # Persisting these directories means setupVars always finds what it needs.
+        "d /persist/home/${config.identity.username}/.local/state/nix/profiles 0755 ${config.identity.username} users -"
+        "d /persist/home/${config.identity.username}/.local/state/home-manager/gcroots 0755 ${config.identity.username} users -"
       ];
 
       preservation = {
@@ -86,6 +101,14 @@
               ".config/heroic"
               ".local/share/r2modman"
 
+              # Nix user state — profile dir must survive rollback so
+              # home-manager-stellanova.service's setupVars() doesn't exit 1 at boot
+              ".local/state/nix"
+
+              # HM gcroots — protects current generation from nix-store GC and
+              # gives HM its oldGenPath for correct diff-based activation
+              ".local/state/home-manager"
+
               # Audio session volumes and per-app mix
               ".local/state/wireplumber"
 
@@ -98,6 +121,10 @@
             files = [
               {
                 file = ".zsh_history";
+                how = "symlink";
+              }
+              {
+                file = ".claude.json";
                 how = "symlink";
               }
             ];
