@@ -14,7 +14,6 @@
       "networking"
       "storage"
       "extra-disk"
-      "hdd"
       "preservation"
       "services-base"
       "users"

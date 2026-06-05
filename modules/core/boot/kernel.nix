@@ -303,7 +303,6 @@ _: {
         "usbhid"
         "usb_storage"
         "sd_mod"
-        "btrfs"
         # LUKS/crypto: must be explicit because includeDefaultModules = false
         # strips the modules NixOS would normally add for encrypted-devices.
         "dm_mod"

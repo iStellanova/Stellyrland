@@ -1,63 +1,54 @@
 _: {
-  # NixOS Storage and Snapper configuration
+  # NixOS Storage and Sanoid configuration
   flake.modules.nixos.storage = {
-    config,
     pkgs,
     ...
   }: {
     config = {
       environment.systemPackages = with pkgs; [
-        btrfs-assistant # GUI manager for Btrfs and Snapper
-        btrfs-progs # Userspace utilities for the btrfs filesystem
-        snapper # Tool for Linux filesystem snapshots
-        ntfs3g # Open source implementation of NTFS
+        btrfs-progs # Btrfs tools retained for ExtraDisk during ZFS migration
+        ntfs3g # Open source NTFS driver
       ];
 
-      services.snapper.configs = {
-        home = {
-          SUBVOLUME = "/home";
-          ALLOW_USERS = [config.identity.username];
-          TIMELINE_CREATE = true;
-          TIMELINE_CLEANUP = true;
-          TIMELINE_MIN_AGE = "1800";
-          TIMELINE_LIMIT_HOURLY = "0";
-          TIMELINE_LIMIT_DAILY = "7";
-          TIMELINE_LIMIT_WEEKLY = "0";
-          TIMELINE_LIMIT_MONTHLY = "0";
-          TIMELINE_LIMIT_YEARLY = "0";
-          NUMBER_CLEANUP = true;
-          NUMBER_LIMIT = "10";
+      # Sanoid: ZFS snapshot management for safe/ datasets.
+      # Replaces snapper. Timeline snapshots for /home and /persist only —
+      # local/ datasets (root, nix) are ephemeral and never snapshotted.
+      services.sanoid = {
+        enable = true;
+        datasets = {
+          "zroot/safe/home" = {
+            useTemplate = ["default"];
+          };
+          "zroot/safe/persist" = {
+            useTemplate = ["default"];
+          };
         };
-        persist = {
-          SUBVOLUME = "/persist";
-          ALLOW_USERS = [config.identity.username];
-          TIMELINE_CREATE = true;
-          TIMELINE_CLEANUP = true;
-          TIMELINE_MIN_AGE = "1800";
-          TIMELINE_LIMIT_HOURLY = "0";
-          TIMELINE_LIMIT_DAILY = "7";
-          TIMELINE_LIMIT_WEEKLY = "0";
-          TIMELINE_LIMIT_MONTHLY = "0";
-          TIMELINE_LIMIT_YEARLY = "0";
-          NUMBER_CLEANUP = true;
-          NUMBER_LIMIT = "10";
+        templates.default = {
+          hourly = 0;
+          daily = 7;
+          weekly = 0;
+          monthly = 0;
+          yearly = 0;
+          autosnap = true;
+          autoprune = true;
         };
       };
 
-      # Post-switch snapshots for both /home and /persist.
-      # Runs during nixos-rebuild activation, capturing a known-good state after each successful rebuild.
-      # Uses number cleanup so these are kept independently of the daily timeline (last 10 preserved).
+      # Post-rebuild snapshots for home and persist.
+      # Runs during nixos-rebuild activation after each successful rebuild.
+      # Timestamp captured once so home and persist share the same snapshot name.
+      # These are outside sanoid's naming convention and will not be auto-pruned.
       system.activationScripts.snapshot-after-rebuild = ''
-        ${pkgs.snapper}/bin/snapper -c home create --cleanup-algorithm number --description "After rebuild" || true
-        ${pkgs.snapper}/bin/snapper -c persist create --cleanup-algorithm number --description "After rebuild" || true
+        ts=$(${pkgs.coreutils}/bin/date +%s)
+        ${pkgs.zfs}/bin/zfs snapshot "zroot/safe/home@rebuild-$ts" 2>/dev/null || true
+        ${pkgs.zfs}/bin/zfs snapshot "zroot/safe/persist@rebuild-$ts" 2>/dev/null || true
       '';
 
-      # Auto-scrubbing for BTRFS filesystems.
-      # Periodically checks for and repairs bitrot or data corruption.
-      services.btrfs.autoScrub = {
+      # Monthly scrub of the root pool. Replaces services.btrfs.autoScrub.
+      services.zfs.autoScrub = {
         enable = true;
         interval = "monthly";
-        fileSystems = ["/" "/persist"];
+        pools = ["zroot"];
       };
     };
   };
