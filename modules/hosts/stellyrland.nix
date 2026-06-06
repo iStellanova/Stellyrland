@@ -100,6 +100,12 @@
           hl.monitor({ output = "DP-3", mode = "2560x1440@100", position = "0x0",    scale = 1, transform = 1, bitdepth = 10, cm = "srgb", sdr_min_luminance = 0.2, min_luminance = 0.25, max_luminance = 250, max_avg_luminance = 250 })
           hl.monitor({ output = "", mode = "preferred", position = "auto", scale = 1 })
         '';
+
+        desktop.hyprland.greetdMonitorConfig = ''
+          hl.monitor({ output = "DP-2", mode = "3440x1440@175", position = "1440x541", scale = 1 })
+          hl.monitor({ output = "DP-3", mode = "2560x1440@100", position = "0x0",    scale = 1, transform = 1 })
+          hl.monitor({ output = "", mode = "preferred", position = "auto", scale = 1 })
+        '';
       }
     ];
   };

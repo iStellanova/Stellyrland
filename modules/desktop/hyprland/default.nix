@@ -12,7 +12,12 @@
       monitorConfig = lib.mkOption {
         type = lib.types.str;
         default = ''hl.monitor({ output = "", mode = "preferred", position = "auto", scale = 1 })'';
-        description = "Lua monitor configuration lines shared between the Hyprland session and greetd login screen.";
+        description = "Lua monitor configuration for the main Hyprland session.";
+      };
+      greetdMonitorConfig = lib.mkOption {
+        type = lib.types.str;
+        default = ''hl.monitor({ output = "", mode = "preferred", position = "auto", scale = 1 })'';
+        description = "Lua monitor configuration for the greetd login session. Should use plain SDR (no cm = hdr) to avoid HDR rendering issues in the greeter.";
       };
       wallpaperEngine = {
         steamLibrary = lib.mkOption {
