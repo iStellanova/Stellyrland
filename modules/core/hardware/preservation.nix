@@ -128,6 +128,27 @@
                 file = ".claude.json";
                 how = "symlink";
               }
+              # Noctalia runtime data — configureParent creates .local/state/noctalia/ at boot
+              {
+                file = ".local/state/noctalia/screen_time.json";
+                how = "symlink";
+                configureParent = true;
+              }
+              {
+                file = ".local/state/noctalia/usage_counts.json";
+                how = "symlink";
+                configureParent = true;
+              }
+              {
+                file = ".local/state/noctalia/recently_used.json";
+                how = "symlink";
+                configureParent = true;
+              }
+              {
+                file = ".local/state/noctalia/notification_history.json";
+                how = "symlink";
+                configureParent = true;
+              }
             ];
           };
         };
