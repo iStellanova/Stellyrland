@@ -30,13 +30,8 @@
           directories = [
             "/var/lib/sbctl"
             "/var/lib/nixos"
-            "/var/lib/postgresql"
-            "/var/lib/private/ollama"
-            "/var/lib/private/open-webui"
             "/var/lib/tailscale"
-            "/var/lib/bluetooth"
             "/var/lib/NetworkManager"
-            "/var/lib/iwd"
             "/etc/NetworkManager"
             "/var/log"
             "/var/lib/regreet"
@@ -114,6 +109,12 @@
 
               # Music library database and cover cache
               ".local/share/lollypop"
+
+              # Hyprland version tracking — prevents "what's new" popup on every boot
+              ".local/share/hyprland"
+
+              # Zoxide jump database — accumulated frecency weights for smart cd
+              ".local/share/zoxide"
 
               # Flatpak user app data
               ".var/app"
