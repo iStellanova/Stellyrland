@@ -90,6 +90,7 @@
 
         desktop.gaming.hdr.enable = true;
 
+        desktop.hyprland.wallpaperEngine.steamLibrary = "/ExtraDisk";
         desktop.hyprland.wallpaperEngine.workshopId = "3258032485";
 
         desktop.noctalia.primaryMonitor = "DP-2";
