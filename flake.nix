@@ -10,9 +10,6 @@
 
     # Flake Parts - modular flake output composition.
     flake-parts.url = "github:hercules-ci/flake-parts";
-    # TODO: Remove this pin once deno/rusty-v8 build issues are resolved
-    nixpkgs-deno.url = "github:nixos/nixpkgs/3e2cf88148e732abc1d259286123e06a9d8c964a";
-
     # Home Manager.
     home-manager = {
       url = "github:nix-community/home-manager/master";
