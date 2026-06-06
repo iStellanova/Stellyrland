@@ -814,22 +814,6 @@
         "type": "github"
       }
     },
-    "nixpkgs-deno": {
-      "locked": {
-        "lastModified": 1745533402,
-        "narHash": "sha256-gDcMJdnBJg7ncP+eqENwH9pOW0azcCOW5y50N+jKdL8=",
-        "owner": "nixos",
-        "repo": "nixpkgs",
-        "rev": "3e2cf88148e732abc1d259286123e06a9d8c964a",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nixos",
-        "repo": "nixpkgs",
-        "rev": "3e2cf88148e732abc1d259286123e06a9d8c964a",
-        "type": "github"
-      }
-    },
     "nixpkgs-lib": {
       "locked": {
         "lastModified": 1777168982,
@@ -1007,11 +991,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1780709668,
-        "narHash": "sha256-2Ku1SvIpSdLXeflzJIXGMpaJAVFmH5fXT0kifxc5R1Q=",
+        "lastModified": 1780751097,
+        "narHash": "sha256-rYW0Z3lcs3IFZ+e5CdvzdGyc3s8woLknfyhu1VV8X7E=",
         "owner": "noctalia-dev",
         "repo": "noctalia-shell",
-        "rev": "45c5630922ca8e313f2f090ba9ff5ce21229e486",
+        "rev": "1353918e0dd8187499494b1ca6ab6f24523a6739",
         "type": "github"
       },
       "original": {
@@ -1096,7 +1080,6 @@
         "nix-flatpak": "nix-flatpak",
         "nix-index-database": "nix-index-database",
         "nixpkgs": "nixpkgs_8",
-        "nixpkgs-deno": "nixpkgs-deno",
         "noctalia-shell": "noctalia-shell",
         "preservation": "preservation",
         "sops-nix": "sops-nix",
