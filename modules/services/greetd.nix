@@ -24,7 +24,7 @@ _: {
                 -- Mirrors the main session's decoration and visual settings for consistency.
 
                 -- Monitor configuration
-                ${config.desktop.hyprland.monitorConfig}
+                ${config.desktop.hyprland.greetdMonitorConfig}
 
                 -- Environment variables
                 hl.env("XDG_CURRENT_DESKTOP", "Hyprland")
@@ -89,8 +89,7 @@ _: {
                   },
                   render = {
                     direct_scanout = false,
-                    cm_enabled     = true,
-                    cm_auto_hdr    = 2,
+                    cm_enabled     = false,
                   },
                   misc = {
                     disable_hyprland_logo    = true,
@@ -103,28 +102,23 @@ _: {
                 hl.layer_rule({ match = { namespace = "regreet" }, blur = true })
                 hl.layer_rule({ match = { namespace = "regreet" }, ignore_alpha = 0.5 })
 
-                -- Startup: cursor, wallpaper, regreet, then exit
+                -- Startup: cursor, then wallpaper + regreet in one shell so swaybg
+                -- lifetime is managed via $! — killed before exit to unblock Hyprland cleanup.
                 hl.on("hyprland.start", function()
                   hl.exec_cmd("${hyprlandPkg}/bin/hyprctl setcursor Bibata-Modern-Ice 16")
-                  hl.exec_cmd([[${wallpaperCmd}]])
-                  hl.exec_cmd([[sh -c '${pkgs.regreet}/bin/regreet; ${hyprlandPkg}/bin/hyprctl eval "hl.dsp.exit()"']])
+                  hl.exec_cmd([[sh -c '${wallpaperCmd} & ${pkgs.regreet}/bin/regreet; kill $!; kill $PPID']])
                 end)
               '';
               greetdHyprLauncher = pkgs.writeShellScript "greetd-hyprland-launcher" ''
                 export HOME=/tmp/greetd-home
                 rm -rf "$HOME"
                 mkdir -p $HOME/.config/hypr
-                mkdir -p $HOME/.cache/regreet
-                printf "%s\n%s\n" \
-                  "last_username = \"${config.identity.username}\"" \
-                  "last_session = \"${hyprlandPkg}/share/wayland-sessions/hyprland.desktop\"" \
-                  > "$HOME/.cache/regreet/cache.toml"
                 ln -sf ${greetdHyprConfig} $HOME/.config/hypr/hyprland.lua
                 export XDG_DATA_DIRS="${hyprlandPkg}/share''${XDG_DATA_DIRS:+:$XDG_DATA_DIRS}"
                 export XDG_RUNTIME_DIR="''${XDG_RUNTIME_DIR:-/run/user/$(id -u)}"
                 exec ${hyprlandPkg}/bin/start-hyprland
               '';
-            in "${pkgs.dbus}/bin/dbus-run-session ${greetdHyprLauncher}";
+            in "${greetdHyprLauncher}";
             user = "greeter";
           };
         };
@@ -250,7 +244,9 @@ _: {
         '';
       };
 
-      security.pam.services.greetd.enableGnomeKeyring = true;
+      systemd.tmpfiles.rules = [
+        "d /persist/var/lib/regreet 0700 greeter greeter -"
+      ];
     };
   };
 }
