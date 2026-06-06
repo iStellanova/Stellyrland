@@ -23,9 +23,6 @@
           });
         })
         inputs.cachyos-kernel.overlays.default
-        (_final: prev: {
-          deno = inputs.nixpkgs-deno.legacyPackages.${prev.stdenv.hostPlatform.system}.deno;
-        })
       ];
 
       nix.enable = lib.mkDefault true;
