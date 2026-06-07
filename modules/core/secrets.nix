@@ -8,7 +8,7 @@
 
     sops.age.sshKeyPaths = ["/persist/etc/ssh/ssh_host_ed25519_key"];
 
-    sops.defaultSopsFile = ../../../secrets/secrets.yaml;
+    sops.defaultSopsFile = ../../secrets/secrets.yaml;
     sops.defaultSopsFormat = "yaml";
 
     # Decrypt before users are created so the hashed password is available.
