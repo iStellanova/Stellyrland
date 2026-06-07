@@ -1,8 +1,5 @@
 _: {
-  den.aspects.users.nixos = {
-    host,
-    ...
-  }: {
+  den.aspects.users.nixos = {host, ...}: {
     users.mutableUsers = false;
 
     users.users.${host.username} = {

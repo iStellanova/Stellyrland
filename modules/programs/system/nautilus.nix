@@ -45,10 +45,11 @@ _: {
 
   den.aspects.nautilus.homeManager = {host, ...}: {
     home.file.".config/gtk-3.0/bookmarks".text = ''
-      file://${host.homeDir}/Documents
+      file://${host.homeDir}/Downloads
       file://${host.homeDir}/Pictures
-      file://${host.homeDir}/Music
       file://${host.homeDir}/Videos
+      file://${host.homeDir}/Documents
+      file://${host.homeDir}/Music
       file://${host.homeDir}/Projects
       file://${host.homeDir}/Projects/stellyrland
     '';
