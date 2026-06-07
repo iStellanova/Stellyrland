@@ -29,7 +29,6 @@
       den.aspects.ai-tools
       den.aspects.kitty
       den.aspects.ns
-      den.aspects.ide-suite
       den.aspects.cli
       den.aspects.helix
       den.aspects.git
@@ -40,9 +39,6 @@
       den.aspects.media-editing
       den.aspects.cava
       den.aspects.media
-      den.aspects.office-suite
-      den.aspects.school
-      den.aspects.virtual-machines
       den.aspects.noctalia-shell
       den.aspects.utils
       den.aspects.maintenance
