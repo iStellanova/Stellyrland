@@ -78,11 +78,14 @@
               }
             ];
           };
-          pipewire-pulse."99-lowlatency"."pulse.properties" = {
-            "server.address" = ["unix:native"];
-            "pulse.min.req" = "512/48000";
-            "pulse.min.quantum" = "512/48000";
-            "pulse.min.frag" = "512/48000";
+          pipewire-pulse."99-lowlatency" = {
+            "pulse.properties" = {
+              "server.address" = ["unix:native"];
+              "pulse.min.req" = "512/48000";
+              "pulse.min.quantum" = "512/48000";
+              "pulse.min.frag" = "512/48000";
+              "pulse.flat-volumes" = false;
+            };
           };
           client."99-lowlatency"."stream.properties" = {
             "node.latency" = "512/48000";
@@ -95,7 +98,7 @@
             "10-ignore-vols" = {
               "monitor.alsa.rules" = [
                 {
-                  matches = [{"node.name" = "~alsa_input.*";}];
+                  matches = [{"media.class" = "Audio/Source";}];
                   actions = {
                     update-props = {
                       "node.ignore-session-volume" = true;
