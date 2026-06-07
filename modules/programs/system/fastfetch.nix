@@ -27,27 +27,27 @@ _: {
           "break"
           {
             type = "os";
-            key = " ";
+            key = " ";
             keyColor = "34";
           }
           {
             type = "kernel";
-            key = " ";
+            key = " ";
             keyColor = "34";
           }
           {
             type = "packages";
-            key = " ";
+            key = " ";
             keyColor = "34";
           }
           {
             type = "shell";
-            key = " ";
+            key = " ";
             keyColor = "34";
           }
           {
             type = "terminal";
-            key = " ";
+            key = " ";
             keyColor = "34";
           }
           {
@@ -57,7 +57,7 @@ _: {
           }
           {
             type = "wm";
-            key = " ";
+            key = " ";
             keyColor = "34";
           }
           {
@@ -67,12 +67,12 @@ _: {
           }
           {
             type = "cursor";
-            key = " ";
+            key = " ";
             keyColor = "34";
           }
           {
             type = "terminalfont";
-            key = " ";
+            key = " ";
             keyColor = "34";
           }
           {
@@ -97,13 +97,13 @@ _: {
           }
           {
             type = "uptime";
-            key = " ";
+            key = " ";
             keyColor = "34";
           }
           {
             type = "datetime";
             format = "{1}-{3}-{11}";
-            key = " ";
+            key = " ";
             keyColor = "34";
           }
           {
