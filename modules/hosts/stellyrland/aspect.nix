@@ -14,7 +14,6 @@
       den.aspects.headless
       den.aspects.initrd
       den.aspects.kernel
-      den.aspects.kernel-params
       den.aspects.hardware
       den.aspects.extra-disk
       den.aspects.hdd

@@ -1,5 +1,5 @@
 _: {
-  den.aspects.initrd.nixos = _: {
+  den.aspects.initrd.nixos = {lib, ...}: {
     boot.tmp.useTmpfs = true;
     boot.tmp.tmpfsSize = "50%";
 
@@ -37,6 +37,22 @@ _: {
       "xts" # XTS block cipher mode for the LUKS container
       "cryptd" # async crypto daemon required by aesni_intel
       "dm_crypt" # LUKS device-mapper target
+    ];
+
+    # Disable default module set; enumerate exactly what the initrd needs.
+    boot.initrd.includeDefaultModules = lib.mkForce false;
+    boot.initrd.availableKernelModules = lib.mkForce [
+      "nvme"
+      "xhci_pci"
+      "ahci"
+      "usbhid"
+      "usb_storage"
+      "sd_mod"
+      "dm_mod"
+      "dm_crypt"
+      "aesni_intel"
+      "xts"
+      "cryptd"
     ];
 
     # Open the LUKS container early in initrd before any filesystem mounts.
