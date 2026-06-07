@@ -1,17 +1,13 @@
 _: {
-  # Darwin AeroSpace Settings
-  flake.modules.darwin.aerospace = _: {
-    config = {
-      homebrew.taps = ["dimentium/autoraise"];
-      homebrew.casks = [
-        "nikitabobko/tap/aerospace"
-        "dimentium/autoraise/autoraiseapp"
-      ];
-    };
+  den.aspects.aerospace.darwin = _: {
+    homebrew.taps = ["dimentium/autoraise"];
+    homebrew.casks = [
+      "nikitabobko/tap/aerospace"
+      "dimentium/autoraise/autoraiseapp"
+    ];
   };
 
-  # Home Manager AeroSpace Settings
-  flake.modules.homeManager.aerospace = _: {
+  den.aspects.aerospace.homeManager = _: {
     home.file.".aerospace.toml".text = ''
       # Config version for compatibility and deprecations
       config-version = 2

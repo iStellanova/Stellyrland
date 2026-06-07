@@ -1,6 +1,5 @@
 _: {
-  # NixOS Headless Specialisation
-  flake.modules.nixos.headless = {
+  den.aspects.headless.nixos = {
     config,
     lib,
     ...

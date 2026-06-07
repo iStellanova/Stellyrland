@@ -1,11 +1,9 @@
 _: {
-  # NixOS Maintenance Settings
-  flake.modules.nixos.maintenance = {pkgs, ...}: {
+  den.aspects.maintenance.nixos = {pkgs, ...}: {
     environment.systemPackages = [pkgs.bleachbit];
   };
 
-  # Darwin Maintenance Settings
-  flake.modules.darwin.maintenance = _: {
+  den.aspects.maintenance.darwin = _: {
     homebrew.casks = ["cleanmymac"];
   };
 }

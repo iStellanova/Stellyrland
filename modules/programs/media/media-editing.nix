@@ -1,6 +1,5 @@
 _: {
-  # NixOS Media Editing Settings
-  flake.modules.nixos.media-editing = {pkgs, ...}: {
+  den.aspects.media-editing.nixos = {pkgs, ...}: {
     environment.systemPackages = with pkgs; [
       davinci-resolve
       gimp
@@ -10,8 +9,7 @@ _: {
     ];
   };
 
-  # Darwin Media Editing Settings
-  flake.modules.darwin.media-editing = _: {
+  den.aspects.media-editing.darwin = _: {
     homebrew.casks = [
       "gimp"
       "obs"

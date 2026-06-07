@@ -1,61 +1,56 @@
 _: {
-  flake.modules.homeManager.nautilus = {osConfig, ...}: {
-    home.file.".config/gtk-3.0/bookmarks".text = let
-      home = osConfig.identity.homeDir;
-    in ''
-      file://${home}/Documents
-      file://${home}/Pictures
-      file://${home}/Music
-      file://${home}/Videos
-      file://${home}/Projects
-      file://${home}/Projects/stellyrland
-    '';
-  };
-
-  # NixOS Nautilus Settings
-  flake.modules.nixos.nautilus = {
+  den.aspects.nautilus.nixos = {
     pkgs,
     lib,
     ...
   }: {
-    config = {
-      environment.systemPackages = with pkgs; [
-        nautilus
-        sushi
-        evince
-        gst_all_1.gstreamer
-        gst_all_1.gst-plugins-base
-        gst_all_1.gst-plugins-good
-        gst_all_1.gst-plugins-bad
-        gst_all_1.gst-plugins-ugly
-        gst_all_1.gst-libav
-      ];
+    environment.systemPackages = with pkgs; [
+      nautilus
+      sushi
+      evince
+      gst_all_1.gstreamer
+      gst_all_1.gst-plugins-base
+      gst_all_1.gst-plugins-good
+      gst_all_1.gst-plugins-bad
+      gst_all_1.gst-plugins-ugly
+      gst_all_1.gst-libav
+    ];
 
-      environment.sessionVariables.GST_PLUGIN_SYSTEM_PATH_1_0 = lib.makeSearchPathOutput "lib" "lib/gstreamer-1.0" (with pkgs.gst_all_1; [
-        gstreamer
-        gst-plugins-base
-        gst-plugins-good
-        gst-plugins-bad
-        gst-plugins-ugly
-        gst-libav
-      ]);
+    environment.sessionVariables.GST_PLUGIN_SYSTEM_PATH_1_0 = lib.makeSearchPathOutput "lib" "lib/gstreamer-1.0" (with pkgs.gst_all_1; [
+      gstreamer
+      gst-plugins-base
+      gst-plugins-good
+      gst-plugins-bad
+      gst-plugins-ugly
+      gst-libav
+    ]);
 
-      services.gnome.tinysparql.enable = true;
-      services.gnome.localsearch.enable = true;
+    services.gnome.tinysparql.enable = true;
+    services.gnome.localsearch.enable = true;
 
-      programs.dconf.profiles.user.databases = [
-        {
-          settings."org/gnome/nautilus/preferences" = {
-            default-folder-viewer = "list-view";
-            # Tell nautilus migration already ran so it doesn't clobber the GTK4 key below
-            migrated-gtk-settings = true;
-          };
-          # nautilus 50+ reads show-hidden from here; the old show-hidden-files key is deprecated/ignored
-          settings."org/gtk/gtk4/settings/file-chooser" = {
-            show-hidden = true;
-          };
-        }
-      ];
-    };
+    programs.dconf.profiles.user.databases = [
+      {
+        settings."org/gnome/nautilus/preferences" = {
+          default-folder-viewer = "list-view";
+          # Tell nautilus migration already ran so it doesn't clobber the GTK4 key below
+          migrated-gtk-settings = true;
+        };
+        # nautilus 50+ reads show-hidden from here; the old show-hidden-files key is deprecated/ignored
+        settings."org/gtk/gtk4/settings/file-chooser" = {
+          show-hidden = true;
+        };
+      }
+    ];
+  };
+
+  den.aspects.nautilus.homeManager = {host, ...}: {
+    home.file.".config/gtk-3.0/bookmarks".text = ''
+      file://${host.homeDir}/Documents
+      file://${host.homeDir}/Pictures
+      file://${host.homeDir}/Music
+      file://${host.homeDir}/Videos
+      file://${host.homeDir}/Projects
+      file://${host.homeDir}/Projects/stellyrland
+    '';
   };
 }

@@ -1,19 +1,13 @@
 _: let
   zshOsPkg = {pkgs, ...}: {
-    config = {
-      programs.zsh.enable = true;
-      environment.systemPackages = [pkgs.zsh-completions];
-    };
+    environment.systemPackages = [pkgs.zsh-completions];
   };
 in {
-  # NixOS Zsh Settings
-  flake.modules.nixos.zsh = zshOsPkg;
+  den.aspects.zsh.nixos = zshOsPkg;
 
-  # Darwin Zsh Settings
-  flake.modules.darwin.zsh = zshOsPkg;
+  den.aspects.zsh.darwin = zshOsPkg;
 
-  # Home Manager Zsh Settings
-  flake.modules.homeManager.zsh = {
+  den.aspects.zsh.homeManager = {
     pkgs,
     lib,
     ...
@@ -21,19 +15,16 @@ in {
     home.file.".p10k.zsh".text = import ./_p10k.nix {inherit lib;};
 
     programs.zsh = {
-      enable = true;
       enableCompletion = true;
       autosuggestion.enable = true;
       syntaxHighlighting.enable = true;
 
-      # Oh My Zsh and plugins.
       oh-my-zsh = {
         enable = true;
         plugins = ["git" "copyfile" "copybuffer"];
       };
 
       shellAliases = {
-        # QOL Aliases
         c = "clear";
         cd = "zd";
         ".." = "cd ..";

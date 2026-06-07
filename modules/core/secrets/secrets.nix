@@ -1,41 +1,40 @@
 {inputs, ...}: {
-  # NixOS Secrets Settings
-  flake.modules.nixos.secrets = {config, ...}: {
+  den.aspects.secrets.nixos = {
+    host,
+    config,
+    ...
+  }: {
     imports = [inputs.sops-nix.nixosModules.sops];
 
-    config = {
-      # Specify the decrypt key file location (directly in persistent storage to bypass impermanence race condition)
-      sops.age.sshKeyPaths = ["/persist/etc/ssh/ssh_host_ed25519_key"];
+    sops.age.sshKeyPaths = ["/persist/etc/ssh/ssh_host_ed25519_key"];
 
-      # Locate the encrypted secrets file (top-level secrets/ directory)
-      sops.defaultSopsFile = ../../../secrets/secrets.yaml;
-      sops.defaultSopsFormat = "yaml";
+    sops.defaultSopsFile = ../../../secrets/secrets.yaml;
+    sops.defaultSopsFormat = "yaml";
 
-      # Declare the user-password secret
-      sops.secrets.user-password = {
-        neededForUsers = true; # Critical: Decrypt before users are created!
-      };
-
-      users.users.${config.identity.username}.hashedPasswordFile = config.sops.secrets.user-password.path;
-
-      # Decrypt and write the personal SSH private key dynamically on boot
-      sops.secrets.stellacode = {
-        owner = config.identity.username;
-        mode = "0600";
-      };
-
-      # Decrypt the personal backup HDD keyfile dynamically on boot
-      sops.secrets.hdd-keyfile = {
-        owner = "root";
-        group = "root";
-        mode = "0400";
-      };
-
-      # Ensure .ssh exists with correct ownership before sops writes the key.
-      # sops-nix creates parent dirs as root:root if missing, which SSH rejects.
-      systemd.tmpfiles.rules = [
-        "d ${config.identity.homeDir}/.ssh 0700 ${config.identity.username} users -"
-      ];
+    # Decrypt before users are created so the hashed password is available.
+    sops.secrets.user-password = {
+      neededForUsers = true;
     };
+
+    users.users.${host.username}.hashedPasswordFile = config.sops.secrets.user-password.path;
+
+    # Personal SSH private key — written dynamically on boot.
+    sops.secrets.stellacode = {
+      owner = host.username;
+      mode = "0600";
+    };
+
+    # Backup HDD keyfile — root-only, used by backup-hdd service.
+    sops.secrets.hdd-keyfile = {
+      owner = "root";
+      group = "root";
+      mode = "0400";
+    };
+
+    # Ensure .ssh exists with correct ownership before sops writes the key.
+    # sops-nix creates parent dirs as root:root if missing, which SSH rejects.
+    systemd.tmpfiles.rules = [
+      "d ${host.homeDir}/.ssh 0700 ${host.username} users -"
+    ];
   };
 }

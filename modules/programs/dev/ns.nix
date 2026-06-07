@@ -1,6 +1,5 @@
 _: {
-  # Home Manager Nix Search script Settings
-  flake.modules.homeManager.ns = {pkgs, ...}: {
+  den.aspects.ns.homeManager = {pkgs, ...}: {
     home.packages = [
       (pkgs.writeShellApplication {
         name = "ns";

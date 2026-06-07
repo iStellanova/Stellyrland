@@ -1,11 +1,9 @@
 _: {
-  # NixOS School Settings
-  flake.modules.nixos.school = {pkgs, ...}: {
+  den.aspects.school.nixos = {pkgs, ...}: {
     environment.systemPackages = [pkgs.zoom-us];
   };
 
-  # Darwin School Settings
-  flake.modules.darwin.school = _: {
+  den.aspects.school.darwin = _: {
     homebrew.casks = ["zoom"];
     homebrew.masApps = {
       "School Assistant" = 1465687472;

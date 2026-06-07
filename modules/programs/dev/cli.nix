@@ -1,32 +1,15 @@
-_: {
-  # NixOS CLI Settings
-  flake.modules.nixos.cli = {pkgs, ...}: {
-    config = {
-      environment.systemPackages = with pkgs; [
-        curl
-        unzip
-        zip
-        croc
-        kitty.terminfo
-      ];
-    };
+_: let
+  cliPkgs = pkgs: with pkgs; [curl unzip zip croc kitty.terminfo];
+in {
+  den.aspects.cli.nixos = {pkgs, ...}: {
+    environment.systemPackages = cliPkgs pkgs;
   };
 
-  # Darwin CLI Settings
-  flake.modules.darwin.cli = {pkgs, ...}: {
-    config = {
-      environment.systemPackages = with pkgs; [
-        curl
-        unzip
-        zip
-        croc
-        kitty.terminfo
-      ];
-    };
+  den.aspects.cli.darwin = {pkgs, ...}: {
+    environment.systemPackages = cliPkgs pkgs;
   };
 
-  # Home Manager CLI Settings
-  flake.modules.homeManager.cli = {
+  den.aspects.cli.homeManager = {
     pkgs,
     lib,
     ...
@@ -36,7 +19,6 @@ _: {
     programs.jq.enable = true;
     programs.ripgrep.enable = true;
 
-    # bat - cat with syntax highlighting
     programs.bat = {
       enable = true;
       config = {
@@ -44,7 +26,6 @@ _: {
       };
     };
 
-    # eza - modern replacement for ls
     programs.eza = {
       enable = true;
       enableZshIntegration = true;
@@ -56,7 +37,6 @@ _: {
       ];
     };
 
-    # tealdeer - fast, minimalistic man page viewer
     programs.tealdeer = {
       enable = true;
       settings = {
@@ -68,7 +48,6 @@ _: {
 
     programs.zsh.shellAliases =
       {
-        # QOL aliases
         ls = "eza -lh";
         ll = "eza -al";
         lt = "eza -a --tree --level=2";
@@ -79,14 +58,12 @@ _: {
         man = "tldr";
       }
       // lib.optionalAttrs (!pkgs.stdenv.isDarwin) {
-        # Environment switching aliases (Linux only)
         # Sets the 'headless' specialisation as the default boot entry and reboots.
         reboot-headless = "sudo /run/current-system/specialisation/headless/bin/switch-to-configuration boot && sudo reboot";
         # Restores the main system (GUI) as the default boot entry and reboots.
         reboot-gui = "sudo /nix/var/nix/profiles/system/bin/switch-to-configuration boot && sudo reboot";
       };
 
-    # fd - fast directory search
     programs.zsh.initContent = lib.mkAfter ''
       zstyle ':fzf-tab:*' fzf-command fzf
       zstyle ':fzf-tab:*' fzf-preview 'bat --color=always --style=numbers $realpath'
@@ -95,7 +72,6 @@ _: {
 
     programs.fd.enable = true;
 
-    # direnv - environment variable management
     programs.direnv = {
       enable = true;
       nix-direnv.enable = true;

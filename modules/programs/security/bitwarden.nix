@@ -1,11 +1,9 @@
 _: {
-  # NixOS Bitwarden Settings
-  flake.modules.nixos.bitwarden = _: {
+  den.aspects.bitwarden.nixos = _: {
     services.flatpak.packages = ["com.bitwarden.desktop"];
   };
 
-  # Darwin Bitwarden Settings
-  flake.modules.darwin.bitwarden = _: {
+  den.aspects.bitwarden.darwin = _: {
     homebrew.casks = ["bitwarden"];
   };
 }

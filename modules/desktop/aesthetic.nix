@@ -1,9 +1,8 @@
 _: let
   aestheticPkgs = pkgs:
     with pkgs; [
-      peaclock # A colorful clock, timer, and stopwatch for the terminal
+      peaclock
 
-      # Custom / Git Builds
       (python3Packages.buildPythonApplication {
         pname = "terminal-rain-lightning";
         version = "0.1.0";
@@ -18,13 +17,11 @@ _: let
       })
     ];
 in {
-  # NixOS Aesthetic Settings
-  flake.modules.nixos.aesthetic = {pkgs, ...}: {
-    config.environment.systemPackages = aestheticPkgs pkgs;
+  den.aspects.aesthetic.nixos = {pkgs, ...}: {
+    environment.systemPackages = aestheticPkgs pkgs;
   };
 
-  # Darwin Aesthetic Settings
-  flake.modules.darwin.aesthetic = {pkgs, ...}: {
-    config.environment.systemPackages = aestheticPkgs pkgs;
+  den.aspects.aesthetic.darwin = {pkgs, ...}: {
+    environment.systemPackages = aestheticPkgs pkgs;
   };
 }
