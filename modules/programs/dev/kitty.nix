@@ -1,7 +1,7 @@
-{lib, ...}: {
-  # Home Manager Kitty Settings
-  flake.modules.homeManager.kitty = {
-    osConfig,
+_: {
+  den.aspects.kitty.homeManager = {
+    host,
+    lib,
     pkgs,
     ...
   }: {
@@ -14,21 +14,21 @@
       settings = {
         confirm_os_window_close = 0;
         enable_audio_bell = false;
-        window_padding_width = 28; # High padding for a cleaner, centered aesthetic
+        window_padding_width = 28;
         window_padding_height = 28;
         background_opacity = "0.65";
-        background_blur = 32; # Enable background blur (macOS only)
+        background_blur = 32;
         cursor_trail = 4;
         cursor_trail_decay = "0.1 0.5";
         cursor_trail_start_threshold = 0;
-        allow_remote_control = "yes"; # Necessary for dynamic theme switching
-        listen_on = "unix:/tmp/kitty"; # Socket for external script control
+        allow_remote_control = "yes";
+        listen_on = "unix:/tmp/kitty";
         bold_font = "auto";
         italic_font = "auto";
         bold_italic_font = "auto";
       };
       extraConfig = ''
-        include ${osConfig.identity.homeDir}/.config/kitty/themes/noctalia.conf
+        include ${host.homeDir}/.config/kitty/themes/noctalia.conf
       '';
     };
 

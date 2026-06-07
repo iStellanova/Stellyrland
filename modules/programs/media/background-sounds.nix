@@ -1,15 +1,11 @@
 _: {
-  # Darwin Background Sounds Settings
-  flake.modules.darwin.background-sounds = _: {
-    config = {
-      homebrew.masApps = {
-        "Noizio Lite" = 1481029536;
-      };
+  den.aspects.background-sounds.darwin = _: {
+    homebrew.masApps = {
+      "Noizio Lite" = 1481029536;
     };
   };
 
-  # Home Manager Background Sounds Settings
-  flake.modules.homeManager.background-sounds = {
+  den.aspects.background-sounds.homeManager = {
     pkgs,
     lib,
     ...

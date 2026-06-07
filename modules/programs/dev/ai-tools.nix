@@ -1,24 +1,17 @@
-_: {
-  # NixOS AI Agent Tools
-  flake.modules.nixos.ai-tools = {pkgs, ...}: {
-    environment.systemPackages = with pkgs; [
-      claude-code
-      gemini-cli
-      antigravity-fhs
-    ];
+_: let
+  aiPkgs = pkgs: with pkgs; [claude-code gemini-cli];
+in {
+  den.aspects.ai-tools.nixos = {pkgs, ...}: {
+    environment.systemPackages = aiPkgs pkgs ++ [pkgs.antigravity-fhs];
   };
 
-  # Darwin AI Agent Tools
-  flake.modules.darwin.ai-tools = {pkgs, ...}: {
+  den.aspects.ai-tools.darwin = {pkgs, ...}: {
     homebrew.casks = [
       "claude"
       "antigravity"
       "antigravity-cli"
     ];
 
-    environment.systemPackages = with pkgs; [
-      claude-code
-      gemini-cli
-    ];
+    environment.systemPackages = aiPkgs pkgs;
   };
 }

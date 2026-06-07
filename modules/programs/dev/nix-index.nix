@@ -1,11 +1,8 @@
 {inputs, ...}: {
-  # Home Manager nix-index Settings
-  flake.modules.homeManager.nix-index = {...}: {
+  den.aspects.nix-index.homeManager = {...}: {
     imports = [inputs.nix-index-database.homeModules.nix-index];
 
-    config = {
-      programs.nix-index.enable = true;
-      programs.nix-index-database.comma.enable = true;
-    };
+    programs.nix-index.enable = true;
+    programs.nix-index-database.comma.enable = true;
   };
 }

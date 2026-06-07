@@ -1,28 +1,19 @@
-_: {
-  # System-level Linux Font settings
-  flake.modules.nixos.fonts = {pkgs, ...}: {
-    config = {
-      fonts.packages = with pkgs; [
-        nerd-fonts.jetbrains-mono
-        nerd-fonts.noto
-        noto-fonts
-        noto-fonts-cjk-sans
-        noto-fonts-color-emoji
-      ];
-    };
+_: let
+  fontPkgs = pkgs:
+    with pkgs; [
+      nerd-fonts.jetbrains-mono
+      nerd-fonts.noto
+      noto-fonts
+      noto-fonts-cjk-sans
+      noto-fonts-color-emoji
+    ];
+in {
+  den.aspects.fonts.nixos = {pkgs, ...}: {
+    fonts.packages = fontPkgs pkgs;
   };
 
-  # System-level macOS (Darwin) Font settings
-  flake.modules.darwin.fonts = {pkgs, ...}: {
-    config = {
-      fonts.packages = with pkgs; [
-        nerd-fonts.jetbrains-mono
-        nerd-fonts.noto
-        noto-fonts
-        noto-fonts-cjk-sans
-        noto-fonts-color-emoji
-      ];
-      homebrew.casks = ["font-sf-pro"];
-    };
+  den.aspects.fonts.darwin = {pkgs, ...}: {
+    fonts.packages = fontPkgs pkgs;
+    homebrew.casks = ["font-sf-pro"];
   };
 }

@@ -2,14 +2,21 @@
   description = "Stellyrland Configurations";
 
   # This flake serves as the single entry point for all systems (Linux and macOS).
-  # It leverages flake-parts for clean attribute separation and a custom recursive
-  # module scanner in lib/ for automated feature discovery.
+  # It leverages flake-parts for modular output composition, import-tree for
+  # automated module discovery, and Den for aspect-oriented configuration.
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
 
     # Flake Parts - modular flake output composition.
     flake-parts.url = "github:hercules-ci/flake-parts";
+
+    # Den - aspect-oriented, context-aware Nix configuration framework.
+    den.url = "github:denful/den";
+
+    # Import Tree - recursive module scanner (replaces lib/scan).
+    import-tree.url = "github:vic/import-tree";
+
     # Home Manager.
     home-manager = {
       url = "github:nix-community/home-manager/master";
@@ -32,7 +39,7 @@
     };
 
     # Nix Darwin.
-    nix-darwin = {
+    darwin = {
       url = "github:LnL7/nix-darwin";
       inputs.nixpkgs.follows = "nixpkgs";
     };
@@ -86,12 +93,5 @@
     };
   };
 
-  outputs = inputs @ {flake-parts, ...}:
-    flake-parts.lib.mkFlake {inherit inputs;} ({lib, ...}: {
-      imports =
-        # flakeModules.modules must be declared at this level — flake-parts does not
-        # recursively process it when it arrives via a scanned module's imports.
-        [inputs.flake-parts.flakeModules.modules]
-        ++ (import ./lib/default.nix {inherit lib;}).scan ./modules;
-    });
+  outputs = inputs: inputs.flake-parts.lib.mkFlake {inherit inputs;} (inputs.import-tree ./modules);
 }

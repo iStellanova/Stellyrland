@@ -1,6 +1,5 @@
 _: {
-  # Home Manager Yazi Settings
-  flake.modules.homeManager.yazi = {
+  den.aspects.yazi.homeManager = {
     pkgs,
     lib,
     ...

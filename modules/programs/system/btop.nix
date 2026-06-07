@@ -1,6 +1,5 @@
 _: {
-  # Home Manager Btop Settings
-  flake.modules.homeManager.btop = _: {
+  den.aspects.btop.homeManager = _: {
     programs.btop = {
       enable = true;
       settings = {

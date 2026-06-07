@@ -8,22 +8,18 @@
     };
   };
 in {
-  # NixOS Zen Browser options declaration
-  flake.modules.nixos.browser = {lib, ...}: {
+  den.aspects.browser.nixos = {lib, ...}: {
     options.programs.browser = browserOptions lib;
   };
 
-  # Darwin Zen Browser Settings
-  flake.modules.darwin.browser = {lib, ...}: {
+  den.aspects.browser.darwin = {lib, ...}: {
     options.programs.browser = browserOptions lib;
-
     config = {
       homebrew.casks = ["zen"];
     };
   };
 
-  # Home Manager Zen Browser Settings
-  flake.modules.homeManager.browser = {
+  den.aspects.browser.homeManager = {
     osConfig,
     pkgs,
     lib,

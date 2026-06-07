@@ -1,6 +1,5 @@
 _: {
-  # Darwin Cloud Storage Settings
-  flake.modules.darwin.cloud-storage = _: {
+  den.aspects.cloud-storage.darwin = _: {
     homebrew.casks = [
       "google-drive"
     ];
@@ -9,8 +8,7 @@ _: {
     };
   };
 
-  # Home Manager Cloud Storage Settings
-  flake.modules.homeManager.cloud-storage = {
+  den.aspects.cloud-storage.homeManager = {
     pkgs,
     lib,
     ...

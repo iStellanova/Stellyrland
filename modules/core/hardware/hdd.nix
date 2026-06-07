@@ -1,6 +1,5 @@
 _: {
-  # NixOS HDD Backup configuration
-  flake.modules.nixos.hdd = {pkgs, ...}: let
+  den.aspects.hdd.nixos = {pkgs, ...}: let
     hddPartlabel = "disk-hdd-luks";
     mapperName = "crypthdd";
     poolName = "zhdd";
@@ -63,36 +62,34 @@ _: {
       echo "Done."
     '';
   in {
-    config = {
-      environment.systemPackages = [pkgs.sanoid]; # includes syncoid
+    environment.systemPackages = [pkgs.sanoid]; # includes syncoid
 
-      # Prevent udisks/udiskie/file managers from showing or automounting the backup HDD.
-      services.udev.extraRules = ''
-        SUBSYSTEM=="block", ENV{ID_PART_ENTRY_NAME}=="${hddPartlabel}", ENV{UDISKS_IGNORE}="1"
-        SUBSYSTEM=="block", ENV{DM_NAME}=="${mapperName}", ENV{UDISKS_IGNORE}="1"
-      '';
+    # Prevent udisks/udiskie/file managers from showing or automounting the backup HDD.
+    services.udev.extraRules = ''
+      SUBSYSTEM=="block", ENV{ID_PART_ENTRY_NAME}=="${hddPartlabel}", ENV{UDISKS_IGNORE}="1"
+      SUBSYSTEM=="block", ENV{DM_NAME}=="${mapperName}", ENV{UDISKS_IGNORE}="1"
+    '';
 
-      # Unlock → import pool → syncoid → export → lock.
-      # The trap ensures the HDD is always cleanly exported and locked even if syncoid fails.
-      systemd.services.backup-hdd = {
-        description = "Syncoid ZFS backup of home and persist to encrypted HDD";
-        after = ["local-fs.target" "zfs.target"];
-        unitConfig.RequiresMountsFor = ["/persist"];
-        serviceConfig = {
-          Type = "oneshot";
-          ExecStart = "${backupScript}";
-          IOWeight = 20;
-          CPUWeight = 20;
-        };
+    # Unlock → import pool → syncoid → export → lock.
+    # The trap ensures the HDD is always cleanly exported and locked even if syncoid fails.
+    systemd.services.backup-hdd = {
+      description = "Syncoid ZFS backup of home and persist to encrypted HDD";
+      after = ["local-fs.target" "zfs.target"];
+      unitConfig.RequiresMountsFor = ["/persist"];
+      serviceConfig = {
+        Type = "oneshot";
+        ExecStart = "${backupScript}";
+        IOWeight = 20;
+        CPUWeight = 20;
       };
+    };
 
-      # Weekly backup. Persistent = true catches up if the system was offline at schedule time.
-      systemd.timers.backup-hdd = {
-        wantedBy = ["timers.target"];
-        timerConfig = {
-          OnCalendar = "weekly";
-          Persistent = true;
-        };
+    # Weekly backup. Persistent = true catches up if the system was offline at schedule time.
+    systemd.timers.backup-hdd = {
+      wantedBy = ["timers.target"];
+      timerConfig = {
+        OnCalendar = "weekly";
+        Persistent = true;
       };
     };
   };
