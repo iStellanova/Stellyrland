@@ -239,7 +239,7 @@
           render = {
             direct_scanout = false;
             cm_enabled = true;
-            cm_auto_hdr = 2;
+            cm_auto_hdr = 0;
           };
           scrolling = {
             column_width = 0.5;
