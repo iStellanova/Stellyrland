@@ -21,7 +21,6 @@
       den.aspects.background-sounds
       den.aspects.cava
       den.aspects.media
-      den.aspects.cloud-storage
       den.aspects.btop
       den.aspects.fastfetch
       den.aspects.browser
