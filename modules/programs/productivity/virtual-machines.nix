@@ -1,12 +1,10 @@
 _: {
-  # NixOS Virtual Machines Settings
-  flake.modules.nixos.virtual-machines = {pkgs, ...}: {
+  den.aspects.virtual-machines.nixos = {pkgs, ...}: {
     virtualisation.libvirtd.enable = true;
     environment.systemPackages = [pkgs.virt-manager];
   };
 
-  # Darwin Virtual Machines Settings
-  flake.modules.darwin.virtual-machines = _: {
+  den.aspects.virtual-machines.darwin = _: {
     homebrew.casks = ["utm"];
   };
 }

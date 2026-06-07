@@ -1,6 +1,5 @@
 _: {
-  # NixOS Base Services
-  flake.modules.nixos.services-base = _: {
+  den.aspects.services-base.nixos = _: {
     services.udisks2.enable = true;
     services.gvfs.enable = true;
     services.libinput.enable = true;

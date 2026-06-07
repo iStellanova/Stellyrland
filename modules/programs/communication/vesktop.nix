@@ -1,23 +1,15 @@
 _: {
-  # NixOS Vesktop Settings
-  flake.modules.nixos.vesktop = {pkgs, ...}: {
-    config = {
-      environment.systemPackages = [
-        (pkgs.vesktop.override {withSystemVencord = false;})
-      ];
-    };
+  den.aspects.vesktop.nixos = {pkgs, ...}: {
+    environment.systemPackages = [
+      (pkgs.vesktop.override {withSystemVencord = false;})
+    ];
   };
 
-  # Darwin Vesktop Settings
-  flake.modules.darwin.vesktop = _: {
-    config = {
-      homebrew.casks = ["vesktop"];
-    };
+  den.aspects.vesktop.darwin = _: {
+    homebrew.casks = ["vesktop"];
   };
 
-  # Home Manager Vesktop Settings
-  flake.modules.homeManager.vesktop = _: {
-    # Vesktop configuration (Electron wrapper settings)
+  den.aspects.vesktop.homeManager = _: {
     xdg.configFile."vesktop/settings.json".text = builtins.toJSON {
       discordBranch = "stable";
       minimizeToTray = true;
@@ -26,7 +18,6 @@ _: {
       splashBackground = "rgb(24, 25, 38)";
     };
 
-    # Vencord configuration (Plugins, Themes, and CSS)
     xdg.configFile."vesktop/vencord_settings.json".text = builtins.toJSON {
       settings = {
         autoUpdate = true;

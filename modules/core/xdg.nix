@@ -1,16 +1,12 @@
 _: {
-  # NixOS XDG settings
-  flake.modules.nixos.xdg = {pkgs, ...}: {
-    config = {
-      environment.systemPackages = with pkgs; [
-        xdg-user-dirs
-        xdg-utils
-      ];
-    };
+  den.aspects.xdg.nixos = {pkgs, ...}: {
+    environment.systemPackages = with pkgs; [
+      xdg-user-dirs
+      xdg-utils
+    ];
   };
 
-  # Home Manager XDG settings
-  flake.modules.homeManager.xdg = {config, ...}: {
+  den.aspects.xdg.homeManager = {config, ...}: {
     xdg.userDirs = {
       enable = true;
       setSessionVariables = true;

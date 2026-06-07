@@ -1,13 +1,9 @@
 _: {
-  # Darwin Cava Settings
-  flake.modules.darwin.cava = _: {
-    config = {
-      homebrew.brews = ["cava"];
-    };
+  den.aspects.cava.darwin = _: {
+    homebrew.brews = ["cava"];
   };
 
-  # Home Manager Cava Settings
-  flake.modules.homeManager.cava = {pkgs, ...}: {
+  den.aspects.cava.homeManager = {pkgs, ...}: {
     programs.cava = {
       enable = true;
       settings = {

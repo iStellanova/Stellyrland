@@ -1,15 +1,10 @@
 _: {
-  # NixOS GSR Settings
-  flake.modules.nixos.gsr = {pkgs, ...}: {
-    config = {
-      programs.gpu-screen-recorder.enable = true;
-      environment.systemPackages = [pkgs.gpu-screen-recorder-gtk];
-    };
+  den.aspects.gsr.nixos = {pkgs, ...}: {
+    programs.gpu-screen-recorder.enable = true;
+    environment.systemPackages = [pkgs.gpu-screen-recorder-gtk];
   };
 
-  # Home Manager GSR Settings
-  flake.modules.homeManager.gsr = {osConfig, ...}: {
-    # GSR configuration
+  den.aspects.gsr.homeManager = {host, ...}: {
     xdg.configFile."gpu-screen-recorder/config".text = ''
       main.advanced_view false
       main.audio_codec opus
@@ -43,10 +38,10 @@ _: {
       main.video_width 1920
       record.container mp4
       record.pause_unpause_recording_hotkey 0 0
-      record.save_directory ${osConfig.identity.homeDir}/Videos
+      record.save_directory ${host.homeDir}/Videos
       record.start_stop_recording_hotkey 0 0
       replay.container mp4
-      replay.save_directory ${osConfig.identity.homeDir}/Videos
+      replay.save_directory ${host.homeDir}/Videos
       replay.save_recording_hotkey 0 0
       replay.start_stop_recording_hotkey 0 0
       replay.time 30

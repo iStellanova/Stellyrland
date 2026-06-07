@@ -1,8 +1,5 @@
 _: {
-  # NixOS Seahorse Settings
-  flake.modules.nixos.seahorse = _: {
-    config = {
-      programs.seahorse.enable = true;
-    };
+  den.aspects.seahorse.nixos = _: {
+    programs.seahorse.enable = true;
   };
 }

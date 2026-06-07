@@ -1,6 +1,5 @@
 _: {
-  # Home Manager Zed Settings
-  flake.modules.homeManager.zed = {
+  den.aspects.zed.homeManager = {
     pkgs,
     lib,
     ...
@@ -16,18 +15,12 @@ _: {
       mutableUserKeymaps = false;
       mutableUserTasks = false;
       userSettings = {
-        "inline_completions" = {
-          "provider" = "none";
-        };
-        "features" = {
-          "copilot" = false;
-        };
+        "inline_completions" = {"provider" = "none";};
+        "features" = {"copilot" = false;};
         "format_on_save" = "off";
         "font_family" = "JetBrainsMono Nerd Font Mono";
         "base_keymap" = "JetBrains";
-        "session" = {
-          "trust_all_worktrees" = true;
-        };
+        "session" = {"trust_all_worktrees" = true;};
         "helix_mode" = true;
         "font_weight" = 300.0;
         "ui_font_weight" = 300.0;
@@ -39,15 +32,9 @@ _: {
           "hide_gitignore" = true;
           "default_width" = 200.0;
         };
-        "outline_panel" = {
-          "dock" = "left";
-        };
-        "collaboration_panel" = {
-          "dock" = "left";
-        };
-        "git_panel" = {
-          "dock" = "left";
-        };
+        "outline_panel" = {"dock" = "left";};
+        "collaboration_panel" = {"dock" = "left";};
+        "git_panel" = {"dock" = "left";};
         "icon_theme" = "Catppuccin Macchiato";
         "telemetry" = {
           "diagnostics" = false;
@@ -61,9 +48,7 @@ _: {
           "dark" = "Catppuccin Macchiato (Blur)";
         };
         "languages" = {
-          "YAML" = {
-            "format_on_save" = "off";
-          };
+          "YAML" = {"format_on_save" = "off";};
           "Nix" = {
             "language_servers" = ["nil"];
             "formatter" = {
@@ -74,32 +59,20 @@ _: {
             };
           };
         };
-        "lsp" = {
-          "nil" = {
-            "binary" = {
-              "path" = "nil";
-            };
-          };
-        };
+        "lsp" = {"nil" = {"binary" = {"path" = "nil";};};};
         "assistant" = {
           "version" = 2;
           "dock" = "right";
         };
-        "chat_panel" = {
-          "dock" = "right";
-        };
+        "chat_panel" = {"dock" = "right";};
         "agent_servers" = {
-          "claude-acp" = {
-            "type" = "registry";
-          };
+          "claude-acp" = {"type" = "registry";};
           "gemini" = {
             "default_mode" = "autoEdit";
             "favorite_models" = ["gemini-3-flash-preview"];
             "type" = "registry";
           };
-          "gemini-cli" = {
-            "type" = "registry";
-          };
+          "gemini-cli" = {"type" = "registry";};
         };
       };
     };

@@ -1,6 +1,5 @@
 _: {
-  # NixOS Discord Music RPC Settings
-  flake.modules.nixos.discord-music-rpc = {pkgs, ...}: {
+  den.aspects.discord-music-rpc.nixos = {pkgs, ...}: {
     environment.systemPackages = [pkgs.mprisence];
 
     systemd.user.services.mprisence = {
@@ -16,8 +15,7 @@ _: {
     };
   };
 
-  # Darwin Discord Music RPC Settings
-  flake.modules.darwin.discord-music-rpc = _: {
+  den.aspects.discord-music-rpc.darwin = _: {
     homebrew.brews = ["apple-music-discord-rpc"];
   };
 }

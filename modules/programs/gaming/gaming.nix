@@ -1,6 +1,5 @@
 {lib, ...}: {
-  # NixOS Gaming Settings
-  flake.modules.nixos.gaming = {
+  den.aspects.gaming.nixos = {
     config,
     pkgs,
     ...
@@ -43,10 +42,7 @@
     };
   };
 
-  # Darwin Gaming Settings
-  flake.modules.darwin.gaming = _: {
-    config = {
-      homebrew.casks = ["steam" "prismlauncher"];
-    };
+  den.aspects.gaming.darwin = _: {
+    homebrew.casks = ["steam" "prismlauncher"];
   };
 }

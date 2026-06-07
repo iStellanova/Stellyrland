@@ -1,6 +1,5 @@
 _: {
-  # Home Manager Git/SSH Settings
-  flake.modules.homeManager.git = {osConfig, ...}: {
+  den.aspects.git.homeManager = {host, ...}: {
     programs.ssh = {
       enable = true;
       enableDefaultConfig = false;
@@ -8,7 +7,7 @@ _: {
       settings = {
         "stellyrland" = {
           HostName = "stellyrland.tailb15b96.ts.net";
-          User = osConfig.identity.username;
+          User = host.username;
           IdentityFile = "/run/secrets/stellacode";
         };
         "github.com" = {
@@ -27,8 +26,8 @@ _: {
       enable = true;
       settings = {
         user = {
-          name = osConfig.identity.gitName;
-          email = osConfig.identity.userEmail;
+          name = host.gitName;
+          email = host.userEmail;
         };
         include.path = "~/.gitconfig-identity";
       };
