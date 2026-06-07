@@ -17,12 +17,16 @@
         localNetworkGameTransfers.openFirewall = true;
         extraPackages = with pkgs; [
           libcap
+          gamescope-wsi
         ];
       };
       programs.gamescope = {
         enable = true;
         args = ["--rt" "--fullscreen" "--expose-wayland"] ++ lib.optionals cfg.hdr.enable ["--hdr-enabled"];
-        env = lib.mkIf cfg.hdr.enable {"DXVK_HDR" = "1";};
+        env = lib.mkIf cfg.hdr.enable {
+          "DXVK_HDR" = "1";
+          "ENABLE_GAMESCOPE_WSI" = "1";
+        };
       };
 
       boot.kernel.sysctl = {
@@ -31,7 +35,6 @@
       };
 
       environment.systemPackages = with pkgs; [
-        gamescope-wsi
         mangohud
         goverlay
         heroic
