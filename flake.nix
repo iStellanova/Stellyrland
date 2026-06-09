@@ -54,8 +54,8 @@
     mac-app-util.url = "github:hraban/mac-app-util";
 
     # Hyprland.
-    # TODO: unpin once hyprland flake fixes missing MonitorZoomController.hpp in dev headers
-    # (0aa7a84 introduced the file but doesn't install it, breaking split-monitor-workspaces)
+    # TODO: unpin once hyprland fixes Monitor.hpp include path for MonitorZoomController.hpp
+    # (0aa7a84 moved the file to src/output/ but Monitor.hpp still includes it as a sibling)
     hyprland.url = "github:hyprwm/Hyprland/367beccd27df394461cc80ba845d0088b5f87690";
 
     # Split Monitor Workspaces plugin.
