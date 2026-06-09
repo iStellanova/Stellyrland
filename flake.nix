@@ -32,9 +32,15 @@
     # Catppuccin theming.
     catppuccin.url = "github:catppuccin/nix";
 
+    # Nix Software Center - GUI package manager.
+    nix-software-center = {
+      url = "github:snowfallorg/nix-software-center";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     # Noctalia shell.
     noctalia-shell = {
-      url = "github:noctalia-dev/noctalia-shell/v5";
+      url = "github:noctalia-dev/noctalia";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -48,7 +54,9 @@
     mac-app-util.url = "github:hraban/mac-app-util";
 
     # Hyprland.
-    hyprland.url = "github:hyprwm/Hyprland";
+    # TODO: unpin once hyprland flake fixes missing MonitorZoomController.hpp in dev headers
+    # (0aa7a84 introduced the file but doesn't install it, breaking split-monitor-workspaces)
+    hyprland.url = "github:hyprwm/Hyprland/367beccd27df394461cc80ba845d0088b5f87690";
 
     # Split Monitor Workspaces plugin.
     split-monitor-workspaces = {
