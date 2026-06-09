@@ -25,6 +25,7 @@
       den.aspects.hyprland
       den.aspects.vesktop
       den.aspects.nix-index
+      den.aspects.nix-software-center
       den.aspects.ai-tools
       den.aspects.kitty
       den.aspects.ns
