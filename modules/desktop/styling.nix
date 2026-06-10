@@ -1,6 +1,11 @@
-{inputs, ...}: {
+{inputs ? {}, ...}: {
+  flake-file.inputs.catppuccin.url = "github:catppuccin/nix";
+
   den.aspects.styling.nixos = {...}: {
-    imports = [inputs.catppuccin.nixosModules.catppuccin];
+    imports =
+      if inputs ? catppuccin
+      then [inputs.catppuccin.nixosModules.catppuccin]
+      else [];
 
     catppuccin.enable = true;
     catppuccin.autoEnable = false;
@@ -14,7 +19,10 @@
       variant = "macchiato";
     };
   in {
-    imports = [inputs.catppuccin.homeModules.catppuccin];
+    imports =
+      if inputs ? catppuccin
+      then [inputs.catppuccin.homeModules.catppuccin]
+      else [];
 
     catppuccin.enable = true;
     catppuccin.autoEnable = false;

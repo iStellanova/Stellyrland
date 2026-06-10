@@ -1,4 +1,9 @@
-{inputs, ...}: {
+{inputs ? {}, ...}: {
+  flake-file.inputs.my-assets = {
+    url = "github:iStellanova/Stellyrland/assets";
+    flake = false;
+  };
+
   den.hosts.aarch64-darwin.stellyrtop = {
     username = "stellanova";
     homeDir = "/Users/stellanova";

@@ -1,103 +1,58 @@
+# DO-NOT-EDIT. This file was auto-generated using github:vic/flake-file.
+# Use `nix run .#write-flake` to regenerate it.
 {
   description = "Stellyrland Configurations";
 
-  # This flake serves as the single entry point for all systems (Linux and macOS).
-  # It leverages flake-parts for modular output composition, import-tree for
-  # automated module discovery, and Den for aspect-oriented configuration.
+  outputs = inputs: inputs.flake-parts.lib.mkFlake {inherit inputs;} (inputs.import-tree ./modules);
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-
-    # Flake Parts - modular flake output composition.
-    flake-parts.url = "github:hercules-ci/flake-parts";
-
-    # Den - aspect-oriented, context-aware Nix configuration framework.
-    den.url = "github:denful/den";
-
-    # Import Tree - recursive module scanner (replaces lib/scan).
-    import-tree.url = "github:vic/import-tree";
-
-    # Home Manager.
-    home-manager = {
-      url = "github:nix-community/home-manager/master";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    # CachyOS kernel.
     cachyos-kernel.url = "github:xddxdd/nix-cachyos-kernel/release";
-
-    # Zen Browser.
-    zen-browser.url = "github:youwen5/zen-browser-flake";
-
-    # Catppuccin theming.
     catppuccin.url = "github:catppuccin/nix";
-
-    # Nix Software Center - GUI package manager.
-    nix-software-center = {
-      url = "github:snowfallorg/nix-software-center";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    # Noctalia shell.
-    noctalia-shell = {
-      url = "github:noctalia-dev/noctalia";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    # Nix Darwin.
     darwin = {
       url = "github:LnL7/nix-darwin";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    # Mac App Util.
-    mac-app-util.url = "github:hraban/mac-app-util";
-
-    # Hyprland.
+    den.url = "github:denful/den";
+    flake-file.url = "github:vic/flake-file";
+    flake-parts.url = "github:hercules-ci/flake-parts";
+    home-manager = {
+      url = "github:nix-community/home-manager/master";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     hyprland.url = "github:hyprwm/Hyprland";
-
-    # Hyprsplit - per-monitor workspace splitting plugin (pure Lua, no ABI tie to Hyprland version).
     hyprsplit = {
       url = "github:shezdy/hyprsplit";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    # nix-index pre-built database + comma.
-    nix-index-database = {
-      url = "github:nix-community/nix-index-database";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    # Treefmt - unified code formatter orchestration.
-    treefmt-nix = {
-      url = "github:numtide/treefmt-nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    # Lanzaboote - Secure Boot for NixOS via signed UKIs.
+    import-tree.url = "github:vic/import-tree";
     lanzaboote = {
       url = "github:nix-community/lanzaboote";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    # Preservation - declarative opt-in persistence via native systemd units.
-    preservation.url = "github:nix-community/preservation";
-
-    # Sops-Nix - secure secrets management using age.
-    sops-nix = {
-      url = "github:Mic92/sops-nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    # Nix-Flatpak - declarative Flatpak package management.
-    nix-flatpak.url = "github:gmodena/nix-flatpak";
-
-    # Custom assets and wallpapers.
+    mac-app-util.url = "github:hraban/mac-app-util";
     my-assets = {
       url = "github:iStellanova/Stellyrland/assets";
       flake = false;
     };
+    nix-flatpak.url = "github:gmodena/nix-flatpak";
+    nix-index-database = {
+      url = "github:nix-community/nix-index-database";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    noctalia-shell = {
+      url = "github:noctalia-dev/noctalia";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    preservation.url = "github:nix-community/preservation";
+    sops-nix = {
+      url = "github:Mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    treefmt-nix = {
+      url = "github:numtide/treefmt-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    zen-browser.url = "github:youwen5/zen-browser-flake";
   };
-
-  outputs = inputs: inputs.flake-parts.lib.mkFlake {inherit inputs;} (inputs.import-tree ./modules);
 }

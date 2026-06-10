@@ -3,6 +3,8 @@
   inputs,
   ...
 }: {
+  flake-file.inputs.mac-app-util.url = "github:hraban/mac-app-util";
+
   den.aspects.core.nixos = _: {
     time.timeZone = "America/Indianapolis";
     i18n.defaultLocale = "en_US.UTF-8";
@@ -27,7 +29,10 @@
     config,
     ...
   }: {
-    imports = [inputs.mac-app-util.darwinModules.default];
+    imports =
+      if inputs ? mac-app-util
+      then [inputs.mac-app-util.darwinModules.default]
+      else [];
 
     options.darwin.system.dockApps = lib.mkOption {
       type = lib.types.listOf lib.types.str;
