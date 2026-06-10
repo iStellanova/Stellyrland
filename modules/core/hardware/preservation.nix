@@ -38,6 +38,7 @@
           "/etc/NetworkManager"
           "/var/log"
           "/var/lib/regreet"
+          "/var/lib/flatpak"
         ];
         files = [
           "/etc/adjtime"
