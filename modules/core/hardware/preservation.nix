@@ -4,7 +4,7 @@
 
     systemd.tmpfiles.rules = [
       # Returns /etc/nixos's pointer from the config project.
-      "L+ /etc/nixos - - - - /home/stellanova/Projects/stellyrland"
+      "L+ /etc/nixos - - - - ${host.homeDir}/Projects/stellyrland"
 
       # The @blank ZFS snapshot was taken before nixos-install ran, so the home
       # dataset root reverts to root:root after every rollback. Preservation's

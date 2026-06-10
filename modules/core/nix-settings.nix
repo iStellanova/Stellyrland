@@ -13,11 +13,6 @@
     builders-use-substitutes = true;
   };
   nixToolsPkgs = pkgs: with pkgs; [nix-output-monitor nvd];
-  unityTestOverlay = _final: prev: {
-    unity-test = prev.unity-test.overrideAttrs (_old: {
-      doCheck = false;
-    });
-  };
 in {
   den.aspects.nix-settings.nixos = {
     config,
@@ -32,7 +27,6 @@ in {
 
     config = {
       nixpkgs.overlays = [
-        unityTestOverlay
         inputs.cachyos-kernel.overlays.default
       ];
 
@@ -86,7 +80,6 @@ in {
 
   den.aspects.nix-settings.darwin = {pkgs, ...}: {
     nixpkgs.overlays = [
-      unityTestOverlay
       (_final: prev: {
         direnv = prev.direnv.overrideAttrs (_old: {
           doCheck = false;

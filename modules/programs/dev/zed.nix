@@ -6,7 +6,7 @@ _: {
   }: {
     home.packages = lib.optionals (!pkgs.stdenv.isDarwin) [
       pkgs.nil
-      pkgs.nixfmt
+      pkgs.alejandra
     ];
 
     programs.zed-editor = {
@@ -53,7 +53,7 @@ _: {
             "language_servers" = ["nil"];
             "formatter" = {
               "external" = {
-                "command" = "nixfmt";
+                "command" = "alejandra";
                 "arguments" = [];
               };
             };
