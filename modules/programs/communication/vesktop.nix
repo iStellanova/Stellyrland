@@ -9,7 +9,7 @@ _: {
     homebrew.casks = ["vesktop"];
   };
 
-  den.aspects.vesktop.homeManager = _: {
+  den.aspects.vesktop.homeManager = {pkgs, ...}: {
     xdg.configFile."vesktop/settings.json".text = builtins.toJSON {
       discordBranch = "stable";
       minimizeToTray = true;
@@ -188,7 +188,10 @@ _: {
           settingsSync = true;
         };
       };
-      quickCss = "@import url(\"https://raw.githubusercontent.com/catppuccin/discord/main/themes/macchiato.theme.css\");";
+      quickCss = builtins.readFile "${pkgs.catppuccin-discord.override {
+        flavour = ["macchiato"];
+        accents = ["sapphire"];
+      }}/share/catppuccin-macchiato-sapphire.theme.css";
     };
   };
 }

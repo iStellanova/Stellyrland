@@ -4,7 +4,16 @@ _: {
     environment.systemPackages = [pkgs.gpu-screen-recorder-gtk];
   };
 
-  den.aspects.gsr.homeManager = {host, ...}: {
+  den.aspects.gsr.homeManager = {
+    host,
+    osConfig,
+    ...
+  }: let
+    primaryMonitor =
+      if osConfig ? desktop.noctalia.primaryMonitor && osConfig.desktop.noctalia.primaryMonitor != ""
+      then osConfig.desktop.noctalia.primaryMonitor
+      else "DP-2";
+  in {
     xdg.configFile."gpu-screen-recorder/config".text = ''
       main.advanced_view false
       main.audio_codec opus
@@ -23,7 +32,7 @@ _: {
       main.quality very_high
       main.record_app_audio_inverted false
       main.record_area_height 1080
-      main.record_area_option DP-2
+      main.record_area_option ${primaryMonitor}
       main.record_area_width 1920
       main.record_cursor true
       main.restore_portal_session true
