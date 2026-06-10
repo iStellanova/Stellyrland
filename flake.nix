@@ -58,10 +58,10 @@
     # (0aa7a84 moved the file to src/output/ but Monitor.hpp still includes it as a sibling)
     hyprland.url = "github:hyprwm/Hyprland/367beccd27df394461cc80ba845d0088b5f87690";
 
-    # Split Monitor Workspaces plugin.
-    split-monitor-workspaces = {
-      url = "github:zjeffer/split-monitor-workspaces";
-      inputs.hyprland.follows = "hyprland";
+    # Hyprsplit - per-monitor workspace splitting plugin (pure Lua, no ABI tie to Hyprland version).
+    hyprsplit = {
+      url = "github:shezdy/hyprsplit";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     # nix-index pre-built database + comma.
