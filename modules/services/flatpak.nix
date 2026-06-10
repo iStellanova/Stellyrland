@@ -1,6 +1,11 @@
-{inputs, ...}: {
+{inputs ? {}, ...}: {
+  flake-file.inputs.nix-flatpak.url = "github:gmodena/nix-flatpak";
+
   den.aspects.flatpak.nixos = {...}: {
-    imports = [inputs.nix-flatpak.nixosModules.nix-flatpak];
+    imports =
+      if inputs ? nix-flatpak
+      then [inputs.nix-flatpak.nixosModules.nix-flatpak]
+      else [];
 
     services.flatpak = {
       enable = true;

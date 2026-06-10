@@ -14,6 +14,8 @@
   };
   nixToolsPkgs = pkgs: with pkgs; [nix-output-monitor nvd];
 in {
+  flake-file.inputs.cachyos-kernel.url = "github:xddxdd/nix-cachyos-kernel/release";
+
   den.aspects.nix-settings.nixos = {
     config,
     pkgs,
@@ -104,6 +106,7 @@ in {
       clean = "nh clean all --keep 20";
       cdn = "cd $FLAKE";
       nixinfo = "nh os info";
+      replace = "(cd $FLAKE && nix run .#write-flake)";
       nix-list = "nix profile list --profile ~/.local/state/nix/profiles/scratch";
       nix-clear = "rm -rf ~/.local/state/nix/profiles/scratch && nh clean all --keep 20";
     };

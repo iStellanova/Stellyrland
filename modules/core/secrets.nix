@@ -1,10 +1,18 @@
-{inputs, ...}: {
+{inputs ? {}, ...}: {
+  flake-file.inputs.sops-nix = {
+    url = "github:Mic92/sops-nix";
+    inputs.nixpkgs.follows = "nixpkgs";
+  };
+
   den.aspects.secrets.nixos = {
     host,
     config,
     ...
   }: {
-    imports = [inputs.sops-nix.nixosModules.sops];
+    imports =
+      if inputs ? sops-nix
+      then [inputs.sops-nix.nixosModules.sops]
+      else [];
 
     sops.age.sshKeyPaths = ["/persist/etc/ssh/ssh_host_ed25519_key"];
 

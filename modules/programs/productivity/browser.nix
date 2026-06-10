@@ -8,6 +8,8 @@
     };
   };
 in {
+  flake-file.inputs.zen-browser.url = "github:youwen5/zen-browser-flake";
+
   den.aspects.browser.nixos = {lib, ...}: {
     options.programs.browser = browserOptions lib;
   };
@@ -26,7 +28,7 @@ in {
     ...
   }: {
     home.packages = lib.optionals (!pkgs.stdenv.isDarwin) [
-      inputs.zen-browser.packages."${pkgs.stdenv.hostPlatform.system}".default
+      inputs.zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.default
     ];
 
     home.file = lib.mkIf (!pkgs.stdenv.isDarwin) (let
