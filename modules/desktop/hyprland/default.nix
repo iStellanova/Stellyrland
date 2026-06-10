@@ -151,10 +151,6 @@
       xwayland.enable = true;
       systemd.enable = true;
 
-      plugins = [
-        inputs.split-monitor-workspaces.packages.${pkgs.stdenv.hostPlatform.system}.split-monitor-workspaces
-      ];
-
       settings = {
         env = [
           {_args = ["HYPRCURSOR_THEME" "Bibata-Modern-Ice-Hypr"];}
