@@ -49,10 +49,7 @@
         xauth
       ];
 
-      hardware.graphics = {
-        enable = true;
-        enable32Bit = true;
-      };
+      hardware.graphics.enable32Bit = true;
 
       services.xserver.videoDrivers = ["amdgpu"];
       security.rtkit.enable = true;

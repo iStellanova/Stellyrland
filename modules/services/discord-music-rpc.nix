@@ -1,17 +1,23 @@
 _: {
   den.aspects.discord-music-rpc.nixos = {pkgs, ...}: {
     environment.systemPackages = [pkgs.mprisence];
+  };
 
+  den.aspects.discord-music-rpc.homeManager = {pkgs, ...}: {
     systemd.user.services.mprisence = {
-      description = "Discord Rich Presence for MPRIS media players";
-      after = ["graphical-session.target"];
-      partOf = ["graphical-session.target"];
-      serviceConfig = {
+      Unit = {
+        Description = "Discord Rich Presence for MPRIS media players";
+        After = ["graphical-session.target"];
+        PartOf = ["graphical-session.target"];
+      };
+      Service = {
         ExecStart = "${pkgs.mprisence}/bin/mprisence";
         Restart = "on-failure";
         RestartSec = "5s";
       };
-      wantedBy = ["graphical-session.target"];
+      Install = {
+        WantedBy = ["graphical-session.target"];
+      };
     };
   };
 

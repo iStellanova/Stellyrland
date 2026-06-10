@@ -57,10 +57,6 @@
     (bind "Print" "hl.dsp.exec_cmd(\"noctalia msg screenshot-region\")")
     (bind "SHIFT + Print" "hl.dsp.exec_cmd(\"noctalia msg screenshot-fullscreen\")")
 
-    # --- Legacy/Alternative Navigation ---
-    (bind "ALT + SHIFT + Tab" "hl.dsp.window.cycle_next(\"prev\")")
-    (bind "ALT + SHIFT + Tab" "hl.dsp.window.bring_to_top()")
-
     # --- Mouse Scroll Binds (non-smw) ---
     (bind "ALT + mouse_down" "hl.dsp.layout(\"move +200\")")
     (bind "ALT + mouse_up" "hl.dsp.layout(\"move -200\")")
