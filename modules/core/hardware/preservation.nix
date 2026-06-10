@@ -1,6 +1,11 @@
-{inputs, ...}: {
+{inputs ? {}, ...}: {
+  flake-file.inputs.preservation.url = "github:nix-community/preservation";
+
   den.aspects.preservation.nixos = {host, ...}: {
-    imports = [inputs.preservation.nixosModules.preservation];
+    imports =
+      if inputs ? preservation
+      then [inputs.preservation.nixosModules.preservation]
+      else [];
 
     systemd.tmpfiles.rules = [
       # Returns /etc/nixos's pointer from the config project.

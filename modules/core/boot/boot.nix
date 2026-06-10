@@ -1,11 +1,19 @@
-{inputs, ...}: {
+{inputs ? {}, ...}: {
+  flake-file.inputs.lanzaboote = {
+    url = "github:nix-community/lanzaboote";
+    inputs.nixpkgs.follows = "nixpkgs";
+  };
+
   den.aspects.boot.nixos = {
     config,
     lib,
     pkgs,
     ...
   }: {
-    imports = [inputs.lanzaboote.nixosModules.lanzaboote];
+    imports =
+      if inputs ? lanzaboote
+      then [inputs.lanzaboote.nixosModules.lanzaboote]
+      else [];
 
     options.core.boot.secureBoot = lib.mkEnableOption "Lanzaboote Secure Boot (disable for initial install)";
 

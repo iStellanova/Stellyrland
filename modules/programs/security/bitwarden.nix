@@ -1,6 +1,9 @@
-{inputs, ...}: {
+{inputs ? {}, ...}: {
   den.aspects.bitwarden.nixos = _: {
-    imports = [inputs.nix-flatpak.nixosModules.nix-flatpak];
+    imports =
+      if inputs ? nix-flatpak
+      then [inputs.nix-flatpak.nixosModules.nix-flatpak]
+      else [];
 
     services.flatpak.packages = ["com.bitwarden.desktop"];
   };

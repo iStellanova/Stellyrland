@@ -1,4 +1,9 @@
-{inputs, ...}: {
+{inputs ? {}, ...}: {
+  flake-file.inputs.noctalia-shell = {
+    url = "github:noctalia-dev/noctalia";
+    inputs.nixpkgs.follows = "nixpkgs";
+  };
+
   den.aspects.noctalia-shell.nixos = {lib, ...}: {
     options.desktop.noctalia = {
       primaryMonitor = lib.mkOption {

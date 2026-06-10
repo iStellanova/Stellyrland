@@ -3,8 +3,17 @@
   lib,
   ...
 }: {
+  flake-file.inputs.hyprland.url = "github:hyprwm/Hyprland";
+  flake-file.inputs.hyprsplit = {
+    url = "github:shezdy/hyprsplit";
+    inputs.nixpkgs.follows = "nixpkgs";
+  };
+
   den.aspects.hyprland.nixos = {pkgs, ...}: {
-    imports = [inputs.hyprland.nixosModules.default];
+    imports =
+      if inputs ? hyprland
+      then [inputs.hyprland.nixosModules.default]
+      else [];
 
     options.desktop.hyprland = {
       enable = lib.mkEnableOption "Hyprland desktop environment";
