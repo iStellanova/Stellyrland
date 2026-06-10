@@ -92,7 +92,7 @@ in {
     package.path = package.path .. ";${hyprsplitLua}/share/?/init.lua"
     local hs = require("hyprsplit")
     hs.config({
-        num_workspaces        = 5,
+        num_workspaces        = 7,
         persistent_workspaces = true,
         force_monitor_priority = true,
     })
