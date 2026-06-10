@@ -37,7 +37,7 @@
           "/var/lib/NetworkManager"
           "/etc/NetworkManager"
           "/var/log"
-          "/var/lib/regreet"
+          "/var/lib/noctalia-greeter"
           "/var/lib/flatpak"
         ];
         files = [
