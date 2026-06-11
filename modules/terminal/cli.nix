@@ -3,11 +3,7 @@
 in {
   sn.terminal = {includes = [sn.cli];};
 
-  sn.cli.nixos = {pkgs, ...}: {
-    environment.systemPackages = cliPkgs pkgs;
-  };
-
-  sn.cli.darwin = {pkgs, ...}: {
+  sn.cli.os = {pkgs, ...}: {
     environment.systemPackages = cliPkgs pkgs;
   };
 

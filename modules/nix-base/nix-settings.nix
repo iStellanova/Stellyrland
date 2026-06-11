@@ -78,8 +78,6 @@ in {
         FLAKE = "/etc/nixos";
         NIXOS_OZONE_WL = "1";
       };
-
-      nixpkgs.config.allowUnfree = true;
     };
   };
 
@@ -96,7 +94,9 @@ in {
     nix.settings = commonNixSettings;
 
     environment.systemPackages = nixToolsPkgs pkgs;
+  };
 
+  sn.nix-settings.os = _: {
     nixpkgs.config.allowUnfree = true;
   };
 }
