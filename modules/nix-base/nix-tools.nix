@@ -1,7 +1,4 @@
-{
-  sn,
-  ...
-}: {
+{sn, ...}: {
   sn.nix-base = {includes = [sn.nix-tools];};
 
   sn.nix-tools.homeManager = {

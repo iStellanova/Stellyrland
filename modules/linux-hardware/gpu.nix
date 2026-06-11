@@ -1,7 +1,4 @@
-{
-  sn,
-  ...
-}: {
+{sn, ...}: {
   sn.linux-hardware = {includes = [sn.gpu];};
 
   sn.gpu.nixos = {pkgs, ...}: {

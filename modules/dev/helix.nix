@@ -1,10 +1,11 @@
-{
-  sn,
-  ...
-}: {
+{sn, ...}: {
   sn.dev = {includes = [sn.helix];};
 
-  sn.helix.homeManager = {pkgs, ...}: {
+  sn.helix.homeManager = {
+    pkgs,
+    lib,
+    ...
+  }: {
     programs.helix = {
       enable = true;
       defaultEditor = true;
@@ -15,7 +16,7 @@
       };
 
       settings = {
-        theme = "catppuccin_macchiato_transparent";
+        theme = lib.mkForce "catppuccin_macchiato_transparent";
 
         editor = {
           line-number = "relative";

@@ -1,7 +1,4 @@
-{
-  inputs,
-  ...
-}: let
+{inputs, ...}: let
   browserOptions = lib: {
     enable = lib.mkEnableOption "Zen Browser";
     profileId = lib.mkOption {
@@ -30,11 +27,12 @@ in {
     lib,
     ...
   }: {
-    home.packages = lib.optionals (!pkgs.stdenv.isDarwin) [
-      inputs.zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.default
-    ];
+    home.packages =
+      if pkgs.stdenv.hostPlatform.isLinux
+      then [inputs.zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.default]
+      else [];
 
-    home.file = lib.mkIf (!pkgs.stdenv.isDarwin) (let
+    home.file = lib.mkIf pkgs.stdenv.hostPlatform.isLinux (let
       profile = "${osConfig.programs.zen-browser.profileId}.Default Profile";
     in {
       ".config/zen/${profile}/user.js".text = ''

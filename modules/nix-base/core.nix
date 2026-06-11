@@ -1,7 +1,4 @@
-{
-  sn,
-  ...
-}: {
+{sn, ...}: {
   sn.nix-base = {includes = [sn.core];};
 
   sn.core.nixos = _: {

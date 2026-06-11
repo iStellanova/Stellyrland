@@ -1,7 +1,4 @@
-{
-  sn,
-  ...
-}: let
+{sn, ...}: let
   networkingPkgs = pkgs: with pkgs; [tailscale wget];
 in {
   sn.terminal = {includes = [sn.tailscale];};

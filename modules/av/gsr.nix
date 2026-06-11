@@ -1,70 +1,70 @@
 {
   sn,
+  lib,
   ...
 }: {
   sn.av = {includes = [sn.gsr];};
 
-  sn.gsr.nixos = {pkgs, ...}: {
-    programs.gpu-screen-recorder.enable = true;
-    environment.systemPackages = [pkgs.gpu-screen-recorder-gtk];
-  };
+  sn.gsr = {host, ...}:
+    lib.optionalAttrs (host.class == "nixos") {
+      nixos = {pkgs, ...}: {
+        programs.gpu-screen-recorder.enable = true;
+        environment.systemPackages = [pkgs.gpu-screen-recorder-gtk];
+      };
 
-  sn.gsr.homeManager = {
-    host,
-    osConfig,
-    ...
-  }: let
-    primaryMonitor =
-      if osConfig ? desktop.noctalia.primaryMonitor && osConfig.desktop.noctalia.primaryMonitor != ""
-      then osConfig.desktop.noctalia.primaryMonitor
-      else "DP-2";
-  in {
-    xdg.configFile."gpu-screen-recorder/config".text = ''
-      main.advanced_view false
-      main.audio_codec opus
-      main.audio_input device:Default output
-      main.av1_amd_bug_warning_shown false
-      main.change_video_resolution false
-      main.codec auto
-      main.color_range limited
-      main.fps 60
-      main.framerate_mode auto
-      main.hevc_amd_bug_warning_shown false
-      main.hide_window_when_recording false
-      main.installed_gsr_global_hotkeys_version 0
-      main.merge_audio_tracks true
-      main.overclock false
-      main.quality very_high
-      main.record_app_audio_inverted false
-      main.record_area_height 1080
-      main.record_area_option ${primaryMonitor}
-      main.record_area_width 1920
-      main.record_cursor true
-      main.restore_portal_session true
-      main.show_recording_saved_notifications true
-      main.show_recording_started_notifications false
-      main.show_recording_stopped_notifications false
-      main.software_encoding_warning_shown false
-      main.steam_deck_warning_shown false
-      main.use_new_ui false
-      main.video_bitrate 15000
-      main.video_height 1080
-      main.video_width 1920
-      record.container mp4
-      record.pause_unpause_recording_hotkey 0 0
-      record.save_directory ${host.homeDir}/Videos
-      record.start_stop_recording_hotkey 0 0
-      replay.container mp4
-      replay.save_directory ${host.homeDir}/Videos
-      replay.save_recording_hotkey 0 0
-      replay.start_stop_recording_hotkey 0 0
-      replay.time 30
-      streaming.custom.container flv
-      streaming.custom.url
-      streaming.service twitch
-      streaming.start_stop_recording_hotkey 0 0
-      streaming.twitch.key
-      streaming.youtube.key
-    '';
-  };
+      homeManager = {osConfig, ...}: let
+        primaryMonitor =
+          if osConfig ? desktop.noctalia.primaryMonitor && osConfig.desktop.noctalia.primaryMonitor != ""
+          then osConfig.desktop.noctalia.primaryMonitor
+          else "DP-2";
+      in {
+        xdg.configFile."gpu-screen-recorder/config".text = ''
+          main.advanced_view false
+          main.audio_codec opus
+          main.audio_input device:Default output
+          main.av1_amd_bug_warning_shown false
+          main.change_video_resolution false
+          main.codec auto
+          main.color_range limited
+          main.fps 60
+          main.framerate_mode auto
+          main.hevc_amd_bug_warning_shown false
+          main.hide_window_when_recording false
+          main.installed_gsr_global_hotkeys_version 0
+          main.merge_audio_tracks true
+          main.overclock false
+          main.quality very_high
+          main.record_app_audio_inverted false
+          main.record_area_height 1080
+          main.record_area_option ${primaryMonitor}
+          main.record_area_width 1920
+          main.record_cursor true
+          main.restore_portal_session true
+          main.show_recording_saved_notifications true
+          main.show_recording_started_notifications false
+          main.show_recording_stopped_notifications false
+          main.software_encoding_warning_shown false
+          main.steam_deck_warning_shown false
+          main.use_new_ui false
+          main.video_bitrate 15000
+          main.video_height 1080
+          main.video_width 1920
+          record.container mp4
+          record.pause_unpause_recording_hotkey 0 0
+          record.save_directory ${host.homeDir}/Videos
+          record.start_stop_recording_hotkey 0 0
+          replay.container mp4
+          replay.save_directory ${host.homeDir}/Videos
+          replay.save_recording_hotkey 0 0
+          replay.start_stop_recording_hotkey 0 0
+          replay.time 30
+          streaming.custom.container flv
+          streaming.custom.url
+          streaming.service twitch
+          streaming.start_stop_recording_hotkey 0 0
+          streaming.twitch.key
+          streaming.youtube.key
+        '';
+      };
+    };
 }

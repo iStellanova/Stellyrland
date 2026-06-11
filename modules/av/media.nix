@@ -1,7 +1,4 @@
-{
-  sn,
-  ...
-}: {
+{sn, ...}: {
   sn.av = {includes = [sn.media];};
 
   sn.media.nixos = {pkgs, ...}: {

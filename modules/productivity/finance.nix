@@ -1,7 +1,4 @@
-{
-  sn,
-  ...
-}: {
+{sn, ...}: {
   sn.productivity = {includes = [sn.finance];};
 
   sn.finance.darwin = _: {

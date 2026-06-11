@@ -1,7 +1,4 @@
-{
-  sn,
-  ...
-}: {
+{sn, ...}: {
   sn.linux-boot = {includes = [sn.initrd];};
 
   sn.initrd.nixos = {lib, ...}: {

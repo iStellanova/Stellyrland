@@ -1,7 +1,4 @@
-{
-  sn,
-  ...
-}: let
+{sn, ...}: let
   aiPkgs = pkgs: with pkgs; [claude-code gemini-cli];
 in {
   sn.dev = {includes = [sn.ai-tools];};

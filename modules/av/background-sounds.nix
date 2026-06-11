@@ -1,7 +1,4 @@
-{
-  sn,
-  ...
-}: {
+{sn, ...}: {
   sn.av = {includes = [sn.background-sounds];};
 
   sn.background-sounds.darwin = _: {

@@ -1,7 +1,4 @@
-{
-  sn,
-  ...
-}: {
+{sn, ...}: {
   sn.desktop = {includes = [sn.pipewire];};
 
   sn.pipewire.nixos = _: {

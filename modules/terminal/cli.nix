@@ -1,7 +1,4 @@
-{
-  sn,
-  ...
-}: let
+{sn, ...}: let
   cliPkgs = pkgs: with pkgs; [curl unzip zip croc kitty.terminfo];
 in {
   sn.terminal = {includes = [sn.cli];};

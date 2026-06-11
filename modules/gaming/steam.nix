@@ -1,7 +1,4 @@
-{
-  sn,
-  ...
-}: {
+{sn, ...}: {
   sn.gaming = {includes = [sn.steam];};
 
   sn.steam.nixos = {pkgs, ...}: {
