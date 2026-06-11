@@ -1,4 +1,7 @@
-_: let
+{
+  sn,
+  ...
+}: let
   aestheticPkgs = pkgs:
     with pkgs; [
       peaclock
@@ -17,11 +20,13 @@ _: let
       })
     ];
 in {
-  den.aspects.aesthetic.nixos = {pkgs, ...}: {
+  sn.desktop = {includes = [sn.aesthetic];};
+
+  sn.aesthetic.nixos = {pkgs, ...}: {
     environment.systemPackages = aestheticPkgs pkgs;
   };
 
-  den.aspects.aesthetic.darwin = {pkgs, ...}: {
+  sn.aesthetic.darwin = {pkgs, ...}: {
     environment.systemPackages = aestheticPkgs pkgs;
   };
 }
