@@ -4,8 +4,13 @@ _: {
       enable = true;
       defaultEditor = true;
 
+      themes.catppuccin_macchiato_transparent = {
+        inherits = "catppuccin_macchiato";
+        "ui.background" = {};
+      };
+
       settings = {
-        theme = "catppuccin_macchiato";
+        theme = "catppuccin_macchiato_transparent";
 
         editor = {
           line-number = "relative";
