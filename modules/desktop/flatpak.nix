@@ -1,6 +1,6 @@
 {
   sn,
-  inputs ? {},
+  inputs,
   ...
 }: {
   sn.desktop = {includes = [sn.flatpak];};

@@ -19,7 +19,6 @@
       sn.gaming
       sn.openrgb
       sn.maintenance
-      sn.fastfetch
       sn.bitwarden
       sn.system-tools
       sn.protonvpn

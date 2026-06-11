@@ -16,7 +16,6 @@
       sn.gaming
       sn.productivity
       sn.maintenance
-      sn.fastfetch
       sn.bitwarden
       sn.system-tools
       sn.protonvpn

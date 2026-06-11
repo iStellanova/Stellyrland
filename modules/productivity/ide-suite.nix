@@ -8,13 +8,11 @@
 in {
   sn.productivity = {includes = [sn.ide-suite];};
 
-  sn.ide-suite.nixos = {pkgs, ...}: {
+  sn.ide-suite.os = {pkgs, ...}: {
     environment.systemPackages = idePkgs pkgs;
   };
 
-  sn.ide-suite.darwin = {pkgs, ...}: {
-    environment.systemPackages = idePkgs pkgs;
-
+  sn.ide-suite.darwin = _: {
     homebrew.masApps = {
       "Xcode" = 497799835;
     };

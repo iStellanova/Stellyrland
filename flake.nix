@@ -43,6 +43,13 @@
     noctalia-greeter.url = "github:noctalia-dev/noctalia-greeter";
     noctalia-shell.url = "github:noctalia-dev/noctalia";
     preservation.url = "github:nix-community/preservation";
+    scroll-overview = {
+      url = "github:yayuuu/hyprland-scroll-overview";
+      inputs = {
+        hyprland.follows = "hyprland";
+        nixpkgs.follows = "nixpkgs";
+      };
+    };
     sops-nix = {
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";

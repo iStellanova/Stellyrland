@@ -1,6 +1,6 @@
 {
   sn,
-  inputs ? {},
+  inputs,
   ...
 }: {
   sn.linux-boot = {includes = [sn.boot];};
