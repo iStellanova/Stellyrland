@@ -1,4 +1,8 @@
-{den, ...}: {
+{
+  den,
+  sn,
+  ...
+}: {
   den.aspects.stellanova = {
     includes = [
       den.batteries.define-user
@@ -7,24 +11,24 @@
       den.batteries.host-aspects
 
       # Cross-platform aspects
-      den.aspects.core
-      den.aspects.nix-settings
-      den.aspects.vesktop
-      den.aspects.nix-index
-      den.aspects.kitty
-      den.aspects.ns
-      den.aspects.cli
-      den.aspects.helix
-      den.aspects.git
-      den.aspects.yazi
-      den.aspects.zed
-      den.aspects.background-sounds
-      den.aspects.cava
-      den.aspects.media
-      den.aspects.btop
-      den.aspects.fastfetch
-      den.aspects.browser
-      den.aspects.zsh
+      sn.core
+      sn.nix-tools
+      sn.vesktop
+      sn.nix-index
+      sn.kitty
+      sn.ns
+      sn.cli
+      sn.helix
+      sn.git
+      sn.yazi
+      sn.zed
+      sn.background-sounds
+      sn.cava
+      sn.media
+      sn.btop
+      sn.fastfetch
+      sn.zen-browser
+      sn.zsh
     ];
 
     homeManager = {

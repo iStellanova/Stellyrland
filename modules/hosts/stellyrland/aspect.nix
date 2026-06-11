@@ -1,60 +1,28 @@
-{den, ...}: {
+{
+  den,
+  sn,
+  ...
+}: {
   den.aspects.stellyrland = {
     includes = [
-      den.aspects.core
-      den.aspects.nix-settings
+      sn.nix-base
       den.batteries.hostname
-      den.aspects.networking
-      den.aspects.users
-      den.aspects.xdg
-      den.aspects.fonts
-      den.aspects.homebrew
-      den.aspects.services-base
-      den.aspects.boot
-      den.aspects.headless
-      den.aspects.initrd
-      den.aspects.kernel
-      den.aspects.hardware
-      den.aspects.extra-disk
-      den.aspects.hdd
-      den.aspects.preservation
-      den.aspects.storage
-      den.aspects.secrets
-      den.aspects.aesthetic
-      den.aspects.styling
-      den.aspects.hyprland
-      den.aspects.vesktop
-      den.aspects.nix-index
-      den.aspects.ai-tools
-      den.aspects.kitty
-      den.aspects.ns
-      den.aspects.cli
-      den.aspects.helix
-      den.aspects.git
-      den.aspects.yazi
-      den.aspects.zed
-      den.aspects.gaming
-      den.aspects.gsr
-      den.aspects.media-editing
-      den.aspects.cava
-      den.aspects.media
-      den.aspects.noctalia-shell
-      den.aspects.utils
-      den.aspects.maintenance
-      den.aspects.btop
-      den.aspects.fastfetch
-      den.aspects.nautilus
-      den.aspects.bitwarden
-      den.aspects.browser
-      den.aspects.zsh
-      den.aspects.noctalia-greeter
-      den.aspects.coolercontrol
-      den.aspects.lact
-      den.aspects.openssh
-      den.aspects.seahorse
-      den.aspects.flatpak
-      den.aspects.discord-music-rpc
-      den.aspects.openrgb
+      sn.system
+      sn.linux-boot
+      sn.linux-hardware
+      sn.linux-storage
+      sn.terminal
+      sn.dev
+      sn.desktop
+      sn.communication
+      sn.av
+      sn.gaming
+      sn.openrgb
+      sn.maintenance
+      sn.fastfetch
+      sn.bitwarden
+      sn.system-tools
+      sn.protonvpn
     ];
 
     nixos = {host, ...}: {
