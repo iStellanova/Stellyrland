@@ -1,7 +1,4 @@
-{
-  sn,
-  ...
-}: let
+{sn, ...}: let
   zshOsPkg = {pkgs, ...}: {
     environment.systemPackages = [pkgs.zsh-completions];
   };

@@ -1,7 +1,4 @@
-{
-  sn,
-  ...
-}: {
+{sn, ...}: {
   sn.system = {includes = [sn.services-base];};
 
   sn.services-base.nixos = _: {

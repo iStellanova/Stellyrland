@@ -1,7 +1,4 @@
-{
-  sn,
-  ...
-}: {
+{sn, ...}: {
   sn.system = {includes = [sn.users];};
 
   sn.users.nixos = {host, ...}: {

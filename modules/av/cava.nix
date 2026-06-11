@@ -1,7 +1,4 @@
-{
-  sn,
-  ...
-}: {
+{sn, ...}: {
   sn.av = {includes = [sn.cava];};
 
   sn.cava.darwin = _: {

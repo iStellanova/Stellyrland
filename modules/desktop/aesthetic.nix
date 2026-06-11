@@ -1,7 +1,4 @@
-{
-  sn,
-  ...
-}: let
+{sn, ...}: let
   aestheticPkgs = pkgs:
     with pkgs; [
       peaclock

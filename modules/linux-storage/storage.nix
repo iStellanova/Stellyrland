@@ -1,7 +1,4 @@
-{
-  sn,
-  ...
-}: {
+{sn, ...}: {
   sn.linux-storage = {includes = [sn.storage];};
 
   sn.storage.nixos = {pkgs, ...}: {

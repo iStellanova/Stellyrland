@@ -1,7 +1,4 @@
-{
-  sn,
-  ...
-}: {
+{sn, ...}: {
   sn.linux-boot = {includes = [sn.headless];};
 
   sn.headless.nixos = {

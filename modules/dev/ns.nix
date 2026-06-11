@@ -1,7 +1,4 @@
-{
-  sn,
-  ...
-}: {
+{sn, ...}: {
   sn.dev = {includes = [sn.ns];};
 
   sn.ns.homeManager = {pkgs, ...}: {

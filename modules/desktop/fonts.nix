@@ -1,7 +1,4 @@
-{
-  sn,
-  ...
-}: let
+{sn, ...}: let
   fontPkgs = pkgs:
     with pkgs; [
       nerd-fonts.jetbrains-mono

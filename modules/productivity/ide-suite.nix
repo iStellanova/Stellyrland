@@ -1,7 +1,4 @@
-{
-  sn,
-  ...
-}: let
+{sn, ...}: let
   idePkgs = pkgs:
     with pkgs; [
       jetbrains.clion

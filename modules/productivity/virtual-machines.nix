@@ -1,7 +1,4 @@
-{
-  sn,
-  ...
-}: {
+{sn, ...}: {
   sn.productivity = {includes = [sn.virtual-machines];};
 
   sn.virtual-machines.nixos = {pkgs, ...}: {

@@ -1,7 +1,4 @@
-{
-  sn,
-  ...
-}: {
+{sn, ...}: {
   sn.terminal = {includes = [sn.kitty];};
 
   sn.kitty.homeManager = {

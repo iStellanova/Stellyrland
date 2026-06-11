@@ -1,7 +1,4 @@
-{
-  inputs ? {},
-  ...
-}: {
+{inputs ? {}, ...}: {
   sn.bitwarden.nixos = _: {
     imports =
       if inputs ? nix-flatpak

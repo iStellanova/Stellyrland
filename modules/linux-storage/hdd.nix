@@ -1,7 +1,4 @@
-{
-  sn,
-  ...
-}: {
+{sn, ...}: {
   sn.linux-storage = {includes = [sn.hdd];};
 
   sn.hdd.nixos = {pkgs, ...}: let
