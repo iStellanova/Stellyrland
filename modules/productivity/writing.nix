@@ -1,7 +1,4 @@
-{
-  sn,
-  ...
-}: {
+{sn, ...}: {
   sn.productivity = {includes = [sn.writing];};
 
   sn.writing.darwin = _: {

@@ -1,7 +1,4 @@
-{
-  sn,
-  ...
-}: {
+{sn, ...}: {
   sn.linux-storage = {includes = [sn.extra-disk];};
 
   sn.extra-disk.nixos = {host, ...}: {

@@ -1,7 +1,4 @@
-{
-  sn,
-  ...
-}: {
+{sn, ...}: {
   sn.communication = {includes = [sn.discord-music-rpc];};
 
   sn.discord-music-rpc.nixos = {pkgs, ...}: {

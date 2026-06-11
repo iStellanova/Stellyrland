@@ -3,7 +3,12 @@
   inputs ? {},
   ...
 }: {
-  sn.desktop = {includes = [sn.noctalia-shell];};
+  sn.desktop = {host, ...}: {
+    includes =
+      if host.class == "nixos"
+      then [sn.noctalia-shell]
+      else [];
+  };
 
   flake-file.inputs.noctalia-shell = {
     url = "github:noctalia-dev/noctalia";

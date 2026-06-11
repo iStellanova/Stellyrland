@@ -4,7 +4,12 @@
   lib,
   ...
 }: {
-  sn.desktop = {includes = [sn.hyprland];};
+  sn.desktop = {host, ...}: {
+    includes =
+      if host.class == "nixos"
+      then [sn.hyprland]
+      else [];
+  };
 
   flake-file.inputs.hyprland.url = "github:hyprwm/Hyprland";
   flake-file.inputs.hyprsplit = {

@@ -1,7 +1,4 @@
-{
-  sn,
-  ...
-}: {
+{sn, ...}: {
   sn.communication = {includes = [sn.vesktop];};
 
   sn.vesktop.nixos = {pkgs, ...}: {
@@ -14,7 +11,7 @@
     homebrew.casks = ["vesktop"];
   };
 
-  sn.vesktop.homeManager = {pkgs, ...}: {
+  sn.vesktop.homeManager = _: {
     xdg.configFile."vesktop/settings.json".text = builtins.toJSON {
       discordBranch = "stable";
       minimizeToTray = true;
@@ -28,8 +25,12 @@
         autoUpdate = true;
         autoUpdateNotification = true;
         useQuickCss = true;
-        themeLinks = [];
-        enabledThemes = [];
+        themeLinks = [
+          "https://catppuccin.github.io/discord/dist/catppuccin-macchiato-sapphire.theme.css"
+        ];
+        enabledThemes = [
+          "catppuccin-macchiato-sapphire.theme.css"
+        ];
         plugins = {
           ChatInputButtonAPI.enabled = true;
           CommandsAPI.enabled = true;
@@ -193,10 +194,7 @@
           settingsSync = true;
         };
       };
-      quickCss = builtins.readFile "${pkgs.catppuccin-discord.override {
-        flavour = ["macchiato"];
-        accents = ["sapphire"];
-      }}/share/catppuccin-macchiato-sapphire.theme.css";
+      quickCss = "";
     };
   };
 }

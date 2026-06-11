@@ -1,7 +1,4 @@
-{
-  sn,
-  ...
-}: {
+{sn, ...}: {
   sn.productivity = {includes = [sn.school];};
 
   sn.school.nixos = {pkgs, ...}: {

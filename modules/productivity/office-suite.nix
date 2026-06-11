@@ -1,7 +1,4 @@
-{
-  sn,
-  ...
-}: {
+{sn, ...}: {
   sn.productivity = {includes = [sn.office-suite];};
 
   sn.office-suite.nixos = {pkgs, ...}: {

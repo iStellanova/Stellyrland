@@ -1,7 +1,4 @@
-{
-  sn,
-  ...
-}: {
+{sn, ...}: {
   sn.dev = {includes = [sn.yazi];};
 
   sn.yazi.homeManager = {

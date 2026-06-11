@@ -1,7 +1,4 @@
-{
-  sn,
-  ...
-}: {
+{sn, ...}: {
   sn.dev = {includes = [sn.zed];};
 
   sn.zed.homeManager = {

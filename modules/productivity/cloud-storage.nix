@@ -1,7 +1,4 @@
-{
-  sn,
-  ...
-}: {
+{sn, ...}: {
   sn.productivity = {includes = [sn.cloud-storage];};
 
   sn.cloud-storage.darwin = _: {

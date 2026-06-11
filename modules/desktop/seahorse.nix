@@ -1,7 +1,4 @@
-{
-  sn,
-  ...
-}: {
+{sn, ...}: {
   sn.desktop = {includes = [sn.seahorse];};
 
   sn.seahorse.nixos = _: {

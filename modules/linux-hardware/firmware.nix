@@ -1,7 +1,4 @@
-{
-  sn,
-  ...
-}: {
+{sn, ...}: {
   sn.linux-hardware = {includes = [sn.firmware];};
 
   sn.firmware.nixos = {config, ...}: {

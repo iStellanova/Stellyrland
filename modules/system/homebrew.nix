@@ -1,7 +1,4 @@
-{
-  sn,
-  ...
-}: {
+{sn, ...}: {
   sn.system = {includes = [sn.homebrew];};
 
   sn.homebrew.darwin = _: {

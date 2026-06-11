@@ -1,5 +1,10 @@
 {sn, ...}: {
-  sn.desktop = {includes = [sn.aerospace];};
+  sn.desktop = {host, ...}: {
+    includes =
+      if host.class == "darwin"
+      then [sn.aerospace]
+      else [];
+  };
 
   sn.aerospace.darwin = _: {
     homebrew.taps = ["dimentium/autoraise"];

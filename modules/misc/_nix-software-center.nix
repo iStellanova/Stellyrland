@@ -1,7 +1,4 @@
-{
-  inputs ? {},
-  ...
-}: {
+{inputs ? {}, ...}: {
   flake-file.inputs.nix-software-center = {
     url = "github:snowfallorg/nix-software-center";
     inputs.nixpkgs.follows = "nixpkgs";
