@@ -1,6 +1,6 @@
 {
   sn,
-  inputs ? {},
+  inputs,
   ...
 }: {
   sn.dev = {includes = [sn.nix-index];};

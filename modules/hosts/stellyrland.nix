@@ -1,4 +1,4 @@
-{inputs ? {}, ...}: {
+{inputs, ...}: {
   flake-file.inputs.my-assets = {
     url = "github:iStellanova/Stellyrland/assets";
     flake = false;

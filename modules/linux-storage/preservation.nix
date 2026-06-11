@@ -1,6 +1,6 @@
 {
   sn,
-  inputs ? {},
+  inputs,
   ...
 }: {
   sn.linux-storage = {includes = [sn.preservation];};
