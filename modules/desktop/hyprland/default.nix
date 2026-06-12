@@ -131,6 +131,9 @@
           sed -i '1i#include <hyprland/src/helpers/Monitor.hpp>' main.cpp
           sed -i '1i#include <hyprland/src/state/WorkspaceState.hpp>' scrollOverview.cpp
           sed -i 's/g_pCompositor->getWorkspaces()/State::workspaceState()->workspaceRefs()/g' scrollOverview.cpp
+          # Hyprland moved CMonitor into Monitor:: namespace; strip _ZN prefix so the substring
+          # matches both _ZN8CMonitor... (old) and _ZN7Monitor8CMonitor... (new).
+          sed -i 's/_ZN8CMonitor9addDamageERKN9Hyprutils4Math4CBoxE/8CMonitor9addDamageERKN9Hyprutils4Math4CBoxE/g' main.cpp
           export NIX_CFLAGS_COMPILE="$NIX_CFLAGS_COMPILE -I$PWD/compat -I${hyprlandDev}/include/hyprland/src/output -I${hyprlandDev}/include/hyprland/src/helpers -I${hyprlandDev}/include/hyprland/src"
         '';
       postInstall =
