@@ -76,8 +76,13 @@
   ];
 
   we = osConfig.desktop.hyprland.wallpaperEngine;
-  wallpaperReloadBind = lib.optional (we.workshopId != "") (
-    bind "${mainMod} + ALT + E" "hl.dsp.exec_cmd([[pkill -f -9 linux-wallpaperengine && linux-wallpaperengine --assets-dir ${we.steamLibrary}/steamapps/common/wallpaper_engine/assets --screen-root DP-2 --screen-root DP-3 --fps 60 --silent ${we.steamLibrary}/steamapps/workshop/content/431960/${we.workshopId}/]])"
+  screenRootFlags = lib.concatMapStringsSep " " (m: "--screen-root ${m}") we.screenRoots;
+  hp = osConfig.desktop.hyprland.hyprsplit;
+  monitorPriorityLua =
+    lib.optionalString (hp.monitorPriority != [])
+    "hs.monitor_priority({ ${lib.concatMapStringsSep ", " (m: "\"${m}\"") hp.monitorPriority} })";
+  wallpaperReloadBind = lib.optional (we.workshopId != "" && we.screenRoots != []) (
+    bind "${mainMod} + ALT + E" "hl.dsp.exec_cmd([[pkill -f -9 linux-wallpaperengine && linux-wallpaperengine --assets-dir ${we.steamLibrary}/steamapps/common/wallpaper_engine/assets ${screenRootFlags} --fps 60 --silent ${we.steamLibrary}/steamapps/workshop/content/431960/${we.workshopId}/]])"
   );
 in {
   # All static binds expressed natively in Nix — HM serializes these to hl.bind(...) calls.
@@ -92,7 +97,7 @@ in {
         persistent_workspaces = true,
         force_monitor_priority = true,
     })
-    hs.monitor_priority({ "DP-2", "DP-3" })
+    ${monitorPriorityLua}
 
     local mainMod = "SUPER"
 

@@ -10,7 +10,7 @@
   in {
     options.core.headless.disabledPorts = lib.mkOption {
       type = lib.types.listOf lib.types.str;
-      default = ["DP-2" "DP-3"];
+      default = [];
       description = "Display ports to disable in the headless specialisation.";
     };
 

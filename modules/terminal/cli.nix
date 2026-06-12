@@ -17,17 +17,11 @@ in {
     programs.jq.enable = true;
     programs.ripgrep.enable = true;
 
-    programs.bat = {
-      enable = true;
-      config = {
-        theme = "TwoDark";
-      };
-    };
+    programs.bat.enable = true;
 
     programs.eza = {
       enable = true;
       enableZshIntegration = true;
-      enableBashIntegration = true;
       icons = "auto";
       extraOptions = [
         "--group-directories-first"

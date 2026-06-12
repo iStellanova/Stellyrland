@@ -15,7 +15,6 @@
       args = ["--rt" "--fullscreen" "--expose-wayland"] ++ lib.optionals cfg.hdr.enable ["--hdr-enabled"];
       env = lib.mkIf cfg.hdr.enable {
         "DXVK_HDR" = "1";
-        "ENABLE_GAMESCOPE_WSI" = "1";
       };
     };
   };
