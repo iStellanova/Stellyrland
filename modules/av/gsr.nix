@@ -12,20 +12,15 @@
         environment.systemPackages = [pkgs.gpu-screen-recorder-gtk];
       };
 
-      homeManager = {osConfig, ...}: let
-        primaryMonitor =
-          if osConfig ? desktop.noctalia.primaryMonitor && osConfig.desktop.noctalia.primaryMonitor != ""
-          then osConfig.desktop.noctalia.primaryMonitor
-          else "DP-2";
-      in {
+      homeManager = _: {
         xdg.configFile."gpu-screen-recorder/config".text = ''
           main.advanced_view false
           main.audio_codec opus
           main.audio_input device:Default output
           main.av1_amd_bug_warning_shown false
           main.change_video_resolution false
-          main.codec auto
-          main.color_range limited
+          main.codec av1
+          main.color_range full
           main.fps 60
           main.framerate_mode auto
           main.hevc_amd_bug_warning_shown false
@@ -36,7 +31,7 @@
           main.quality very_high
           main.record_app_audio_inverted false
           main.record_area_height 1080
-          main.record_area_option ${primaryMonitor}
+          main.record_area_option portal
           main.record_area_width 1920
           main.record_cursor true
           main.restore_portal_session true
@@ -51,10 +46,10 @@
           main.video_width 1920
           record.container mp4
           record.pause_unpause_recording_hotkey 0 0
-          record.save_directory ${host.homeDir}/Videos
+          record.save_directory ${host.homeDir}/Videos/gsr/
           record.start_stop_recording_hotkey 0 0
           replay.container mp4
-          replay.save_directory ${host.homeDir}/Videos
+          replay.save_directory ${host.homeDir}/Videos/gsr/
           replay.save_recording_hotkey 0 0
           replay.start_stop_recording_hotkey 0 0
           replay.time 30
