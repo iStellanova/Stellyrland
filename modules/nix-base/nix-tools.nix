@@ -16,15 +16,19 @@
     };
 
     programs.zsh.initContent = ''
+      _nix_prep() {
+        (cd "$FLAKE" && nix run .#write-flake && nix fmt) && git -C "$FLAKE" add .
+      }
+
       rebuild() {
         if [[ "$1" == "check" ]]; then
-          (cd $FLAKE && nix run .#write-flake && nix fmt) && git -C $FLAKE add . && ${
+          _nix_prep && ${
         if pkgs.stdenv.isDarwin
         then "nh darwin build $FLAKE && rm ./result"
         else "nh os build --diff always && rm ./result"
       }
         else
-          (cd $FLAKE && nix run .#write-flake && nix fmt) && git -C $FLAKE add . && ${
+          _nix_prep && ${
         if pkgs.stdenv.isDarwin
         then "nh darwin switch $FLAKE"
         else "nh os switch"
@@ -34,13 +38,13 @@
 
       upgrade() {
         if [[ "$1" == "check" ]]; then
-          (cd $FLAKE && nix run .#write-flake && nix fmt) && git -C $FLAKE add . && ${
+          _nix_prep && ${
         if pkgs.stdenv.isDarwin
         then "nix flake update $FLAKE && nh darwin build $FLAKE && rm ./result"
         else "nh os build --update --diff always && rm ./result"
       }
         else
-          (cd $FLAKE && nix run .#write-flake && nix fmt) && git -C $FLAKE add . && ${
+          _nix_prep && ${
         if pkgs.stdenv.isDarwin
         then "nh darwin switch --update $FLAKE"
         else "nh os switch --update"

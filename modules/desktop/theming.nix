@@ -45,6 +45,8 @@
       (lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
         catppuccin.kvantum.enable = true;
 
+        catppuccin.bat.enable = true;
+
         # Apps handled by Noctalia — keep disabled here to avoid conflicts.
         catppuccin.btop.enable = false;
         catppuccin.kitty.enable = false;

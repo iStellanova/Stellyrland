@@ -1,18 +1,20 @@
-{sn, ...}: let
-  idePkgs = pkgs:
-    with pkgs; [
+{sn, ...}: {
+  sn.productivity = {includes = [sn.ide-suite];};
+
+  sn.ide-suite.nixos = {pkgs, ...}: {
+    environment.systemPackages = with pkgs; [
       jetbrains.clion
       jetbrains.idea
       jetbrains.pycharm
     ];
-in {
-  sn.productivity = {includes = [sn.ide-suite];};
-
-  sn.ide-suite.os = {pkgs, ...}: {
-    environment.systemPackages = idePkgs pkgs;
   };
 
   sn.ide-suite.darwin = _: {
+    homebrew.casks = [
+      "clion"
+      "intellij-idea-ce"
+      "pycharm-ce"
+    ];
     homebrew.masApps = {
       "Xcode" = 497799835;
     };
