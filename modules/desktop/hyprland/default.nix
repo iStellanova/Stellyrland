@@ -121,6 +121,9 @@
             echo '#include "${hyprlandDev}/include/hyprland/src/output/MonitorFrameScheduler.hpp"'
             echo 'using Monitor::CMonitorFrameScheduler;'
           } > compat/MonitorFrameScheduler.hpp
+          sed -i '1i#include <hyprland/src/helpers/Monitor.hpp>' main.cpp
+          sed -i '1i#include <hyprland/src/state/WorkspaceState.hpp>' scrollOverview.cpp
+          sed -i 's/g_pCompositor->getWorkspaces()/State::workspaceState()->workspaceRefs()/g' scrollOverview.cpp
           export NIX_CFLAGS_COMPILE="$NIX_CFLAGS_COMPILE -I$PWD/compat -I${hyprlandDev}/include/hyprland/src/output -I${hyprlandDev}/include/hyprland/src/helpers -I${hyprlandDev}/include/hyprland/src"
         '';
       postInstall =
