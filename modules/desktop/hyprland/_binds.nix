@@ -28,14 +28,14 @@
     # --- Window Management ---
     (bind "${mainMod} + C" "hl.dsp.window.close()")
     (bind "ALT + F4" "hl.dsp.window.close()")
-    (bind "${mainMod} + A" "hl.dsp.window.float({ action = \"toggle\" })")
+    (bind "${mainMod} + Z" "hl.dsp.window.float({ action = \"toggle\" })")
     (bind "${mainMod} + P" "hl.dsp.layout(\"promote\")")
     (bind "ALT + Return" "hl.dsp.window.fullscreen()")
     (bind "${mainMod} + G" "hl.dsp.window.move({ workspace = \"+0\" })") # pin window to active workspace (movetoworkspace +0)
 
     # --- Focus & Navigation ---
-    (bind "${mainMod} + Z" "hl.dsp.layout(\"focus l\")")
-    (bind "${mainMod} + X" "hl.dsp.layout(\"focus r\")")
+    (bind "${mainMod} + A" "hl.dsp.layout(\"focus l\")")
+    (bind "${mainMod} + D" "hl.dsp.layout(\"focus r\")")
     (bind "${mainMod} + H" "hl.dsp.layout(\"focus l\")")
     (bind "${mainMod} + L" "hl.dsp.layout(\"focus r\")")
     (bind "${mainMod} + K" "hl.dsp.layout(\"focus u\")")
@@ -149,7 +149,7 @@ in {
             workspace_gap = 50,
             shadow = { enabled = false },
         })
-        hl.bind(mainMod .. " + D", function()
+        hl.bind(mainMod .. " + X", function()
             hl.plugin.scrolloverview.overview("toggle")
         end)
     end
