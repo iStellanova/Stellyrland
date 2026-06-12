@@ -77,7 +77,7 @@ in {
         enabled = true;
         speed = 5;
         bezier = "easeOutExpo";
-        style = "slidefade 50%";
+        style = "slidefadevert 50%";
       }
       {
         leaf = "specialWorkspace";

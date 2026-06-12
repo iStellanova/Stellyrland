@@ -34,8 +34,8 @@
     (bind "${mainMod} + G" "hl.dsp.window.move({ workspace = \"+0\" })") # pin window to active workspace (movetoworkspace +0)
 
     # --- Focus & Navigation ---
-    (bind "${mainMod} + S" "hl.dsp.layout(\"focus l\")")
-    (bind "${mainMod} + D" "hl.dsp.layout(\"focus r\")")
+    (bind "${mainMod} + Z" "hl.dsp.layout(\"focus l\")")
+    (bind "${mainMod} + X" "hl.dsp.layout(\"focus r\")")
     (bind "${mainMod} + H" "hl.dsp.layout(\"focus l\")")
     (bind "${mainMod} + L" "hl.dsp.layout(\"focus r\")")
     (bind "${mainMod} + K" "hl.dsp.layout(\"focus u\")")
@@ -127,8 +127,8 @@ in {
     -- Cycle and navigate workspaces (non-wrapping; use r+1/r-1 to wrap)
     hl.bind(mainMod .. " + left",         hs.dsp.focus({ workspace = "-1" }))
     hl.bind(mainMod .. " + right",        hs.dsp.focus({ workspace = "+1" }))
-    hl.bind(mainMod .. " + Z",            hs.dsp.focus({ workspace = "-1" }))
-    hl.bind(mainMod .. " + X",            hs.dsp.focus({ workspace = "+1" }))
+    hl.bind(mainMod .. " + W",            hs.dsp.focus({ workspace = "-1" }))
+    hl.bind(mainMod .. " + S",            hs.dsp.focus({ workspace = "+1" }))
     hl.bind(mainMod .. " + bracketleft",  hs.dsp.focus({ workspace = "-1" }))
     hl.bind(mainMod .. " + bracketright", hs.dsp.focus({ workspace = "+1" }))
     hl.bind(mainMod .. " + up",           hs.dsp.focus({ workspace = "m+1" }))
@@ -149,7 +149,7 @@ in {
             workspace_gap = 50,
             shadow = { enabled = false },
         })
-        hl.bind(mainMod .. " + W", function()
+        hl.bind(mainMod .. " + D", function()
             hl.plugin.scrolloverview.overview("toggle")
         end)
     end
