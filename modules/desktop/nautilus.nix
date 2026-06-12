@@ -59,7 +59,7 @@
         file://${host.homeDir}/Documents
         file://${host.homeDir}/Music
         file://${host.homeDir}/Projects
-        file://${host.homeDir}/Projects/stellyrland
+        file://${host.flakePath}
       '';
     };
   };
