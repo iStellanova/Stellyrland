@@ -142,5 +142,16 @@ in {
 
     -- exec_cmd runs in a child process, avoiding IPC deadlock when querying active workspace.
     hl.bind(mainMod .. " + Space", hl.dsp.exec_cmd([[data=$(hyprctl activeworkspace -j); id=$(echo "$data" | grep '"id"' | head -1 | tr -dc '0-9'); layout=$(echo "$data" | grep tiledLayout | awk -F'"' '{print $4}'); [ "$layout" = "scrolling" ] && next=dwindle || next=scrolling; hyprctl eval "hl.workspace_rule({ workspace = '$id', layout = '$next' })"]]))
+
+    if hl.plugin and hl.plugin.scrolloverview then
+        hl.plugin.scrolloverview.configure({
+            scale = 0.5,
+            workspace_gap = 50,
+            shadow = { enabled = false },
+        })
+        hl.bind(mainMod .. " + W", function()
+            hl.plugin.scrolloverview.overview("toggle")
+        end)
+    end
   '';
 }
