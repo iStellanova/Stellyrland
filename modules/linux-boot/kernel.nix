@@ -1,7 +1,18 @@
-{sn, ...}: {
+{
+  sn,
+  inputs,
+  ...
+}: {
   sn.linux-boot = {includes = [sn.kernel];};
 
+  flake-file.inputs.cachyos-kernel.url = "github:xddxdd/nix-cachyos-kernel/release";
+
   sn.kernel.nixos = {pkgs, ...}: {
+    nixpkgs.overlays = [inputs.cachyos-kernel.overlays.default];
+
+    nix.settings.substituters = ["https://attic.xuyh0120.win/lantian"];
+    nix.settings.trusted-public-keys = ["lantian:EeAUQ+W+6r7EtwnmYjeVwx5kOGEBpjlBfPlzGlTNvHc="];
+
     boot.kernelPackages = pkgs.cachyosKernels.linuxPackages-cachyos-bore-lto-x86_64-v4;
 
     # Kernel parameters for extreme performance and 3D V-Cache optimization.
