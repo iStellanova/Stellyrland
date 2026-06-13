@@ -1705,11 +1705,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1781356766,
-        "narHash": "sha256-SXEMQxGbMLfJyKpZq/5XIMJkzh3e7fFH2dHRsAoPILU=",
+        "lastModified": 1781363070,
+        "narHash": "sha256-n7h8yELWdZGLWkLu2V35XDMBQn1AmVnXOCdDe5oI16M=",
         "owner": "yayuuu",
         "repo": "hyprland-scroll-overview",
-        "rev": "afa8fc867a91fcc1fcce9d1d6412848796673645",
+        "rev": "40e59e4463ce1a56a1db638f8a515d2eb689f798",
         "type": "github"
       },
       "original": {
