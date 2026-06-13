@@ -131,7 +131,9 @@
             echo '#include "${hyprlandDev}/include/hyprland/src/output/MonitorFrameScheduler.hpp"'
             echo 'using Monitor::CMonitorFrameScheduler;'
           } > compat/MonitorFrameScheduler.hpp
-          sed -i '1i#include <hyprland/src/helpers/Monitor.hpp>' main.cpp
+          sed -i '1iusing Monitor::CMonitor;' main.cpp
+          sed -i '1i#include <hyprland/src/output/Monitor.hpp>' main.cpp
+          sed -i 's|#include <hyprland/src/helpers/Monitor.hpp>|#include <hyprland/src/output/Monitor.hpp>|g' OverviewGesture.cpp
           sed -i '1i#include <hyprland/src/state/WorkspaceState.hpp>' scrollOverview.cpp
           sed -i 's/g_pCompositor->getWorkspaces()/State::workspaceState()->workspaceRefs()/g' scrollOverview.cpp
           # Hyprland moved CMonitor into Monitor:: namespace; strip _ZN prefix so the substring
