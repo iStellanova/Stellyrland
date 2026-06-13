@@ -10,6 +10,11 @@
         description = "Zen profile directory ID (the hash before .Default Profile)";
       };
     };
+
+    config = {
+      nix.settings.substituters = ["https://zen-browser.cachix.org"];
+      nix.settings.trusted-public-keys = ["zen-browser.cachix.org-1:z/QLGrEkiBYF/7zoHX1Hpuv0B26QrmbVBSy9yDD2tSs="];
+    };
   };
 
   sn.zen-browser.darwin = _: {
