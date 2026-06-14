@@ -134,6 +134,13 @@
           sed -i '1iusing Monitor::CMonitor;' main.cpp
           sed -i '1i#include <hyprland/src/output/Monitor.hpp>' main.cpp
           sed -i 's|#include <hyprland/src/helpers/Monitor.hpp>|#include <hyprland/src/output/Monitor.hpp>|g' OverviewGesture.cpp
+          # m_realShadowColor changed from PHLANIMVAR<CHyprColor> to Config::CGradientValueData;
+          # fix Window.cpp value() access and drop the isBeingAnimated() call from scrollOverview.cpp
+          sed -i 's/window->m_realShadowColor->value()/window->m_realShadowColor.m_colors[0]/g' Window.cpp
+          sed -i 's/window->m_dimPercent->isBeingAnimated() ||$/window->m_dimPercent->isBeingAnimated();/' scrollOverview.cpp
+          sed -i '/window->m_realShadowColor->isBeingAnimated/d' scrollOverview.cpp
+          # scheduleFrameForMonitor removed from CCompositor; CMonitor now has scheduleFrame(reason)
+          sed -i 's/g_pCompositor->scheduleFrameForMonitor(MONITOR, Aquamarine::IOutput::AQ_SCHEDULE_CURSOR_MOVE)/MONITOR->scheduleFrame(Aquamarine::IOutput::AQ_SCHEDULE_CURSOR_MOVE)/g' scrollOverview.cpp
           sed -i '1i#include <hyprland/src/state/WorkspaceState.hpp>' scrollOverview.cpp
           sed -i 's/g_pCompositor->getWorkspaces()/State::workspaceState()->workspaceRefs()/g' scrollOverview.cpp
           # Hyprland moved CMonitor into Monitor:: namespace; strip _ZN prefix so the substring
