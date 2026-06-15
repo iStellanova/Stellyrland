@@ -16,11 +16,6 @@
     url = "github:shezdy/hyprsplit";
     inputs.nixpkgs.follows = "nixpkgs";
   };
-  flake-file.inputs.scroll-overview = {
-    url = "github:yayuuu/hyprland-scroll-overview";
-    inputs.hyprland.follows = "hyprland";
-    inputs.nixpkgs.follows = "nixpkgs";
-  };
 
   sn.hyprland.nixos = {pkgs, ...}: {
     imports =
@@ -99,62 +94,7 @@
     lib,
     osConfig,
     ...
-  }: let
-    # TODO: Remove this override once Hyprland fixes the development headers packaging/namespace export upstream.
-    # The Hyprland dev package is missing DamageRing.hpp and MonitorZoomController.hpp from
-    # src/helpers/. They exist in src/output/ but under a Monitor:: namespace, while Monitor.hpp
-    # uses them unqualified. We create compat shims that re-export with `using` declarations
-    # and inject them via NIX_CFLAGS_COMPILE so they take effect during the actual build.
-    hyprlandDev = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland.dev;
-    scrolloverview = inputs.scroll-overview.packages.${pkgs.stdenv.hostPlatform.system}.scrolloverview.overrideAttrs (old: {
-      postPatch =
-        (old.postPatch or "")
-        + ''
-          mkdir -p compat
-          {
-            echo '#pragma once'
-            echo '#include "${hyprlandDev}/include/hyprland/src/output/DamageRing.hpp"'
-            echo 'using Monitor::CDamageRing;'
-          } > compat/DamageRing.hpp
-          {
-            echo '#pragma once'
-            echo '#include "${hyprlandDev}/include/hyprland/src/output/MonitorZoomController.hpp"'
-            echo 'using Monitor::CMonitorZoomController;'
-          } > compat/MonitorZoomController.hpp
-          {
-            echo '#pragma once'
-            echo '#include "${hyprlandDev}/include/hyprland/src/output/MonitorResources.hpp"'
-            echo 'using Monitor::CMonitorResources;'
-          } > compat/MonitorResources.hpp
-          {
-            echo '#pragma once'
-            echo '#include "${hyprlandDev}/include/hyprland/src/output/MonitorFrameScheduler.hpp"'
-            echo 'using Monitor::CMonitorFrameScheduler;'
-          } > compat/MonitorFrameScheduler.hpp
-          sed -i '1iusing Monitor::CMonitor;' main.cpp
-          sed -i '1i#include <hyprland/src/output/Monitor.hpp>' main.cpp
-          sed -i 's|#include <hyprland/src/helpers/Monitor.hpp>|#include <hyprland/src/output/Monitor.hpp>|g' OverviewGesture.cpp
-          # m_realShadowColor changed from PHLANIMVAR<CHyprColor> to Config::CGradientValueData;
-          # fix Window.cpp value() access and drop the isBeingAnimated() call from scrollOverview.cpp
-          sed -i 's/window->m_realShadowColor->value()/window->m_realShadowColor.m_colors[0]/g' Window.cpp
-          sed -i 's/window->m_dimPercent->isBeingAnimated() ||$/window->m_dimPercent->isBeingAnimated();/' scrollOverview.cpp
-          sed -i '/window->m_realShadowColor->isBeingAnimated/d' scrollOverview.cpp
-          # scheduleFrameForMonitor removed from CCompositor; CMonitor now has scheduleFrame(reason)
-          sed -i 's/g_pCompositor->scheduleFrameForMonitor(MONITOR, Aquamarine::IOutput::AQ_SCHEDULE_CURSOR_MOVE)/MONITOR->scheduleFrame(Aquamarine::IOutput::AQ_SCHEDULE_CURSOR_MOVE)/g' scrollOverview.cpp
-          sed -i '1i#include <hyprland/src/state/WorkspaceState.hpp>' scrollOverview.cpp
-          sed -i 's/g_pCompositor->getWorkspaces()/State::workspaceState()->workspaceRefs()/g' scrollOverview.cpp
-          # Hyprland moved CMonitor into Monitor:: namespace; strip _ZN prefix so the substring
-          # matches both _ZN8CMonitor... (old) and _ZN7Monitor8CMonitor... (new).
-          sed -i 's/_ZN8CMonitor9addDamageERKN9Hyprutils4Math4CBoxE/8CMonitor9addDamageERKN9Hyprutils4Math4CBoxE/g' main.cpp
-          export NIX_CFLAGS_COMPILE="$NIX_CFLAGS_COMPILE -I$PWD/compat -I${hyprlandDev}/include/hyprland/src/output -I${hyprlandDev}/include/hyprland/src/helpers -I${hyprlandDev}/include/hyprland/src"
-        '';
-      postInstall =
-        (old.postInstall or "")
-        + ''
-          ln -s libscrolloverview.so $out/lib/libhyprland-scroll-overview.so
-        '';
-    });
-  in {
+  }: {
     imports =
       (
         if inputs ? hyprland
@@ -179,7 +119,6 @@
       enable = true;
       configType = "lua";
       package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
-      plugins = [scrolloverview];
       xwayland.enable = true;
       systemd.enable = true;
 

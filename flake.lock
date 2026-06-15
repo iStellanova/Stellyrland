@@ -364,27 +364,6 @@
         "type": "github"
       }
     },
-    "flake-parts_4": {
-      "inputs": {
-        "nixpkgs-lib": [
-          "scroll-overview",
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1778716662,
-        "narHash": "sha256-m1Yf0wZ8j1OHjTc2UwHwyQRSnNeSgLJOd7q5Y45hzi4=",
-        "owner": "hercules-ci",
-        "repo": "flake-parts",
-        "rev": "f7c1a2d347e4c52d5fb8d10cb4d94b5884e546fb",
-        "type": "github"
-      },
-      "original": {
-        "owner": "hercules-ci",
-        "repo": "flake-parts",
-        "type": "github"
-      }
-    },
     "flake-utils": {
       "inputs": {
         "systems": [
@@ -1667,7 +1646,6 @@
         "noctalia-greeter": "noctalia-greeter",
         "noctalia-shell": "noctalia-shell",
         "preservation": "preservation",
-        "scroll-overview": "scroll-overview",
         "sops-nix": "sops-nix",
         "treefmt-nix": "treefmt-nix_3",
         "zen-browser": "zen-browser"
@@ -1691,30 +1669,6 @@
       "original": {
         "owner": "oxalica",
         "repo": "rust-overlay",
-        "type": "github"
-      }
-    },
-    "scroll-overview": {
-      "inputs": {
-        "flake-parts": "flake-parts_4",
-        "hyprland": [
-          "hyprland"
-        ],
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1781381519,
-        "narHash": "sha256-I44V3/0FtJnDA1GR70gh4Uh315U2tJr1B16xxshBbCI=",
-        "owner": "yayuuu",
-        "repo": "hyprland-scroll-overview",
-        "rev": "b1071f7ae368374704a53d9b340fb03e1377f5ed",
-        "type": "github"
-      },
-      "original": {
-        "owner": "yayuuu",
-        "repo": "hyprland-scroll-overview",
         "type": "github"
       }
     },
