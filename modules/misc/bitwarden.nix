@@ -1,4 +1,6 @@
 {inputs, ...}: {
+  flake-file.inputs.nix-flatpak.url = "github:gmodena/nix-flatpak";
+
   sn.bitwarden.nixos = _: {
     imports =
       if inputs ? nix-flatpak

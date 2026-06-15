@@ -15,11 +15,11 @@
   };
 
   sn.aerospace.homeManager = {
-    pkgs,
+    host,
     lib,
     ...
   }:
-    lib.mkIf pkgs.stdenv.hostPlatform.isDarwin {
+    lib.mkIf (host.class == "darwin") {
       home.file.".aerospace.toml".text = ''
         # Config version for compatibility and deprecations
         config-version = 2
