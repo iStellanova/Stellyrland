@@ -1,4 +1,4 @@
-{sn, ...}: {
+_: {
   sn.git.homeManager = {host, ...}: {
     programs.ssh = {
       enable = true;
