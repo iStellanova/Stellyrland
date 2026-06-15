@@ -63,7 +63,6 @@ in {
       environment.systemPackages = nixToolsPkgs pkgs;
 
       environment.variables = {
-        FLAKE = "/etc/nixos";
         NIXOS_OZONE_WL = "1";
       };
     };
