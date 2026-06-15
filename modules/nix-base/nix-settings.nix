@@ -31,6 +31,9 @@ in {
       nix.enable = lib.mkDefault true;
       nix.daemonCPUSchedPolicy = "batch";
       nix.daemonIOSchedPriority = 7;
+      nix.extraOptions = ''
+        !include /etc/nix/access-tokens.conf
+      '';
       nix.settings =
         commonNixSettings
         // {
@@ -77,6 +80,9 @@ in {
 
     nix.enable = lib.mkDefault false;
     nix.settings = commonNixSettings;
+    nix.extraOptions = ''
+      !include /etc/nix/access-tokens.conf
+    '';
 
     environment.systemPackages = nixToolsPkgs pkgs;
   };
