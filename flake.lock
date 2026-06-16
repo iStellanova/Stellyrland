@@ -1227,11 +1227,11 @@
     "my-assets": {
       "flake": false,
       "locked": {
-        "lastModified": 1780104999,
-        "narHash": "sha256-Uaf6i7SvT6vtf11G5gLtp9ofcBY4AfTD5MSLv8bN6k8=",
+        "lastModified": 1781579427,
+        "narHash": "sha256-ID7Aaj9/Xg4hNKHKHTsE+MNNWR5ZbvDBwAQ57WS6CCA=",
         "owner": "iStellanova",
         "repo": "Stellyrland",
-        "rev": "ebcdb5b76afccfe3658e5fb30ca23e4c1c9891fc",
+        "rev": "ca714da461a5aa4c5a31cb3c83e45e66b8e865db",
         "type": "github"
       },
       "original": {
@@ -1527,11 +1527,11 @@
         "nixpkgs": "nixpkgs_11"
       },
       "locked": {
-        "lastModified": 1781571647,
-        "narHash": "sha256-jd2HyhWIIf4531kzeYPVVtpz1T50x1w+Bz+cJ2o0d5g=",
+        "lastModified": 1781578452,
+        "narHash": "sha256-dVnQMGUcRJxrrGU5P2wBix9mxTcWjpiBs3N0/uwhR5A=",
         "owner": "noctalia-dev",
         "repo": "noctalia",
-        "rev": "5a8c71b9d8c2804c6ebd677cf4be07844300aad4",
+        "rev": "b38bbc31460bb7b17ffe771b4267bde0ad6250a5",
         "type": "github"
       },
       "original": {
