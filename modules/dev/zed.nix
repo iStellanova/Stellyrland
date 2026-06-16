@@ -61,6 +61,7 @@
             };
           };
         };
+        "minimap" = {"show" = "always";};
         "lsp" = {"nil" = {"binary" = {"path" = "nil";};};};
         "assistant" = {
           "version" = 2;

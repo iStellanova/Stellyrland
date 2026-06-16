@@ -92,6 +92,7 @@
           panel = {
             transparency_mode = "glass";
             session_placement = "centered";
+            launcher_session_search = true;
           };
           screen_corners.enabled = true;
           screenshot = {
@@ -108,7 +109,7 @@
           source = "community";
           templates = {
             builtin_ids = ["btop" "cava" "hyprland" "kitty" "helix"];
-            community_ids = ["yazi"];
+            community_ids = ["yazi" "hyprtoolkit"];
           };
         };
 
@@ -133,7 +134,7 @@
           position = "top";
           background_opacity = 0.5;
           center = ["media"];
-          end = ["tray" "volume" "weather" "network" "temp" "cpu" "ram" "clock" "notifications"];
+          end = ["tray" "volume" "weather" "network" "temp" "cpu" "ram" "clock" "clipboard" "notifications"];
           margin_ends = 5;
           margin_edge = 5;
           start = ["launcher" "workspaces" "audio_visualizer" "active_window"];
