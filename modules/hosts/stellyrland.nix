@@ -7,6 +7,7 @@
   den.hosts.x86_64-linux.stellyrland = {
     username = "stellanova";
     homeDir = "/home/stellanova";
+    flakePath = "/home/stellanova/Projects/stellyrland";
     gitName = "stellanova";
     userEmail = "iStellanova@users.noreply.github.com";
     sshKeys = [
