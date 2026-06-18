@@ -4,7 +4,7 @@
   ...
 }: let
   commonNixSettings = {
-    experimental-features = ["nix-command" "flakes" "pipe-operators"];
+    experimental-features = ["nix-command" "flakes" "pipe-operator"];
     log-lines = 25;
     auto-optimise-store = true;
     warn-dirty = false;
