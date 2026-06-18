@@ -25,13 +25,13 @@
           _nix_prep && ${
         if pkgs.stdenv.isDarwin
         then "nh darwin build $FLAKE && rm ./result"
-        else "nh os build --diff always && rm ./result"
+        else "nh os build $FLAKE --diff always && rm ./result"
       }
         else
           _nix_prep && ${
         if pkgs.stdenv.isDarwin
         then "nh darwin switch $FLAKE"
-        else "nh os switch"
+        else "nh os switch $FLAKE"
       }
         fi
       }
@@ -41,13 +41,13 @@
           _nix_prep && ${
         if pkgs.stdenv.isDarwin
         then "nix flake update $FLAKE && nh darwin build $FLAKE && rm ./result"
-        else "nh os build --update --diff always && rm ./result"
+        else "nh os build $FLAKE --update --diff always && rm ./result"
       }
         else
           _nix_prep && ${
         if pkgs.stdenv.isDarwin
         then "nh darwin switch --update $FLAKE"
-        else "nh os switch --update"
+        else "nh os switch $FLAKE --update"
       }
         fi
       }
@@ -59,8 +59,6 @@
       }
     '';
 
-    # FLAKE env var is set by each OS body pointing to the host-specific path.
-    # nh.flake mirrors it so nh commands find the flake without a flag.
     programs.nh = {
       enable = true;
       clean.enable = true;
@@ -68,6 +66,11 @@
       flake = host.flakePath;
     };
 
-    home.sessionVariables.FLAKE = host.flakePath;
+    # Use zsh sessionVariables (written into .zshrc) rather than
+    # home.sessionVariables (written into ~/.profile, login shells only).
+    programs.zsh.sessionVariables = {
+      FLAKE = host.flakePath;
+      NH_FLAKE = host.flakePath;
+    };
   };
 }
