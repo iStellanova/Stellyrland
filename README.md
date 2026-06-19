@@ -4,19 +4,21 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/NixOS-68ac0b9-8aadf4?style=for-the-badge&logo=nixos&logoColor=24273a" />&nbsp;
-  <img src="https://img.shields.io/badge/Home_Manager-1a95e2e-c6a0f6?style=for-the-badge&logo=nixos&logoColor=24273a" />&nbsp;
-  <img src="https://img.shields.io/badge/flake--parts-f7c1a2d-f5a97f?style=for-the-badge&logo=nixos&logoColor=24273a" />
+  <img src="https://img.shields.io/badge/NixOS-Unstable-8aadf4?style=for-the-badge&logo=nixos&logoColor=24273a" />&nbsp;
+  <img src="https://img.shields.io/badge/Home_Manager-Master-c6a0f6?style=for-the-badge&logo=nixos&logoColor=24273a" />&nbsp;
+  <img src="https://img.shields.io/badge/Nix-Lix-d690e0?style=for-the-badge&logo=nixos&logoColor=24273a" />
   <br/>
-  <img src="https://img.shields.io/badge/Hyprland-864dc89-7dc4e4?style=for-the-badge&logoColor=24273a" />&nbsp;
-  <img src="https://img.shields.io/badge/nix--darwin-56c666e-a6da95?style=for-the-badge&logoColor=24273a" />&nbsp;
-  <img src="https://img.shields.io/badge/Catppuccin-Macchiato_Sapphire-7dc4e4?style=for-the-badge&logo=catppuccin&logoColor=24273a" />
+  <img src="https://img.shields.io/badge/Dendritic-Den-f5a97f?style=for-the-badge&logoColor=24273a" />&nbsp;
+  <img src="https://img.shields.io/badge/Hyprland-Flake-7dc4e4?style=for-the-badge&logoColor=24273a" />&nbsp;
+  <img src="https://img.shields.io/badge/nix--darwin-Master-a6da95?style=for-the-badge&logoColor=24273a" />&nbsp;
+  <img src="https://img.shields.io/badge/Catppuccin-Macchiato-7dc4e4?style=for-the-badge&logo=catppuccin&logoColor=24273a" />
 </p>
 
 ---
 
-This is my personal configuration for my systems, managed by the nix language and its package manager.
-I stick to the dendritic style. Documentation will explain all concepts I use here.
+This is my personal configuration for my systems, managed by the nix language and the lix package manager.
+I stick to the dendritic style, making use of the Den framework from Vic.
+Documentation will explain all concepts I use here.
 I use this to tinker, deploy, and manage my computers from home and remote. :)
 
 <table align="center">
@@ -105,10 +107,10 @@ flowchart TD
     │   ├── stellyrland/    # Hardware config and host aspect composition
     │   └── stellyrtop/
     ├── users/              # User aspect definitions
-    ├── nix-base/           # Nix settings, shell helpers, nh integration
+    ├── nix-base/           # Lix, Nix settings, shell helpers, nh integration
     ├── linux-boot/         # UKI, Secure Boot, kernel, initrd ZFS rollback
     ├── linux-hardware/     # Hardware-specific configuration
-    ├── linux-storage/      # ZFS datasets, impermanence, Sanoid snapshots
+    ├── linux-storage/      # ZFS datasets, preservation, Sanoid snapshots
     ├── desktop/            # Hyprland, Noctalia, theming, Flatpak, Nautilus
     │   ├── hyprland/       # Hyprland config, binds, animations, rules, cursor
     │   └── noctalia/       # Noctalia shell and greeter
@@ -118,8 +120,8 @@ flowchart TD
     ├── gaming/             # Gamescope, HDR, game launchers
     ├── av/                 # GPU Screen Recorder, media players
     ├── communication/      # Messaging apps
-    ├── productivity/       # IDE suite (JetBrains / Xcode)
-    ├── system/             # CoolerControl, AMD LACT GPU tuning
+    ├── productivity/       # Office, finance, writing, school, VMs, cloud storage
+    ├── system/             # Users, secrets, services, XDG, CoolerControl, LACT
     ├── openrgb/            # Peripheral RGB control
     └── misc/               # Bitwarden, system tools, maintenance
 ```
@@ -130,15 +132,16 @@ flowchart TD
   Optimized for the X3D CPU — smarter about which workloads get the extra cache vs extra clock.
 - **Smart Cleanup:** `nh` configured to strictly retain the last 20 generations.
   Keeps the system version-controlled with multiple rollback points.
-- **ZFS Impermanence + Sanoid Snapshots:** Root and home roll back to blank ZFS snapshots on every boot; `/persist` survives. Sanoid manages daily snapshots of home and persist, with automated post-rebuild snapshots and monthly pool scrubs.
+- **ZFS Preservation + Sanoid Snapshots:** Root and home roll back to blank ZFS snapshots on every boot; `/persist` survives. Sanoid manages daily snapshots of home and persist, with automated post-rebuild snapshots and monthly pool scrubs.
 
-## 🛠️ Main Aspects Involved
+## 🛠️ Specifications
 - **Architecture:** Dendritic (Keeps things separate and maintainable as aspects that can be toggled.)
-- **Framework:** `flake-parts` (Allows version control and using defined inputs.)
+- **Framework:** Den (Aspect-oriented framework built on flake-parts for cross-platform module composition.)
 - **OS:** NixOS (Unstable) & macOS (Darwin)
+- **Package Manager:** Lix (Community-created Nix variant)
 - **WM:** Hyprland
 - **Shell:** Zsh
-- **Editor:** Zed / Nixvim
+- **Editor:** Zed / Helix
 - **Terminal:** Kitty
 - **Bar/Shell:** Noctalia Shell
 
@@ -165,5 +168,6 @@ I'm still actively learning Nix!
 More elaboration on my AI morals [here](./docs/ai.md).
 
 ## 📜 Credits & Inspiration
-- **Vimjoyer:** For inspiring my dendritic pattern.
-- [Hand7s](https://github.com/s0me1newithhand7s) For inspiring many features I adopted.
+- **[Vic](https://github.com/vic):** For creating Den and flake-file — the pattern and framework this config is built on.
+- **Vimjoyer:** For inspiring my adoption of the dendritic pattern.
+- **[Hand7s](https://github.com/s0me1newithhand7s):** For inspiring many features I adopted.
