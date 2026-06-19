@@ -5,7 +5,6 @@
     environment.systemPackages = with pkgs; [
       ffmpegthumbnailer
       imv
-      lollypop
       pavucontrol
     ];
   };
