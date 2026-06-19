@@ -11,7 +11,6 @@
   <img src="https://img.shields.io/badge/Dendritic-Den-f5a97f?style=for-the-badge&logoColor=24273a" />&nbsp;
   <img src="https://img.shields.io/badge/Hyprland-Flake-7dc4e4?style=for-the-badge&logoColor=24273a" />&nbsp;
   <img src="https://img.shields.io/badge/nix--darwin-Master-a6da95?style=for-the-badge&logoColor=24273a" />&nbsp;
-  <img src="https://img.shields.io/badge/Catppuccin-Macchiato-7dc4e4?style=for-the-badge&logo=catppuccin&logoColor=24273a" />
 </p>
 
 ---
