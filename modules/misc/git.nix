@@ -1,8 +1,5 @@
 _: {
-  sn.git.homeManager = {
-    host,
-    ...
-  }: {
+  sn.git.homeManager = {host, ...}: {
     programs.ssh = {
       enable = true;
       enableDefaultConfig = false;
