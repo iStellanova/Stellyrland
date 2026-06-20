@@ -5,6 +5,9 @@
     boot.tmp.useTmpfs = true;
     boot.tmp.tmpfsSize = "50%";
 
+    boot.initrd.compressor = "zstd";
+    boot.initrd.compressorArgs = ["-19" "-T0"];
+
     boot.initrd.supportedFilesystems = ["zfs"];
 
     # forceImportRoot: NixOS 26.11 changed the default to false. Keeping true on a
