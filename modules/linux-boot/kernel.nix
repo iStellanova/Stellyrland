@@ -29,6 +29,10 @@
       "amdgpu.ppfeaturemask=0xffffffff" # Full access to GPU power/clock tuning
       "usbcore.autosuspend=-1" # Disable early USB power saving
       "rootdelay=10" # Give AM5 USB controllers extra time to fully initialize
+      "nowatchdog" # Disable software watchdog — server feature, saves interrupt overhead
+      "nmi_watchdog=0" # Disable NMI watchdog
+      "threadirqs" # Threaded IRQ handlers — lets scx_lavd schedule them for lower latency
+      "audit=0" # Disable kernel audit framework — no SELinux/audit rules to serve
     ];
 
     # Cache mode for AMD X3D V-Cache.

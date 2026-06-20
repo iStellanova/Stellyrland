@@ -11,7 +11,11 @@
     environment.systemPackages = [pkgs.gpu-screen-recorder-gtk];
   };
 
-  sn.gsr.homeManager = {host, ...}: {
+  sn.gsr.homeManager = {
+    host,
+    pkgs,
+    ...
+  }: {
     xdg.configFile."gpu-screen-recorder/config".text = ''
       main.advanced_view false
       main.audio_codec opus
@@ -59,5 +63,34 @@
       streaming.twitch.key
       streaming.youtube.key
     '';
+
+    systemd.user.services.gsr-replay = {
+      Unit = {
+        Description = "GPU Screen Recorder – continuous replay buffer";
+        After = ["graphical-session.target"];
+        PartOf = ["graphical-session.target"];
+      };
+      Service = {
+        ExecStartPre = "${pkgs.coreutils}/bin/mkdir -p %h/Videos/Replays";
+        ExecStart = builtins.concatStringsSep " " [
+          "${pkgs.gpu-screen-recorder}/bin/gpu-screen-recorder"
+          "-w DP-2"
+          "-r 120"
+          "-c mp4"
+          "-k av1_hdr"
+          "-q very_high"
+          "-ac opus"
+          "-a default_output|default_input"
+          "-cr full"
+          "-f 60"
+          "-cursor yes"
+          "-o %h/Videos/Replays"
+          "-ro %h/Videos/Replays"
+        ];
+        Restart = "on-failure";
+        RestartSec = 5;
+      };
+      Install.WantedBy = ["graphical-session.target"];
+    };
   };
 }
