@@ -38,6 +38,8 @@
       mode = "0600";
     };
 
+    sops.secrets.lastfm-password = {};
+
     sops.secrets.github-token = {
       owner = host.username;
       mode = "0400";
