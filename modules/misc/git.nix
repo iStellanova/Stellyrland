@@ -1,5 +1,14 @@
 _: {
-  sn.git.homeManager = {host, ...}: {
+  sn.git.homeManager = {
+    host,
+    pkgs,
+    ...
+  }: let
+    sshKey =
+      if pkgs.stdenv.isDarwin
+      then "~/.ssh/stellacode"
+      else "/run/secrets/stellacode";
+  in {
     programs.ssh = {
       enable = true;
       enableDefaultConfig = false;
@@ -8,11 +17,11 @@ _: {
         "stellyrland" = {
           HostName = "stellyrland.tailb15b96.ts.net";
           User = host.username;
-          IdentityFile = "/run/secrets/stellacode";
+          IdentityFile = sshKey;
         };
         "github.com" = {
           User = "git";
-          IdentityFile = "/run/secrets/stellacode";
+          IdentityFile = sshKey;
           AddKeysToAgent = "yes";
         };
         "*" = {
@@ -37,7 +46,7 @@ _: {
         commit.gpgSign = true;
         tag.gpgSign = true;
         gpg.format = "ssh";
-        user.signingKey = "/run/secrets/stellacode";
+        user.signingKey = sshKey;
         rerere.enabled = true;
         include.path = "~/.gitconfig-identity";
       };
