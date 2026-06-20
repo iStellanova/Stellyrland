@@ -25,9 +25,13 @@ _: {
       };
     };
 
+    programs.difftastic = {
+      enable = true;
+      git.enable = true;
+    };
+
     programs.git = {
       enable = true;
-      difftastic.enable = true;
       settings = {
         user = {
           name = host.gitName;
