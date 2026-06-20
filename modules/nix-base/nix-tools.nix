@@ -16,6 +16,8 @@
     };
 
     programs.zsh.initContent = ''
+      export GITHUB_TOKEN="$(cat /run/secrets/github-token 2>/dev/null)"
+
       _nix_prep() {
         git -C "$FLAKE" add . && (cd "$FLAKE" && nix fmt) && git -C "$FLAKE" add .
       }

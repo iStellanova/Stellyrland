@@ -152,11 +152,11 @@
     "type": "github"
   },
   "noctalia-shell": {
-    "lastModified": 1781944546,
-    "narHash": "sha256-GXZeZVtIg4UA9Eo65fwVp/AsEPSFUq2PMmT+UoKLcYw=",
+    "lastModified": 1781947716,
+    "narHash": "sha256-JgsuESbfH7tpR4earuxw92+vwhSn1wRw/nFaZhjF+fs=",
     "owner": "noctalia-dev",
     "repo": "noctalia",
-    "rev": "108e8a55d6e59643138837abb8ef7bfb51cfb34e",
+    "rev": "701e1e9b17a57397d52b06ca87eabb7f44313765",
     "type": "github"
   },
   "preservation": {
