@@ -1,5 +1,8 @@
 _: {
-  sn.git.homeManager = {host, ...}: {
+  sn.git.homeManager = {
+    host,
+    ...
+  }: {
     programs.ssh = {
       enable = true;
       enableDefaultConfig = false;
@@ -24,11 +27,17 @@ _: {
 
     programs.git = {
       enable = true;
+      difftastic.enable = true;
       settings = {
         user = {
           name = host.gitName;
           email = host.userEmail;
         };
+        commit.gpgSign = true;
+        tag.gpgSign = true;
+        gpg.format = "ssh";
+        user.signingKey = "/run/secrets/stellacode";
+        rerere.enabled = true;
         include.path = "~/.gitconfig-identity";
       };
     };
