@@ -56,6 +56,7 @@
     # --- Utilities ---
     (bind "Print" "hl.dsp.exec_cmd(\"noctalia msg screenshot-region\")")
     (bind "SHIFT + Print" "hl.dsp.exec_cmd(\"noctalia msg screenshot-fullscreen\")")
+    (bind "${mainMod} + SHIFT + R" "hl.dsp.exec_cmd(\"pkill -SIGUSR1 gpu-screen-rec\")")
 
     # --- Mouse Scroll Binds (non-smw) ---
     (bind "ALT + mouse_down" "hl.dsp.layout(\"move +200\")")
