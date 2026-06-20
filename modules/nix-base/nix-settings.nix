@@ -8,6 +8,7 @@
     log-lines = 25;
     auto-optimise-store = true;
     warn-dirty = false;
+    keep-outputs = true;
     min-free = 2147483648; # 2GB
     max-free = 5368709120; # 5GB
     builders-use-substitutes = true;
