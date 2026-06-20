@@ -34,9 +34,6 @@ follows = { nixpkgs = "nixpkgs" }
 [inputs.import-tree]
 url = "github:vic/import-tree"
 
-[inputs.kopuz]
-url = "github:Kopuz-org/kopuz"
-
 [inputs.lanzaboote]
 url = "github:nix-community/lanzaboote"
 follows = { nixpkgs = "nixpkgs" }
