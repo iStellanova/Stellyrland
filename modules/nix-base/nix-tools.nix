@@ -10,14 +10,14 @@
       clean = "nh clean all --keep 20";
       cdn = "cd $FLAKE";
       nixinfo = "nh os info";
-      replace = "(cd $FLAKE && nix run .#write-flake)";
+      replace = "(cd $FLAKE && nix run .#write-tack)";
       nix-list = "nix profile list --profile ~/.local/state/nix/profiles/scratch";
       nix-clear = "rm -rf ~/.local/state/nix/profiles/scratch && nh clean all --keep 20";
     };
 
     programs.zsh.initContent = ''
       _nix_prep() {
-        (cd "$FLAKE" && nix run .#write-flake && nix fmt) && git -C "$FLAKE" add .
+        git -C "$FLAKE" add . && (cd "$FLAKE" && nix fmt) && git -C "$FLAKE" add .
       }
 
       rebuild() {
@@ -38,16 +38,16 @@
 
       upgrade() {
         if [[ "$1" == "check" ]]; then
-          _nix_prep && ${
+          (cd "$FLAKE" && nix run .#write-tack) && _nix_prep && ${
         if pkgs.stdenv.isDarwin
-        then "nix flake update $FLAKE && nh darwin build $FLAKE && rm ./result"
-        else "nh os build $FLAKE --update --diff always && rm ./result"
+        then "nh darwin build $FLAKE && rm ./result"
+        else "nh os build $FLAKE --diff always && rm ./result"
       }
         else
-          _nix_prep && ${
+          (cd "$FLAKE" && nix run .#write-tack) && _nix_prep && ${
         if pkgs.stdenv.isDarwin
-        then "nh darwin switch --update $FLAKE"
-        else "nh os switch $FLAKE --update"
+        then "nh darwin switch $FLAKE"
+        else "nh os switch $FLAKE"
       }
         fi
       }
