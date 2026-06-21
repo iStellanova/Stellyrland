@@ -102,6 +102,7 @@
             ".steam"
 
             # Game launchers and saves
+            ".local/share/Paradox Interactive"
             ".local/share/PrismLauncher"
             ".config/heroic"
             ".local/share/r2modman"
@@ -116,9 +117,6 @@
 
             # Audio session volumes and per-app mix
             ".local/state/wireplumber"
-
-            # Music library database and cover cache
-            ".local/share/lollypop"
 
             # Hyprland version tracking — prevents "what's new" popup on every boot
             ".local/share/hyprland"
