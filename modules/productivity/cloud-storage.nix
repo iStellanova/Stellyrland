@@ -10,10 +10,7 @@
     };
   };
 
-  sn.cloud-storage.homeManager = {
-    pkgs,
-    ...
-  }: {
+  sn.cloud-storage.homeManager = {pkgs, ...}: {
     home.packages = [pkgs.rclone];
   };
 }
