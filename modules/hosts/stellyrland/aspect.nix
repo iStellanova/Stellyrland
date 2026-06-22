@@ -19,7 +19,9 @@
       sn.gaming
       sn.openrgb
       sn.maintenance
-      sn.bitwarden
+      sn.psswdmgr
+      sn.email
+      sn.cloud-storage
       sn.system-tools
       sn.protonvpn
     ];
