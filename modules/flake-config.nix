@@ -12,7 +12,7 @@
   flake-file.tack.recomposable = null;
 
   flake-file.inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable-small";
     flake-parts.url = "github:hercules-ci/flake-parts";
     den.url = "github:denful/den";
     import-tree.url = "github:vic/import-tree";
