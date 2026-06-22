@@ -16,7 +16,7 @@
       sn.gaming
       sn.productivity
       sn.maintenance
-      sn.bitwarden
+      sn.psswdmgr
       sn.system-tools
       sn.protonvpn
     ];
