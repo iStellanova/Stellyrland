@@ -2,12 +2,13 @@
   sn.dev = {includes = [sn.zed];};
 
   sn.zed.homeManager = {
+    host,
     pkgs,
     lib,
     ...
   }: {
     home.packages = lib.optionals (!pkgs.stdenv.isDarwin) [
-      pkgs.nil
+      pkgs.nixd
       pkgs.alejandra
     ];
 
@@ -52,7 +53,7 @@
         "languages" = {
           "YAML" = {"format_on_save" = "off";};
           "Nix" = {
-            "language_servers" = ["nil"];
+            "language_servers" = ["nixd"];
             "formatter" = {
               "external" = {
                 "command" = "alejandra";
@@ -62,7 +63,18 @@
           };
         };
         "minimap" = {"show" = "always";};
-        "lsp" = {"nil" = {"binary" = {"path" = "nil";};};};
+        "lsp" = {
+          "nixd" = {
+            "binary" = {"path" = "nixd";};
+            "settings" = {
+              "nixpkgs" = {"expr" = "import (builtins.getFlake \"${host.flakePath}\").inputs.nixpkgs {}";};
+              "options" =
+                if host.class == "nixos"
+                then {"nixos" = {"expr" = "(builtins.getFlake \"${host.flakePath}\").nixosConfigurations.${host.name}.options";};}
+                else {"darwin" = {"expr" = "(builtins.getFlake \"${host.flakePath}\").darwinConfigurations.${host.name}.options";};};
+            };
+          };
+        };
         "assistant" = {
           "version" = 2;
           "dock" = "right";
