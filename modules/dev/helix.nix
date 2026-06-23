@@ -2,6 +2,7 @@
   sn.dev = {includes = [sn.helix];};
 
   sn.helix.homeManager = {
+    host,
     pkgs,
     lib,
     ...
@@ -76,7 +77,7 @@
             name = "nix";
             auto-format = true;
             formatter = {command = "alejandra";};
-            language-servers = ["nil"];
+            language-servers = ["nixd"];
           }
           {
             name = "python";
@@ -97,10 +98,19 @@
             language-servers = ["lua-language-server"];
           }
         ];
+
+        language-server.nixd = {
+          command = "nixd";
+          config.nixpkgs.expr = "import (builtins.getFlake \"${host.flakePath}\").inputs.nixpkgs {}";
+          config.options =
+            if host.class == "nixos"
+            then {nixos.expr = "(builtins.getFlake \"${host.flakePath}\").nixosConfigurations.${host.name}.options";}
+            else {darwin.expr = "(builtins.getFlake \"${host.flakePath}\").darwinConfigurations.${host.name}.options";};
+        };
       };
 
       extraPackages = with pkgs; [
-        nil
+        nixd
         pyright
         bash-language-server
         lua-language-server
