@@ -1,7 +1,11 @@
-{sn, ...}: let
-  aiPkgs = pkgs: with pkgs; [claude-code gemini-cli];
+{sn, inputs, ...}: let
+  aiPkgs = pkgs: let
+    llm = inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system};
+  in [llm.claude-code llm.antigravity-cli];
 in {
   sn.dev = {includes = [sn.ai-tools];};
+
+  flake-file.inputs.llm-agents.url = "github:numtide/llm-agents.nix";
 
   sn.ai-tools.nixos = {pkgs, ...}: {
     environment.systemPackages = aiPkgs pkgs ++ [pkgs.antigravity-fhs];
@@ -11,7 +15,6 @@ in {
     homebrew.casks = [
       "claude"
       "antigravity"
-      "antigravity-cli"
     ];
 
     environment.systemPackages = aiPkgs pkgs;
