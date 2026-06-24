@@ -22,15 +22,6 @@
       # tmpfiles creates subdirs fine (root can do that) but HM runs as the user
       # and can't create ~/.cache etc. in a root-owned directory. Fix ownership.
       "d /home/${host.username} 0700 ${host.username} users -"
-
-      # home-manager-stellanova.service runs at boot (before user login) and calls
-      # setupVars, which exits 1 if neither ~/.local/state/nix/profiles nor
-      # /nix/var/nix/profiles/per-user/$USER exists. After ZFS rollback both are
-      # gone; the service tries to recreate the former via `nix-env -q` but that
-      # relies on a login-shell PATH that isn't guaranteed at pre-login boot time.
-      # Persisting these directories means setupVars always finds what it needs.
-      "d /persist/home/${host.username}/.local/state/nix/profiles 0755 ${host.username} users -"
-      "d /persist/home/${host.username}/.local/state/home-manager/gcroots 0755 ${host.username} users -"
     ];
 
     preservation = {
@@ -109,10 +100,18 @@
 
             # Nix user state — profile dir must survive rollback so
             # home-manager-stellanova.service's setupVars() doesn't exit 1 at boot
+            {
+              directory = ".local/state/nix/profiles";
+              mode = "0755";
+            }
             ".local/state/nix"
 
             # HM gcroots — protects current generation from nix-store GC and
             # gives HM its oldGenPath for correct diff-based activation
+            {
+              directory = ".local/state/home-manager/gcroots";
+              mode = "0755";
+            }
             ".local/state/home-manager"
 
             # Audio session volumes and per-app mix
