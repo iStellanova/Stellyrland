@@ -1,4 +1,5 @@
 .claude/
+.direnv/
 .DS_Store
 .past-context/
 result
