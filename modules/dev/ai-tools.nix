@@ -1,4 +1,8 @@
-{sn, inputs, ...}: let
+{
+  sn,
+  inputs,
+  ...
+}: let
   aiPkgs = pkgs: let
     llm = inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system};
   in [llm.claude-code llm.antigravity-cli];
