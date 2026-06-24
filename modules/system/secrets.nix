@@ -58,4 +58,24 @@
       "d ${host.homeDir}/.ssh 0700 ${host.username} users -"
     ];
   };
+
+  sn.secrets.darwin = {host, ...}: {
+    imports =
+      if inputs ? sops-nix
+      then [inputs.sops-nix.darwinModules.sops]
+      else [];
+
+    sops.age.sshKeyPaths = ["${host.homeDir}/.ssh/id_ed25519"];
+
+    sops.defaultSopsFile = ../../secrets/secrets.yaml;
+    sops.defaultSopsFormat = "yaml";
+
+    sops.secrets.stellacode = {
+      path = "${host.homeDir}/.ssh/stellacode";
+    };
+
+    sops.secrets.github-token = {
+      path = "${host.homeDir}/.config/github-token";
+    };
+  };
 }
