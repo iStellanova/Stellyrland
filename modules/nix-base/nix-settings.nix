@@ -13,7 +13,7 @@
     max-free = 5368709120; # 5GB
     builders-use-substitutes = true;
   };
-  nixToolsPkgs = pkgs: with pkgs; [nix-output-monitor nvd];
+  nixToolsPkgs = pkgs: with pkgs; [nix-output-monitor dix];
 in {
   sn.nix-base = {includes = [sn.nix-settings];};
 
