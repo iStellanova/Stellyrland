@@ -27,7 +27,6 @@ in {
           cy = 1317.0;
           output = primary;
           rotation = 0.0;
-          scale = 1.0;
           type = "login_box";
         };
         "lockscreen-login-box@${secondary}" = {
@@ -35,7 +34,6 @@ in {
           cy = 2437.0;
           output = secondary;
           rotation = 0.0;
-          scale = 1.0;
           type = "login_box";
         };
         "lockscreen-widget-0000000000000001" = {
@@ -43,7 +41,6 @@ in {
           cy = 318.60870361328125;
           output = primary;
           rotation = 0.0;
-          scale = 1.7391304969787598;
           type = "weather";
           settings = {
             background = false;
@@ -53,9 +50,10 @@ in {
         "lockscreen-widget-0000000000000002" = {
           cx = 653.5;
           cy = 194.0;
+          box_width = 1000.0;
+          box_height = 200.0;
           output = primary;
           rotation = 0.0;
-          scale = 8.0;
           type = "label";
           settings = {
             background = false;
