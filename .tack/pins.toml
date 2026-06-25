@@ -70,7 +70,7 @@ url = "github:nixos/nixpkgs/nixos-unstable-small"
 url = "github:noctalia-dev/noctalia-greeter"
 
 [inputs.noctalia-shell]
-url = "github:noctalia-dev/noctalia"
+url = "github:noctalia-dev/noctalia/cachix"
 
 [inputs.preservation]
 url = "github:nix-community/preservation"

@@ -11,7 +11,7 @@
   };
 
   flake-file.inputs.noctalia-shell = {
-    url = "github:noctalia-dev/noctalia";
+    url = "github:noctalia-dev/noctalia/cachix";
   };
 
   sn.noctalia-shell.nixos = {lib, ...}: {
