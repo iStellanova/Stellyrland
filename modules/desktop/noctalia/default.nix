@@ -80,8 +80,8 @@
 
       settings = {
         shell = {
-          scale = 1.0;
-          font = "JetBrainsMono Nerd Font";
+          ui_scale = 1.0;
+          font_family = "JetBrainsMono Nerd Font";
           avatar_path = lib.optionalString (host.dataPath != null) "${host.dataPath}/icons/avatar.png";
           password_style = "random";
           settings_show_advanced = true;
@@ -89,10 +89,11 @@
           polkit_agent = true;
           launch_apps_as_systemd_services = true;
           screen_time_enabled = true;
+          launcher.session_search = true;
           panel = {
             transparency_mode = "glass";
-            session_placement = "centered";
-            launcher_session_search = true;
+            session_placement = "floating";
+            session_position = "center";
           };
           screen_corners.enabled = true;
           screenshot = {
