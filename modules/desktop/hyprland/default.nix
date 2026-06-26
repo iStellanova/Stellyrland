@@ -136,17 +136,20 @@
       settings = {
         monitor = osConfig.desktop.hyprland.monitors;
 
-        on = {
+        on = let
+          weCmd =
+            lib.optionalString (we.workshopId != "" && we.screenRoots != [])
+            ''              hl.exec_cmd([[sleep 3 && linux-wallpaperengine --assets-dir ${we.steamLibrary}/steamapps/common/wallpaper_engine/assets ${screenRootFlags} --fps 60 --silent ${we.steamLibrary}/steamapps/workshop/content/431960/${we.workshopId}/]])
+            '';
+        in {
           _args = [
             "hyprland.start"
-            (lua (''                function()
-                              hl.exec_cmd("wpctl set-volume @DEFAULT_AUDIO_SOURCE@ 1.0")
-                              hl.exec_cmd("udiskie -a -s --file-manager nautilus")
-              ''
-              + lib.optionalString (we.workshopId != "" && we.screenRoots != []) ''                hl.exec_cmd([[sleep 3 && linux-wallpaperengine --assets-dir ${we.steamLibrary}/steamapps/common/wallpaper_engine/assets ${screenRootFlags} --fps 60 --silent ${we.steamLibrary}/steamapps/workshop/content/431960/${we.workshopId}/]])
-              ''
-              + ''                hl.exec_cmd("systemctl --user restart xdg-desktop-portal-hyprland")
-                          end''))
+            (lua ''
+              function()
+                hl.exec_cmd("wpctl set-volume @DEFAULT_AUDIO_SOURCE@ 1.0")
+                hl.exec_cmd("udiskie -a -s --file-manager nautilus")
+                ${weCmd}hl.exec_cmd("systemctl --user restart xdg-desktop-portal-hyprland")
+              end'')
           ];
         };
 
