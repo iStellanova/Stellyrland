@@ -5,7 +5,10 @@
 }: {
   sn.desktop = {includes = [sn.theming];};
 
-  flake-file.inputs.catppuccin.url = "github:catppuccin/nix";
+  flake-file.inputs.catppuccin = {
+    url = "github:catppuccin/nix";
+    inputs.nixpkgs.follows = "nixpkgs";
+  };
 
   sn.theming.nixos = {...}: {
     imports =

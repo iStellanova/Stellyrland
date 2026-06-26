@@ -14,10 +14,16 @@
   flake-file.inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable-small";
     flake-parts.url = "github:hercules-ci/flake-parts";
-    den.url = "github:denful/den";
+    den = {
+      url = "github:denful/den";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     import-tree.url = "github:vic/import-tree";
     flake-file.url = lib.mkDefault "github:vic/flake-file";
-    tack.url = "github:manic-systems/tack";
+    tack = {
+      url = "github:manic-systems/tack";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     home-manager = {
       url = "github:nix-community/home-manager/master";
       inputs.nixpkgs.follows = "nixpkgs";
