@@ -1,12 +1,20 @@
-{sn, ...}: {
+{
+  sn,
+  inputs,
+  ...
+}: {
   sn.dev = {includes = [sn.zed];};
+
+  flake-file.inputs.nixpkgs-cached.url = "github:nixos/nixpkgs/nixos-unstable";
 
   sn.zed.homeManager = {
     host,
     pkgs,
     lib,
     ...
-  }: {
+  }: let
+    cachedPkgs = inputs.nixpkgs-cached.legacyPackages.${pkgs.stdenv.hostPlatform.system};
+  in {
     home.packages = lib.optionals (!pkgs.stdenv.isDarwin) [
       pkgs.nixd
       pkgs.alejandra
@@ -14,6 +22,7 @@
 
     programs.zed-editor = {
       enable = true;
+      package = cachedPkgs.zed-editor;
       mutableUserSettings = false;
       mutableUserKeymaps = false;
       mutableUserTasks = false;
