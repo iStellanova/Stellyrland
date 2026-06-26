@@ -123,6 +123,9 @@
             # Zoxide jump database — accumulated frecency weights for smart cd
             ".local/share/zoxide"
 
+            # direnv allow list — prevents re-allow after every rollback
+            ".local/share/direnv"
+
             # Flatpak user app data
             ".var/app"
           ];
