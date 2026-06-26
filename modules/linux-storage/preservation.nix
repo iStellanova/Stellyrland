@@ -5,7 +5,10 @@
 }: {
   sn.linux-storage = {includes = [sn.preservation];};
 
-  flake-file.inputs.preservation.url = "github:nix-community/preservation";
+  flake-file.inputs.preservation = {
+    url = "github:nix-community/preservation";
+    inputs.nixpkgs.follows = "nixpkgs";
+  };
 
   sn.preservation.nixos = {host, ...}: {
     imports =
