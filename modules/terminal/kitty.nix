@@ -2,7 +2,6 @@
   sn.terminal = {includes = [sn.kitty];};
 
   sn.kitty.homeManager = {
-    host,
     lib,
     pkgs,
     ...
@@ -30,7 +29,7 @@
         bold_italic_font = "auto";
       };
       extraConfig = ''
-        include ${host.homeDir}/.config/kitty/themes/noctalia.conf
+        include themes/noctalia.conf
       '';
     };
 

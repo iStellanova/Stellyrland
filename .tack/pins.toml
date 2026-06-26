@@ -30,7 +30,7 @@ url = "github:hercules-ci/flake-parts"
 url = "github:nix-community/home-manager/master"
 
 [inputs.hyprland]
-url = "github:hyprwm/Hyprland"
+url = "github:hyprwm/Hyprland/ce36ee360ac0fe9e716c73e83dd7284f429c13ea"
 exclude_follow = ["nixpkgs"]
 
 [inputs.hyprsplit]
