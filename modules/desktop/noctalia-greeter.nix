@@ -13,6 +13,14 @@
     programs.noctalia-greeter = {
       enable = true;
       greeter-args = "--session hyprland";
+      settings = {
+        cursor = {
+          theme = "Bibata-Modern-Ice";
+          size = 16;
+        };
+        keyboard.layout = "us";
+        appearance.password_style = "random";
+      };
     };
 
     systemd.tmpfiles.rules = [
