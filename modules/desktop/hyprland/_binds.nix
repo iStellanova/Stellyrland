@@ -86,11 +86,9 @@
     bind "${mainMod} + ALT + E" "hl.dsp.exec_cmd([[pkill -f -9 linux-wallpaperengine && linux-wallpaperengine --assets-dir ${we.steamLibrary}/steamapps/common/wallpaper_engine/assets ${screenRootFlags} --fps 60 --silent ${we.steamLibrary}/steamapps/workshop/content/431960/${we.workshopId}/]])"
   );
 in {
-  # All static binds expressed natively in Nix — HM serializes these to hl.bind(...) calls.
   wayland.windowManager.hyprland.settings.bind = staticBinds ++ wallpaperReloadBind;
 
-  # hyprsplit binds require a runtime require() and cannot be expressed in the Nix type system.
-  wayland.windowManager.hyprland.extraConfig = ''
+  wayland.windowManager.hyprland.extraLuaFiles."hyprsplit-binds" = ''
     package.path = package.path .. ";${hyprsplitLua}/share/?/init.lua"
     local hs = require("hyprsplit")
     hs.config({
@@ -146,7 +144,7 @@ in {
     hl.bind(mainMod .. " + mouse_down",   hs.dsp.focus({ workspace = "+1" }))
     hl.bind(mainMod .. " + mouse_up",     hs.dsp.focus({ workspace = "-1" }))
 
-    -- exec_cmd runs in a child process, avoiding IPC deadlock when querying active workspace.
+    -- Layout toggle: exec_cmd avoids IPC deadlock when querying active workspace
     hl.bind(mainMod .. " + Space", hl.dsp.exec_cmd([[data=$(hyprctl activeworkspace -j); id=$(echo "$data" | grep '"id"' | head -1 | tr -dc '0-9'); layout=$(echo "$data" | grep tiledLayout | awk -F'"' '{print $4}'); [ "$layout" = "scrolling" ] && next=dwindle || next=scrolling; hyprctl eval "hl.workspace_rule({ workspace = '$id', layout = '$next' })"]]))
   '';
 }

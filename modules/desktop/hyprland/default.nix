@@ -25,10 +25,17 @@
 
     options.desktop.hyprland = {
       enable = lib.mkEnableOption "Hyprland desktop environment";
-      monitorConfig = lib.mkOption {
-        type = lib.types.str;
-        default = ''hl.monitor({ output = "", mode = "preferred", position = "auto", scale = 1 })'';
-        description = "Lua monitor configuration for the main Hyprland session.";
+      monitors = lib.mkOption {
+        type = lib.types.listOf (lib.types.attrsOf lib.types.anything);
+        default = [
+          {
+            output = "";
+            mode = "preferred";
+            position = "auto";
+            scale = 1;
+          }
+        ];
+        description = "Monitor configurations passed to hl.monitor().";
       };
       wallpaperEngine = {
         steamLibrary = lib.mkOption {
@@ -94,7 +101,11 @@
     lib,
     osConfig,
     ...
-  }: {
+  }: let
+    lua = lib.generators.mkLuaInline;
+    we = osConfig.desktop.hyprland.wallpaperEngine;
+    screenRootFlags = lib.concatMapStringsSep " " (m: "--screen-root ${m}") we.screenRoots;
+  in {
     imports =
       (
         if inputs ? hyprland
@@ -123,6 +134,22 @@
       systemd.enable = true;
 
       settings = {
+        monitor = osConfig.desktop.hyprland.monitors;
+
+        on = {
+          _args = [
+            "hyprland.start"
+            (lua (''                function()
+                              hl.exec_cmd("wpctl set-volume @DEFAULT_AUDIO_SOURCE@ 1.0")
+                              hl.exec_cmd("udiskie -a -s --file-manager nautilus")
+              ''
+              + lib.optionalString (we.workshopId != "" && we.screenRoots != []) ''                hl.exec_cmd([[sleep 3 && linux-wallpaperengine --assets-dir ${we.steamLibrary}/steamapps/common/wallpaper_engine/assets ${screenRootFlags} --fps 60 --silent ${we.steamLibrary}/steamapps/workshop/content/431960/${we.workshopId}/]])
+              ''
+              + ''                hl.exec_cmd("systemctl --user restart xdg-desktop-portal-hyprland")
+                          end''))
+          ];
+        };
+
         env = [
           {_args = ["HYPRCURSOR_THEME" "Bibata-Modern-Ice-Hypr"];}
           {_args = ["HYPRCURSOR_SIZE" "16"];}
@@ -223,23 +250,6 @@
           };
         };
       };
-
-      # smw requires runtime require(); startup needs arbitrary exec-once — both must stay in extraConfig.
-      extraConfig = let
-        we = osConfig.desktop.hyprland.wallpaperEngine;
-        screenRootFlags = lib.concatMapStringsSep " " (m: "--screen-root ${m}") we.screenRoots;
-      in ''
-        ${osConfig.desktop.hyprland.monitorConfig}
-
-        hl.on("hyprland.start", function()
-          hl.exec_cmd("dbus-update-activation-environment --systemd --all")
-          hl.exec_cmd("systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP")
-          hl.exec_cmd("wpctl set-volume @DEFAULT_AUDIO_SOURCE@ 1.0")
-          hl.exec_cmd("udiskie -a -s --file-manager nautilus")
-          ${lib.optionalString (we.workshopId != "" && we.screenRoots != []) "hl.exec_cmd([[sleep 3 && linux-wallpaperengine --assets-dir ${we.steamLibrary}/steamapps/common/wallpaper_engine/assets ${screenRootFlags} --fps 60 --silent ${we.steamLibrary}/steamapps/workshop/content/431960/${we.workshopId}/]])"}
-          hl.exec_cmd("systemctl --user restart xdg-desktop-portal-hyprland")
-        end)
-      '';
     };
   };
 }
