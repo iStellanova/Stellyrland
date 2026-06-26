@@ -9,7 +9,10 @@
 in {
   sn.dev = {includes = [sn.ai-tools];};
 
-  flake-file.inputs.llm-agents.url = "github:numtide/llm-agents.nix";
+  flake-file.inputs.llm-agents = {
+    url = "github:numtide/llm-agents.nix";
+    inputs.nixpkgs.follows = "nixpkgs";
+  };
 
   sn.ai-tools.nixos = {pkgs, ...}: {
     environment.systemPackages = aiPkgs pkgs ++ [pkgs.antigravity-fhs];

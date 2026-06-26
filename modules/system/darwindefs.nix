@@ -6,7 +6,10 @@
 }: {
   sn.system = {includes = [sn.darwindefs];};
 
-  flake-file.inputs.mac-app-util.url = "github:hraban/mac-app-util";
+  flake-file.inputs.mac-app-util = {
+    url = "github:hraban/mac-app-util";
+    inputs.nixpkgs.follows = "nixpkgs";
+  };
 
   sn.darwindefs.darwin = {
     host,
