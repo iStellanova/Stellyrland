@@ -56,11 +56,11 @@
     "type": "github"
   },
   "home-manager": {
-    "lastModified": 1782423922,
-    "narHash": "sha256-qPNd6lUohHP5gcJhqQ7rLV87RwIx0xYR2A4Frb9Zjc4=",
+    "lastModified": 1782522538,
+    "narHash": "sha256-CvOaUvJ+mXlxU3m2cPWKcOAhtKETsPUYhq+Xa5ewBp4=",
     "owner": "nix-community",
     "repo": "home-manager",
-    "rev": "5d320ab301cfaaca7d32514f13815d19d109f5f4",
+    "rev": "8d8a6cc50ddc60748791a14ee1163c865ec57635",
     "type": "github"
   },
   "hyprland": {
@@ -119,14 +119,6 @@
     "rev": "4747968574ea58512c5385466400b2364c85d2d0",
     "type": "github"
   },
-  "mango": {
-    "lastModified": 1782307121,
-    "narHash": "sha256-5NBOBPX7SHLgTKmGPgl26nu/k12GGHOrye5w7k1f3GA=",
-    "owner": "mangowm",
-    "repo": "mango",
-    "rev": "db6ad082dad589633610dcf8b6261bf3fe244820",
-    "type": "github"
-  },
   "my-assets": {
     "lastModified": 1781579427,
     "narHash": "sha256-ID7Aaj9/Xg4hNKHKHTsE+MNNWR5ZbvDBwAQ57WS6CCA=",
@@ -168,19 +160,19 @@
     "type": "github"
   },
   "noctalia-greeter": {
-    "lastModified": 1782384482,
-    "narHash": "sha256-/M/0qSuGh3Jc2KwcwxlSSURNxFnB8GtytVPKlVi5r90=",
+    "lastModified": 1782517487,
+    "narHash": "sha256-EAo6mV0/HCBR4R2+VcgRwthtvJn0/aTGBDlrB0JFKNs=",
     "owner": "noctalia-dev",
     "repo": "noctalia-greeter",
-    "rev": "ff35479bc920469fe371611915d7b20624237672",
+    "rev": "76e0349b32bfa7736888764c60d769f5d5920da4",
     "type": "github"
   },
   "noctalia-shell": {
-    "lastModified": 1782513854,
-    "narHash": "sha256-BvESaKFE/i4vNwrr4JZk1HU+3a0mWdgJJwEhww7NCA0=",
+    "lastModified": 1782533017,
+    "narHash": "sha256-GMFmrfHOM+4Fwz83oPpPt4EZKM7r+5CyrDZ9+s8sSHQ=",
     "owner": "noctalia-dev",
     "repo": "noctalia",
-    "rev": "97e81c67d7cdd8c540a87efafbd06686aa3d2cc4",
+    "rev": "a61d9775fe53f5b894311afe65af513770225ddc",
     "type": "github"
   },
   "preservation": {
@@ -189,14 +181,6 @@
     "owner": "nix-community",
     "repo": "preservation",
     "rev": "93416f4614ad2dfed5b0dcf12f27e57d27a5ab11",
-    "type": "github"
-  },
-  "scenefx-hdr": {
-    "lastModified": 1782495620,
-    "narHash": "sha256-Nb+MQKDxWMzC6MplVCIA55iU8H8F5baJhmycpG+FO6w=",
-    "owner": "wlrfx",
-    "repo": "scenefx",
-    "rev": "c9f628235767a68811f3cd908293cc2adade5492",
     "type": "github"
   },
   "sops-nix": {
