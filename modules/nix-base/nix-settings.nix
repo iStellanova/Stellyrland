@@ -32,9 +32,6 @@ in {
       nix.enable = lib.mkDefault true;
       nix.daemonCPUSchedPolicy = "batch";
       nix.daemonIOSchedPriority = 7;
-      nix.extraOptions = ''
-        !include /etc/nix/access-tokens.conf
-      '';
       nix.settings =
         commonNixSettings
         // {
@@ -61,15 +58,13 @@ in {
         expat
       ];
 
-      environment.systemPackages = nixToolsPkgs pkgs;
-
       environment.variables = {
         NIXOS_OZONE_WL = "1";
       };
     };
   };
 
-  sn.nix-settings.darwin = {pkgs, ...}: {
+  sn.nix-settings.darwin = _: {
     nixpkgs.overlays = [
       (_final: prev: {
         direnv = prev.direnv.overrideAttrs (_old: {
@@ -80,14 +75,13 @@ in {
 
     nix.enable = lib.mkDefault false;
     nix.settings = commonNixSettings;
+  };
+
+  sn.nix-settings.os = {pkgs, ...}: {
+    nixpkgs.config.allowUnfree = true;
     nix.extraOptions = ''
       !include /etc/nix/access-tokens.conf
     '';
-
     environment.systemPackages = nixToolsPkgs pkgs;
-  };
-
-  sn.nix-settings.os = _: {
-    nixpkgs.config.allowUnfree = true;
   };
 }
