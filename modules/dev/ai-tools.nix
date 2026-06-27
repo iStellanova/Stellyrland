@@ -14,16 +14,18 @@ in {
     inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  sn.ai-tools.nixos = {pkgs, ...}: {
-    environment.systemPackages = aiPkgs pkgs ++ [pkgs.antigravity-fhs];
+  sn.ai-tools.os = {pkgs, ...}: {
+    environment.systemPackages = aiPkgs pkgs;
   };
 
-  sn.ai-tools.darwin = {pkgs, ...}: {
+  sn.ai-tools.nixos = {pkgs, ...}: {
+    environment.systemPackages = [pkgs.antigravity-fhs];
+  };
+
+  sn.ai-tools.darwin = _: {
     homebrew.casks = [
       "claude"
       "antigravity"
     ];
-
-    environment.systemPackages = aiPkgs pkgs;
   };
 }
