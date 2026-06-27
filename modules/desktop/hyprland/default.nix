@@ -11,8 +11,7 @@
       else [];
   };
 
-  # TODO: unpin once upstream fixes hyprland-guiutils missing pango dep (hyprgraphics 0.5.1, 2026-06-24)
-  flake-file.inputs.hyprland.url = "github:hyprwm/Hyprland/ce36ee360ac0fe9e716c73e83dd7284f429c13ea";
+  flake-file.inputs.hyprland.url = "github:hyprwm/Hyprland";
   flake-file.inputs.hyprsplit = {
     url = "github:shezdy/hyprsplit";
     inputs.nixpkgs.follows = "nixpkgs";

@@ -98,7 +98,7 @@
             # Game launchers and saves
             ".local/share/Paradox Interactive"
             ".local/share/PrismLauncher"
-            ".config/heroic"
+
             ".local/share/r2modman"
 
             # Nix user state — profile dir must survive rollback so

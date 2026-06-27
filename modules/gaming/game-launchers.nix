@@ -5,7 +5,6 @@
     environment.systemPackages = with pkgs; [
       mangohud
       goverlay
-      heroic
       prismlauncher
       protonplus
       r2modman
