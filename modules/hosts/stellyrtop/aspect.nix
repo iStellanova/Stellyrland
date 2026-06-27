@@ -15,10 +15,6 @@
       sn.av
       sn.gaming
       sn.productivity
-      sn.maintenance
-      sn.psswdmgr
-      sn.system-tools
-      sn.protonvpn
     ];
 
     darwin = {host, ...}: {

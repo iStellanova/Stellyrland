@@ -1,4 +1,10 @@
-{inputs, ...}: {
+{
+  inputs,
+  sn,
+  ...
+}: {
+  sn.desktop = {includes = [sn.zen-browser];};
+
   flake-file.inputs.zen-browser.url = "github:youwen5/zen-browser-flake";
 
   sn.zen-browser.nixos = {lib, ...}: {

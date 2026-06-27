@@ -1,4 +1,6 @@
-_: {
+{sn, ...}: {
+  sn.terminal = {includes = [sn.fastfetch];};
+
   sn.fastfetch.homeManager = {
     pkgs,
     lib,
