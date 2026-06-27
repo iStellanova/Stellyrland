@@ -54,7 +54,6 @@ follows = { nixpkgs = "nixpkgs" }
 
 [inputs.mac-app-util]
 url = "github:hraban/mac-app-util"
-follows = { nixpkgs = "nixpkgs" }
 
 [inputs.my-assets]
 url = "github:iStellanova/Stellyrland/assets"
@@ -72,7 +71,7 @@ follows = { nixpkgs = "nixpkgs" }
 url = "github:nixos/nixpkgs/nixos-unstable-small"
 
 [inputs.nixpkgs-cached]
-url = "github:nixos/nixpkgs/nixos-unstable"
+url = "github:nixos/nixpkgs/nixpkgs-unstable"
 
 [inputs.noctalia-greeter]
 url = "github:noctalia-dev/noctalia-greeter"

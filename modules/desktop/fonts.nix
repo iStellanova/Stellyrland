@@ -1,12 +1,15 @@
 {sn, ...}: let
   fontPkgs = pkgs:
-    with pkgs; [
-      nerd-fonts.jetbrains-mono
-      nerd-fonts.noto
-      noto-fonts
-      noto-fonts-cjk-sans
-      noto-fonts-color-emoji
-    ];
+    with pkgs;
+      [
+        nerd-fonts.jetbrains-mono
+        nerd-fonts.noto
+        noto-fonts
+        noto-fonts-cjk-sans
+      ]
+      ++ pkgs.lib.optionals (!pkgs.stdenv.isDarwin) [
+        noto-fonts-color-emoji
+      ];
 in {
   sn.desktop = {includes = [sn.fonts];};
 
