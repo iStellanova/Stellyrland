@@ -56,6 +56,9 @@ follows = { nixpkgs = "nixpkgs" }
 url = "github:hraban/mac-app-util"
 follows = { nixpkgs = "nixpkgs" }
 
+[inputs.mango]
+url = "github:mangowm/mango/hdr"
+
 [inputs.my-assets]
 url = "github:iStellanova/Stellyrland/assets"
 type = "fetch"
@@ -83,6 +86,10 @@ url = "github:noctalia-dev/noctalia/cachix"
 
 [inputs.preservation]
 url = "github:nix-community/preservation"
+follows = { nixpkgs = "nixpkgs" }
+
+[inputs.scenefx-hdr]
+url = "github:wlrfx/scenefx"
 follows = { nixpkgs = "nixpkgs" }
 
 [inputs.sops-nix]
