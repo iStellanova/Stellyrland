@@ -1,4 +1,6 @@
-_: {
+{sn, ...}: {
+  sn.dev = {includes = [sn.git];};
+
   sn.git.homeManager = {
     host,
     pkgs,

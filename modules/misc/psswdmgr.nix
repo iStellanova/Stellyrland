@@ -1,4 +1,6 @@
-_: {
+{sn, ...}: {
+  sn.system = {includes = [sn.psswdmgr];};
+
   sn.psswdmgr.nixos = {pkgs, ...}: {
     environment.systemPackages = [pkgs.proton-pass];
   };
