@@ -8,7 +8,6 @@
 
   flake-file.inputs.mac-app-util = {
     url = "github:hraban/mac-app-util";
-    inputs.nixpkgs.follows = "nixpkgs";
   };
 
   sn.darwindefs.darwin = {
@@ -73,7 +72,8 @@
 
         trackpad.Clicking = false;
         trackpad.TrackpadThreeFingerDrag = false;
-        trackpad.TrackpadThreeFingerHorizSwipeGesture = 0;
+        trackpad.TrackpadThreeFingerHorizSwipeGesture = 2;
+        trackpad.TrackpadFourFingerHorizSwipeGesture = 0;
 
         menuExtraClock.ShowAMPM = true;
         menuExtraClock.ShowDate = 1;
@@ -84,8 +84,10 @@
       system.keyboard.remapCapsLockToControl = true;
 
       system.activationScripts.postActivation.text = lib.mkAfter ''
-        sudo -u ${host.username} defaults write com.apple.AppleMultitouchTrackpad TrackpadFourFingerHorizSwipeGesture -int 2
-        sudo -u ${host.username} defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad TrackpadFourFingerHorizSwipeGesture -int 2
+        sudo -u ${host.username} defaults write com.apple.AppleMultitouchTrackpad TrackpadThreeFingerHorizSwipeGesture -int 2
+        sudo -u ${host.username} defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad TrackpadThreeFingerHorizSwipeGesture -int 2
+        sudo -u ${host.username} defaults write com.apple.AppleMultitouchTrackpad TrackpadFourFingerHorizSwipeGesture -int 0
+        sudo -u ${host.username} defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad TrackpadFourFingerHorizSwipeGesture -int 0
         /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
       '';
     };

@@ -65,17 +65,21 @@
       then [inputs.sops-nix.darwinModules.sops]
       else [];
 
-    sops.age.sshKeyPaths = ["${host.homeDir}/.ssh/id_ed25519"];
+    sops.age.sshKeyPaths = ["${host.homeDir}/.ssh/stellacode"];
 
     sops.defaultSopsFile = ../../secrets/secrets.yaml;
     sops.defaultSopsFormat = "yaml";
 
     sops.secrets.stellacode = {
       path = "${host.homeDir}/.ssh/stellacode";
+      owner = host.username;
+      mode = "0600";
     };
 
     sops.secrets.github-token = {
       path = "${host.homeDir}/.config/github-token";
+      owner = host.username;
+      mode = "0400";
     };
   };
 }
