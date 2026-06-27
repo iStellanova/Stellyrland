@@ -1,4 +1,8 @@
-{lib, ...}: {
+{
+  lib,
+  inputs,
+  ...
+}: {
   # Users default to the homeManager class — triggers Den's host-to-hm-users policy,
   # which auto-imports home-manager.nixosModules/darwinModules.home-manager per host.
   den.schema.user.classes = lib.mkDefault ["homeManager"];
@@ -38,17 +42,19 @@
     };
     userEmail = lib.mkOption {
       type = lib.types.str;
-      default = "";
+      default = "iStellanova@users.noreply.github.com";
       description = "Primary user's email address.";
     };
     sshKeys = lib.mkOption {
       type = lib.types.listOf lib.types.str;
-      default = [];
+      default = [
+        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAID23408QRe02peABnmkDcmpu2DVSwN3H+Jm7kcVenTDr stellanova"
+      ];
       description = "Authorized SSH public keys.";
     };
     dataPath = lib.mkOption {
       type = lib.types.nullOr lib.types.path;
-      default = null;
+      default = inputs.my-assets;
       description = "Path to custom static assets (wallpapers, icons).";
     };
     features = lib.mkOption {

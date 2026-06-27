@@ -32,6 +32,10 @@
       url = "github:LnL7/nix-darwin";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    my-assets = {
+      url = "github:iStellanova/Stellyrland/assets";
+      flake = false;
+    };
   };
 
   perSystem = {pkgs, ...}: {
