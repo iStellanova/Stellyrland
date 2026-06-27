@@ -134,6 +134,7 @@
           monitor = lib.optionalAttrs (primary != "") {"${primary}".enabled = true;};
           position = "top";
           background_opacity = 0.5;
+          shadow = false;
           center = ["media"];
           end = ["tray" "volume" "weather" "network" "temp" "cpu" "ram" "clock" "clipboard" "notifications"];
           margin_ends = 5;
