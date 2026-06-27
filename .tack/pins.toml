@@ -31,7 +31,7 @@ url = "github:nix-community/home-manager/master"
 follows = { nixpkgs = "nixpkgs" }
 
 [inputs.hyprland]
-url = "github:hyprwm/Hyprland/ce36ee360ac0fe9e716c73e83dd7284f429c13ea"
+url = "github:hyprwm/Hyprland"
 
 [inputs.hyprsplit]
 url = "github:shezdy/hyprsplit"

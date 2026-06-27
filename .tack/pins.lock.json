@@ -64,11 +64,11 @@
     "type": "github"
   },
   "hyprland": {
-    "lastModified": 1782423907,
-    "narHash": "sha256-uwh8DZGZ9xrKoOJPQWf+jJUze0xq0iV4nQ/lQrsW0w0=",
+    "lastModified": 1782587939,
+    "narHash": "sha256-dPhX+yKiDRZGZpjsKy+pByenJic05BNhsyJumlkQD0c=",
     "owner": "hyprwm",
     "repo": "Hyprland",
-    "rev": "ce36ee360ac0fe9e716c73e83dd7284f429c13ea",
+    "rev": "f048359d223fd83fc849c86bb40b36ec734be240",
     "type": "github"
   },
   "hyprsplit": {
