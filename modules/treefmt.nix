@@ -12,6 +12,7 @@
   perSystem = {
     treefmt = {
       projectRootFile = "flake.nix";
+      settings.global.excludes = [".tack/*"];
       programs = {
         alejandra.enable = true;
         deadnix.enable = true;
