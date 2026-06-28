@@ -104,11 +104,11 @@
     "url": "https://git.lix.systems/lix-project/nixos-module"
   },
   "llm-agents": {
-    "lastModified": 1782682256,
-    "narHash": "sha256-7gPwna/GoCQyH7KPfRZANeP7k37RO8vVZv2oPDrO7hQ=",
+    "lastModified": 1782684418,
+    "narHash": "sha256-LiFgtwyRBzRbeM6IMF8+59OxhedIVSZcDLqO4Jy7T1c=",
     "owner": "numtide",
     "repo": "llm-agents.nix",
-    "rev": "744a2a102bc57df8a606164292178fab9087b072",
+    "rev": "dbe0fb49730cd8aef5040d2f061ea8d262b797af",
     "type": "github"
   },
   "mac-app-util": {
@@ -168,11 +168,11 @@
     "type": "github"
   },
   "noctalia-shell": {
-    "lastModified": 1782682256,
-    "narHash": "sha256-0LoBBOREAnTVy4jSm4S64vWXuaUTqRa0n9OKngV/Dnk=",
+    "lastModified": 1782683338,
+    "narHash": "sha256-a8LFT/4qFts9HifHfFiDeCoda4UD3opYeAav/WstOUk=",
     "owner": "noctalia-dev",
     "repo": "noctalia",
-    "rev": "6fda1650d9da9dfe3ab259b4099fc6457c3f820c",
+    "rev": "e5aa42a72c25c9642f02f51e17e45c22bd341fc5",
     "type": "github"
   },
   "preservation": {
