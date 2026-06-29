@@ -15,7 +15,7 @@ in {
   };
 
   sn.ai-tools.os = {pkgs, ...}: {
-    environment.systemPackages = aiPkgs pkgs;
+    environment.systemPackages = aiPkgs pkgs ++ [pkgs.mcp-nixos];
   };
 
   sn.ai-tools.nixos = {pkgs, ...}: {
