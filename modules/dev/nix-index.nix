@@ -11,10 +11,7 @@
   };
 
   sn.nix-index.homeManager = {...}: {
-    imports =
-      if inputs ? nix-index-database
-      then [inputs.nix-index-database.homeModules.nix-index]
-      else [];
+    imports = [inputs.nix-index-database.homeModules.nix-index];
 
     programs.nix-index.enable = true;
     programs.nix-index-database.comma.enable = true;

@@ -4,10 +4,7 @@
     inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  imports =
-    if inputs ? treefmt-nix
-    then [inputs.treefmt-nix.flakeModule]
-    else [];
+  imports = [inputs.treefmt-nix.flakeModule];
 
   perSystem = {
     treefmt = {

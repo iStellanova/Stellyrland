@@ -15,10 +15,7 @@
     config,
     ...
   }: {
-    imports =
-      if inputs ? sops-nix
-      then [inputs.sops-nix.nixosModules.sops]
-      else [];
+    imports = [inputs.sops-nix.nixosModules.sops];
 
     sops.age.sshKeyPaths = ["/persist/etc/ssh/ssh_host_ed25519_key"];
 
@@ -60,10 +57,7 @@
   };
 
   sn.secrets.darwin = {host, ...}: {
-    imports =
-      if inputs ? sops-nix
-      then [inputs.sops-nix.darwinModules.sops]
-      else [];
+    imports = [inputs.sops-nix.darwinModules.sops];
 
     sops.age.sshKeyPaths = ["${host.homeDir}/.ssh/stellacode"];
 
