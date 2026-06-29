@@ -99,10 +99,5 @@
         };
       };
     };
-
-    home.sessionVariables = {
-      EDITOR = lib.mkDefault "zed --wait";
-      VISUAL = lib.mkDefault "zed --wait";
-    };
   };
 }

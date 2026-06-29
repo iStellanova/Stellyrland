@@ -48,10 +48,13 @@
       lib.optionalString (primary != "") "[wallpaper.monitors.${primary}]\npath = \"${defaultWallpaper}\"\n\n"
       + lib.optionalString (secondary != "") "[wallpaper.monitors.${secondary}]\npath = \"${defaultWallpaper}\"\n\n";
   in {
-    imports = [
-      inputs.noctalia-shell.homeModules.default
-      ./_lockscreen.nix
-    ];
+    imports =
+      (
+        if inputs ? noctalia-shell
+        then [inputs.noctalia-shell.homeModules.default]
+        else []
+      )
+      ++ [./_lockscreen.nix];
 
     home.file = lib.mkIf (host.dataPath != null) {
       "Pictures/wallpapers/wallpaper.png".source = "${host.dataPath}/wallpapers/wallpaper.png";

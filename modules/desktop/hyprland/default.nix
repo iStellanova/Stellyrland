@@ -24,7 +24,6 @@
       else [];
 
     options.desktop.hyprland = {
-      enable = lib.mkEnableOption "Hyprland desktop environment";
       monitors = lib.mkOption {
         type = lib.types.listOf (lib.types.attrsOf lib.types.anything);
         default = [
