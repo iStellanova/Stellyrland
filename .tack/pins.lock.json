@@ -56,11 +56,11 @@
     "type": "github"
   },
   "home-manager": {
-    "lastModified": 1782657028,
-    "narHash": "sha256-PHTCpYZCMzJYS3phhywqRAZphKVr2zjvlGYa+H20ZZ4=",
+    "lastModified": 1782702263,
+    "narHash": "sha256-8/MG4Su7PhnynrmsVO61IeAfrK7GuUEu+E+gwbhy1QQ=",
     "owner": "nix-community",
     "repo": "home-manager",
-    "rev": "4ad9aaae70c9aaab504127f926c0fa9cfbc2b365",
+    "rev": "789a35fbdeb3c46b260096daa0b321c11be527ea",
     "type": "github"
   },
   "hyprland": {
@@ -104,11 +104,11 @@
     "url": "https://git.lix.systems/lix-project/nixos-module"
   },
   "llm-agents": {
-    "lastModified": 1782686833,
-    "narHash": "sha256-peOkALTYQEh8ZUhBekeZTk10A+oELNBeXcr/ECL7uEE=",
+    "lastModified": 1782695301,
+    "narHash": "sha256-X1xqgUNcYI/UWxDW8W1DC7OEMOjOhTtwWc8v+MGMasY=",
     "owner": "numtide",
     "repo": "llm-agents.nix",
-    "rev": "552400b0b9943ad48ff9b477544f4e255bbc6505",
+    "rev": "76948750034d89409ac9224173f52ffc05afe946",
     "type": "github"
   },
   "mac-app-util": {
@@ -144,19 +144,11 @@
     "type": "github"
   },
   "nixpkgs": {
-    "lastModified": 1782678633,
-    "narHash": "sha256-EfOItnWLyWTCyOFGaLLhvprA9k7axDaALfaZF4KwqVM=",
+    "lastModified": 1782636521,
+    "narHash": "sha256-OG8laCOGtkxlB1JH3XqOnXxnkGJme4mQdXo5hkhCQIY=",
     "owner": "nixos",
     "repo": "nixpkgs",
-    "rev": "ffa7c7aa95712c0d529bc944e473a370c5d72958",
-    "type": "github"
-  },
-  "nixpkgs-cached": {
-    "lastModified": 1782545840,
-    "narHash": "sha256-PkBPmP5ofNtunCU7/tfn6wi9OLlzFGcHAqqmY+/mwUI=",
-    "owner": "nixos",
-    "repo": "nixpkgs",
-    "rev": "3d46470bb3030020f7e1361f33514854f5bfa86d",
+    "rev": "e1c1b84752fb0897897380a3cae9dc7fcab91ca3",
     "type": "github"
   },
   "noctalia-greeter": {
@@ -168,11 +160,11 @@
     "type": "github"
   },
   "noctalia-shell": {
-    "lastModified": 1782687482,
-    "narHash": "sha256-f1MtFIAeKUtVoIFCE14AKN1HuL5MwhPrN7jrg0CzZRw=",
+    "lastModified": 1782699275,
+    "narHash": "sha256-LTuu0QYUhIID0Glaebn8JhI7ieRYJqywcqgFd7hHx8E=",
     "owner": "noctalia-dev",
     "repo": "noctalia",
-    "rev": "37f707814de65a333d5fc7c5dfe0a9f515e5e668",
+    "rev": "acbe5aea66a3167c31c64bf53f84cc0c851f9c5c",
     "type": "github"
   },
   "preservation": {
