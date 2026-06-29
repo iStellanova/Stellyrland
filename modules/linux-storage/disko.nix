@@ -11,10 +11,7 @@
   };
 
   sn.disko.nixos = {...}: {
-    imports =
-      if inputs ? disko
-      then [inputs.disko.nixosModules.disko]
-      else [];
+    imports = [inputs.disko.nixosModules.disko];
 
     disko.enableConfig = false;
 

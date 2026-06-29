@@ -24,10 +24,7 @@
       scenefx = scenefxPkg;
     };
   in {
-    imports =
-      if inputs ? mango
-      then [inputs.mango.nixosModules.mango]
-      else [];
+    imports = [inputs.mango.nixosModules.mango];
 
     options.desktop.mango = {
       enable = lib.mkEnableOption "Mango desktop environment";
@@ -106,11 +103,7 @@
       "sleep 3 && linux-wallpaperengine --assets-dir ${we.steamLibrary}/steamapps/common/wallpaper_engine/assets ${screenRootFlags} --fps 60 --silent ${we.steamLibrary}/steamapps/workshop/content/431960/${we.workshopId}/ &\n";
   in {
     imports =
-      (
-        if inputs ? mango
-        then [inputs.mango.hmModules.mango]
-        else []
-      )
+      [inputs.mango.hmModules.mango]
       ++ [./_animations.nix ./_binds.nix ./_rules.nix];
 
     _module.args.inputs = lib.mkForce inputs;
