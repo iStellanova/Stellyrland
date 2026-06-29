@@ -18,10 +18,7 @@
   };
 
   sn.hyprland.nixos = {pkgs, ...}: {
-    imports =
-      if inputs ? hyprland
-      then [inputs.hyprland.nixosModules.default]
-      else [];
+    imports = [inputs.hyprland.nixosModules.default];
 
     options.desktop.hyprland = {
       monitors = lib.mkOption {
@@ -106,11 +103,7 @@
     screenRootFlags = lib.concatMapStringsSep " " (m: "--screen-root ${m}") we.screenRoots;
   in {
     imports =
-      (
-        if inputs ? hyprland
-        then [inputs.hyprland.homeManagerModules.default]
-        else []
-      )
+      [inputs.hyprland.homeManagerModules.default]
       ++ [./_animations.nix ./_binds.nix ./_cursor.nix ./_rules.nix];
 
     _module.args.inputs = inputs;

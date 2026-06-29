@@ -11,10 +11,7 @@
   };
 
   sn.flatpak.nixos = {...}: {
-    imports =
-      if inputs ? nix-flatpak
-      then [inputs.nix-flatpak.nixosModules.nix-flatpak]
-      else [];
+    imports = [inputs.nix-flatpak.nixosModules.nix-flatpak];
 
     services.flatpak = {
       enable = true;

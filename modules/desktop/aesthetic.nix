@@ -19,11 +19,7 @@
 in {
   sn.desktop = {includes = [sn.aesthetic];};
 
-  sn.aesthetic.nixos = {pkgs, ...}: {
-    environment.systemPackages = aestheticPkgs pkgs;
-  };
-
-  sn.aesthetic.darwin = {pkgs, ...}: {
+  sn.aesthetic.os = {pkgs, ...}: {
     environment.systemPackages = aestheticPkgs pkgs;
   };
 }

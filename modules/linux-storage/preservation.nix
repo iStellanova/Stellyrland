@@ -11,10 +11,7 @@
   };
 
   sn.preservation.nixos = {host, ...}: {
-    imports =
-      if inputs ? preservation
-      then [inputs.preservation.nixosModules.preservation]
-      else [];
+    imports = [inputs.preservation.nixosModules.preservation];
 
     systemd.tmpfiles.rules = [
       # Returns /etc/nixos's pointer from the config project.

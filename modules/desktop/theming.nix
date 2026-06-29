@@ -11,10 +11,7 @@
   };
 
   sn.theming.nixos = {...}: {
-    imports =
-      if inputs ? catppuccin
-      then [inputs.catppuccin.nixosModules.catppuccin]
-      else [];
+    imports = [inputs.catppuccin.nixosModules.catppuccin];
 
     catppuccin.enable = true;
     catppuccin.autoEnable = true;
@@ -33,10 +30,7 @@
       variant = "macchiato";
     };
   in {
-    imports =
-      if inputs ? catppuccin
-      then [inputs.catppuccin.homeModules.catppuccin]
-      else [];
+    imports = [inputs.catppuccin.homeModules.catppuccin];
 
     config = lib.mkMerge [
       {

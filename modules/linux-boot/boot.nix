@@ -16,10 +16,7 @@
     pkgs,
     ...
   }: {
-    imports =
-      if inputs ? lanzaboote
-      then [inputs.lanzaboote.nixosModules.lanzaboote]
-      else [];
+    imports = [inputs.lanzaboote.nixosModules.lanzaboote];
 
     options.core.boot.secureBoot = lib.mkEnableOption "Lanzaboote Secure Boot (disable for initial install)";
 

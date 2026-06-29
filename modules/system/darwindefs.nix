@@ -15,10 +15,7 @@
     config,
     ...
   }: {
-    imports =
-      if inputs ? mac-app-util
-      then [inputs.mac-app-util.darwinModules.default]
-      else [];
+    imports = [inputs.mac-app-util.darwinModules.default];
 
     options.darwin.system.dockApps = lib.mkOption {
       type = lib.types.listOf lib.types.str;

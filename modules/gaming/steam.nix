@@ -5,7 +5,6 @@
     boot.kernelModules = ["ntsync"];
     boot.kernel.sysctl = {
       "vm.max_map_count" = 2147483642;
-      "kernel.nmi_watchdog" = 0;
     };
 
     programs.gamemode.enable = true;

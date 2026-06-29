@@ -80,7 +80,7 @@ in {
 
   sn.nix-settings.os = {pkgs, ...}: {
     nixpkgs.config.allowUnfree = true;
-    # TODO: remove once nixpkgs bumps pnpm past 10.29.2 (build-time dep of vesktop, 2026-06-27)
+    # TODO: remove once nixpkgs bumps pnpm past 10.29.2 (build-time dep of vesktop, still present 2026-06-29)
     nixpkgs.config.permittedInsecurePackages = ["pnpm-10.29.2"];
     nix.extraOptions = ''
       !include /etc/nix/access-tokens.conf

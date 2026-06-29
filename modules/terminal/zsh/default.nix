@@ -5,9 +5,7 @@
 in {
   sn.terminal = {includes = [sn.zsh];};
 
-  sn.zsh.nixos = zshOsPkg;
-
-  sn.zsh.darwin = zshOsPkg;
+  sn.zsh.os = zshOsPkg;
 
   sn.zsh.homeManager = {
     pkgs,
