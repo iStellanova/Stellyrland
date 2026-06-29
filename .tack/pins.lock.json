@@ -104,11 +104,11 @@
     "url": "https://git.lix.systems/lix-project/nixos-module"
   },
   "llm-agents": {
-    "lastModified": 1782713853,
-    "narHash": "sha256-vSWQJWBXhkLU5kwY6BwX1pCbnJUA9Jbfn9SDJm7yJhQ=",
+    "lastModified": 1782714906,
+    "narHash": "sha256-3pX8mc2rLL0UMHN1SILROVUxXFmYPvK+xQcHEZgoXwo=",
     "owner": "numtide",
     "repo": "llm-agents.nix",
-    "rev": "b0ba27b13b776e5d2b0481726019fab428d46a24",
+    "rev": "70e4e3d55e2ffcdfbd9c89241efcb79a84ca6cb1",
     "type": "github"
   },
   "mac-app-util": {
