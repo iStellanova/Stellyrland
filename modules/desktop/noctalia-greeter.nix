@@ -11,7 +11,10 @@
   };
 
   sn.noctalia-greeter.nixos = {...}: {
-    imports = [inputs.noctalia-greeter.nixosModules.default];
+    imports =
+      if inputs ? noctalia-greeter
+      then [inputs.noctalia-greeter.nixosModules.default]
+      else [];
 
     programs.noctalia-greeter = {
       enable = true;

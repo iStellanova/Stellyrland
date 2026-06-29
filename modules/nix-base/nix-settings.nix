@@ -73,6 +73,7 @@ in {
       })
     ];
 
+    # mkDefault false — lix.nix overrides to true when Lix manages the daemon.
     nix.enable = lib.mkDefault false;
     nix.settings = commonNixSettings;
   };
