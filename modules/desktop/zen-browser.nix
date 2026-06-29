@@ -9,7 +9,6 @@
 
   sn.zen-browser.nixos = {lib, ...}: {
     options.programs.zen-browser = {
-      enable = lib.mkEnableOption "Zen Browser";
       profileId = lib.mkOption {
         type = lib.types.str;
         default = "0ubhpx7e";
