@@ -14,6 +14,7 @@
     home.packages = lib.optionals (!pkgs.stdenv.isDarwin) [
       pkgs.nixd
       pkgs.alejandra
+      pkgs.mcp-nixos
     ];
 
     programs.zed-editor = {
@@ -96,6 +97,7 @@
             "type" = "registry";
           };
           "gemini-cli" = {"type" = "registry";};
+          "mcp-nixos" = {"type" = "registry";};
         };
       };
     };
