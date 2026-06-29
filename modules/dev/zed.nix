@@ -1,19 +1,5 @@
-{
-  sn,
-  inputs,
-  ...
-}: {
+{sn, ...}: {
   sn.dev = {includes = [sn.zed];};
-
-  flake-file.inputs.nixpkgs-cached.url = "github:nixos/nixpkgs/nixpkgs-unstable";
-
-  sn.zed.nixos = {pkgs, ...}: {
-    nixpkgs.overlays = [
-      (_final: _prev: {
-        zed-editor = inputs.nixpkgs-cached.legacyPackages.${pkgs.stdenv.hostPlatform.system}.zed-editor;
-      })
-    ];
-  };
 
   sn.zed.darwin = _: {
     homebrew.casks = ["zed"];

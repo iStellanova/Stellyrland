@@ -68,9 +68,6 @@ url = "github:nix-community/nix-index-database"
 follows = { nixpkgs = "nixpkgs" }
 
 [inputs.nixpkgs]
-url = "github:nixos/nixpkgs/nixos-unstable-small"
-
-[inputs.nixpkgs-cached]
 url = "github:nixos/nixpkgs/nixpkgs-unstable"
 
 [inputs.noctalia-greeter]
