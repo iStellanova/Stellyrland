@@ -17,7 +17,6 @@
         input.source = "auto";
         output.method = "noncurses";
         output.channels = "stereo";
-        color.theme = "colors";
         smoothing.noise_reduction = 77;
       };
     };

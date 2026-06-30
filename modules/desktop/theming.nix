@@ -34,15 +34,25 @@
 
     config = lib.mkMerge [
       {
-        catppuccin.enable = pkgs.stdenv.hostPlatform.isLinux;
+        catppuccin.enable = true;
         catppuccin.autoEnable = false;
         catppuccin.flavor = "macchiato";
         catppuccin.accent = "sapphire";
-      }
-      (lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
-        catppuccin.kvantum.enable = true;
 
         catppuccin.bat.enable = true;
+      }
+      (lib.mkIf pkgs.stdenv.hostPlatform.isDarwin {
+        # Noctalia owns these on Linux; catppuccin manages them on Darwin instead.
+        catppuccin.kitty.enable = true;
+        catppuccin.eza.enable = true;
+        catppuccin.fzf.enable = true;
+        catppuccin.btop.enable = true;
+        catppuccin.yazi.enable = true;
+        catppuccin.zsh-syntax-highlighting.enable = true;
+        catppuccin.cava.enable = true;
+      })
+      (lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
+        catppuccin.kvantum.enable = true;
 
         # Apps handled by Noctalia — keep disabled here to avoid conflicts.
         catppuccin.btop.enable = false;
