@@ -17,8 +17,8 @@
         enable_audio_bell = false;
         window_padding_width = 28;
         window_padding_height = 28;
-        background_opacity = "0.65";
-        background_blur = 32;
+        background_opacity = "0.60";
+        background_blur = 40;
         cursor_trail = 4;
         cursor_trail_decay = "0.1 0.5";
         cursor_trail_start_threshold = 0;
@@ -27,8 +27,9 @@
         bold_font = "auto";
         italic_font = "auto";
         bold_italic_font = "auto";
+        hide_window_decorations = lib.mkIf pkgs.stdenv.isDarwin "titlebar-only";
       };
-      extraConfig = ''
+      extraConfig = lib.mkIf (!pkgs.stdenv.isDarwin) ''
         include themes/noctalia.conf
       '';
     };
