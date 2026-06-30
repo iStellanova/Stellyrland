@@ -11,7 +11,7 @@
     lib,
     ...
   }: {
-    home.packages = lib.optionals (!pkgs.stdenv.isDarwin) [
+    home.packages = [
       pkgs.nixd
       pkgs.alejandra
       pkgs.mcp-nixos
@@ -19,10 +19,7 @@
 
     programs.zed-editor = {
       enable = true;
-      package =
-        if pkgs.stdenv.isDarwin
-        then null
-        else pkgs.zed-editor;
+      package = lib.mkIf (host.class == "darwin") null;
       mutableUserSettings = false;
       mutableUserKeymaps = false;
       mutableUserTasks = false;

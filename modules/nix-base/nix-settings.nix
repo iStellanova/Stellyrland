@@ -12,6 +12,14 @@
     min-free = 2147483648; # 2GB
     max-free = 5368709120; # 5GB
     builders-use-substitutes = true;
+    substituters = [
+      "https://cache.nixos.org"
+      "https://nix-community.cachix.org"
+    ];
+    trusted-public-keys = [
+      "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
+      "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+    ];
   };
   nixToolsPkgs = pkgs: with pkgs; [nix-output-monitor dix];
 in {
@@ -32,19 +40,7 @@ in {
       nix.enable = lib.mkDefault true;
       nix.daemonCPUSchedPolicy = "batch";
       nix.daemonIOSchedPriority = 7;
-      nix.settings =
-        commonNixSettings
-        // {
-          cores = config.core.nix-settings.cores;
-          substituters = [
-            "https://cache.nixos.org"
-            "https://nix-community.cachix.org"
-          ];
-          trusted-public-keys = [
-            "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
-            "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
-          ];
-        };
+      nix.settings = commonNixSettings // {cores = config.core.nix-settings.cores;};
 
       programs.nix-ld.enable = true;
       programs.nix-ld.libraries = with pkgs; [
