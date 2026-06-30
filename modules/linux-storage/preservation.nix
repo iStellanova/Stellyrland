@@ -36,6 +36,12 @@
           "/var/log"
           "/var/lib/noctalia-greeter"
           "/var/lib/flatpak"
+          # DynamicUser=true (ollama's upstream module): systemd expects
+          # /var/lib/ollama to be a symlink it creates itself, pointing at
+          # /var/lib/private/ollama — so preserve the private/ path, not the
+          # symlink target, or the StateDirectory setup fails (exit 238).
+          "/var/lib/private/ollama"
+          "/var/lib/hermes"
         ];
         files = [
           "/etc/adjtime"
@@ -84,6 +90,7 @@
             ".claude"
             ".antigravity"
             ".antigravity-ide-server"
+            ".hermes"
 
             # Editor runtime (extensions, compiled LSPs)
             ".local/share/zed"
