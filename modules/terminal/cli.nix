@@ -8,10 +8,15 @@ in {
   };
 
   sn.cli.homeManager = {
+    config,
     pkgs,
     lib,
     ...
   }: {
+    # Works around an eza bug where theme.yml (vs theme.yaml) is silently
+    # ignored when EZA_CONFIG_DIR is unset: https://github.com/eza-community/eza/blob/main/src/options/theme.rs
+    home.sessionVariables.EZA_CONFIG_DIR = "${config.home.homeDirectory}/.config/eza";
+
     programs.fzf.enable = true;
     programs.zoxide.enable = true;
     programs.jq.enable = true;
