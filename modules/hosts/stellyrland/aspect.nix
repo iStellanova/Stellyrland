@@ -20,7 +20,6 @@
       sn.openrgb
       sn.email
       sn.cloud-storage
-      sn.ai
     ];
 
     nixos = {host, ...}: {
