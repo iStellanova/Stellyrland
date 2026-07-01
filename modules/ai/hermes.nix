@@ -1,6 +1,5 @@
 {
   sn,
-  inputs,
   ...
 }: let
   ollamaUrl = "http://localhost:11434/v1";
@@ -145,6 +144,7 @@ in {
     host,
     config,
     pkgs,
+    inputs,
     ...
   }: {
     imports = [inputs.nix-hermes-agent.nixosModules.hermes-agent];
@@ -309,79 +309,78 @@ in {
         ln -sfn ../shared-memories ${config.services.hermes-agent.stateDir}/.hermes/memories
       '';
     };
-  };
 
-  sn.hermes.homeManager = {
-    config,
-    pkgs,
-    ...
-  }: let
-    # Hermes' browser tool shells out to this CLI (github:vercel-labs/agent-browser).
-    # No nixpkgs package exists upstream, so we pull the prebuilt static (musl) binary
-    # directly — it has no dynamic deps, so it runs unpatched on NixOS, unlike the
-    # default glibc build. Check for updates: ai-check-updates
-    agentBrowserVersion = "0.31.1";
-    agentBrowser = pkgs.stdenvNoCC.mkDerivation {
-      pname = "agent-browser";
-      version = agentBrowserVersion;
-      src = pkgs.fetchurl {
-        url = "https://github.com/vercel-labs/agent-browser/releases/download/v${agentBrowserVersion}/agent-browser-linux-musl-x64";
-        hash = "sha256-t0kqPgDlJ5C/+9KQDDmSZeaoBZgnb4n7iy+/oxTMjSI=";
-      };
-      dontUnpack = true;
-      installPhase = ''
-        install -Dm755 $src $out/bin/agent-browser
-      '';
-    };
-  in {
-    # Shared with the gateway (modules/ai/hermes.nix's sn.hermes.nixos) — see
-    # the setgid shared-memories/ install there. Points at the sibling dir
-    # directly, not .hermes/memories — .hermes itself stays 0700 (gateway
-    # session/state data), only this one directory is opened to the group
-    # you're now a member of (also set up there).
-    home.file.".hermes/memories".source = config.lib.file.mkOutOfStoreSymlink "/var/lib/hermes/shared-memories";
-
-    home.packages = [
-      inputs.nix-hermes-agent.packages.${pkgs.system}.hermes-agent
-      agentBrowser
-      pkgs.chromium
-      pkgs.mcp-nixos
-    ];
-
-    home.shellAliases.ai-check-updates = ''echo "agent-browser:" && curl -s https://api.github.com/repos/vercel-labs/agent-browser/releases/latest | grep tag_name'';
-
-    # Same model wiring as the gateway service above, rendered for `hermes
-    # chat` run interactively as yourself. Must be named config.yaml —
-    # cli-config.yaml is only read as a fallback when run from inside Hermes'
-    # own source tree, not from ~/.hermes.
-    # mcp_servers.nixos: same mcp-nixos server already used by Zed (modules/dev/ai-tools.nix,
-    # modules/dev/zed.nix) — gives the agent NixOS/nixpkgs-aware lookups via MCP instead of
-    # guessing from training data.
-    home.file.".hermes/config.yaml".text = builtins.toJSON (hermesConfig
-      // {
-        mcp_servers.nixos = {
-          command = "${pkgs.mcp-nixos}/bin/mcp-nixos";
-          args = [];
+    home-manager.users.${host.username} = {
+      config,
+      pkgs,
+      ...
+    }: let
+      # Hermes' browser tool shells out to this CLI (github:vercel-labs/agent-browser).
+      # No nixpkgs package exists upstream, so we pull the prebuilt static (musl) binary
+      # directly — it has no dynamic deps, so it runs unpatched on NixOS, unlike the
+      # default glibc build. Check for updates: ai-check-updates
+      agentBrowserVersion = "0.31.1";
+      agentBrowser = pkgs.stdenvNoCC.mkDerivation {
+        pname = "agent-browser";
+        version = agentBrowserVersion;
+        src = pkgs.fetchurl {
+          url = "https://github.com/vercel-labs/agent-browser/releases/download/v${agentBrowserVersion}/agent-browser-linux-musl-x64";
+          hash = "sha256-t0kqPgDlJ5C/+9KQDDmSZeaoBZgnb4n7iy+/oxTMjSI=";
         };
-      });
+        dontUnpack = true;
+        installPhase = ''
+          install -Dm755 $src $out/bin/agent-browser
+        '';
+      };
+    in {
+      # Shared with the gateway — see the setgid shared-memories/ install above.
+      # Points at the sibling dir directly, not .hermes/memories — .hermes itself
+      # stays 0700 (gateway session/state data), only this one directory is opened
+      # to the group you're now a member of (also set up above).
+      home.file.".hermes/memories".source = config.lib.file.mkOutOfStoreSymlink "/var/lib/hermes/shared-memories";
 
-    # AGENT_BROWSER_EXECUTABLE_PATH: point the browser tool's CLI at nixpkgs' own
-    # Chromium, skipping agent-browser's default Playwright-Chromium auto-download
-    # (a generic glibc build that won't run unpatched on NixOS).
-    # HERMES_MANAGED: without this, hermes_cli/config.py's _secure_dir() chmods
-    # any directory it touches back to 0700 on every run (its normal behavior
-    # for an unmanaged ~/.hermes) — since shared-memories/ is now the same
-    # physical directory the gateway uses, that silently undid the gateway's
-    # 2775 setgid setup every time a local `hermes` command ran. The gateway's
-    # systemd service already sets this (nix-hermes-agent's own module); the
-    # local profile needs it too so both sides agree to leave permissions
-    # alone and let the Nix-managed activation script own them instead.
-    home.file.".hermes/.env".text = ''
-      OPENAI_API_KEY=ollama
-      AGENT_BROWSER_EXECUTABLE_PATH=${pkgs.chromium}/bin/chromium
-      HERMES_MANAGED=true
-    '';
+      home.packages = [
+        inputs.nix-hermes-agent.packages.${pkgs.stdenv.hostPlatform.system}.hermes-agent
+        agentBrowser
+        pkgs.chromium
+        pkgs.mcp-nixos
+      ];
 
-    home.file.".hermes/SOUL.md".text = soulMd;
+      home.shellAliases.ai-check-updates = ''echo "agent-browser:" && curl -s https://api.github.com/repos/vercel-labs/agent-browser/releases/latest | grep tag_name'';
+
+      # Same model wiring as the gateway service above, rendered for `hermes
+      # chat` run interactively as yourself. Must be named config.yaml —
+      # cli-config.yaml is only read as a fallback when run from inside Hermes'
+      # own source tree, not from ~/.hermes.
+      # mcp_servers.nixos: same mcp-nixos server already used by Zed (modules/dev/ai-tools.nix,
+      # modules/dev/zed.nix) — gives the agent NixOS/nixpkgs-aware lookups via MCP instead of
+      # guessing from training data.
+      home.file.".hermes/config.yaml".text = builtins.toJSON (hermesConfig
+        // {
+          mcp_servers.nixos = {
+            command = "${pkgs.mcp-nixos}/bin/mcp-nixos";
+            args = [];
+          };
+        });
+
+      # AGENT_BROWSER_EXECUTABLE_PATH: point the browser tool's CLI at nixpkgs' own
+      # Chromium, skipping agent-browser's default Playwright-Chromium auto-download
+      # (a generic glibc build that won't run unpatched on NixOS).
+      # HERMES_MANAGED: without this, hermes_cli/config.py's _secure_dir() chmods
+      # any directory it touches back to 0700 on every run (its normal behavior
+      # for an unmanaged ~/.hermes) — since shared-memories/ is now the same
+      # physical directory the gateway uses, that silently undid the gateway's
+      # 2775 setgid setup every time a local `hermes` command ran. The gateway's
+      # systemd service already sets this (nix-hermes-agent's own module); the
+      # local profile needs it too so both sides agree to leave permissions
+      # alone and let the Nix-managed activation script own them instead.
+      home.file.".hermes/.env".text = ''
+        OPENAI_API_KEY=ollama
+        AGENT_BROWSER_EXECUTABLE_PATH=${pkgs.chromium}/bin/chromium
+        HERMES_MANAGED=true
+      '';
+
+      home.file.".hermes/SOUL.md".text = soulMd;
+    };
   };
 }

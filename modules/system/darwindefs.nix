@@ -117,10 +117,6 @@
       system.keyboard.remapCapsLockToControl = true;
 
       system.activationScripts.postActivation.text = lib.mkAfter ''
-        sudo -u ${host.username} defaults write com.apple.AppleMultitouchTrackpad TrackpadThreeFingerHorizSwipeGesture -int 0
-        sudo -u ${host.username} defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad TrackpadThreeFingerHorizSwipeGesture -int 0
-        sudo -u ${host.username} defaults write com.apple.AppleMultitouchTrackpad TrackpadFourFingerHorizSwipeGesture -int 2
-        sudo -u ${host.username} defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad TrackpadFourFingerHorizSwipeGesture -int 2
         /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
       '';
     };
