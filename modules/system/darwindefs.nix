@@ -6,6 +6,10 @@
 }: {
   sn.system = {includes = [sn.darwindefs];};
 
+  # Deliberately not following our nixpkgs: mac-app-util pins an exact old
+  # nixpkgs revision because its Common Lisp/SBCL build (docktuil) is
+  # version-sensitive and breaks under a newer nixpkgs. Do not add
+  # `inputs.nixpkgs.follows` here.
   flake-file.inputs.mac-app-util = {
     url = "github:hraban/mac-app-util";
   };
@@ -32,6 +36,16 @@
     };
 
     config = {
+      # mac-app-util's frozen nixpkgs pin (and its own nixpkgs.lib fork) still
+      # use syntax our own up-to-date nixpkgs has already dropped (`or` as an
+      # identifier, old-style string escapes), which Lix's newer parser now
+      # warns about. Scoped here, not in nix-settings.nix, since nothing else
+      # in this repo still triggers these.
+      # TODO: revisit next time mac-app-util or lix-module is bumped (added
+      # 2026-07-01) — drop this once mac-app-util's pin catches up, or once Lix
+      # removes the opt-back-in flag, whichever comes first.
+      nix.settings.extra-deprecated-features = ["or-as-identifier" "broken-string-indentation" "broken-string-escape"];
+
       time.timeZone = "America/Indiana/Indianapolis";
 
       security.pam.services.sudo_local.touchIdAuth = true;
