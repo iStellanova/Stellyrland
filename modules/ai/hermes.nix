@@ -1,5 +1,6 @@
 {
   sn,
+  inputs,
   ...
 }: let
   ollamaUrl = "http://localhost:11434/v1";
@@ -7,35 +8,6 @@
   # Shared between the gateway service and the interactive CLI config written
   # via home-manager — same models either way.
   hermesConfig = {
-    # Named so cron jobs (and anything else that pins a provider rather than
-    # inferring one from model.base_url) have something real to resolve.
-    # hermes_cli/runtime_provider.py: bare "custom" only resolves when it
-    # matches a named providers/custom_providers entry — without this, a
-    # cron job created with no explicit provider falls through to the
-    # global default (openrouter) instead of our Ollama endpoint, since
-    # cronjob_tools.py's per-job model pinning only captures
-    # (provider, model), never base_url. key_env reuses the dummy
-    # OPENAI_API_KEY=ollama already set below — Ollama ignores it, but
-    # Hermes' OpenAI client hard-requires a non-empty key regardless.
-    #
-    # Registered under both "custom" and "ollama": the model doesn't
-    # reliably use our literal config key when it pins a per-job provider
-    # override (cronjob action=update) — it's guessed "openrouter" (from a
-    # stale memory note) and "ollama" (intuitive, matching its own "ran
-    # successfully with Ollama!" summary) on different occasions, both
-    # failing with "Unknown provider" since only "custom" was registered.
-    # Aliasing both names to the same endpoint makes this tolerant of
-    # whichever one it reaches for next, instead of fixing one guess at a
-    # time.
-    providers.custom = {
-      api = ollamaUrl;
-      key_env = "OPENAI_API_KEY";
-    };
-    providers.ollama = {
-      api = ollamaUrl;
-      key_env = "OPENAI_API_KEY";
-    };
-
     model = {
       provider = "custom";
       base_url = ollamaUrl;
@@ -87,6 +59,11 @@
       timeout = 180;
       lifetime_seconds = 300;
     };
+
+    # Auto-snapshot the filesystem before destructive operations — a safety
+    # net given both profiles (gateway's cron jobs, local `hermes chat`) have
+    # real terminal/file write access. Off by default upstream.
+    checkpoints.enabled = true;
 
     # Routes short/simple turns (under the char/word thresholds, no code/URLs/
     # complex-task keywords) to the small aux model instead of the 27B default —
@@ -144,15 +121,9 @@ in {
     host,
     config,
     pkgs,
-    inputs,
     ...
   }: {
     imports = [inputs.nix-hermes-agent.nixosModules.hermes-agent];
-
-    # Lets the homeManager profile's `hermes chat` (run as you) read/write the
-    # gateway's memories/ dir (see the setgid install below) so both share
-    # MEMORY.md/USER.md instead of keeping separate notes per profile.
-    users.users.${host.username}.extraGroups = ["hermes"];
 
     services.ollama.loadModels = [
       "qwen3.6:27b" # main model
@@ -194,9 +165,10 @@ in {
       enable = true;
 
       environment = {
-        # Ollama ignores bearer auth, but Hermes' OpenAI client and its custom-endpoint
-        # credential checks (delegation, auxiliary tasks) both hard-require a non-empty
-        # key when a custom base_url is set. This dummy value satisfies that check globally.
+        # Ollama ignores bearer auth, but Hermes' provider-resolution chain
+        # (hermes_cli/runtime_provider.py) falls back to OPENAI_API_KEY for
+        # any non-OpenRouter base_url when no explicit key is configured —
+        # this dummy value is what actually gets sent, harmlessly ignored.
         OPENAI_API_KEY = "ollama";
 
         # Without this, Python block-buffers stdout when it's not a TTY (true
@@ -216,7 +188,7 @@ in {
       # skill-copy step (not for building the hermes binary itself), so strip
       # the one duplicate nested skill there — every other current and future
       # bundled skill still installs normally.
-      package = inputs.nix-hermes-agent.packages.${pkgs.system}.hermes-agent.overrideAttrs (old: {
+      package = inputs.nix-hermes-agent.packages.${pkgs.stdenv.hostPlatform.system}.hermes-agent.overrideAttrs (old: {
         passthru =
           old.passthru
           // {
@@ -246,10 +218,11 @@ in {
       # platform_toolsets.cron is the same mechanism, applied to a different
       # gap: cron jobs are *created* through Discord's scoped-down toolset,
       # but a created job *runs* under its own "cron" platform resolution
-      # (cron/scheduler.py's _resolve_cron_enabled_toolsets), which otherwise
-      # defaults wide open to the full hermes-cron set (terminal, file,
-      # browser, code_execution, delegate_task, ...) — silently undoing the
-      # Discord scoping the moment a job actually fires. Upstream always
+      # (cron/scheduler.py spawns it with no enabled_toolsets, only a
+      # disabled_toolsets list), which otherwise defaults wide open to the
+      # full hermes-cron set (terminal, file, browser, code_execution,
+      # delegate_task, ...) — silently undoing the Discord scoping the
+      # moment a job actually fires. Upstream always
       # strips cronjob/messaging/clarify from cron-spawned agents regardless
       # of this list (no recursive scheduling, no live messaging/blocking).
       # terminal + file are kept because that's the actual point of cron
@@ -269,12 +242,6 @@ in {
         };
     };
 
-    # Files the gateway creates (e.g. into shared-memories/ below) land
-    # group-writable instead of the systemd default 0022, which would give
-    # your local `hermes chat` read-only access to the gateway's writes —
-    # one-way sharing instead of two-way.
-    systemd.services.hermes-agent.serviceConfig.UMask = "0002";
-
     # Upstream's activation script writes the rendered config to
     # cli-config.yaml, but load_config() (hermes_cli/config.py) only reads
     # config.yaml for installed-package runs — cli-config.yaml is a
@@ -282,39 +249,34 @@ in {
     # DEFAULT_CONFIG (OpenRouter + claude-opus-4.6) instead of our config.
     # Also installs SOUL.md (see soulMd above) — upstream's setup script has
     # no hook for it, so it's not something `config` can express.
-    #
-    # memories/ is symlinked to a sibling dir OUTSIDE .hermes rather than a
-    # subdir within it: .hermes itself is 0700 (Hermes' own default — locks
-    # down session/state data), and several files inside it (state.db,
-    # cron/, sessions/) are independently world-readable, only safe today
-    # because nothing but `hermes` can traverse into .hermes at all. Opening
-    # .hermes's own permissions for group access would leak all of that to
-    # your `hermes` group membership — way more than "just share memories".
-    # /var/lib/hermes itself (the stateDir, not .hermes) is already 0750
-    # with group hermes, so a sibling needs no loosening of anything
-    # sensitive. `chmod` runs unconditionally (not just `install -d -m`,
-    # which only sets mode when it creates the dir — a no-op, silently, on
-    # a dir that already exists from a prior activation).
     system.activationScripts."hermes-agent-config-symlink" = {
       deps = ["hermes-agent-setup"];
       text = ''
         ln -sf cli-config.yaml ${config.services.hermes-agent.stateDir}/.hermes/config.yaml
         install -o ${config.services.hermes-agent.user} -g ${config.services.hermes-agent.group} -m 0640 -D ${pkgs.writeText "hermes-soul-md" soulMd} ${config.services.hermes-agent.stateDir}/.hermes/SOUL.md
-        install -d -o ${config.services.hermes-agent.user} -g ${config.services.hermes-agent.group} ${config.services.hermes-agent.stateDir}/shared-memories
-        chmod 2775 ${config.services.hermes-agent.stateDir}/shared-memories
-        if [ -d ${config.services.hermes-agent.stateDir}/.hermes/memories ] && [ ! -L ${config.services.hermes-agent.stateDir}/.hermes/memories ]; then
-          cp -an ${config.services.hermes-agent.stateDir}/.hermes/memories/. ${config.services.hermes-agent.stateDir}/shared-memories/ 2>/dev/null || true
-          rm -rf ${config.services.hermes-agent.stateDir}/.hermes/memories
-        fi
-        ln -sfn ../shared-memories ${config.services.hermes-agent.stateDir}/.hermes/memories
+
+        # Let cron jobs (platform_toolsets.cron = terminal+file) read the
+        # actual git repo — e.g. nixpkgs-update-check needs .tack/pins.lock.json.
+        # Projects/ and Projects/stellyrland are already 755; only your home
+        # dir itself (700) blocks the path. ACL instead of chmod: grants the
+        # hermes user execute-only (traverse, not list/read) on your home dir
+        # specifically — it still can't `ls` anything else in there, only walk
+        # through a path it's told about. Not exposed to Discord's live-chat
+        # toolset, which stays "safe"+"cronjob" only — this only reaches
+        # scheduled cron runs, which you create yourself.
+        #
+        # Symlinked at ~/Projects/stellyrland (i.e. stateDir/Projects/..., since
+        # HOME=stateDir for this service) rather than under workingDirectory —
+        # job instructions reference the literal path "~/Projects/stellyrland",
+        # same as it resolves on your own machine, so it has to land there for
+        # "~" to mean the same thing for both.
+        ${pkgs.acl}/bin/setfacl -m u:${config.services.hermes-agent.user}:x ${host.homeDir}
+        install -d -o ${config.services.hermes-agent.user} -g ${config.services.hermes-agent.group} ${config.services.hermes-agent.stateDir}/Projects
+        ln -sfn ${host.homeDir}/Projects/stellyrland ${config.services.hermes-agent.stateDir}/Projects/stellyrland
       '';
     };
 
-    home-manager.users.${host.username} = {
-      config,
-      pkgs,
-      ...
-    }: let
+    home-manager.users.${host.username} = {pkgs, ...}: let
       # Hermes' browser tool shells out to this CLI (github:vercel-labs/agent-browser).
       # No nixpkgs package exists upstream, so we pull the prebuilt static (musl) binary
       # directly — it has no dynamic deps, so it runs unpatched on NixOS, unlike the
@@ -333,12 +295,6 @@ in {
         '';
       };
     in {
-      # Shared with the gateway — see the setgid shared-memories/ install above.
-      # Points at the sibling dir directly, not .hermes/memories — .hermes itself
-      # stays 0700 (gateway session/state data), only this one directory is opened
-      # to the group you're now a member of (also set up above).
-      home.file.".hermes/memories".source = config.lib.file.mkOutOfStoreSymlink "/var/lib/hermes/shared-memories";
-
       home.packages = [
         inputs.nix-hermes-agent.packages.${pkgs.stdenv.hostPlatform.system}.hermes-agent
         agentBrowser
@@ -366,18 +322,9 @@ in {
       # AGENT_BROWSER_EXECUTABLE_PATH: point the browser tool's CLI at nixpkgs' own
       # Chromium, skipping agent-browser's default Playwright-Chromium auto-download
       # (a generic glibc build that won't run unpatched on NixOS).
-      # HERMES_MANAGED: without this, hermes_cli/config.py's _secure_dir() chmods
-      # any directory it touches back to 0700 on every run (its normal behavior
-      # for an unmanaged ~/.hermes) — since shared-memories/ is now the same
-      # physical directory the gateway uses, that silently undid the gateway's
-      # 2775 setgid setup every time a local `hermes` command ran. The gateway's
-      # systemd service already sets this (nix-hermes-agent's own module); the
-      # local profile needs it too so both sides agree to leave permissions
-      # alone and let the Nix-managed activation script own them instead.
       home.file.".hermes/.env".text = ''
         OPENAI_API_KEY=ollama
         AGENT_BROWSER_EXECUTABLE_PATH=${pkgs.chromium}/bin/chromium
-        HERMES_MANAGED=true
       '';
 
       home.file.".hermes/SOUL.md".text = soulMd;
