@@ -5,6 +5,7 @@
 }: {
   den.aspects.stellyrland = {
     includes = [
+      sn.ai
       sn.nix-base
       den.batteries.hostname
       sn.system
