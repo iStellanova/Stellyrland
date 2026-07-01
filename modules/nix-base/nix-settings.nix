@@ -75,6 +75,10 @@ in {
   };
 
   sn.nix-settings.os = {pkgs, ...}: {
+    # Flake-only setup; nothing here uses angle-bracket <nixpkgs> lookups, and
+    # root never runs nix-channel, so the default search path just warns about
+    # a channels profile that doesn't exist.
+    nix.nixPath = [];
     nixpkgs.config.allowUnfree = true;
     # TODO: remove once nixpkgs bumps pnpm past 10.29.2 (build-time dep of vesktop, still present 2026-06-29)
     nixpkgs.config.permittedInsecurePackages = ["pnpm-10.29.2"];
