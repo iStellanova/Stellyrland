@@ -149,10 +149,12 @@
         };
 
         env = [
-          {_args = ["HYPRCURSOR_THEME" "Bibata-Modern-Ice-Hypr"];}
+          {_args = ["HYPRCURSOR_THEME" "Bibata-Modern-Ice"];}
           {_args = ["HYPRCURSOR_SIZE" "16"];}
           {_args = ["XCURSOR_THEME" "Bibata-Modern-Ice"];}
           {_args = ["XCURSOR_SIZE" "16"];}
+          {_args = ["AQ_MGPU_NO_EXPLICIT" "1"];}
+          {_args = ["AQ_NO_MODIFIERS" "1"];}
           {_args = ["GTK_THEME" "catppuccin-macchiato-sapphire-standard"];}
           {_args = ["QT_QPA_PLATFORM" "wayland;xcb"];}
           {_args = ["QT_QPA_PLATFORMTHEME" "gtk3"];}
