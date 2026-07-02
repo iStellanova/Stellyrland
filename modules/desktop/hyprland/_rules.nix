@@ -98,6 +98,14 @@ _: {
         opacity = "1.0 override 1.0 override";
       }
       {
+        match = {class = "^(steam)$";};
+        opacity = "1.0 override 1.0 override";
+      }
+      {
+        match = {class = "^(steam_app_.*)$";};
+        opacity = "1.0 override 1.0 override";
+      }
+      {
         match = {title = "(.*)(YouTube Music)(.*)";};
         opacity = "0.6 override 0.6 override 1.0 override";
       }
