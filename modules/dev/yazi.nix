@@ -2,12 +2,13 @@
   sn.dev = {includes = [sn.yazi];};
 
   sn.yazi.homeManager = {
+    host,
     pkgs,
     lib,
     ...
   }: let
     openCmd =
-      if pkgs.stdenv.isDarwin
+      if host.class == "darwin"
       then ''/usr/bin/open "%s"''
       else ''${lib.getExe' pkgs.xdg-utils "xdg-open"} "%s"'';
   in {
@@ -151,13 +152,15 @@
         plugin.prepend_fetchers = [
           {
             id = "git";
-            name = "*";
+            url = "*";
             run = "git";
+            group = "git";
           }
           {
             id = "git";
-            name = "*/";
+            url = "*/";
             run = "git";
+            group = "git";
           }
         ];
 
@@ -176,6 +179,6 @@
         epr
         mpv
       ]
-      ++ lib.optionals (!pkgs.stdenv.isDarwin) [xdg-utils];
+      ++ lib.optionals (host.class != "darwin") [xdg-utils];
   };
 }
