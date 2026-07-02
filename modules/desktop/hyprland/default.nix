@@ -90,7 +90,7 @@
         enable = true;
         xdgOpenUsePortal = true;
         extraPortals = [pkgs.xdg-desktop-portal-gtk];
-        config.common.default = "*";
+        config.common.default = ["hyprland" "gtk"];
       };
     };
   };
@@ -127,6 +127,7 @@
       package = inputs.scroll-overview.inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
       xwayland.enable = true;
       systemd.enable = true;
+      portalPackage = null;
 
       settings = {
         monitor = osConfig.desktop.hyprland.monitors;
