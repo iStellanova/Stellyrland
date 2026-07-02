@@ -30,9 +30,6 @@ url = "github:hercules-ci/flake-parts"
 url = "github:nix-community/home-manager/master"
 follows = { nixpkgs = "nixpkgs" }
 
-[inputs.hyprland]
-url = "github:hyprwm/Hyprland"
-
 [inputs.hyprsplit]
 url = "github:shezdy/hyprsplit"
 follows = { nixpkgs = "nixpkgs" }
@@ -83,6 +80,10 @@ url = "github:noctalia-dev/noctalia/cachix"
 
 [inputs.preservation]
 url = "github:nix-community/preservation"
+follows = { nixpkgs = "nixpkgs" }
+
+[inputs.scroll-overview]
+url = "github:myamusashi/hyprland-scroll-overview"
 follows = { nixpkgs = "nixpkgs" }
 
 [inputs.sops-nix]
