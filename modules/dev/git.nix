@@ -1,13 +1,9 @@
 {sn, ...}: {
   sn.dev = {includes = [sn.git];};
 
-  sn.git.homeManager = {
-    host,
-    pkgs,
-    ...
-  }: let
+  sn.git.homeManager = {host, ...}: let
     sshKey =
-      if pkgs.stdenv.isDarwin
+      if host.class == "darwin"
       then "~/.ssh/stellacode"
       else "/run/secrets/stellacode";
   in {
