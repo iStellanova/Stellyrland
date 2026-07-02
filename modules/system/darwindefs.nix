@@ -46,6 +46,8 @@
       # removes the opt-back-in flag, whichever comes first.
       nix.settings.extra-deprecated-features = ["or-as-identifier" "broken-string-indentation" "broken-string-escape"];
 
+      # Canonical zoneinfo path, not the "America/Indianapolis" legacy alias used on
+      # the NixOS host — macOS's systemsetup only accepts the canonical form.
       time.timeZone = "America/Indiana/Indianapolis";
 
       security.pam.services.sudo_local.touchIdAuth = true;
