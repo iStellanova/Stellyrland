@@ -3,9 +3,13 @@
 in {
   sn.terminal = {includes = [sn.tailscale];};
 
-  sn.tailscale.nixos = {pkgs, ...}: {
+  sn.tailscale.os = {pkgs, ...}: {
+    services.tailscale.enable = true;
+    environment.systemPackages = networkingPkgs pkgs;
+  };
+
+  sn.tailscale.nixos = _: {
     services.tailscale = {
-      enable = true;
       interfaceName = "userspace-networking";
       useRoutingFeatures = "none";
       extraUpFlags = [
@@ -14,8 +18,6 @@ in {
         "--ssh"
       ];
     };
-
-    environment.systemPackages = networkingPkgs pkgs;
 
     boot.kernel.sysctl = {
       "net.core.default_qdisc" = "fq";
@@ -33,10 +35,5 @@ in {
         }
       ];
     };
-  };
-
-  sn.tailscale.darwin = {pkgs, ...}: {
-    services.tailscale.enable = true;
-    environment.systemPackages = networkingPkgs pkgs;
   };
 }
