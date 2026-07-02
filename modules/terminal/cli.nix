@@ -9,7 +9,7 @@ in {
 
   sn.cli.homeManager = {
     config,
-    pkgs,
+    host,
     lib,
     ...
   }: {
@@ -54,7 +54,7 @@ in {
         grep = "rg";
         man = "tldr";
       }
-      // lib.optionalAttrs (!pkgs.stdenv.isDarwin) {
+      // lib.optionalAttrs (host.class != "darwin") {
         # Sets the 'headless' specialisation as the default boot entry and reboots.
         reboot-headless = "sudo /run/current-system/specialisation/headless/bin/switch-to-configuration boot && sudo reboot";
         # Restores the main system (GUI) as the default boot entry and reboots.

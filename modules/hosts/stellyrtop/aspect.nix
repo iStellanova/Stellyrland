@@ -48,7 +48,7 @@
         "/Applications/Antigravity.app"
         "/Applications/Beat.app"
         "/Applications/Claude.app"
-        "/Users/stellanova/Applications/Home Manager Apps/kitty.app"
+        "${host.homeDir}/Applications/Home Manager Apps/kitty.app"
         "/Applications/Zen Browser.app"
       ];
     };

@@ -100,6 +100,7 @@ flowchart TD
     ├── namespace.nix       # Registers the sn local namespace
     ├── schema.nix          # Typed host options and Home Manager defaults
     ├── treefmt.nix         # Repo-wide formatter config
+    ├── devshell.nix        # Dev shell: treefmt + write-tack app
     ├── hosts/              # Host declarations and host-specific aspect overrides
     │   ├── stellyrland.nix # NixOS workstation host entity (x86_64-linux)
     │   ├── stellyrtop.nix  # macOS MacBook host entity (aarch64-darwin)
@@ -121,8 +122,7 @@ flowchart TD
     ├── communication/      # Messaging apps
     ├── productivity/       # Office, finance, writing, school, VMs, cloud storage
     ├── system/             # Users, secrets, services, XDG, CoolerControl, LACT
-    ├── openrgb/            # Peripheral RGB control
-    └── misc/               # Bitwarden, system tools, maintenance
+    └── openrgb/            # Peripheral RGB control
 ```
 
 ## ✨ Notable Configurations

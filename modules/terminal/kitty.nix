@@ -3,7 +3,7 @@
 
   sn.kitty.homeManager = {
     lib,
-    pkgs,
+    host,
     ...
   }: {
     programs.kitty = {
@@ -27,14 +27,14 @@
         bold_font = "auto";
         italic_font = "auto";
         bold_italic_font = "auto";
-        hide_window_decorations = lib.mkIf pkgs.stdenv.isDarwin "titlebar-only";
+        hide_window_decorations = lib.mkIf (host.class == "darwin") "titlebar-only";
       };
-      extraConfig = lib.mkIf (!pkgs.stdenv.isDarwin) ''
+      extraConfig = lib.mkIf (host.class != "darwin") ''
         include themes/noctalia.conf
       '';
     };
 
-    xdg.terminal-exec = lib.mkIf (!pkgs.stdenv.isDarwin) {
+    xdg.terminal-exec = lib.mkIf (host.class != "darwin") {
       enable = true;
       settings.default = ["kitty.desktop"];
     };

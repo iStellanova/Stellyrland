@@ -1,11 +1,15 @@
 {sn, ...}: {
   sn.linux-storage = {includes = [sn.hdd];};
 
-  sn.hdd.nixos = {pkgs, ...}: let
+  sn.hdd.nixos = {
+    pkgs,
+    config,
+    ...
+  }: let
     hddPartlabel = "disk-hdd-luks";
     mapperName = "crypthdd";
     poolName = "zhdd";
-    keyFile = "/run/secrets/hdd-keyfile";
+    keyFile = config.sops.secrets.hdd-keyfile.path;
 
     backupScript = pkgs.writeShellScript "backup-hdd" ''
       set -euo pipefail

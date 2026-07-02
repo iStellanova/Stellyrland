@@ -13,6 +13,7 @@
 
   sn.gsr.homeManager = {
     host,
+    osConfig,
     pkgs,
     ...
   }: {
@@ -74,7 +75,7 @@
         ExecStartPre = "${pkgs.coreutils}/bin/mkdir -p %h/Videos/Replays";
         ExecStart = builtins.concatStringsSep " " [
           "${pkgs.gpu-screen-recorder}/bin/gpu-screen-recorder"
-          "-w DP-2"
+          "-w ${osConfig.desktop.noctalia.primaryMonitor}"
           "-r 120"
           "-c mp4"
           "-k av1_hdr"

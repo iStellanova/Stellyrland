@@ -2,7 +2,7 @@
   sn.terminal = {includes = [sn.fastfetch];};
 
   sn.fastfetch.homeManager = {
-    pkgs,
+    host,
     lib,
     ...
   }: {
@@ -113,7 +113,7 @@
             key = "󰃶 ";
             keyColor = "34";
             text =
-              if pkgs.stdenv.isDarwin
+              if host.class == "darwin"
               then "echo $(( ($(date +%s) - $(stat -f %B /)) / 86400 )) days"
               else "echo $(( ($(date +%s) - $(stat -c %W /)) / 86400 )) days";
           }

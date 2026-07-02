@@ -10,6 +10,7 @@ in {
   sn.zsh.homeManager = {
     pkgs,
     lib,
+    host,
     ...
   }: {
     home.file.".p10k.zsh".text = import ./_p10k.nix {inherit lib;};
@@ -53,7 +54,7 @@ in {
             elif [ -d "$1" ]; then builtin cd "$1"
             else z "$@" && printf "\U000F17A9 " && pwd; fi
           }
-          ${lib.optionalString (!pkgs.stdenv.isDarwin) ''
+          ${lib.optionalString (host.class != "darwin") ''
             open() { xdg-open "$@" >/dev/null 2>&1 &; }
           ''}
         ''
