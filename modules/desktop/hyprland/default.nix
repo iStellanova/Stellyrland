@@ -11,14 +11,17 @@
       else [];
   };
 
-  flake-file.inputs.hyprland.url = "github:hyprwm/Hyprland";
   flake-file.inputs.hyprsplit = {
     url = "github:shezdy/hyprsplit";
     inputs.nixpkgs.follows = "nixpkgs";
   };
+  flake-file.inputs.scroll-overview = {
+    url = "github:myamusashi/hyprland-scroll-overview";
+    inputs.nixpkgs.follows = "nixpkgs";
+  };
 
   sn.hyprland.nixos = {pkgs, ...}: {
-    imports = [inputs.hyprland.nixosModules.default];
+    imports = [inputs.scroll-overview.inputs.hyprland.nixosModules.default];
 
     options.desktop.hyprland = {
       monitors = lib.mkOption {
@@ -65,8 +68,8 @@
 
       programs.hyprland = {
         enable = true;
-        package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
-        portalPackage = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
+        package = inputs.scroll-overview.inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
+        portalPackage = inputs.scroll-overview.inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
       };
 
       environment.systemPackages = with pkgs; [
@@ -103,8 +106,8 @@
     screenRootFlags = lib.concatMapStringsSep " " (m: "--screen-root ${m}") we.screenRoots;
   in {
     imports =
-      [inputs.hyprland.homeManagerModules.default]
-      ++ [./_animations.nix ./_binds.nix ./_cursor.nix ./_rules.nix];
+      [inputs.scroll-overview.inputs.hyprland.homeManagerModules.default]
+      ++ [./_animations.nix ./_binds.nix ./_cursor.nix ./_overview.nix ./_rules.nix];
 
     _module.args.inputs = inputs;
 
@@ -121,7 +124,7 @@
     wayland.windowManager.hyprland = {
       enable = true;
       configType = "lua";
-      package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
+      package = inputs.scroll-overview.inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
       xwayland.enable = true;
       systemd.enable = true;
 
