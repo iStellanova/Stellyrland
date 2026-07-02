@@ -1,7 +1,9 @@
-{sn, ...}: {
-  sn.gaming = {includes = [sn.game-launchers];};
+{ sn, ... }: {
+  sn.gaming = {
+    includes = [ sn.game-launchers ];
+  };
 
-  sn.game-launchers.nixos = {pkgs, ...}: {
+  sn.game-launchers.nixos = { pkgs, ... }: {
     environment.systemPackages = with pkgs; [
       mangohud
       goverlay
@@ -12,6 +14,6 @@
   };
 
   sn.game-launchers.darwin = _: {
-    homebrew.casks = ["prismlauncher"];
+    homebrew.casks = [ "prismlauncher" ];
   };
 }

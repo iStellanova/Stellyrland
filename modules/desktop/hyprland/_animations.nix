@@ -1,15 +1,52 @@
-{lib, ...}: let
+{ lib, ... }:
+let
   lua = lib.generators.mkLuaInline;
-in {
+in
+{
   wayland.windowManager.hyprland.settings = {
     curve = [
-      {_args = ["md3_decel" (lua "{ type = \"bezier\", points = { { 0.05, 0.7  }, { 0.1,  1    } } }")];}
-      {_args = ["md3_accel" (lua "{ type = \"bezier\", points = { { 0.3,  0    }, { 0.8,  0.15 } } }")];}
-      {_args = ["hyprnostretch" (lua "{ type = \"bezier\", points = { { 0.05, 0.9  }, { 0.1,  1.0  } } }")];}
-      {_args = ["menu_decel" (lua "{ type = \"bezier\", points = { { 0.1,  1    }, { 0,    1    } } }")];}
-      {_args = ["menu_accel" (lua "{ type = \"bezier\", points = { { 0.38, 0.04 }, { 1,    0.07 } } }")];}
-      {_args = ["easeOutExpo" (lua "{ type = \"bezier\", points = { { 0.16, 1    }, { 0.3,  1    } } }")];}
-      {_args = ["softAcDecel" (lua "{ type = \"bezier\", points = { { 0.26, 0.26 }, { 0.15, 1    } } }")];}
+      {
+        _args = [
+          "md3_decel"
+          (lua "{ type = \"bezier\", points = { { 0.05, 0.7  }, { 0.1,  1    } } }")
+        ];
+      }
+      {
+        _args = [
+          "md3_accel"
+          (lua "{ type = \"bezier\", points = { { 0.3,  0    }, { 0.8,  0.15 } } }")
+        ];
+      }
+      {
+        _args = [
+          "hyprnostretch"
+          (lua "{ type = \"bezier\", points = { { 0.05, 0.9  }, { 0.1,  1.0  } } }")
+        ];
+      }
+      {
+        _args = [
+          "menu_decel"
+          (lua "{ type = \"bezier\", points = { { 0.1,  1    }, { 0,    1    } } }")
+        ];
+      }
+      {
+        _args = [
+          "menu_accel"
+          (lua "{ type = \"bezier\", points = { { 0.38, 0.04 }, { 1,    0.07 } } }")
+        ];
+      }
+      {
+        _args = [
+          "easeOutExpo"
+          (lua "{ type = \"bezier\", points = { { 0.16, 1    }, { 0.3,  1    } } }")
+        ];
+      }
+      {
+        _args = [
+          "softAcDecel"
+          (lua "{ type = \"bezier\", points = { { 0.26, 0.26 }, { 0.15, 1    } } }")
+        ];
+      }
     ];
 
     animation = [

@@ -1,5 +1,7 @@
-{sn, ...}: {
-  sn.productivity = {includes = [sn.cloud-storage];};
+{ sn, ... }: {
+  sn.productivity = {
+    includes = [ sn.cloud-storage ];
+  };
 
   sn.cloud-storage.darwin = _: {
     homebrew.casks = [
@@ -10,7 +12,7 @@
     };
   };
 
-  sn.cloud-storage.homeManager = {pkgs, ...}: {
-    home.packages = [pkgs.rclone];
+  sn.cloud-storage.homeManager = { pkgs, ... }: {
+    home.packages = [ pkgs.rclone ];
   };
 }

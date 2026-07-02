@@ -1,7 +1,9 @@
-{sn, ...}: {
-  sn.linux-storage = {includes = [sn.storage];};
+{ sn, ... }: {
+  sn.linux-storage = {
+    includes = [ sn.storage ];
+  };
 
-  sn.storage.nixos = {pkgs, ...}: {
+  sn.storage.nixos = { pkgs, ... }: {
     environment.systemPackages = with pkgs; [
       ntfs3g # Open source NTFS driver
     ];
@@ -13,10 +15,10 @@
       enable = true;
       datasets = {
         "zroot/safe/home" = {
-          useTemplate = ["default"];
+          useTemplate = [ "default" ];
         };
         "zroot/safe/persist" = {
-          useTemplate = ["default"];
+          useTemplate = [ "default" ];
         };
       };
       templates.default = {
@@ -44,7 +46,10 @@
     services.zfs.autoScrub = {
       enable = true;
       interval = "monthly";
-      pools = ["zroot" "zextra"];
+      pools = [
+        "zroot"
+        "zextra"
+      ];
     };
   };
 }

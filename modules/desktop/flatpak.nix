@@ -2,16 +2,19 @@
   sn,
   inputs,
   ...
-}: {
-  sn.desktop = {includes = [sn.flatpak];};
+}:
+{
+  sn.desktop = {
+    includes = [ sn.flatpak ];
+  };
 
   flake-file.inputs.nix-flatpak = {
     url = "github:gmodena/nix-flatpak";
     inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  sn.flatpak.nixos = {...}: {
-    imports = [inputs.nix-flatpak.nixosModules.nix-flatpak];
+  sn.flatpak.nixos = { ... }: {
+    imports = [ inputs.nix-flatpak.nixosModules.nix-flatpak ];
 
     services.flatpak = {
       enable = true;

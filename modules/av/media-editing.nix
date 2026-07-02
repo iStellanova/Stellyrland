@@ -1,7 +1,9 @@
-{sn, ...}: {
-  sn.av = {includes = [sn.media-editing];};
+{ sn, ... }: {
+  sn.av = {
+    includes = [ sn.media-editing ];
+  };
 
-  sn.media-editing.nixos = {pkgs, ...}: {
+  sn.media-editing.nixos = { pkgs, ... }: {
     environment.systemPackages = with pkgs; [
       davinci-resolve
       gimp

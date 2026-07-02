@@ -2,24 +2,34 @@
   sn,
   inputs,
   ...
-}: let
-  aiPkgs = pkgs: let
-    llm = inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system};
-  in [llm.claude-code llm.antigravity-cli];
-in {
-  sn.dev = {includes = [sn.ai-tools];};
+}:
+let
+  aiPkgs =
+    pkgs:
+    let
+      llm = inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system};
+    in
+    [
+      llm.claude-code
+      llm.antigravity-cli
+    ];
+in
+{
+  sn.dev = {
+    includes = [ sn.ai-tools ];
+  };
 
   flake-file.inputs.llm-agents = {
     url = "github:numtide/llm-agents.nix";
     inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  sn.ai-tools.os = {pkgs, ...}: {
-    environment.systemPackages = aiPkgs pkgs ++ [pkgs.mcp-nixos];
+  sn.ai-tools.os = { pkgs, ... }: {
+    environment.systemPackages = aiPkgs pkgs ++ [ pkgs.mcp-nixos ];
   };
 
-  sn.ai-tools.nixos = {pkgs, ...}: {
-    environment.systemPackages = [pkgs.antigravity-fhs];
+  sn.ai-tools.nixos = { pkgs, ... }: {
+    environment.systemPackages = [ pkgs.antigravity-fhs ];
   };
 
   sn.ai-tools.darwin = _: {

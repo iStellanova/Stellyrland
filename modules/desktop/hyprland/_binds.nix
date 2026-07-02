@@ -4,10 +4,22 @@
   osConfig,
   pkgs,
   ...
-}: let
+}:
+let
   lua = lib.generators.mkLuaInline;
-  bind = key: dispatcher: {_args = [key (lua dispatcher)];};
-  bindOpts = key: dispatcher: opts: {_args = [key (lua dispatcher) (lua opts)];};
+  bind = key: dispatcher: {
+    _args = [
+      key
+      (lua dispatcher)
+    ];
+  };
+  bindOpts = key: dispatcher: opts: {
+    _args = [
+      key
+      (lua dispatcher)
+      (lua opts)
+    ];
+  };
   hyprsplitLua = inputs.hyprsplit.packages.${pkgs.stdenv.hostPlatform.system}.hyprsplitlua;
 
   mainMod = "SUPER";
@@ -63,29 +75,40 @@
     (bind "ALT + mouse_up" "hl.dsp.layout(\"move -200\")")
 
     # --- Repeating Window Resize ---
-    (bindOpts "${mainMod} + ALT + right" "hl.dsp.window.resize({ x = 50,  y = 0,   relative = true })" "{ repeating = true }")
-    (bindOpts "${mainMod} + ALT + left" "hl.dsp.window.resize({ x = -50, y = 0,   relative = true })" "{ repeating = true }")
-    (bindOpts "${mainMod} + ALT + up" "hl.dsp.window.resize({ x = 0,   y = -50, relative = true })" "{ repeating = true }")
-    (bindOpts "${mainMod} + ALT + down" "hl.dsp.window.resize({ x = 0,   y = 50,  relative = true })" "{ repeating = true }")
+    (bindOpts "${mainMod} + ALT + right" "hl.dsp.window.resize({ x = 50,  y = 0,   relative = true })"
+      "{ repeating = true }"
+    )
+    (bindOpts "${mainMod} + ALT + left" "hl.dsp.window.resize({ x = -50, y = 0,   relative = true })"
+      "{ repeating = true }"
+    )
+    (bindOpts "${mainMod} + ALT + up" "hl.dsp.window.resize({ x = 0,   y = -50, relative = true })"
+      "{ repeating = true }"
+    )
+    (bindOpts "${mainMod} + ALT + down" "hl.dsp.window.resize({ x = 0,   y = 50,  relative = true })"
+      "{ repeating = true }"
+    )
 
     # --- Mouse Drag/Resize ---
     (bindOpts "${mainMod} + mouse:272" "hl.dsp.window.drag()" "{ mouse = true }")
     (bindOpts "${mainMod} + mouse:273" "hl.dsp.window.resize()" "{ mouse = true }")
 
     # --- Noctalia Launcher (release bind) ---
-    (bindOpts "${mainMod} + Super_L" "hl.dsp.exec_cmd(\"noctalia msg panel-toggle launcher\")" "{ release = true }")
+    (bindOpts "${mainMod} + Super_L" "hl.dsp.exec_cmd(\"noctalia msg panel-toggle launcher\")"
+      "{ release = true }"
+    )
   ];
 
   we = osConfig.desktop.hyprland.wallpaperEngine;
   screenRootFlags = lib.concatMapStringsSep " " (m: "--screen-root ${m}") we.screenRoots;
   hp = osConfig.desktop.hyprland.hyprsplit;
   monitorPriorityLua =
-    lib.optionalString (hp.monitorPriority != [])
-    "hs.monitor_priority({ ${lib.concatMapStringsSep ", " (m: "\"${m}\"") hp.monitorPriority} })";
-  wallpaperReloadBind = lib.optional (we.workshopId != "" && we.screenRoots != []) (
+    lib.optionalString (hp.monitorPriority != [ ])
+      "hs.monitor_priority({ ${lib.concatMapStringsSep ", " (m: "\"${m}\"") hp.monitorPriority} })";
+  wallpaperReloadBind = lib.optional (we.workshopId != "" && we.screenRoots != [ ]) (
     bind "${mainMod} + ALT + E" "hl.dsp.exec_cmd([[pkill -f -9 linux-wallpaperengine && linux-wallpaperengine --assets-dir ${we.steamLibrary}/steamapps/common/wallpaper_engine/assets ${screenRootFlags} --fps 60 --silent ${we.steamLibrary}/steamapps/workshop/content/431960/${we.workshopId}/]])"
   );
-in {
+in
+{
   wayland.windowManager.hyprland.settings.bind = staticBinds ++ wallpaperReloadBind;
 
   wayland.windowManager.hyprland.extraLuaFiles."hyprsplit-binds" = ''

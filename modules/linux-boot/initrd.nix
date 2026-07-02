@@ -1,14 +1,19 @@
-{sn, ...}: {
-  sn.linux-boot = {includes = [sn.initrd];};
+{ sn, ... }: {
+  sn.linux-boot = {
+    includes = [ sn.initrd ];
+  };
 
-  sn.initrd.nixos = {lib, ...}: {
+  sn.initrd.nixos = { lib, ... }: {
     boot.tmp.useTmpfs = true;
     boot.tmp.tmpfsSize = "50%";
 
     boot.initrd.compressor = "zstd";
-    boot.initrd.compressorArgs = ["-19" "-T0"];
+    boot.initrd.compressorArgs = [
+      "-19"
+      "-T0"
+    ];
 
-    boot.initrd.supportedFilesystems = ["zfs"];
+    boot.initrd.supportedFilesystems = [ "zfs" ];
 
     # forceImportRoot: NixOS 26.11 changed the default to false. Keeping true on a
     # single-machine setup — no downside, and prevents lockout if hostid ever drifts.
@@ -66,7 +71,10 @@
     boot.initrd.luks.devices."cryptroot" = {
       device = "/dev/disk/by-partlabel/disk-main-root";
       allowDiscards = true;
-      crypttabExtraOpts = ["tpm2-device=auto" "tpm2-pcrs=0+2+7"];
+      crypttabExtraOpts = [
+        "tpm2-device=auto"
+        "tpm2-pcrs=0+2+7"
+      ];
     };
 
     # Wipe / and /home on every boot by rolling back to blank snapshots.
@@ -75,9 +83,9 @@
     # Guard conditions skip safely on first boot before blanks are seeded.
     boot.initrd.systemd.services.rollback = {
       description = "Rollback ZFS root and home to blank snapshots";
-      wantedBy = ["initrd.target"];
-      after = ["zfs-import-zroot.service"];
-      before = ["sysroot.mount"];
+      wantedBy = [ "initrd.target" ];
+      after = [ "zfs-import-zroot.service" ];
+      before = [ "sysroot.mount" ];
       unitConfig.DefaultDependencies = "no";
       serviceConfig.Type = "oneshot";
       script = ''

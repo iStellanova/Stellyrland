@@ -1,5 +1,7 @@
-{sn, ...}: {
-  sn.productivity = {includes = [sn.writing];};
+{ sn, ... }: {
+  sn.productivity = {
+    includes = [ sn.writing ];
+  };
 
   sn.writing.darwin = _: {
     homebrew.masApps = {

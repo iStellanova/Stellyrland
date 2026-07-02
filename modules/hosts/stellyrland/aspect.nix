@@ -2,7 +2,8 @@
   den,
   sn,
   ...
-}: {
+}:
+{
   den.aspects.stellyrland = {
     includes = [
       sn.nix-base
@@ -22,8 +23,8 @@
       sn.cloud-storage
     ];
 
-    nixos = {host, ...}: {
-      imports = [./_hardware-configuration.nix];
+    nixos = { host, ... }: {
+      imports = [ ./_hardware-configuration.nix ];
 
       core.boot.secureBoot = host.features.secureBoot;
       core.headless.disabledPorts = [
@@ -36,8 +37,14 @@
 
       desktop.hyprland.wallpaperEngine.steamLibrary = "/ExtraDisk";
       desktop.hyprland.wallpaperEngine.workshopId = "3258032485";
-      desktop.hyprland.wallpaperEngine.screenRoots = ["DP-2" "DP-3"];
-      desktop.hyprland.hyprsplit.monitorPriority = ["DP-2" "DP-3"];
+      desktop.hyprland.wallpaperEngine.screenRoots = [
+        "DP-2"
+        "DP-3"
+      ];
+      desktop.hyprland.hyprsplit.monitorPriority = [
+        "DP-2"
+        "DP-3"
+      ];
 
       desktop.noctalia.primaryMonitor = "DP-2";
       desktop.noctalia.secondaryMonitor = "DP-3";

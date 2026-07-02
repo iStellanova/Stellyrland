@@ -1,5 +1,7 @@
-{sn, ...}: {
-  sn.terminal = {includes = [sn.openssh];};
+{ sn, ... }: {
+  sn.terminal = {
+    includes = [ sn.openssh ];
+  };
 
   sn.openssh.nixos = _: {
     services.openssh = {

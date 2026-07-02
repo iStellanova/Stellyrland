@@ -1,7 +1,9 @@
-{sn, ...}: {
-  sn.productivity = {includes = [sn.ide-suite];};
+{ sn, ... }: {
+  sn.productivity = {
+    includes = [ sn.ide-suite ];
+  };
 
-  sn.ide-suite.nixos = {pkgs, ...}: {
+  sn.ide-suite.nixos = { pkgs, ... }: {
     environment.systemPackages = with pkgs; [
       jetbrains.clion
       jetbrains.idea

@@ -1,7 +1,9 @@
-{sn, ...}: {
-  sn.av = {includes = [sn.music];};
+{ sn, ... }: {
+  sn.av = {
+    includes = [ sn.music ];
+  };
 
-  sn.music.nixos = {config, ...}: {
+  sn.music.nixos = { config, ... }: {
     services.mpdscribble = {
       enable = true;
       endpoints."last.fm" = {
@@ -11,14 +13,18 @@
     };
   };
 
-  sn.music.homeManager = {
-    pkgs,
-    lib,
-    host,
-    ...
-  }:
+  sn.music.homeManager =
+    {
+      pkgs,
+      lib,
+      host,
+      ...
+    }:
     lib.mkIf pkgs.stdenv.isLinux {
-      home.packages = with pkgs; [mpc rmpc];
+      home.packages = with pkgs; [
+        mpc
+        rmpc
+      ];
 
       services.mpd = {
         enable = true;
@@ -39,11 +45,10 @@
         '';
       };
 
-      xdg.configFile."rmpc/config.ron".text =
-        import ./_config.nix {inherit (host) homeDir;};
+      xdg.configFile."rmpc/config.ron".text = import ./_config.nix { inherit (host) homeDir; };
 
       services.mpdris2.enable = true;
 
-      systemd.user.services.mpdris2.Unit.After = ["mpd.service"];
+      systemd.user.services.mpdris2.Unit.After = [ "mpd.service" ];
     };
 }
