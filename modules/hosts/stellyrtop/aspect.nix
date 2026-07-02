@@ -2,7 +2,8 @@
   den,
   sn,
   ...
-}: {
+}:
+{
   den.aspects.stellyrtop = {
     includes = [
       sn.nix-base
@@ -17,7 +18,7 @@
       sn.productivity
     ];
 
-    darwin = {host, ...}: {
+    darwin = { host, ... }: {
       system.stateVersion = 5;
 
       networking = {

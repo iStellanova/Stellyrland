@@ -1,5 +1,7 @@
-{sn, ...}: {
-  sn.terminal = {includes = [sn.btop];};
+{ sn, ... }: {
+  sn.terminal = {
+    includes = [ sn.btop ];
+  };
 
   sn.btop.homeManager = _: {
     programs.btop = {

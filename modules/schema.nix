@@ -2,10 +2,11 @@
   lib,
   inputs,
   ...
-}: {
+}:
+{
   # Users default to the homeManager class — triggers Den's host-to-hm-users policy,
   # which auto-imports home-manager.nixosModules/darwinModules.home-manager per host.
-  den.schema.user.classes = lib.mkDefault ["homeManager"];
+  den.schema.user.classes = lib.mkDefault [ "homeManager" ];
 
   # Universal HM defaults that apply to every user entity across all hosts.
   den.default.homeManager.home.stateVersion = "25.11";
@@ -82,7 +83,7 @@
           };
         };
       };
-      default = {};
+      default = { };
       description = "Feature flags for hardware-specific aspects.";
     };
   };

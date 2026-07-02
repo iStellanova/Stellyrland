@@ -1,7 +1,9 @@
-{sn, ...}: {
-  sn.dev = {includes = [sn.ns];};
+{ sn, ... }: {
+  sn.dev = {
+    includes = [ sn.ns ];
+  };
 
-  sn.ns.homeManager = {pkgs, ...}: {
+  sn.ns.homeManager = { pkgs, ... }: {
     home.packages = [
       (pkgs.writeShellApplication {
         name = "ns";

@@ -10,6 +10,6 @@ _: {
       lact = true;
     };
 
-    users.stellanova = {};
+    users.stellanova = { };
   };
 }

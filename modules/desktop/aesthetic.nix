@@ -1,6 +1,7 @@
-{sn, ...}: let
-  aestheticPkgs = pkgs:
-    with pkgs; [
+{ sn, ... }:
+let
+  aestheticPkgs =
+    pkgs: with pkgs; [
       peaclock
 
       (python3Packages.buildPythonApplication {
@@ -13,13 +14,19 @@
           hash = "sha256-GJvGnvo78l4RK2Y9ACbqOXHLQkNtIwIktbm/FK1vOcc=";
         };
         pyproject = true;
-        nativeBuildInputs = [python3Packages.setuptools python3Packages.wheel];
+        nativeBuildInputs = [
+          python3Packages.setuptools
+          python3Packages.wheel
+        ];
       })
     ];
-in {
-  sn.desktop = {includes = [sn.aesthetic];};
+in
+{
+  sn.desktop = {
+    includes = [ sn.aesthetic ];
+  };
 
-  sn.aesthetic.os = {pkgs, ...}: {
+  sn.aesthetic.os = { pkgs, ... }: {
     environment.systemPackages = aestheticPkgs pkgs;
   };
 }

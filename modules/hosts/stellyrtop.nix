@@ -3,6 +3,6 @@ _: {
     homeDir = "/Users/stellanova";
     flakePath = "/Users/stellanova/Documents/GitHub/Stellyrland";
 
-    users.stellanova = {};
+    users.stellanova = { };
   };
 }

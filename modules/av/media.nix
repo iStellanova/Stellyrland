@@ -1,7 +1,9 @@
-{sn, ...}: {
-  sn.av = {includes = [sn.media];};
+{ sn, ... }: {
+  sn.av = {
+    includes = [ sn.media ];
+  };
 
-  sn.media.nixos = {pkgs, ...}: {
+  sn.media.nixos = { pkgs, ... }: {
     environment.systemPackages = with pkgs; [
       ffmpegthumbnailer
       imv
@@ -16,13 +18,20 @@
     ];
   };
 
-  sn.media.homeManager = {
-    pkgs,
-    lib,
-    ...
-  }: {
-    home.packages = with pkgs;
-      [ani-cli ffmpeg mpv]
-      ++ lib.optionals (!pkgs.stdenv.isDarwin) [nicotine-plus];
-  };
+  sn.media.homeManager =
+    {
+      pkgs,
+      lib,
+      ...
+    }:
+    {
+      home.packages =
+        with pkgs;
+        [
+          ani-cli
+          ffmpeg
+          mpv
+        ]
+        ++ lib.optionals (!pkgs.stdenv.isDarwin) [ nicotine-plus ];
+    };
 }

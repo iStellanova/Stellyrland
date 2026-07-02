@@ -1,5 +1,7 @@
-{sn, ...}: {
-  sn.desktop = {includes = [sn.pipewire];};
+{ sn, ... }: {
+  sn.desktop = {
+    includes = [ sn.pipewire ];
+  };
 
   sn.pipewire.nixos = _: {
     security.rtkit.enable = true;
@@ -15,7 +17,10 @@
           "context.modules" = [
             {
               name = "libpipewire-module-rt";
-              flags = ["ifexists" "nofail"];
+              flags = [
+                "ifexists"
+                "nofail"
+              ];
               args = {
                 "nice.level" = -15;
                 "rt.prio" = 88;
@@ -27,7 +32,7 @@
         };
         pipewire-pulse."99-lowlatency" = {
           "pulse.properties" = {
-            "server.address" = ["unix:native"];
+            "server.address" = [ "unix:native" ];
             "pulse.min.req" = "512/48000";
             "pulse.min.quantum" = "512/48000";
             "pulse.min.frag" = "512/48000";
@@ -45,7 +50,7 @@
           "10-ignore-vols" = {
             "monitor.alsa.rules" = [
               {
-                matches = [{"media.class" = "Audio/Source";}];
+                matches = [ { "media.class" = "Audio/Source"; } ];
                 actions = {
                   update-props = {
                     "node.ignore-session-volume" = true;

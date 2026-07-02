@@ -1,5 +1,7 @@
-{sn, ...}: {
-  sn.system = {includes = [sn.homebrew];};
+{ sn, ... }: {
+  sn.system = {
+    includes = [ sn.homebrew ];
+  };
 
   sn.homebrew.darwin = _: {
     homebrew = {
@@ -7,7 +9,7 @@
       onActivation = {
         autoUpdate = true;
         cleanup = "zap";
-        extraFlags = ["--force-cleanup"];
+        extraFlags = [ "--force-cleanup" ];
         upgrade = true;
       };
     };

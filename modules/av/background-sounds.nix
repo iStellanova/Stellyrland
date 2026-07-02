@@ -1,5 +1,7 @@
-{sn, ...}: {
-  sn.av = {includes = [sn.background-sounds];};
+{ sn, ... }: {
+  sn.av = {
+    includes = [ sn.background-sounds ];
+  };
 
   sn.background-sounds.darwin = _: {
     homebrew.masApps = {
@@ -7,11 +9,13 @@
     };
   };
 
-  sn.background-sounds.homeManager = {
-    pkgs,
-    lib,
-    ...
-  }: {
-    home.packages = lib.optional pkgs.stdenv.isLinux pkgs.blanket;
-  };
+  sn.background-sounds.homeManager =
+    {
+      pkgs,
+      lib,
+      ...
+    }:
+    {
+      home.packages = lib.optional pkgs.stdenv.isLinux pkgs.blanket;
+    };
 }

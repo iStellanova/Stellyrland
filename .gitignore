@@ -7,3 +7,4 @@ result
 openapi_letta.json
 .dev/*
 .dev/
+test.nix

@@ -2,16 +2,19 @@
   sn,
   inputs,
   ...
-}: {
-  sn.linux-storage = {includes = [sn.preservation];};
+}:
+{
+  sn.linux-storage = {
+    includes = [ sn.preservation ];
+  };
 
   flake-file.inputs.preservation = {
     url = "github:nix-community/preservation";
     inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  sn.preservation.nixos = {host, ...}: {
-    imports = [inputs.preservation.nixosModules.preservation];
+  sn.preservation.nixos = { host, ... }: {
+    imports = [ inputs.preservation.nixosModules.preservation ];
 
     systemd.tmpfiles.rules = [
       # Returns /etc/nixos's pointer from the config project.
