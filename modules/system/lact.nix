@@ -11,6 +11,7 @@
     ...
   }:
     lib.mkIf host.features.lact (let
+      gpuId = "1002:744C-1EAE:7901-0000:03:00.0";
       gpuConfig = {
         fan_control_enabled = true;
         fan_control_settings = {
@@ -46,12 +47,12 @@
         };
         apply_settings_timer = 5;
         gpus = {
-          "1002:744C-1EAE:7901-0000:03:00.0" = gpuConfig;
+          "${gpuId}" = gpuConfig;
         };
         profiles = {
           default = {
             gpus = {
-              "1002:744C-1EAE:7901-0000:03:00.0" = gpuConfig;
+              "${gpuId}" = gpuConfig;
             };
           };
         };
