@@ -125,6 +125,19 @@ in {
   }: {
     imports = [inputs.nix-hermes-agent.nixosModules.hermes-agent];
 
+    # Pinned static — upstream's module creates this user with no uid/gid set,
+    # so it's dynamically allocated from the free system-ID pool (currently
+    # clustered at 991-999 alongside wpa_supplicant, sshd, etc. on this host).
+    # Disabling+re-enabling sn.ai (or any module reordering that shifts pool
+    # allocation) can reassign a different number on the next rebuild, silently
+    # orphaning every file hermes already wrote under the old uid — which is
+    # exactly what broke the gateway's own internal logger after sn.ai was
+    # toggled off and back on this session. 500/500 is unused on this host
+    # (checked via getent) and well clear of the 990s where dynamic allocation
+    # has been landing, so a future reallocation is unlikely to collide with it.
+    users.users.hermes.uid = 500;
+    users.groups.hermes.gid = 500;
+
     services.ollama.loadModels = [
       "qwen3.6:27b" # main model
       "qwen3-coder:30b" # coding delegate
