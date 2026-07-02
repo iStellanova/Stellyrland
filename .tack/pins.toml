@@ -60,10 +60,6 @@ type = "fetch"
 url = "github:gmodena/nix-flatpak"
 follows = { nixpkgs = "nixpkgs" }
 
-[inputs.nix-hermes-agent]
-url = "github:0xrsydn/nix-hermes-agent"
-follows = { nixpkgs = "nixpkgs" }
-
 [inputs.nix-index-database]
 url = "github:nix-community/nix-index-database"
 follows = { nixpkgs = "nixpkgs" }
