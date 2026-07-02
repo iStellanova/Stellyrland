@@ -1,9 +1,17 @@
-{sn, ...}: let
-  networkingPkgs = pkgs: with pkgs; [tailscale wget];
-in {
-  sn.terminal = {includes = [sn.tailscale];};
+{ sn, ... }:
+let
+  networkingPkgs =
+    pkgs: with pkgs; [
+      tailscale
+      wget
+    ];
+in
+{
+  sn.terminal = {
+    includes = [ sn.tailscale ];
+  };
 
-  sn.tailscale.os = {pkgs, ...}: {
+  sn.tailscale.os = { pkgs, ... }: {
     services.tailscale.enable = true;
     environment.systemPackages = networkingPkgs pkgs;
   };
@@ -27,7 +35,7 @@ in {
     networking.firewall = {
       enable = true;
       checkReversePath = "loose";
-      allowedUDPPorts = [41641];
+      allowedUDPPorts = [ 41641 ];
       allowedUDPPortRanges = [
         {
           from = 50000;

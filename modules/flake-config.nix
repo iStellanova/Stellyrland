@@ -3,7 +3,8 @@
   lib,
   config,
   ...
-}: {
+}:
+{
   imports = [
     inputs.den.flakeModules.default
     inputs.flake-file.flakeModules.tack
@@ -38,7 +39,7 @@
     };
   };
 
-  perSystem = {pkgs, ...}: {
+  perSystem = { pkgs, ... }: {
     packages = lib.mapAttrs (_: f: f pkgs) config.flake-file.apps;
   };
 

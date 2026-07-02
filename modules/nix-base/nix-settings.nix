@@ -2,9 +2,14 @@
   sn,
   lib,
   ...
-}: let
+}:
+let
   commonNixSettings = {
-    experimental-features = ["nix-command" "flakes" "pipe-operator"];
+    experimental-features = [
+      "nix-command"
+      "flakes"
+      "pipe-operator"
+    ];
     log-lines = 25;
     auto-optimise-store = true;
     warn-dirty = false;
@@ -21,44 +26,55 @@
       "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
     ];
   };
-  nixToolsPkgs = pkgs: with pkgs; [nix-output-monitor dix];
-in {
-  sn.nix-base = {includes = [sn.nix-settings];};
+  nixToolsPkgs =
+    pkgs: with pkgs; [
+      nix-output-monitor
+      dix
+    ];
+in
+{
+  sn.nix-base = {
+    includes = [ sn.nix-settings ];
+  };
 
-  sn.nix-settings.nixos = {
-    config,
-    pkgs,
-    ...
-  }: {
-    options.core.nix-settings.cores = lib.mkOption {
-      type = lib.types.ints.unsigned;
-      default = 0;
-      description = "Cores available to the Nix daemon per build (0 = all cores).";
-    };
+  sn.nix-settings.nixos =
+    {
+      config,
+      pkgs,
+      ...
+    }:
+    {
+      options.core.nix-settings.cores = lib.mkOption {
+        type = lib.types.ints.unsigned;
+        default = 0;
+        description = "Cores available to the Nix daemon per build (0 = all cores).";
+      };
 
-    config = {
-      nix.enable = lib.mkDefault true;
-      nix.daemonCPUSchedPolicy = "batch";
-      nix.daemonIOSchedPriority = 7;
-      nix.settings = commonNixSettings // {cores = config.core.nix-settings.cores;};
+      config = {
+        nix.enable = lib.mkDefault true;
+        nix.daemonCPUSchedPolicy = "batch";
+        nix.daemonIOSchedPriority = 7;
+        nix.settings = commonNixSettings // {
+          cores = config.core.nix-settings.cores;
+        };
 
-      programs.nix-ld.enable = true;
-      programs.nix-ld.libraries = with pkgs; [
-        stdenv.cc.cc
-        zlib
-        fuse3
-        icu
-        nss
-        openssl
-        curl
-        expat
-      ];
+        programs.nix-ld.enable = true;
+        programs.nix-ld.libraries = with pkgs; [
+          stdenv.cc.cc
+          zlib
+          fuse3
+          icu
+          nss
+          openssl
+          curl
+          expat
+        ];
 
-      environment.variables = {
-        NIXOS_OZONE_WL = "1";
+        environment.variables = {
+          NIXOS_OZONE_WL = "1";
+        };
       };
     };
-  };
 
   sn.nix-settings.darwin = _: {
     nixpkgs.overlays = [
@@ -74,14 +90,14 @@ in {
     nix.settings = commonNixSettings;
   };
 
-  sn.nix-settings.os = {pkgs, ...}: {
+  sn.nix-settings.os = { pkgs, ... }: {
     # Flake-only setup; nothing here uses angle-bracket <nixpkgs> lookups, and
     # root never runs nix-channel, so the default search path just warns about
     # a channels profile that doesn't exist.
-    nix.nixPath = [];
+    nix.nixPath = [ ];
     nixpkgs.config.allowUnfree = true;
     # TODO: remove once nixpkgs bumps pnpm past 10.29.2 (build-time dep of vesktop, still present 2026-06-29)
-    nixpkgs.config.permittedInsecurePackages = ["pnpm-10.29.2"];
+    nixpkgs.config.permittedInsecurePackages = [ "pnpm-10.29.2" ];
     nix.extraOptions = ''
       !include /etc/nix/access-tokens.conf
     '';

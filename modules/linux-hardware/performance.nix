@@ -1,7 +1,9 @@
-{sn, ...}: {
-  sn.linux-hardware = {includes = [sn.performance];};
+{ sn, ... }: {
+  sn.linux-hardware = {
+    includes = [ sn.performance ];
+  };
 
-  sn.performance.nixos = {pkgs, ...}: {
+  sn.performance.nixos = { pkgs, ... }: {
     zramSwap = {
       enable = true;
       algorithm = "zstd";

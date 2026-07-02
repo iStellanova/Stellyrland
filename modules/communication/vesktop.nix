@@ -1,14 +1,16 @@
-{sn, ...}: {
-  sn.communication = {includes = [sn.vesktop];};
+{ sn, ... }: {
+  sn.communication = {
+    includes = [ sn.vesktop ];
+  };
 
-  sn.vesktop.nixos = {pkgs, ...}: {
+  sn.vesktop.nixos = { pkgs, ... }: {
     environment.systemPackages = [
-      (pkgs.vesktop.override {withSystemVencord = false;})
+      (pkgs.vesktop.override { withSystemVencord = false; })
     ];
   };
 
   sn.vesktop.darwin = _: {
-    homebrew.casks = ["vesktop"];
+    homebrew.casks = [ "vesktop" ];
   };
 
   sn.vesktop.homeManager = _: {

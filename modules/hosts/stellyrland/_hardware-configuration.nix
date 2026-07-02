@@ -4,12 +4,13 @@
   lib,
   modulesPath,
   ...
-}: {
+}:
+{
   imports = [
     (modulesPath + "/installer/scan/not-detected.nix")
   ];
 
-  boot.kernelModules = ["kvm-amd"];
+  boot.kernelModules = [ "kvm-amd" ];
 
   # Required by ZFS to prevent pool import conflicts between machines.
   # Generated once: head -c4 /dev/urandom | od -A none -t x4 | tr -d ' \n'
@@ -41,7 +42,10 @@
   fileSystems."/boot" = {
     device = "/dev/disk/by-label/STELLYRBOOT";
     fsType = "vfat";
-    options = ["fmask=0022" "dmask=0022"];
+    options = [
+      "fmask=0022"
+      "dmask=0022"
+    ];
   };
 
   swapDevices = [

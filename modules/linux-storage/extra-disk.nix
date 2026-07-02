@@ -1,13 +1,18 @@
-{sn, ...}: {
-  sn.linux-storage = {includes = [sn.extra-disk];};
+{ sn, ... }: {
+  sn.linux-storage = {
+    includes = [ sn.extra-disk ];
+  };
 
-  sn.extra-disk.nixos = {host, ...}: {
+  sn.extra-disk.nixos = { host, ... }: {
     # LUKS Decryption for Extra Disk (Sabrent SB-RKT4P-2TB nvme2n1)
     # Automatically decrypted at boot stage 1 using systemd-cryptsetup and the TPM2 chip.
     boot.initrd.luks.devices."cryptextra" = {
       device = "/dev/disk/by-partlabel/disk-extra-luks";
       allowDiscards = true;
-      crypttabExtraOpts = ["tpm2-device=auto" "tpm2-pcrs=0+2+7"];
+      crypttabExtraOpts = [
+        "tpm2-device=auto"
+        "tpm2-pcrs=0+2+7"
+      ];
     };
 
     # Extra Storage: Sabrent SB-RKT4P-2TB (zextra pool, inside LUKS cryptextra)

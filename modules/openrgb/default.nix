@@ -1,5 +1,5 @@
 _: {
-  sn.openrgb.nixos = {pkgs, ...}: {
+  sn.openrgb.nixos = { pkgs, ... }: {
     services.hardware.openrgb = {
       enable = true;
       package = pkgs.openrgb-with-all-plugins;
@@ -33,9 +33,9 @@ _: {
     # System-wide service to apply the configuration on boot, and turn off on shutdown
     systemd.services.openrgb-boot-apply = {
       description = "Apply OpenRGB Declarative Settings and Force White / Black on Shutdown";
-      requires = ["openrgb.service"];
-      after = ["openrgb.service"];
-      wantedBy = ["multi-user.target"];
+      requires = [ "openrgb.service" ];
+      after = [ "openrgb.service" ];
+      wantedBy = [ "multi-user.target" ];
       serviceConfig = {
         Type = "oneshot";
         ExecStart = pkgs.writeShellScript "openrgb-apply" ''

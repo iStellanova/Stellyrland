@@ -1,22 +1,19 @@
-{lib, ...}: let
-  toZsh = name: value:
-    if builtins.isList value
-    then "typeset -g ${name}=(${lib.concatStringsSep " " (map (v:
-      if builtins.isString v
-      then v
-      else builtins.toString v)
-    value)})"
-    else if builtins.isBool value
-    then "typeset -g ${name}=${
-      if value
-      then "true"
-      else "false"
-    }"
-    else if builtins.isString value && (lib.hasPrefix "''" value || lib.hasPrefix "'" value)
-    then "typeset -g ${name}=${value}"
-    else if builtins.isInt value
-    then "typeset -g ${name}=${builtins.toString value}"
-    else "typeset -g ${name}='${builtins.toString value}'";
+{ lib, ... }:
+let
+  toZsh =
+    name: value:
+    if builtins.isList value then
+      "typeset -g ${name}=(${
+        lib.concatStringsSep " " (map (v: if builtins.isString v then v else builtins.toString v) value)
+      })"
+    else if builtins.isBool value then
+      "typeset -g ${name}=${if value then "true" else "false"}"
+    else if builtins.isString value && (lib.hasPrefix "''" value || lib.hasPrefix "'" value) then
+      "typeset -g ${name}=${value}"
+    else if builtins.isInt value then
+      "typeset -g ${name}=${builtins.toString value}"
+    else
+      "typeset -g ${name}='${builtins.toString value}'";
 
   settings = {
     POWERLEVEL9K_MODE = "nerdfont-v3";
@@ -158,7 +155,7 @@
     POWERLEVEL9K_VCS_UNTRACKED_ICON = "?";
     POWERLEVEL9K_VCS_MAX_INDEX_SIZE_DIRTY = -1;
     POWERLEVEL9K_VCS_DISABLED_WORKDIR_PATTERN = "~";
-    POWERLEVEL9K_VCS_BACKENDS = ["git"];
+    POWERLEVEL9K_VCS_BACKENDS = [ "git" ];
     POWERLEVEL9K_VCS_STAGED_MAX_NUM = -1;
     POWERLEVEL9K_VCS_UNSTAGED_MAX_NUM = -1;
     POWERLEVEL9K_VCS_UNTRACKED_MAX_NUM = -1;
@@ -209,7 +206,11 @@
     # Asdf
     POWERLEVEL9K_ASDF_FOREGROUND = 0;
     POWERLEVEL9K_ASDF_BACKGROUND = 7;
-    POWERLEVEL9K_ASDF_SOURCES = ["shell" "local" "global"];
+    POWERLEVEL9K_ASDF_SOURCES = [
+      "shell"
+      "local"
+      "global"
+    ];
     POWERLEVEL9K_ASDF_PROMPT_ALWAYS_SHOW = false;
     POWERLEVEL9K_ASDF_SHOW_SYSTEM = true;
     POWERLEVEL9K_ASDF_SHOW_ON_UPGLOB = "";
@@ -374,7 +375,11 @@
     # Pyenv
     POWERLEVEL9K_PYENV_FOREGROUND = 0;
     POWERLEVEL9K_PYENV_BACKGROUND = 4;
-    POWERLEVEL9K_PYENV_SOURCES = ["shell" "local" "global"];
+    POWERLEVEL9K_PYENV_SOURCES = [
+      "shell"
+      "local"
+      "global"
+    ];
     POWERLEVEL9K_PYENV_PROMPT_ALWAYS_SHOW = false;
     POWERLEVEL9K_PYENV_SHOW_SYSTEM = true;
     POWERLEVEL9K_PYENV_CONTENT_EXPANSION = "'\${P9K_CONTENT}\${\${P9K_CONTENT:#$P9K_PYENV_PYTHON_VERSION(|/*)}:+ $P9K_PYENV_PYTHON_VERSION}'";
@@ -382,14 +387,22 @@
     # Goenv
     POWERLEVEL9K_GOENV_FOREGROUND = 0;
     POWERLEVEL9K_GOENV_BACKGROUND = 4;
-    POWERLEVEL9K_GOENV_SOURCES = ["shell" "local" "global"];
+    POWERLEVEL9K_GOENV_SOURCES = [
+      "shell"
+      "local"
+      "global"
+    ];
     POWERLEVEL9K_GOENV_PROMPT_ALWAYS_SHOW = false;
     POWERLEVEL9K_GOENV_SHOW_SYSTEM = true;
 
     # Nodenv
     POWERLEVEL9K_NODENV_FOREGROUND = 2;
     POWERLEVEL9K_NODENV_BACKGROUND = 0;
-    POWERLEVEL9K_NODENV_SOURCES = ["shell" "local" "global"];
+    POWERLEVEL9K_NODENV_SOURCES = [
+      "shell"
+      "local"
+      "global"
+    ];
     POWERLEVEL9K_NODENV_PROMPT_ALWAYS_SHOW = false;
     POWERLEVEL9K_NODENV_SHOW_SYSTEM = true;
 
@@ -438,7 +451,11 @@
     # Rbenv
     POWERLEVEL9K_RBENV_FOREGROUND = 0;
     POWERLEVEL9K_RBENV_BACKGROUND = 1;
-    POWERLEVEL9K_RBENV_SOURCES = ["shell" "local" "global"];
+    POWERLEVEL9K_RBENV_SOURCES = [
+      "shell"
+      "local"
+      "global"
+    ];
     POWERLEVEL9K_RBENV_PROMPT_ALWAYS_SHOW = false;
     POWERLEVEL9K_RBENV_SHOW_SYSTEM = true;
 
@@ -465,21 +482,33 @@
     # Luaenv
     POWERLEVEL9K_LUAENV_FOREGROUND = 0;
     POWERLEVEL9K_LUAENV_BACKGROUND = 4;
-    POWERLEVEL9K_LUAENV_SOURCES = ["shell" "local" "global"];
+    POWERLEVEL9K_LUAENV_SOURCES = [
+      "shell"
+      "local"
+      "global"
+    ];
     POWERLEVEL9K_LUAENV_PROMPT_ALWAYS_SHOW = false;
     POWERLEVEL9K_LUAENV_SHOW_SYSTEM = true;
 
     # Jenv
     POWERLEVEL9K_JENV_FOREGROUND = 1;
     POWERLEVEL9K_JENV_BACKGROUND = 7;
-    POWERLEVEL9K_JENV_SOURCES = ["shell" "local" "global"];
+    POWERLEVEL9K_JENV_SOURCES = [
+      "shell"
+      "local"
+      "global"
+    ];
     POWERLEVEL9K_JENV_PROMPT_ALWAYS_SHOW = false;
     POWERLEVEL9K_JENV_SHOW_SYSTEM = true;
 
     # Plenv
     POWERLEVEL9K_PLENV_FOREGROUND = 0;
     POWERLEVEL9K_PLENV_BACKGROUND = 4;
-    POWERLEVEL9K_PLENV_SOURCES = ["shell" "local" "global"];
+    POWERLEVEL9K_PLENV_SOURCES = [
+      "shell"
+      "local"
+      "global"
+    ];
     POWERLEVEL9K_PLENV_PROMPT_ALWAYS_SHOW = false;
     POWERLEVEL9K_PLENV_SHOW_SYSTEM = true;
 
@@ -491,26 +520,40 @@
     # Phpenv
     POWERLEVEL9K_PHPENV_FOREGROUND = 0;
     POWERLEVEL9K_PHPENV_BACKGROUND = 5;
-    POWERLEVEL9K_PHPENV_SOURCES = ["shell" "local" "global"];
+    POWERLEVEL9K_PHPENV_SOURCES = [
+      "shell"
+      "local"
+      "global"
+    ];
     POWERLEVEL9K_PHPENV_PROMPT_ALWAYS_SHOW = false;
     POWERLEVEL9K_PHPENV_SHOW_SYSTEM = true;
 
     # Scalaenv
     POWERLEVEL9K_SCALAENV_FOREGROUND = 0;
     POWERLEVEL9K_SCALAENV_BACKGROUND = 1;
-    POWERLEVEL9K_SCALAENV_SOURCES = ["shell" "local" "global"];
+    POWERLEVEL9K_SCALAENV_SOURCES = [
+      "shell"
+      "local"
+      "global"
+    ];
     POWERLEVEL9K_SCALAENV_PROMPT_ALWAYS_SHOW = false;
     POWERLEVEL9K_SCALAENV_SHOW_SYSTEM = true;
 
     # Haskell stack
     POWERLEVEL9K_HASKELL_STACK_FOREGROUND = 0;
     POWERLEVEL9K_HASKELL_STACK_BACKGROUND = 3;
-    POWERLEVEL9K_HASKELL_STACK_SOURCES = ["shell" "local"];
+    POWERLEVEL9K_HASKELL_STACK_SOURCES = [
+      "shell"
+      "local"
+    ];
     POWERLEVEL9K_HASKELL_STACK_ALWAYS_SHOW = true;
 
     # Terraform
     POWERLEVEL9K_TERRAFORM_SHOW_DEFAULT = false;
-    POWERLEVEL9K_TERRAFORM_CLASSES = ["'*'" "OTHER"];
+    POWERLEVEL9K_TERRAFORM_CLASSES = [
+      "'*'"
+      "OTHER"
+    ];
     POWERLEVEL9K_TERRAFORM_OTHER_FOREGROUND = 4;
     POWERLEVEL9K_TERRAFORM_OTHER_BACKGROUND = 0;
     POWERLEVEL9K_TERRAFORM_VERSION_FOREGROUND = 4;
@@ -518,7 +561,10 @@
 
     # Kubecontext
     POWERLEVEL9K_KUBECONTEXT_SHOW_ON_COMMAND = "kubectl|helm|kubens|kubectx|oc|istioctl|kogito|k9s|helmfile|flux|fluxctl|stern|kubeseal|skaffold|kubent|kubecolor|cmctl|sparkctl";
-    POWERLEVEL9K_KUBECONTEXT_CLASSES = ["'*'" "DEFAULT"];
+    POWERLEVEL9K_KUBECONTEXT_CLASSES = [
+      "'*'"
+      "DEFAULT"
+    ];
     POWERLEVEL9K_KUBECONTEXT_DEFAULT_FOREGROUND = 7;
     POWERLEVEL9K_KUBECONTEXT_DEFAULT_BACKGROUND = 5;
     # Combined from the two += assignments in the original
@@ -526,7 +572,10 @@
 
     # AWS
     POWERLEVEL9K_AWS_SHOW_ON_COMMAND = "aws|awless|cdk|terraform|tofu|pulumi|terragrunt";
-    POWERLEVEL9K_AWS_CLASSES = ["'*'" "DEFAULT"];
+    POWERLEVEL9K_AWS_CLASSES = [
+      "'*'"
+      "DEFAULT"
+    ];
     POWERLEVEL9K_AWS_DEFAULT_FOREGROUND = 7;
     POWERLEVEL9K_AWS_DEFAULT_BACKGROUND = 1;
     POWERLEVEL9K_AWS_CONTENT_EXPANSION = "'\${P9K_AWS_PROFILE//\\%/%%}\${P9K_AWS_REGION:+ \${P9K_AWS_REGION//\\%/%%}}'";
@@ -537,7 +586,10 @@
 
     # Azure
     POWERLEVEL9K_AZURE_SHOW_ON_COMMAND = "az|terraform|tofu|pulumi|terragrunt";
-    POWERLEVEL9K_AZURE_CLASSES = ["'*'" "OTHER"];
+    POWERLEVEL9K_AZURE_CLASSES = [
+      "'*'"
+      "OTHER"
+    ];
     POWERLEVEL9K_AZURE_OTHER_FOREGROUND = 7;
     POWERLEVEL9K_AZURE_OTHER_BACKGROUND = 4;
 
@@ -551,7 +603,10 @@
 
     # Google App Cred
     POWERLEVEL9K_GOOGLE_APP_CRED_SHOW_ON_COMMAND = "terraform|tofu|pulumi|terragrunt";
-    POWERLEVEL9K_GOOGLE_APP_CRED_CLASSES = ["'*'" "DEFAULT"];
+    POWERLEVEL9K_GOOGLE_APP_CRED_CLASSES = [
+      "'*'"
+      "DEFAULT"
+    ];
     POWERLEVEL9K_GOOGLE_APP_CRED_DEFAULT_FOREGROUND = 7;
     POWERLEVEL9K_GOOGLE_APP_CRED_DEFAULT_BACKGROUND = 4;
     POWERLEVEL9K_GOOGLE_APP_CRED_DEFAULT_CONTENT_EXPANSION = "'\${P9K_GOOGLE_APP_CRED_PROJECT_ID//\\%/%%}'";
@@ -609,7 +664,8 @@
   };
 
   vcsExpansion = "'\${$((my_git_formatter()))+\${my_git_format}}'";
-in ''
+in
+''
   'builtin' 'local' '-a' 'p10k_config_opts'
   [[ ! -o 'aliases'         ]] || p10k_config_opts+=('aliases')
   [[ ! -o 'sh_glob'         ]] || p10k_config_opts+=('sh_glob')

@@ -1,8 +1,10 @@
-{sn, ...}: {
-  sn.linux-hardware = {includes = [sn.gpu];};
+{ sn, ... }: {
+  sn.linux-hardware = {
+    includes = [ sn.gpu ];
+  };
 
-  sn.gpu.nixos = {pkgs, ...}: {
-    environment.systemPackages = [pkgs.usbutils];
+  sn.gpu.nixos = { pkgs, ... }: {
+    environment.systemPackages = [ pkgs.usbutils ];
 
     hardware.graphics = {
       enable = true;

@@ -1,5 +1,7 @@
-{sn, ...}: {
-  sn.nix-base = {includes = [sn.core];};
+{ sn, ... }: {
+  sn.nix-base = {
+    includes = [ sn.core ];
+  };
 
   sn.core.nixos = _: {
     time.timeZone = "America/Indianapolis";
@@ -23,6 +25,6 @@
   # home.username and homeDirectory are set in the stellanova user aspect.
   # home.stateVersion is applied universally via den.default in schema.nix.
   sn.core.homeManager = _: {
-    home.sessionPath = ["$HOME/.local/state/nix/profiles/scratch/bin"];
+    home.sessionPath = [ "$HOME/.local/state/nix/profiles/scratch/bin" ];
   };
 }

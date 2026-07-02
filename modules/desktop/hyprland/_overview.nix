@@ -14,14 +14,16 @@
   lib,
   pkgs,
   ...
-}: let
+}:
+let
   pkg = inputs.scroll-overview.packages.${pkgs.stdenv.hostPlatform.system}.scrolloverview;
   scrolloverview = pkg.overrideAttrs (_: {
     pname = "scrolloverview";
   });
-in {
+in
+{
   wayland.windowManager.hyprland = {
-    plugins = [scrolloverview];
+    plugins = [ scrolloverview ];
 
     settings.bind = [
       {
