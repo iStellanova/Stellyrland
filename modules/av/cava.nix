@@ -3,10 +3,6 @@
     includes = [ sn.cava ];
   };
 
-  sn.cava.darwin = _: {
-    homebrew.brews = [ "cava" ];
-  };
-
   sn.cava.homeManager = { pkgs, ... }: {
     programs.cava = {
       enable = true;
