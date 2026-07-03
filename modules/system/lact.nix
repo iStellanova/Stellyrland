@@ -35,7 +35,7 @@
           pmfw_options = {
             zero_rpm = true;
           };
-          power_cap = 402.0; # +15% power limit.
+          power_cap = 389.0; # +15% power limit (performance VBIOS max).
           performance_level = "manual";
           min_core_clock = 2700; # High minimum to avoid sudden dips during load.
           max_core_clock = 3000;
