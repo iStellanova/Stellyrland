@@ -1,5 +1,46 @@
 _: {
   sn.openrgb.nixos = { pkgs, ... }: {
+    # Pinned to 1.0rc2: 1.0rc3 (current nixpkgs version) reliably segfaults on this
+    # host inside libusb_get_device_list a few seconds after start when run as root.
+    # Repro'd locally: same binary run as an unprivileged user doesn't crash, because
+    # it can't open /dev/i2c-* — the I2C DRAM detector never runs concurrently with
+    # the USB/libusb detector, so whatever race exists between them never fires.
+    # Not matched to an existing upstream report as of 2026-07-03; closest is
+    # https://gitlab.com/CalcProgrammer1/OpenRGB/-/issues/4373 (different trigger,
+    # EACCES-based, not this).
+    #
+    # Pulled whole from the last nixpkgs commit before the rc2->rc3 bump
+    # (63594d4, 2026-06-29) rather than overrideAttrs-ing just version/src on top
+    # of current nixpkgs: rebuilding rc2's source against current nixpkgs' Qt6
+    # toolchain fails in the local build sandbox (unrelated Qt/qmake issue), and
+    # this way openrgb, its plugins, and their shared deps (libusb, hidapi, qtbase)
+    # all come from one known-good, Hydra-built snapshot instead of being mixed.
+    #
+    # TODO: unpin once fixed upstream. Before unpinning: check
+    # `nix eval nixpkgs#openrgb.version` — if it's past 1.0rc3, test whether the
+    # crash still reproduces before dropping this override.
+    nixpkgs.overlays = [
+      (
+        final: _prev:
+        let
+          pinnedNixpkgs = import (final.fetchFromGitHub {
+            owner = "NixOS";
+            repo = "nixpkgs";
+            rev = "63594d4abe8a6d34c99155e3804cec0d4cfcf765";
+            hash = "sha256-HOFVLcA02J6jjatfRgH3JvZtwJnQWY6rbhuSrneoPn0=";
+          }) { inherit (final) system; };
+        in
+        {
+          inherit (pinnedNixpkgs)
+            openrgb
+            openrgb-plugin-effects
+            openrgb-plugin-hardwaresync
+            openrgb-with-all-plugins
+            ;
+        }
+      )
+    ];
+
     services.hardware.openrgb = {
       enable = true;
       package = pkgs.openrgb-with-all-plugins;
@@ -133,6 +174,12 @@ _: {
     programs.zsh.shellAliases = {
       blackout = "openrgb --client 127.0.0.1:6742 --nodetect --color 000000 >/dev/null 2>&1";
       whiteout = "openrgb --client 127.0.0.1:6742 --nodetect --color ffffff >/dev/null 2>&1";
+      # Pinned to 1.0rc2 (see nixos aspect above) due to a root-only libusb crash in
+      # 1.0rc3. Check both before considering an unpin.
+      openrgb-check-updates = ''
+        echo "nixpkgs openrgb version: $(nix eval --raw nixpkgs#openrgb.version)"
+        echo "latest OpenRGB tag: $(curl -s "https://gitlab.com/api/v4/projects/CalcProgrammer1%2FOpenRGB/repository/tags?order_by=updated&per_page=1" | grep -o '"name":"[^"]*"' | head -1)"
+      '';
     };
   };
 }
