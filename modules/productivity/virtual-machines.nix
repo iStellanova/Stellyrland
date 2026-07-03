@@ -3,9 +3,10 @@
     includes = [ sn.virtual-machines ];
   };
 
-  sn.virtual-machines.nixos = { pkgs, ... }: {
+  sn.virtual-machines.nixos = { pkgs, host, ... }: {
     virtualisation.libvirtd.enable = true;
     environment.systemPackages = [ pkgs.virt-manager ];
+    users.users.${host.username}.extraGroups = [ "libvirtd" ];
   };
 
   sn.virtual-machines.darwin = _: {

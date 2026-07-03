@@ -77,7 +77,7 @@
             "-w ${osConfig.desktop.noctalia.primaryMonitor}"
             "-r 120"
             "-c mp4"
-            "-k av1_hdr"
+            "-k ${if host.features.hdr then "av1_hdr" else "av1"}"
             "-q very_high"
             "-ac opus"
             "-a default_output|default_input"
