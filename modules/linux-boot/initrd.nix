@@ -26,9 +26,9 @@
     # any initrd failure drops to an inaccessible shell.
     boot.initrd.systemd.emergencyAccess = true;
 
-    # Tighter udev timeout for the initrd stage (fewer devices, 5s is safe).
-    # Mirrors the system-level timeout in system.nix — both prevent Kraken Z USB
-    # stalls from hanging the sequence for the default 90s.
+    # Tighter udev timeout for the initrd stage (fewer devices).
+    # Prevents Kraken Z USB stalls from hanging the sequence for the default 90s.
+    # (nix-base/core.nix sets a stricter 10s for the same service at the main-system stage.)
     boot.initrd.systemd.services."systemd-udevd".serviceConfig = {
       TimeoutStartSec = "30s";
       TimeoutStopSec = "30s";
