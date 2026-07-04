@@ -5,7 +5,6 @@ let
       curl
       unzip
       zip
-      croc
       kitty.terminfo
     ];
 in
