@@ -40,7 +40,7 @@
           min_core_clock = 2700; # High minimum to avoid sudden dips during load.
           max_core_clock = 3000;
           max_memory_clock = 1250; # Kept at 1250, as 1350 cause white static lines.
-          voltage_offset = -20;
+          voltage_offset = -10; # Reduced from -20 after power_cap=389 exposed instability (illegal opcode/GPU hangs in Satisfactory+screenshare, 2026-07-03/04).
           power_profile_mode_index = 0;
         };
         configData = {
