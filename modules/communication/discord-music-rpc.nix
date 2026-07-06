@@ -24,9 +24,7 @@
     };
 
   sn.discord-music-rpc.darwin = _: {
-    homebrew.extraConfig = ''
-      tap "nextfire/tap", trusted: true
-      brew "nextfire/tap/apple-music-discord-rpc"
-    '';
+    homebrew.taps = [ "nextfire/tap" ];
+    homebrew.brews = [ "nextfire/tap/apple-music-discord-rpc" ];
   };
 }
