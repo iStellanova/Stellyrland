@@ -176,15 +176,6 @@
       # JSON, same shape Vencord's settings.json expects directly.
       vencordConfig = {
         plugins = {
-          ChatInputButtonAPI.enabled = true;
-          CommandsAPI.enabled = true;
-          DynamicImageModalAPI.enabled = true;
-          MessageAccessoriesAPI.enabled = true;
-          MessageEventsAPI.enabled = true;
-          MessagePopoverAPI.enabled = true;
-          MessageUpdaterAPI.enabled = true;
-          UserSettingsAPI.enabled = true;
-          BadgeAPI.enabled = true;
           FriendsSince.enabled = true;
           NoTrack = {
             enabled = true;
