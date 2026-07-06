@@ -9,7 +9,10 @@
   };
 
   sn.discord.homeManager = {
-    imports = [ inputs.nixcord.homeModules.nixcord ];
+    imports = [
+      inputs.nixcord.homeModules.nixcord
+      ./_discord-music-rpc.nix
+    ];
 
     programs.nixcord = {
       enable = true;
