@@ -135,6 +135,14 @@
     "rev": "fab14c7b63499d57cb6673d5690168c3ec42b99a",
     "type": "github"
   },
+  "nixcord": {
+    "lastModified": 1783361949,
+    "narHash": "sha256-1TX3AbM/mdZWne8O42oliWaBlIqSbTAOm+AsLupXhO8=",
+    "owner": "4evy",
+    "repo": "nixcord",
+    "rev": "cf9d7d8ac40ba23e1978bdbd3d5e8d0c1d1319f0",
+    "type": "github"
+  },
   "nixpkgs": {
     "lastModified": 1783279667,
     "narHash": "sha256-/NAkDSsve+GNM0Bt6tleJdCGfsTlK89nPjkVOzZMo0s=",
