@@ -1,6 +1,5 @@
 {
   sn,
-  inputs,
   ...
 }:
 {
@@ -8,17 +7,20 @@
     includes = [ sn.lix ];
   };
 
-  flake-file.inputs.lix-module = {
-    url = "git+https://git.lix.systems/lix-project/nixos-module";
-    inputs.nixpkgs.follows = "nixpkgs";
-  };
-
   sn.lix.nixos = _: {
-    imports = [ inputs.lix-module.nixosModules.lixFromNixpkgs ];
+    nixpkgs.overlays = [
+      (_final: prev: {
+        nix = prev.lix;
+      })
+    ];
   };
 
   sn.lix.darwin = _: {
-    imports = [ inputs.lix-module.darwinModules.lixFromNixpkgs ];
+    nixpkgs.overlays = [
+      (_final: prev: {
+        nix = prev.lix;
+      })
+    ];
     nix.enable = true;
   };
 
