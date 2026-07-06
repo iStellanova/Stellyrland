@@ -25,6 +25,17 @@ in
         enableCompletion = true;
         autosuggestion.enable = true;
         syntaxHighlighting.enable = true;
+        historySubstringSearch = {
+          enable = true;
+          searchUpKey = [
+            "^[[A"
+            "^P"
+          ];
+          searchDownKey = [
+            "^[[B"
+            "^N"
+          ];
+        };
 
         oh-my-zsh = {
           enable = true;
@@ -56,12 +67,6 @@ in
             # Fix for fzf-tab and other completion-related plugins
             zstyle ':completion:*:descriptions' format '[%d]'
             zstyle ':completion:*' list-colors ''${(s.:.)LS_COLORS}
-
-            # Bind history substring search to keys
-            bindkey '^[[A' history-substring-search-up
-            bindkey '^[[B' history-substring-search-down
-            bindkey '^P' history-substring-search-up
-            bindkey '^N' history-substring-search-down
 
             # zd - Smart 'cd'. Falls back to 'z' (zoxide) for rapid jumping if the directory
             # isn't a direct child of the current path.
@@ -96,11 +101,6 @@ in
             name = "fzf-tab";
             src = pkgs.zsh-fzf-tab;
             file = "share/fzf-tab/fzf-tab.plugin.zsh";
-          }
-          {
-            name = "zsh-history-substring-search";
-            src = pkgs.zsh-history-substring-search;
-            file = "share/zsh-history-substring-search/zsh-history-substring-search.zsh";
           }
         ];
       };
