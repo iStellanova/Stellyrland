@@ -41,19 +41,20 @@
       };
 
       config = {
-        # mac-app-util's frozen nixpkgs pin (and its own nixpkgs.lib fork) still
-        # use syntax our own up-to-date nixpkgs has already dropped (`or` as an
-        # identifier, old-style string escapes), which Lix's newer parser now
-        # warns about. Scoped here, not in nix-settings.nix, since nothing else
-        # in this repo still triggers these.
-        # TODO: revisit next time mac-app-util or lix-module is bumped (added
-        # 2026-07-01) — drop this once mac-app-util's pin catches up, or once Lix
-        # removes the opt-back-in flag, whichever comes first.
-        nix.settings.extra-deprecated-features = [
-          "or-as-identifier"
-          "broken-string-indentation"
-          "broken-string-escape"
-        ];
+        # nix-darwin's own HTML manual build passes --toc-depth/--chunk-toc-depth
+        # to nixos-render-docs, flags current nixpkgs removed (replaced by
+        # --sidebar-depth). Confirmed still broken on nix-darwin's own master
+        # as of 2026-07-06, so this isn't a stale-pin issue on our end.
+        # darwin-uninstaller's own package (pkgs/darwin-uninstaller/default.nix)
+        # builds a second, independent nix-darwin system internally to generate
+        # its uninstall script, using a fresh module list that doesn't inherit
+        # documentation.enable=false below — it defaults back to true there and
+        # hits the same broken manual build, so it can't be reached from our
+        # config and has to stay disabled too.
+        # TODO: revisit (added 2026-07-06) once nix-darwin adapts its manual
+        # build to nixos-render-docs' new CLI — re-enable both options below.
+        documentation.enable = false;
+        system.tools.darwin-uninstaller.enable = false;
 
         # Canonical zoneinfo path, not the "America/Indianapolis" legacy alias used on
         # the NixOS host — macOS's systemsetup only accepts the canonical form.
