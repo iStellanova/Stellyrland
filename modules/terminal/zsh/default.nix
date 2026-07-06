@@ -57,6 +57,12 @@ in
             zstyle ':completion:*:descriptions' format '[%d]'
             zstyle ':completion:*' list-colors ''${(s.:.)LS_COLORS}
 
+            # Bind history substring search to keys
+            bindkey '^[[A' history-substring-search-up
+            bindkey '^[[B' history-substring-search-down
+            bindkey '^P' history-substring-search-up
+            bindkey '^N' history-substring-search-down
+
             # zd - Smart 'cd'. Falls back to 'z' (zoxide) for rapid jumping if the directory
             # isn't a direct child of the current path.
             zd() {
