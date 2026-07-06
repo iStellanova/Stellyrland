@@ -22,9 +22,4 @@
         Install.WantedBy = [ "graphical-session.target" ];
       };
     };
-
-  sn.discord-music-rpc.darwin = _: {
-    homebrew.taps = [ "nextfire/tap" ];
-    homebrew.brews = [ "nextfire/tap/apple-music-discord-rpc" ];
-  };
 }
