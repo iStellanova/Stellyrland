@@ -45,10 +45,6 @@ url = "github:vic/import-tree"
 url = "github:nix-community/lanzaboote"
 follows = { nixpkgs = "nixpkgs" }
 
-[inputs.lix-module]
-url = "git+https://git.lix.systems/lix-project/nixos-module"
-follows = { nixpkgs = "nixpkgs" }
-
 [inputs.llm-agents]
 url = "github:numtide/llm-agents.nix"
 follows = { nixpkgs = "nixpkgs" }
