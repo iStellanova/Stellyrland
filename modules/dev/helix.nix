@@ -94,7 +94,7 @@
               name = "nix";
               auto-format = true;
               formatter = {
-                command = "alejandra";
+                command = "nixfmt";
               };
               language-servers = [ "nixd" ];
             }
@@ -135,7 +135,7 @@
           pyright
           bash-language-server
           lua-language-server
-          alejandra
+          nixfmt
           black
           shfmt
           stylua

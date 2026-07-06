@@ -79,9 +79,6 @@ in
   sn.nix-settings.darwin = _: {
     nixpkgs.overlays = [
       (_final: prev: {
-        direnv = prev.direnv.overrideAttrs (_old: {
-          doCheck = false;
-        });
         # dix's test suite asserts store paths start with /nix/store or /tmp,
         # but macOS's sandbox resolves TMPDIR through /private/tmp, tripping
         # that assertion on every build. Doesn't affect the built binary.

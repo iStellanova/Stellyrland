@@ -17,7 +17,15 @@
     {
       home.packages = [
         pkgs.nixd
-        pkgs.alejandra
+        pkgs.nixfmt
+        pkgs.pyright
+        pkgs.black
+        pkgs.bash-language-server
+        pkgs.shfmt
+        pkgs.lua-language-server
+        pkgs.stylua
+        pkgs.ripgrep
+        pkgs.fd
         pkgs.mcp-nixos
       ];
 
@@ -80,7 +88,7 @@
               "language_servers" = [ "nixd" ];
               "formatter" = {
                 "external" = {
-                  "command" = "alejandra";
+                  "command" = "nixfmt";
                   "arguments" = [ ];
                 };
               };

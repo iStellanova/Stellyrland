@@ -217,6 +217,7 @@
           ouch
           epr
           mpv
+          rsync
         ]
         ++ lib.optionals (host.class != "darwin") [ xdg-utils ];
     };

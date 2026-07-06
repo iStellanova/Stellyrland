@@ -30,9 +30,9 @@
           if [[ "$1" == "check" ]]; then
             _nix_prep && ${
               if pkgs.stdenv.isDarwin then
-                "nh darwin build $FLAKE && rm ./result"
+                "nh darwin build $FLAKE && rm -f ./result"
               else
-                "nh os build $FLAKE --diff always && rm ./result"
+                "nh os build $FLAKE --diff always && rm -f ./result"
             }
           else
             _nix_prep && ${
@@ -45,9 +45,9 @@
           if [[ "$1" == "check" ]]; then
             (cd "$FLAKE" && nix run .#write-tack) && _nix_prep && ${
               if pkgs.stdenv.isDarwin then
-                "nh darwin build $FLAKE && rm ./result"
+                "nh darwin build $FLAKE && rm -f ./result"
               else
-                "nh os build $FLAKE --diff always && rm ./result"
+                "nh os build $FLAKE --diff always && rm -f ./result"
             }
           else
             (cd "$FLAKE" && nix run .#write-tack) && _nix_prep && ${
