@@ -95,14 +95,6 @@
     "rev": "0368b35d4677854d897951d35b0bfd3649664383",
     "type": "github"
   },
-  "lix-module": {
-    "lastModified": 1779730214,
-    "narHash": "sha256-Ikdf593tWTFMkKhtScxE+t2fV+Myh8n4JeYU/0Xc8H8=",
-    "ref": "refs/heads/main",
-    "rev": "727d859b6f5f3289ce49fe26146b3f006387d457",
-    "type": "git",
-    "url": "https://git.lix.systems/lix-project/nixos-module"
-  },
   "llm-agents": {
     "lastModified": 1783335367,
     "narHash": "sha256-TJ4+wYOJYYX+z//9C4psF0e1K8TgXrWRITnERhL/oP8=",
