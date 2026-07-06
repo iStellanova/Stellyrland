@@ -141,10 +141,6 @@
 
         system.keyboard.enableKeyMapping = true;
         system.keyboard.remapCapsLockToControl = true;
-
-        system.activationScripts.postActivation.text = lib.mkAfter ''
-          /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
-        '';
       };
     };
 }
