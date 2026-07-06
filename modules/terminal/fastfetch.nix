@@ -42,9 +42,10 @@
               keyColor = "34";
             }
             {
-              type = "packages";
+              type = "command";
               key = " ";
               keyColor = "34";
+              text = "size=$(nix path-info -Sh /run/current-system | awk '{print $2}') && echo \"$(nix-store -qR /run/current-system | wc -l | xargs) Paths, \${size}B\"";
             }
             {
               type = "shell";
