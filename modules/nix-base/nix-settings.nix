@@ -82,6 +82,22 @@ in
         direnv = prev.direnv.overrideAttrs (_old: {
           doCheck = false;
         });
+        # dix's test suite asserts store paths start with /nix/store or /tmp,
+        # but macOS's sandbox resolves TMPDIR through /private/tmp, tripping
+        # that assertion on every build. Doesn't affect the built binary.
+        # nixpkgs already skips 4 known-bad tests for this and sets TMPDIR,
+        # but that's incomplete here (11 more fail across other modules) —
+        # TODO: revisit (added 2026-07-06) once nixpkgs' dix packaging covers
+        # the rest, or report upstream to manic-systems/dix.
+        dix = prev.dix.overrideAttrs (_old: {
+          doCheck = false;
+        });
+        # test_read_text_file picks an arbitrary small file from /nix/store and
+        # asserts its contents don't contain "Error" — flaky, since real store
+        # content (e.g. minified JS) can legitimately contain that word.
+        mcp-nixos = prev.mcp-nixos.overrideAttrs (old: {
+          disabledTests = (old.disabledTests or [ ]) ++ [ "test_read_text_file" ];
+        });
       })
     ];
 
