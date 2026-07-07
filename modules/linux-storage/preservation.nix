@@ -131,6 +131,22 @@
 
             # Flatpak user app data
             ".var/app"
+
+            # OpenVR driver path registry — vrpathreg-registered drivers
+            # (ALVR, Space Calibrator) would need re-registering every boot otherwise
+            ".config/openvr"
+
+            # ALVR session.json (paired Quest client, ALVR settings)
+            ".config/alvr"
+
+            # Space Calibrator playspace calibration profiles
+            ".config/space-calibrator"
+
+            # OpenXR active runtime pointer (set via "Set as default" in SteamVR)
+            ".config/openxr"
+
+            # ADB USB-debugging trust keypair — avoids re-approving the Quest every boot
+            ".android"
           ];
           files = [
             {
