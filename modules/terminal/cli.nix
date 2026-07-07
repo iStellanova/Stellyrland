@@ -68,7 +68,6 @@ in
       // lib.optionalAttrs (host.class != "darwin") {
         # Sets the 'headless' specialisation as the default boot entry and reboots.
         reboot-headless = "sudo /run/current-system/specialisation/headless/bin/switch-to-configuration boot && sudo reboot";
-        # Restores the main system (GUI) as the default boot entry and reboots.
         reboot-gui = "sudo /nix/var/nix/profiles/system/bin/switch-to-configuration boot && sudo reboot";
       };
 

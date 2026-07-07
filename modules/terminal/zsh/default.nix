@@ -61,7 +61,6 @@ in
             fi
           '')
           ''
-            # Source your p10k config if it exists
             [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
             # Fix for fzf-tab and other completion-related plugins

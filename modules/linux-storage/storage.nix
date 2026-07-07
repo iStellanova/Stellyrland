@@ -32,10 +32,8 @@
       };
     };
 
-    # Post-rebuild snapshots for home and persist.
-    # Runs during nixos-rebuild activation after each successful rebuild.
-    # Timestamp captured once so home and persist share the same snapshot name.
-    # These are outside sanoid's naming convention and will not be auto-pruned.
+    # Post-rebuild snapshots for home and persist — runs during nixos-rebuild activation.
+    # Outside sanoid's naming convention and will not be auto-pruned.
     system.activationScripts.snapshot-after-rebuild = ''
       ts=$(${pkgs.coreutils}/bin/date +%s)
       ${pkgs.zfs}/bin/zfs snapshot "zroot/safe/home@rebuild-$ts" 2>/dev/null || true

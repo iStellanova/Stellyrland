@@ -30,18 +30,12 @@
       };
 
       config = {
-        # nix-darwin's own HTML manual build passes --toc-depth/--chunk-toc-depth
-        # to nixos-render-docs, flags current nixpkgs removed (replaced by
-        # --sidebar-depth). Confirmed still broken on nix-darwin's own master
-        # as of 2026-07-06, so this isn't a stale-pin issue on our end.
-        # darwin-uninstaller's own package (pkgs/darwin-uninstaller/default.nix)
-        # builds a second, independent nix-darwin system internally to generate
-        # its uninstall script, using a fresh module list that doesn't inherit
-        # documentation.enable=false below — it defaults back to true there and
-        # hits the same broken manual build, so it can't be reached from our
-        # config and has to stay disabled too.
-        # TODO: revisit (added 2026-07-06) once nix-darwin adapts its manual
-        # build to nixos-render-docs' new CLI — re-enable both options below.
+        # nix-darwin's HTML manual build uses --toc-depth flags that nixpkgs removed
+        # (replaced by --sidebar-depth); still broken on nix-darwin master as of 2026-07-06.
+        # darwin-uninstaller builds a second independent nix-darwin system internally to
+        # generate its uninstall script — that system inherits documentation.enable=true
+        # and hits the same broken build, so it must be disabled here too.
+        # TODO: revisit (2026-07-06) once nix-darwin adapts to nixos-render-docs' new CLI.
         documentation.enable = false;
         system.tools.darwin-uninstaller.enable = false;
 

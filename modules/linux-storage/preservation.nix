@@ -20,10 +20,8 @@
       # Returns /etc/nixos's pointer from the config project.
       "L+ /etc/nixos - - - - ${host.flakePath}"
 
-      # The @blank ZFS snapshot was taken before nixos-install ran, so the home
-      # dataset root reverts to root:root after every rollback. Preservation's
-      # tmpfiles creates subdirs fine (root can do that) but HM runs as the user
-      # and can't create ~/.cache etc. in a root-owned directory. Fix ownership.
+      # @blank was taken before nixos-install, so home reverts to root:root after rollback;
+      # fix ownership so HM can create ~/.cache etc. as the user.
       "d /home/${host.username} 0700 ${host.username} users -"
     ];
 
@@ -132,8 +130,7 @@
             # Flatpak user app data
             ".var/app"
 
-            # OpenVR driver path registry — vrpathreg-registered drivers
-            # (ALVR, Space Calibrator) would need re-registering every boot otherwise
+            # OpenVR driver path registry — ALVR/Space Calibrator need re-registering without this
             ".config/openvr"
 
             # ALVR session.json (paired Quest client, ALVR settings)

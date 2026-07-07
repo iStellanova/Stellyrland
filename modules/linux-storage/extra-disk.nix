@@ -4,8 +4,7 @@
   };
 
   sn.extra-disk.nixos = { host, ... }: {
-    # LUKS Decryption for Extra Disk (Sabrent SB-RKT4P-2TB nvme2n1)
-    # Automatically decrypted at boot stage 1 using systemd-cryptsetup and the TPM2 chip.
+    # Extra disk LUKS: TPM2 auto-decrypted at initrd stage 1.
     boot.initrd.luks.devices."cryptextra" = {
       device = "/dev/disk/by-partlabel/disk-extra-luks";
       allowDiscards = true;
@@ -15,10 +14,8 @@
       ];
     };
 
-    # Extra Storage: Sabrent SB-RKT4P-2TB (zextra pool, inside LUKS cryptextra)
-    # Mountpoint property is legacy; filesystem entry owns the actual mount.
-    # nofail ensures the system still boots if the drive is missing.
-    # x-gvfs options make the drive identifiable in the file manager.
+    # zextra pool (inside LUKS cryptextra); nofail boots cleanly if drive is missing;
+    # x-gvfs options make it visible and named in file managers.
     fileSystems."/ExtraDisk" = {
       device = "zextra/data";
       fsType = "zfs";

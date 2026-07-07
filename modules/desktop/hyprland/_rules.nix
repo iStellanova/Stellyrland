@@ -1,7 +1,7 @@
 _: {
   # Home Manager window/layer rules for Hyprland
   wayland.windowManager.hyprland.settings = {
-    # Mapped natively by Home Manager to hl.window_rule({...}) calls in Lua
+    # HM maps these to hl.window_rule({...}) Lua calls
     window_rule = [
       # System Dialogs
       {
@@ -151,7 +151,7 @@ _: {
       }
     ];
 
-    # Mapped natively by Home Manager to hl.layer_rule({...}) calls in Lua
+    # HM maps these to hl.layer_rule({...}) Lua calls
     layer_rule = [
       {
         match = {
