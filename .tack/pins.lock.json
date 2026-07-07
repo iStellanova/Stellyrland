@@ -96,11 +96,11 @@
     "type": "github"
   },
   "llm-agents": {
-    "lastModified": 1783411742,
-    "narHash": "sha256-orlNeEeHs3J7DpsDr5AaQ9NuHIBk7V1BnhmKarPXE2k=",
+    "lastModified": 1783418597,
+    "narHash": "sha256-5SsrT6yZgNuAcUBsb9Mtm3k87D6j17OnrkMuQA7/v70=",
     "owner": "numtide",
     "repo": "llm-agents.nix",
-    "rev": "57fba3d92024204e49b3724fd69c026a8f56e3a7",
+    "rev": "316b36987859a888facc5fc1508843dcbe323f61",
     "type": "github"
   },
   "my-assets": {
