@@ -9,22 +9,25 @@
 
   sn.vr.nixos =
     { pkgs, ... }:
+    let
+      # USB-only setup (no wireless streaming): the headset never touches the
+      # LAN, so there's no discovery step — `adb reverse` tunnels WiVRn's port
+      # over the cable and the launch intent points the client at localhost.
+      # Package id is org.meumeu.wivrn.github for GitHub-release sideloads,
+      # org.meumeu.wivrn for other sources.
+      wivrnUsbConnect = pkgs.writeShellScriptBin "wivrn-usb-connect" ''
+        set -euo pipefail
+        ${pkgs.android-tools}/bin/adb reverse tcp:9757 tcp:9757
+        ${pkgs.android-tools}/bin/adb shell am start -a android.intent.action.VIEW -d "wivrn+tcp://localhost" org.meumeu.wivrn.github
+      '';
+    in
     {
       # Valve/HTC udev rules for Index controllers and Vive trackers.
       # Base stations are not USB devices and need no udev rules.
       hardware.steam-hardware.enable = true;
 
-      # WiVRn's dashboard advertises itself over mDNS so the Quest client can
-      # find it without typing an IP in manually.
-      services.avahi = {
-        enable = true;
-        openFirewall = true;
-        publish.enable = true;
-      };
-
       services.wivrn = {
         enable = true;
-        openFirewall = true;
         # Default is off; without this the server never launches on its own.
         autoStart = true;
         # Whitelists xrizer/OpenComposite in openvrpaths.vrpath and lets
@@ -48,6 +51,7 @@
       environment.systemPackages = with pkgs; [
         android-tools
         motoc
+        wivrnUsbConnect
         # WiVRn only speaks OpenXR; OpenVR-only titles need one of these to
         # translate. Docs don't pick a winner between them, so keep both.
         xrizer
