@@ -11,14 +11,13 @@
     { pkgs, ... }:
     let
       # USB-only setup (no wireless streaming): the headset never touches the
-      # LAN, so there's no discovery step — `adb reverse` tunnels WiVRn's port
-      # over the cable and the launch intent points the client at localhost.
-      # Package id is org.meumeu.wivrn.github for GitHub-release sideloads,
-      # org.meumeu.wivrn for other sources.
+      # LAN, so there's no discovery step. This tunnel doesn't survive
+      # unplugging, so it needs re-running on every fresh USB connection —
+      # after that, open WiVRn on the headset and tap the saved "localhost"
+      # server entry.
       wivrnUsbConnect = pkgs.writeShellScriptBin "wivrn-usb-connect" ''
         set -euo pipefail
         ${pkgs.android-tools}/bin/adb reverse tcp:9757 tcp:9757
-        ${pkgs.android-tools}/bin/adb shell am start -a android.intent.action.VIEW -d "wivrn+tcp://localhost" org.meumeu.wivrn.github
       '';
     in
     {
