@@ -79,13 +79,7 @@ in
   sn.nix-settings.darwin = _: {
     nixpkgs.overlays = [
       (_final: prev: {
-        # dix tests assert store paths start with /nix/store or /tmp, but macOS's
-        # sandbox resolves TMPDIR through /private/tmp, tripping that assertion.
-        # nixpkgs skips 4 known-bad tests but 11 more fail here.
-        # TODO: revisit (2026-07-06) once nixpkgs' dix packaging covers the rest.
-        dix = prev.dix.overrideAttrs (_old: {
-          doCheck = false;
-        });
+
         # test_read_text_file picks an arbitrary small file from /nix/store and
         # asserts its contents don't contain "Error" — flaky, since real store
         # content (e.g. minified JS) can legitimately contain that word.
