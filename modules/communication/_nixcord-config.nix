@@ -1,6 +1,6 @@
 {
   enable = true;
-  discord.enable = false; # Disable default discord.
+  discord.enable = false; # using vesktop below instead
 
   vesktop = {
     enable = true;
@@ -159,8 +159,7 @@
     };
   };
 
-  # Plugins/settings nixcord has no typed option for yet: merged in as raw
-  # JSON, same shape Vencord's settings.json expects directly.
+  # No typed nixcord option yet; merged in as raw JSON matching Vencord's settings.json shape.
   vencordConfig = {
     plugins = {
       FriendsSince.enabled = true;

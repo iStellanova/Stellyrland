@@ -43,9 +43,8 @@
       "w /sys/bus/platform/drivers/amd_x3d_vcache/AMDI0101:00/amd_x3d_mode - - - - cache"
     ];
 
-    # AMDGPU initrd allows the kernel to load AMDGPU drivers early in the boot
-    # process — disabled here as it increases initrd size without benefit on
-    # this configuration.
+    # AMDGPU initrd loads GPU drivers early in boot — disabled here as the
+    # larger initrd size has no benefit on this configuration.
     hardware.amdgpu.initrd.enable = false;
   };
 }

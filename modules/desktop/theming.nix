@@ -86,8 +86,7 @@
             };
           };
 
-          # Qt theming — platformTheme intentionally omitted so HM doesn't set
-          # QT_QPA_PLATFORMTHEME; the Hyprland env var (gtk3) owns that.
+          # platformTheme omitted — Hyprland env (gtk3) owns QT_QPA_PLATFORMTHEME.
           # style.name = "kvantum" satisfies catppuccin.kvantum's assertStyle guard.
           qt = {
             enable = true;

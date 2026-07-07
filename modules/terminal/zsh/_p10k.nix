@@ -104,7 +104,7 @@ let
     POWERLEVEL9K_OS_ICON_FOREGROUND = 232;
     POWERLEVEL9K_OS_ICON_BACKGROUND = 7;
 
-    # Prompt char (not in prompt elements but settings kept for completeness)
+    # Prompt char (not in prompt elements; settings kept for reference)
     POWERLEVEL9K_PROMPT_CHAR_BACKGROUND = "";
     POWERLEVEL9K_PROMPT_CHAR_OK_VIINS_FOREGROUND = 76;
     POWERLEVEL9K_PROMPT_CHAR_OK_VICMD_FOREGROUND = 76;

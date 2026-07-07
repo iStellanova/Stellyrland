@@ -196,7 +196,7 @@
           pkgs.liquidctl
         ];
 
-        # using a systemd preStart script instead of environment.etc because coolercontrold needs a mutable config.
+        # preStart copies the config rather than environment.etc — coolercontrold needs a mutable file.
         systemd.services.coolercontrold.preStart = ''
           mkdir -p /etc/coolercontrol
           cp -f ${coolerConfig} /etc/coolercontrol/config.toml

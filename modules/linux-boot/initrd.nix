@@ -21,9 +21,8 @@
     # Systemd initrd is required for TPM2 auto-unlock and the rollback service.
     boot.initrd.systemd.enable = true;
 
-    # Allow root login in the initrd emergency shell (passwordless).
-    # Required because root is locked in the main system — without this,
-    # any initrd failure drops to an inaccessible shell.
+    # Passwordless root in initrd emergency shell — required because root is locked
+    # in the main system; without this, any initrd failure drops to an inaccessible shell.
     boot.initrd.systemd.emergencyAccess = true;
 
     # Tighter udev timeout for the initrd stage (fewer devices).

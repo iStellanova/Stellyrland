@@ -43,10 +43,10 @@
         {
           settings."org/gnome/nautilus/preferences" = {
             default-folder-viewer = "list-view";
-            # Tell nautilus migration already ran so it doesn't clobber the GTK4 key below
+            # Prevents nautilus from clobbering the GTK4 key on first run
             migrated-gtk-settings = true;
           };
-          # nautilus 50+ reads show-hidden from here; the old show-hidden-files key is deprecated/ignored
+          # nautilus 50+: show-hidden moved here; old show-hidden-files key is ignored
           settings."org/gtk/gtk4/settings/file-chooser" = {
             show-hidden = true;
           };

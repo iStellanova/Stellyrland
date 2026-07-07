@@ -11,9 +11,9 @@
 # TODO: Switch inputs.scroll-overview to yayuuu/hyprland-scroll-overview once that repo applies
 # the C++ fixes (Monitor.hpp path, workspace/scheduleFrame API changes).
 #
-# NOTE: pname override exists because upstream flake uses pname = "hyprland-scroll-overview" but
-# installs libscrolloverview.so — the HM module derives the load path from pname, causing a
-# mismatch. Remove the override if upstream fixes their flake.
+# NOTE: pname override: upstream uses pname = "hyprland-scroll-overview" but installs
+# libscrolloverview.so — HM derives the load path from pname, causing a mismatch.
+# Remove if upstream fixes their flake.
 {
   inputs,
   lib,

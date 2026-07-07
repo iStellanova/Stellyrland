@@ -79,13 +79,10 @@ in
   sn.nix-settings.darwin = _: {
     nixpkgs.overlays = [
       (_final: prev: {
-        # dix's test suite asserts store paths start with /nix/store or /tmp,
-        # but macOS's sandbox resolves TMPDIR through /private/tmp, tripping
-        # that assertion on every build. Doesn't affect the built binary.
-        # nixpkgs already skips 4 known-bad tests for this and sets TMPDIR,
-        # but that's incomplete here (11 more fail across other modules) —
-        # TODO: revisit (added 2026-07-06) once nixpkgs' dix packaging covers
-        # the rest, or report upstream to manic-systems/dix.
+        # dix tests assert store paths start with /nix/store or /tmp, but macOS's
+        # sandbox resolves TMPDIR through /private/tmp, tripping that assertion.
+        # nixpkgs skips 4 known-bad tests but 11 more fail here.
+        # TODO: revisit (2026-07-06) once nixpkgs' dix packaging covers the rest.
         dix = prev.dix.overrideAttrs (_old: {
           doCheck = false;
         });
@@ -104,9 +101,8 @@ in
   };
 
   sn.nix-settings.os = { pkgs, ... }: {
-    # Flake-only setup; nothing here uses angle-bracket <nixpkgs> lookups, and
-    # root never runs nix-channel, so the default search path just warns about
-    # a channels profile that doesn't exist.
+    # Flake-only setup; no angle-bracket nixpkgs lookups and root doesn't run
+    # nix-channel, so the default search path just warns about a nonexistent profile.
     nix.nixPath = [ ];
     nixpkgs.config.allowUnfree = true;
     nix.extraOptions = ''
