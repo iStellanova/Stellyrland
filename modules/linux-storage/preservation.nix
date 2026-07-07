@@ -130,16 +130,18 @@
             # Flatpak user app data
             ".var/app"
 
-            # OpenVR driver path registry — ALVR/Space Calibrator need re-registering without this
+            # OpenVR driver path registry — SteamVR reads this to find the
+            # xrizer/OpenComposite compat layer WiVRn's steam.enable whitelists here
             ".config/openvr"
 
-            # ALVR session.json (paired Quest client, ALVR settings)
-            ".config/alvr"
+            # WiVRn's known_keys.json (paired Quest trust list) and dashboard cookie —
+            # without this the Quest needs re-pairing on every boot
+            ".config/wivrn"
 
-            # Space Calibrator playspace calibration profiles
-            ".config/space-calibrator"
+            # motoc playspace calibration profiles (aligns lighthouse and headset tracking origins)
+            ".config/motoc"
 
-            # OpenXR active runtime pointer (set via "Set as default" in SteamVR)
+            # OpenXR active runtime pointer — selects WiVRn vs SteamVR's own runtime
             ".config/openxr"
 
             # ADB USB-debugging trust keypair — avoids re-approving the Quest every boot
