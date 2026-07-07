@@ -3,22 +3,20 @@
     includes = [ sn.ide-suite ];
   };
 
-  sn.ide-suite.nixos = { pkgs, ... }: {
+  sn.ide-suite.os = { pkgs, ... }: {
     environment.systemPackages = with pkgs; [
       jetbrains.clion
-      jetbrains.idea
       jetbrains.pycharm
     ];
   };
 
+  sn.ide-suite.nixos = { pkgs, ... }: {
+    environment.systemPackages = [ pkgs.jetbrains.idea ];
+  };
+
   sn.ide-suite.darwin = _: {
     homebrew.casks = [
-      "clion"
-      "intellij-idea-ce"
-      "pycharm-ce"
+      "intellij-idea"
     ];
-    homebrew.masApps = {
-      "Xcode" = 497799835;
-    };
   };
 }

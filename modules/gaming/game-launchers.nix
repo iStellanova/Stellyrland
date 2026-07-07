@@ -7,13 +7,14 @@
     environment.systemPackages = with pkgs; [
       mangohud
       goverlay
-      prismlauncher
       protonplus
       r2modman
     ];
   };
 
-  sn.game-launchers.darwin = _: {
-    homebrew.casks = [ "prismlauncher" ];
+  sn.game-launchers.os = { pkgs, ... }: {
+    environment.systemPackages = with pkgs; [
+      prismlauncher
+    ];
   };
 }

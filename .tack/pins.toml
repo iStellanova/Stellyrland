@@ -49,9 +49,6 @@ follows = { nixpkgs = "nixpkgs" }
 url = "github:numtide/llm-agents.nix"
 follows = { nixpkgs = "nixpkgs" }
 
-[inputs.mac-app-util]
-url = "github:hraban/mac-app-util"
-
 [inputs.my-assets]
 url = "github:iStellanova/Stellyrland/assets"
 type = "fetch"

@@ -4,9 +4,9 @@
   };
 
   sn.background-sounds.darwin = _: {
-    homebrew.masApps = {
-      "Noizio Lite" = 1481029536;
-    };
+    homebrew.casks = [
+      "blankie"
+    ];
   };
 
   sn.background-sounds.homeManager =
