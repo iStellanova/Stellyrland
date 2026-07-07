@@ -14,9 +14,19 @@
       # Base stations are not USB devices and need no udev rules.
       hardware.steam-hardware.enable = true;
 
+      # WiVRn's dashboard advertises itself over mDNS so the Quest client can
+      # find it without typing an IP in manually.
+      services.avahi = {
+        enable = true;
+        openFirewall = true;
+        publish.enable = true;
+      };
+
       services.wivrn = {
         enable = true;
         openFirewall = true;
+        # Default is off; without this the server never launches on its own.
+        autoStart = true;
         # Whitelists xrizer/OpenComposite in openvrpaths.vrpath and lets
         # Steam's sandboxed pressure-vessel runtime discover the WiVRn
         # OpenXR runtime (PRESSURE_VESSEL_IMPORT_OPENXR_1_RUNTIMES).
