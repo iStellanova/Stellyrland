@@ -30,14 +30,6 @@
       };
 
       config = {
-        # nix-darwin's HTML manual build uses --toc-depth flags that nixpkgs removed
-        # (replaced by --sidebar-depth); still broken on nix-darwin master as of 2026-07-06.
-        # darwin-uninstaller builds a second independent nix-darwin system internally to
-        # generate its uninstall script — that system inherits documentation.enable=true
-        # and hits the same broken build, so it must be disabled here too.
-        # TODO: revisit (2026-07-06) once nix-darwin adapts to nixos-render-docs' new CLI.
-        documentation.enable = false;
-        system.tools.darwin-uninstaller.enable = false;
 
         # Canonical zoneinfo path, not the "America/Indianapolis" legacy alias used on
         # the NixOS host — macOS's systemsetup only accepts the canonical form.
