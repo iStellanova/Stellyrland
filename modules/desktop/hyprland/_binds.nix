@@ -24,28 +24,26 @@ let
 
   mainMod = "SUPER";
 
-  # All binds whose dispatcher is a static hl.dsp.* expression.
-  # smw.* binds cannot go here — smw is a runtime require() value.
-  # Wallpaper engine reload bind is derived dynamically from osConfig below.
+  # Static hl.dsp.* dispatcher binds only; smw.* require runtime require() so go below. Wallpaper reload derived from osConfig.
   staticBinds = [
-    # --- Core Applications ---
+    # Core Applications
     (bind "${mainMod} + Q" "hl.dsp.exec_cmd(\"kitty\")")
     (bind "${mainMod} + E" "hl.dsp.exec_cmd(\"nautilus --new-window\")")
     (bind "${mainMod} + B" "hl.dsp.exec_cmd(\"zen\")")
     (bind "${mainMod} + V" "hl.dsp.exec_cmd(\"zeditor\")")
 
-    # --- System & Session Management ---
+    # System & Session
     (bind "${mainMod} + SHIFT + L" "hl.dsp.exec_cmd(\"noctalia msg lock\")")
 
-    # --- Window Management ---
+    # Window Management
     (bind "${mainMod} + C" "hl.dsp.window.close()")
     (bind "ALT + F4" "hl.dsp.window.close()")
     (bind "${mainMod} + Z" "hl.dsp.window.float({ action = \"toggle\" })")
     (bind "${mainMod} + P" "hl.dsp.layout(\"promote\")")
     (bind "ALT + Return" "hl.dsp.window.fullscreen()")
-    (bind "${mainMod} + G" "hl.dsp.window.move({ workspace = \"+0\" })") # pin window to active workspace (movetoworkspace +0)
+    (bind "${mainMod} + G" "hl.dsp.window.move({ workspace = \"+0\" })") # +0 pins to current workspace
 
-    # --- Focus & Navigation ---
+    # Focus & Navigation
     (bind "${mainMod} + A" "hl.dsp.layout(\"focus l\")")
     (bind "${mainMod} + D" "hl.dsp.layout(\"focus r\")")
     (bind "${mainMod} + H" "hl.dsp.layout(\"focus l\")")
@@ -57,24 +55,24 @@ let
     (bind "${mainMod} + CTRL + up" "hl.dsp.layout(\"focus u\")")
     (bind "${mainMod} + CTRL + down" "hl.dsp.layout(\"focus d\")")
 
-    # --- Special Workspaces (Scratchpads) ---
+    # Special Workspaces (Scratchpads)
     (bind "${mainMod} + SHIFT + S" "hl.dsp.window.move({ workspace = \"special:magic\" })")
 
-    # --- Noctalia Integration ---
+    # Noctalia Integration
     (bind "${mainMod} + ALT + R" "hl.dsp.exec_cmd(\"systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP DISPLAY && systemctl --user restart noctalia\")")
     (bind "${mainMod} + SHIFT + Tab" "hl.dsp.exec_cmd(\"noctalia msg panel-toggle wallpaper\")")
     (bind "${mainMod} + SHIFT + X" "hl.dsp.exec_cmd(\"noctalia msg panel-toggle session\")")
 
-    # --- Utilities ---
+    # Utilities
     (bind "Print" "hl.dsp.exec_cmd(\"noctalia msg screenshot-region\")")
     (bind "SHIFT + Print" "hl.dsp.exec_cmd(\"noctalia msg screenshot-fullscreen\")")
     (bind "${mainMod} + SHIFT + R" "hl.dsp.exec_cmd(\"pkill -SIGUSR1 gpu-screen-rec\")")
 
-    # --- Mouse Scroll Binds (non-smw) ---
+    # Mouse Scroll (non-smw)
     (bind "ALT + mouse_down" "hl.dsp.layout(\"move +200\")")
     (bind "ALT + mouse_up" "hl.dsp.layout(\"move -200\")")
 
-    # --- Repeating Window Resize ---
+    # Repeating Window Resize
     (bindOpts "${mainMod} + ALT + right" "hl.dsp.window.resize({ x = 50,  y = 0,   relative = true })"
       "{ repeating = true }"
     )
@@ -88,11 +86,11 @@ let
       "{ repeating = true }"
     )
 
-    # --- Mouse Drag/Resize ---
+    # Mouse Drag/Resize
     (bindOpts "${mainMod} + mouse:272" "hl.dsp.window.drag()" "{ mouse = true }")
     (bindOpts "${mainMod} + mouse:273" "hl.dsp.window.resize()" "{ mouse = true }")
 
-    # --- Noctalia Launcher (release bind) ---
+    # Noctalia Launcher (release bind)
     (bindOpts "${mainMod} + Super_L" "hl.dsp.exec_cmd(\"noctalia msg panel-toggle launcher\")"
       "{ release = true }"
     )
@@ -123,7 +121,7 @@ in
 
     local mainMod = "SUPER"
 
-    -- Workspace switching (scan codes for layout independence)
+    -- Workspace switching (scan codes for layout-independence)
     hl.bind(mainMod .. " + code:10",  hs.dsp.focus({ workspace = 1 }))
     hl.bind(mainMod .. " + code:11",  hs.dsp.focus({ workspace = 2 }))
     hl.bind(mainMod .. " + code:12",  hs.dsp.focus({ workspace = 3 }))
@@ -137,7 +135,7 @@ in
     hl.bind(mainMod .. " + code:20",  hs.dsp.focus({ workspace = 11 }))
     hl.bind(mainMod .. " + code:21",  hs.dsp.focus({ workspace = 12 }))
 
-    -- Move window to workspace silently
+    -- Move window to workspace silently (no follow)
     hl.bind(mainMod .. " + SHIFT + 1",       hs.dsp.window.move({ workspace = 1,  follow = false }))
     hl.bind(mainMod .. " + SHIFT + 2",       hs.dsp.window.move({ workspace = 2,  follow = false }))
     hl.bind(mainMod .. " + SHIFT + 3",       hs.dsp.window.move({ workspace = 3,  follow = false }))
@@ -151,7 +149,7 @@ in
     hl.bind(mainMod .. " + SHIFT + code:20", hs.dsp.window.move({ workspace = 11, follow = false }))
     hl.bind(mainMod .. " + SHIFT + code:21", hs.dsp.window.move({ workspace = 12, follow = false }))
 
-    -- Cycle and navigate workspaces (non-wrapping; use r+1/r-1 to wrap)
+    -- Navigate workspaces (non-wrapping)
     hl.bind(mainMod .. " + left",         hs.dsp.focus({ workspace = "-1" }))
     hl.bind(mainMod .. " + right",        hs.dsp.focus({ workspace = "+1" }))
     hl.bind(mainMod .. " + W",            hs.dsp.focus({ workspace = "-1" }))

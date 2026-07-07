@@ -12,13 +12,9 @@
     let
       spaceCalibrator = pkgs.stdenv.mkDerivation {
         pname = "openvr-space-calibrator-linux";
-        # Tried pinning this via flake-file/tack instead of a hardcoded rev+hash
-        # (see git history), but tack's submodule handling computes a NAR hash
-        # that doesn't match what `fetchTree` resolves at build time for this
-        # repo's `lib/imgui` submodule -- a real mismatch, not a caching fluke.
-        # Falling back to a plain fetchFromGitHub pin until that's sorted upstream.
-        # No releases/tags exist; this is the latest commit as of 2026-07-07.
-        # Check for updates: space-calibrator-check-updates
+        # fetchFromGitHub pin: tack/submodule handling causes a NAR-hash mismatch
+        # for this repo's lib/imgui submodule (real mismatch, not a caching fluke).
+        # No releases/tags; latest commit as of 2026-07-07. Check: space-calibrator-check-updates
         version = "unstable-2025-12-03";
 
         src = pkgs.fetchFromGitHub {
@@ -115,9 +111,8 @@
       '';
     in
     {
-      # Valve/HTC udev rules for Index controllers and Vive trackers (their USB
-      # dongles). Base stations aren't USB devices -- they just power on and
-      # sync with each other, no udev rules needed.
+      # Valve/HTC udev rules for Index controllers and Vive trackers.
+      # Base stations are not USB devices and need no udev rules.
       hardware.steam-hardware.enable = true;
       programs.alvr = {
         enable = true;
@@ -132,8 +127,8 @@
     };
 
   sn.vr.homeManager =
-    { lib, ... }:
-    {
+    { pkgs, lib, ... }:
+    lib.mkIf pkgs.stdenv.isLinux {
       home.activation.seedAlvrSession = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
         sessionFile="$HOME/.config/alvr/session.json"
         if [ ! -e "$sessionFile" ]; then

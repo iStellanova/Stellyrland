@@ -63,7 +63,7 @@
 
             /* 1. Tint the entire window frame (sidebar, gap, and chrome) for a uniform glass look. */
             :root, #main-window {
-              background-color: rgba(36, 39, 58, 0.6) !important; /* Catppuccin Macchiato Base with glass transparency */
+              background-color: rgba(36, 39, 58, 0.6) !important;
             }
 
             /* 2. Make all wrappers, sidebar, and content chrome transparent so they inherit the window tint without double-layering. */

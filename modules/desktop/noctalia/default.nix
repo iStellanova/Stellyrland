@@ -197,7 +197,7 @@
               show_when_idle = true;
               width = 150.0;
             };
-            # Clock formatted WKDY, DD/MM 12HR AM/PM
+            # Clock format: Wkdy, Mon DD 12hr am/pm
             clock.format = "{:%a, %b %d %I:%M %p}";
             cpu.display = "graph";
             launcher = {
@@ -208,7 +208,6 @@
               glyph = "brand-snowflake";
             };
 
-            # Center Media Widget
             media = {
               capsule = false;
               title_scroll = "on_hover";

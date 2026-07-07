@@ -31,12 +31,10 @@
           pkgs.sbctl
         ];
 
-        # systemd-boot is managed by lanzaboote, which wraps it to produce
-        # signed Unified Kernel Images on every nixos-rebuild. The stock
-        # systemd-boot module must be force-disabled to avoid conflicts.
-        # lanzaboote is disabled for initial install — its Rust stub must be built
-        # from source when not cached, which fails in the live USB environment.
-        # After first boot, run nixos-rebuild with secureBoot = true to switch.
+        # lanzaboote wraps systemd-boot to produce signed UKIs on every rebuild;
+        # the stock systemd-boot module must be force-disabled to avoid conflicts.
+        # Disabled for initial install (Rust stub builds from source, fails on live USB);
+        # run nixos-rebuild with secureBoot = true after first boot to switch.
         boot.loader.systemd-boot = {
           enable = lib.mkForce (!config.core.boot.secureBoot);
           configurationLimit = 15;

@@ -22,9 +22,8 @@
 
     services.scx = {
       enable = true;
-      # scx_lavd: deadline-based scheduler, preferred-core-aware via amd_pstate=active.
-      # Better than scx_rusty for the 9950X3D's asymmetric CCDs — keeps latency-sensitive
-      # threads (games) on CCD0 (V-Cache) and throughput work on CCD1 naturally.
+      # scx_lavd: deadline-based, preferred-core-aware (via amd_pstate=active).
+      # Keeps latency-sensitive threads (games) on CCD0 (V-Cache) and throughput on CCD1.
       scheduler = "scx_lavd";
     };
   };

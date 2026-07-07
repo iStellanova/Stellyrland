@@ -1,24 +1,15 @@
 _: {
   sn.openrgb.nixos = { pkgs, ... }: {
-    # Pinned to 1.0rc2: 1.0rc3 (current nixpkgs version) reliably segfaults on this
-    # host inside libusb_get_device_list a few seconds after start when run as root.
-    # Repro'd locally: same binary run as an unprivileged user doesn't crash, because
-    # it can't open /dev/i2c-* — the I2C DRAM detector never runs concurrently with
-    # the USB/libusb detector, so whatever race exists between them never fires.
-    # Not matched to an existing upstream report as of 2026-07-03; closest is
-    # https://gitlab.com/CalcProgrammer1/OpenRGB/-/issues/4373 (different trigger,
-    # EACCES-based, not this).
+    # Pinned to 1.0rc2: 1.0rc3 segfaults inside libusb_get_device_list when run as root
+    # (I2C DRAM detector races with the USB/libusb detector; doesn't repro as non-root
+    # since it can't open /dev/i2c-* so the race never fires).
     #
-    # Pulled whole from the last nixpkgs commit before the rc2->rc3 bump
-    # (63594d4, 2026-06-29) rather than overrideAttrs-ing just version/src on top
-    # of current nixpkgs: rebuilding rc2's source against current nixpkgs' Qt6
-    # toolchain fails in the local build sandbox (unrelated Qt/qmake issue), and
-    # this way openrgb, its plugins, and their shared deps (libusb, hidapi, qtbase)
-    # all come from one known-good, Hydra-built snapshot instead of being mixed.
+    # Pulled whole from nixpkgs@63594d4 (last commit before rc2→rc3 bump) rather than
+    # overrideAttrs-ing on current nixpkgs: rc2 source fails against current Qt6 toolchain,
+    # and this keeps openrgb, plugins, and shared deps from one Hydra-built snapshot.
     #
-    # TODO: unpin once fixed upstream. Before unpinning: check
-    # `nix eval nixpkgs#openrgb.version` — if it's past 1.0rc3, test whether the
-    # crash still reproduces before dropping this override.
+    # TODO: unpin once fixed upstream. Check `nix eval nixpkgs#openrgb.version`;
+    # if past 1.0rc3, verify the crash is gone before dropping this override.
     nixpkgs.overlays = [
       (
         final: _prev:
@@ -47,16 +38,11 @@ _: {
       motherboard = "amd";
     };
 
-    # Allow OpenRGB to access I2C for RAM control.
-    systemd.services.openrgb = {
-      serviceConfig = {
-        RestrictAddressFamilies = [
-          "AF_UNIX"
-          "AF_INET"
-          "AF_INET6"
-        ];
-      };
-    };
+    systemd.services.openrgb.serviceConfig.RestrictAddressFamilies = [
+      "AF_UNIX"
+      "AF_INET"
+      "AF_INET6"
+    ];
 
     # Enable I2C support (required for RAM control and CoolerControl)
     hardware.i2c.enable = true;
@@ -65,7 +51,7 @@ _: {
       "i2c-piix4"
     ];
 
-    # Make the optimized config available to the daemon in its state directory
+    # Link declarative config into the daemon's state directory.
     systemd.tmpfiles.rules = [
       "d /var/lib/OpenRGB 0755 root root -"
       "L+ /var/lib/OpenRGB/OpenRGB.json - - - - ${./OpenRGB.json}"
