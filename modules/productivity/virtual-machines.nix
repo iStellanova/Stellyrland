@@ -9,7 +9,7 @@
     users.users.${host.username}.extraGroups = [ "libvirtd" ];
   };
 
-  sn.virtual-machines.darwin = _: {
-    homebrew.casks = [ "utm" ];
+  sn.virtual-machines.darwin = { pkgs, ... }: {
+    environment.systemPackages = [ pkgs.utm ];
   };
 }

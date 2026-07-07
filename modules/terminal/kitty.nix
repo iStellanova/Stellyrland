@@ -3,6 +3,11 @@
     includes = [ sn.kitty ];
   };
 
+  # Registers kitty at the system level so nix-darwin's native app-linking
+  # picks it up (it's still installed via home-manager below for its config,
+  # same store path deduped by Nix).
+  sn.kitty.darwin = { pkgs, ... }: { environment.systemPackages = [ pkgs.kitty ]; };
+
   sn.kitty.homeManager =
     {
       lib,
