@@ -3,14 +3,10 @@
     includes = [ sn.school ];
   };
 
-  sn.school.nixos = { pkgs, ... }: {
-    environment.systemPackages = [ pkgs.zoom-us ];
-  };
-
-  sn.school.darwin = _: {
-    homebrew.casks = [ "zoom" ];
-    homebrew.masApps = {
-      "School Assistant" = 1465687472;
-    };
+  sn.school.os = { pkgs, ... }: {
+    environment.systemPackages = with pkgs; [
+      zoom-us
+      super-productivity
+    ];
   };
 }

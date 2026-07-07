@@ -9,7 +9,6 @@
       gimp
       obs-studio
       parabolic
-      losslesscut-bin
     ];
   };
 
@@ -17,7 +16,12 @@
     homebrew.casks = [
       "gimp"
       "obs"
-      "losslesscut"
+    ];
+  };
+
+  sn.media-editing.os = { pkgs, ... }: {
+    environment.systemPackages = with pkgs; [
+      losslesscut-bin
     ];
   };
 }

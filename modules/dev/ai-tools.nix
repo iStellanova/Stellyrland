@@ -29,7 +29,9 @@ in
   };
 
   sn.ai-tools.nixos = { pkgs, ... }: {
-    environment.systemPackages = [ pkgs.antigravity-fhs ];
+    environment.systemPackages = with pkgs; [
+      antigravity-fhs
+    ];
   };
 
   sn.ai-tools.darwin = _: {

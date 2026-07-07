@@ -1,20 +1,11 @@
 {
   sn,
-  inputs,
   lib,
   ...
 }:
 {
   sn.system = {
     includes = [ sn.darwindefs ];
-  };
-
-  # Deliberately not following our nixpkgs: mac-app-util pins an exact old
-  # nixpkgs revision because its Common Lisp/SBCL build (docktuil) is
-  # version-sensitive and breaks under a newer nixpkgs. Do not add
-  # `inputs.nixpkgs.follows` here.
-  flake-file.inputs.mac-app-util = {
-    url = "github:hraban/mac-app-util";
   };
 
   sn.darwindefs.darwin =
@@ -24,8 +15,6 @@
       ...
     }:
     {
-      imports = [ inputs.mac-app-util.darwinModules.default ];
-
       options.darwin.system.dockApps = lib.mkOption {
         type = lib.types.listOf lib.types.str;
         default = [
