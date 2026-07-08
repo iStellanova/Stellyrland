@@ -56,11 +56,11 @@
     "type": "github"
   },
   "home-manager": {
-    "lastModified": 1783458499,
-    "narHash": "sha256-a8whUXG4ThsZNjL92cH4wbl+/dt8CbT/F0zJsfhzFbM=",
+    "lastModified": 1783479733,
+    "narHash": "sha256-d/JatqgG+Pmo+IuCTZfnrEAPWU3fdha48GQeXuFO+bE=",
     "owner": "nix-community",
     "repo": "home-manager",
-    "rev": "53ebbdc405acc04acd9bb73ccca462b51ddb8c6d",
+    "rev": "cee3f0e7fec85d80c149c7afc29926747f7bd3c2",
     "type": "github"
   },
   "hyprland": {
@@ -96,11 +96,11 @@
     "type": "github"
   },
   "llm-agents": {
-    "lastModified": 1783463692,
-    "narHash": "sha256-scvxUgPdBRCqXSTSON2xq1MZ0CLCq2km84IeZEvM29M=",
+    "lastModified": 1783479835,
+    "narHash": "sha256-wAHU7Cz+VUJ8w6Vp3C8cCKI6MynJMA/GXWc7i1fajTw=",
     "owner": "numtide",
     "repo": "llm-agents.nix",
-    "rev": "08d37159b55b596aff4d60f290d7bd948e3dd928",
+    "rev": "4f77634d81be2fae4964a21cc539c784e8306ae5",
     "type": "github"
   },
   "my-assets": {
@@ -152,11 +152,11 @@
     "type": "github"
   },
   "noctalia-shell": {
-    "lastModified": 1783466378,
-    "narHash": "sha256-FQCeIGT5VTAJ0jiBB74mr9zmypcYG3f9wi4YQiUichE=",
+    "lastModified": 1783475899,
+    "narHash": "sha256-mj7b2eTuSlJPcIgl3SHMJ7GsQ6bBiIhNaLSWoxnPNXw=",
     "owner": "noctalia-dev",
     "repo": "noctalia",
-    "rev": "b51fa87dc3b61fee71747b719b32942f52253c7f",
+    "rev": "099312d33ff36f8738fcac9df6c034e6c8289b9b",
     "type": "github"
   },
   "preservation": {
