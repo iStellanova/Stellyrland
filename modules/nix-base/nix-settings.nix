@@ -99,6 +99,8 @@ in
     # nix-channel, so the default search path just warns about a nonexistent profile.
     nix.nixPath = [ ];
     nixpkgs.config.allowUnfree = true;
+    # /etc/nix/access-tokens.conf is provisioned out-of-band (not managed by this repo);
+    # Nix's !include silently no-ops if it's missing, so this is safe on hosts without it.
     nix.extraOptions = ''
       !include /etc/nix/access-tokens.conf
     '';

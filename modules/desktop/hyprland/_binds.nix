@@ -157,8 +157,6 @@ in
     hl.bind(mainMod .. " + bracketleft",  hs.dsp.focus({ workspace = "-1" }))
     hl.bind(mainMod .. " + bracketright", hs.dsp.focus({ workspace = "+1" }))
     hl.bind(mainMod .. " + up",           hs.dsp.focus({ workspace = "m+1" }))
-    hl.bind(mainMod .. " + down",         hs.dsp.focus({ workspace = "empty" }))
-    hl.bind(mainMod .. " + grave",        hs.dsp.focus({ workspace = "empty" }))
     hl.bind(mainMod .. " + SHIFT + G",    hs.dsp.grab_rogue_windows())
 
     -- Mouse scroll workspace navigation

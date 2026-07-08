@@ -6,7 +6,7 @@ _: {
       # System Dialogs
       {
         match = {
-          class = "^(xdg-desktop-portal-gtk)$";
+          class = "^([Xx]dg-desktop-portal-gtk)$";
         };
         float = true;
         center = true;
@@ -14,12 +14,6 @@ _: {
         opacity = "1.0 override";
         no_shadow = true;
         no_blur = true;
-      }
-      {
-        match = {
-          class = "^(Xdg-desktop-portal-gtk)$";
-        };
-        opacity = "1.0 override";
       }
       {
         match = {
