@@ -4,7 +4,6 @@
 .past-context/
 result
 .antigravitycli/
-openapi_letta.json
 .dev/*
 .dev/
 test.nix
