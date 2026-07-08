@@ -65,6 +65,8 @@
           auto_switch_profiles = false;
         };
         yamlFile = (pkgs.formats.yaml { }).generate "lact-config.yaml" configData;
+        # pkgs.formats.yaml quotes numeric map keys (e.g. the fan curve's "45":); LACT's
+        # parser requires them unquoted, so strip the quotes back out post-generation.
         lactConfig = pkgs.runCommand "lact-config.yaml" { } ''
           sed "s/'\([0-9]*\)':/\1:/g" ${yamlFile} > $out
         '';

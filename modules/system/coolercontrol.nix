@@ -24,6 +24,8 @@
             ''
           else
             "";
+        # LACT owns the discrete GPU's fan curve when enabled; otherwise CoolerControl picks it up.
+        gpuDisabled = if host.features.lact then "true" else "false";
         coolerConfig = pkgs.writeText "coolercontrol-config.toml" ''
           # ==============================================================================
           # CoolerControl Configuration - Managed by NixOS
@@ -130,13 +132,13 @@
           name = "AMD Ryzen 9 9950X3D 16-Core Processor"
           disable = false
 
-          # --- GPU Conflict Prevention (Disabled here to allow LACT to manage the GPU) ---
+          # --- GPU Conflict Prevention (disabled here whenever LACT is set to manage the GPU) ---
           [settings.97910386cac9bfce54b2c224e4aaef42cd953440cb57f1ff5ff46ac183bf338e]
           name = "Navi 31 [Radeon RX 7900 XT/7900 XTX/7900 GRE/7900M]"
-          disable = true
+          disable = ${gpuDisabled}
 
           [settings.97910386cac9bfce54b2c224e4aaef42cd953440cb57f1ff5ff46ac183bf338e.channel_settings]
-          fan1 = { label = "Fan1", disabled = true }
+          fan1 = { label = "Fan1", disabled = ${gpuDisabled} }
 
           [settings.2af841828b301922fd91182ee0564e731459a8484a61fe4209d9d91e3315d184]
           name = "Granite Ridge [Radeon Graphics]"
