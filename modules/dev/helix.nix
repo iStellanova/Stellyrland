@@ -21,6 +21,7 @@
         };
 
         settings = {
+          # mkForce so the transparent variant always wins over any HM/theme-module default.
           theme = lib.mkForce "catppuccin_macchiato_transparent";
 
           editor = {
