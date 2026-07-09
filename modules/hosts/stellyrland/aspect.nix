@@ -45,6 +45,7 @@
         "DP-2"
         "DP-3"
       ];
+      desktop.hyprland.hyprsplit.numWorkspaces = 7;
 
       desktop.noctalia.primaryMonitor = "DP-2";
       desktop.noctalia.secondaryMonitor = "DP-3";

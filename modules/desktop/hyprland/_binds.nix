@@ -96,6 +96,18 @@ let
     )
   ];
 
+  workspaceNumbers = lib.range 1 12;
+  scanCode = wsnum: "code:${toString (9 + wsnum)}";
+  moveKey = wsnum: if wsnum <= 9 then toString wsnum else if wsnum == 10 then "0" else scanCode wsnum;
+  workspaceBind = wsnum: "SHIFT + ${moveKey wsnum}";
+
+  workspaceFocusBinds = lib.concatMapStringsSep "\n" (
+    wsnum: "    hl.bind(mainMod .. \" + ${scanCode wsnum}\", hs.dsp.focus({ workspace = ${toString wsnum} }))"
+  ) workspaceNumbers;
+  workspaceMoveBinds = lib.concatMapStringsSep "\n" (
+    wsnum: "    hl.bind(mainMod .. \" + ${workspaceBind wsnum}\", hs.dsp.window.move({ workspace = ${toString wsnum}, follow = false }))"
+  ) workspaceNumbers;
+
   we = osConfig.desktop.hyprland.wallpaperEngine;
   screenRootFlags = lib.concatMapStringsSep " " (m: "--screen-root ${m}") we.screenRoots;
   hp = osConfig.desktop.hyprland.hyprsplit;
@@ -113,41 +125,19 @@ in
     package.path = package.path .. ";${hyprsplitLua}/share/?/init.lua"
     local hs = require("hyprsplit")
     hs.config({
-        num_workspaces        = 7,
+        num_workspaces        = ${toString hp.numWorkspaces},
         persistent_workspaces = true,
         force_monitor_priority = true,
     })
     ${monitorPriorityLua}
 
-    local mainMod = "SUPER"
+    local mainMod = "${mainMod}"
 
     -- Workspace switching (scan codes for layout-independence)
-    hl.bind(mainMod .. " + code:10",  hs.dsp.focus({ workspace = 1 }))
-    hl.bind(mainMod .. " + code:11",  hs.dsp.focus({ workspace = 2 }))
-    hl.bind(mainMod .. " + code:12",  hs.dsp.focus({ workspace = 3 }))
-    hl.bind(mainMod .. " + code:13",  hs.dsp.focus({ workspace = 4 }))
-    hl.bind(mainMod .. " + code:14",  hs.dsp.focus({ workspace = 5 }))
-    hl.bind(mainMod .. " + code:15",  hs.dsp.focus({ workspace = 6 }))
-    hl.bind(mainMod .. " + code:16",  hs.dsp.focus({ workspace = 7 }))
-    hl.bind(mainMod .. " + code:17",  hs.dsp.focus({ workspace = 8 }))
-    hl.bind(mainMod .. " + code:18",  hs.dsp.focus({ workspace = 9 }))
-    hl.bind(mainMod .. " + code:19",  hs.dsp.focus({ workspace = 10 }))
-    hl.bind(mainMod .. " + code:20",  hs.dsp.focus({ workspace = 11 }))
-    hl.bind(mainMod .. " + code:21",  hs.dsp.focus({ workspace = 12 }))
+${workspaceFocusBinds}
 
     -- Move window to workspace silently (no follow)
-    hl.bind(mainMod .. " + SHIFT + 1",       hs.dsp.window.move({ workspace = 1,  follow = false }))
-    hl.bind(mainMod .. " + SHIFT + 2",       hs.dsp.window.move({ workspace = 2,  follow = false }))
-    hl.bind(mainMod .. " + SHIFT + 3",       hs.dsp.window.move({ workspace = 3,  follow = false }))
-    hl.bind(mainMod .. " + SHIFT + 4",       hs.dsp.window.move({ workspace = 4,  follow = false }))
-    hl.bind(mainMod .. " + SHIFT + 5",       hs.dsp.window.move({ workspace = 5,  follow = false }))
-    hl.bind(mainMod .. " + SHIFT + 6",       hs.dsp.window.move({ workspace = 6,  follow = false }))
-    hl.bind(mainMod .. " + SHIFT + 7",       hs.dsp.window.move({ workspace = 7,  follow = false }))
-    hl.bind(mainMod .. " + SHIFT + 8",       hs.dsp.window.move({ workspace = 8,  follow = false }))
-    hl.bind(mainMod .. " + SHIFT + 9",       hs.dsp.window.move({ workspace = 9,  follow = false }))
-    hl.bind(mainMod .. " + SHIFT + 0",       hs.dsp.window.move({ workspace = 10, follow = false }))
-    hl.bind(mainMod .. " + SHIFT + code:20", hs.dsp.window.move({ workspace = 11, follow = false }))
-    hl.bind(mainMod .. " + SHIFT + code:21", hs.dsp.window.move({ workspace = 12, follow = false }))
+${workspaceMoveBinds}
 
     -- Navigate workspaces (non-wrapping)
     hl.bind(mainMod .. " + left",         hs.dsp.focus({ workspace = "-1" }))

@@ -60,6 +60,11 @@
           default = [ ];
           description = "Monitor output names in priority order for hyprsplit workspace assignment. Empty omits the priority call.";
         };
+        numWorkspaces = lib.mkOption {
+          type = lib.types.int;
+          default = 10;
+          description = "Number of workspaces hyprsplit creates per monitor.";
+        };
       };
     };
 
@@ -169,146 +174,33 @@
               ];
             };
 
-          env = [
+          env =
             {
-              _args = [
-                "HYPRCURSOR_THEME"
-                "Bibata-Modern-Ice"
-              ];
+              HYPRCURSOR_THEME = "Bibata-Modern-Ice";
+              HYPRCURSOR_SIZE = "16";
+              XCURSOR_THEME = "Bibata-Modern-Ice";
+              XCURSOR_SIZE = "16";
+              AQ_MGPU_NO_EXPLICIT = "1";
+              AQ_NO_MODIFIERS = "1";
+              GTK_THEME = "catppuccin-macchiato-sapphire-standard";
+              QT_QPA_PLATFORM = "wayland;xcb";
+              QT_QPA_PLATFORMTHEME = "gtk3";
+              QT_STYLE_OVERRIDE = "kvantum";
+              QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
+              GDK_SCALE = "1.0";
+              GTK_CSD = "0";
+              XDG_CURRENT_DESKTOP = "Hyprland";
+              XDG_SESSION_TYPE = "wayland";
+              XDG_SESSION_DESKTOP = "Hyprland";
+              MOZ_ENABLE_WAYLAND = "1";
+              ELECTRON_OZONE_PLATFORM_HINT = "auto";
+              OBS_USE_EGL = "1";
+              PROTON_ENABLE_WAYLAND = "1";
+              AMD_VULKAN_ICD = "RADV";
+              RADV_PERFTEST = "nggc";
+              VK_ICD_FILENAMES = "/run/opengl-driver/share/vulkan/icd.d/radeon_icd.x86_64.json:/run/opengl-driver-32/share/vulkan/icd.d/radeon_icd.i686.json";
             }
-            {
-              _args = [
-                "HYPRCURSOR_SIZE"
-                "16"
-              ];
-            }
-            {
-              _args = [
-                "XCURSOR_THEME"
-                "Bibata-Modern-Ice"
-              ];
-            }
-            {
-              _args = [
-                "XCURSOR_SIZE"
-                "16"
-              ];
-            }
-            {
-              _args = [
-                "AQ_MGPU_NO_EXPLICIT"
-                "1"
-              ];
-            }
-            {
-              _args = [
-                "AQ_NO_MODIFIERS"
-                "1"
-              ];
-            }
-            {
-              _args = [
-                "GTK_THEME"
-                "catppuccin-macchiato-sapphire-standard"
-              ];
-            }
-            {
-              _args = [
-                "QT_QPA_PLATFORM"
-                "wayland;xcb"
-              ];
-            }
-            {
-              _args = [
-                "QT_QPA_PLATFORMTHEME"
-                "gtk3"
-              ];
-            }
-            {
-              _args = [
-                "QT_STYLE_OVERRIDE"
-                "kvantum"
-              ];
-            }
-            {
-              _args = [
-                "QT_WAYLAND_DISABLE_WINDOWDECORATION"
-                "1"
-              ];
-            }
-            {
-              _args = [
-                "GDK_SCALE"
-                "1.0"
-              ];
-            }
-            {
-              _args = [
-                "GTK_CSD"
-                "0"
-              ];
-            }
-            {
-              _args = [
-                "XDG_CURRENT_DESKTOP"
-                "Hyprland"
-              ];
-            }
-            {
-              _args = [
-                "XDG_SESSION_TYPE"
-                "wayland"
-              ];
-            }
-            {
-              _args = [
-                "XDG_SESSION_DESKTOP"
-                "Hyprland"
-              ];
-            }
-            {
-              _args = [
-                "MOZ_ENABLE_WAYLAND"
-                "1"
-              ];
-            }
-            {
-              _args = [
-                "ELECTRON_OZONE_PLATFORM_HINT"
-                "auto"
-              ];
-            }
-            {
-              _args = [
-                "OBS_USE_EGL"
-                "1"
-              ];
-            }
-            {
-              _args = [
-                "PROTON_ENABLE_WAYLAND"
-                "1"
-              ];
-            }
-            {
-              _args = [
-                "AMD_VULKAN_ICD"
-                "RADV"
-              ];
-            }
-            {
-              _args = [
-                "RADV_PERFTEST"
-                "nggc"
-              ];
-            }
-            {
-              _args = [
-                "VK_ICD_FILENAMES"
-                "/run/opengl-driver/share/vulkan/icd.d/radeon_icd.x86_64.json:/run/opengl-driver-32/share/vulkan/icd.d/radeon_icd.i686.json"
-              ];
-            }
-          ];
+            |> lib.mapAttrsToList (name: value: { _args = [ name value ]; });
 
           config = {
             input = {
