@@ -1,19 +1,14 @@
-# SHELVED: scroll-overview plugin is unstable. The myamusashi fork is being actively
-# rebased — newer commits break against their own pinned Hyprland (missing AnimationManager.hpp).
-# The only known-working commit (bcd9eb9) was pinned manually; it's not in remote history anymore.
-# Holding Hyprland hostage to the plugin pin wasn't worth it given the fork instability.
+# Uses myamusashi/hyprland-scroll-overview (fork) — yayuuu's main repo hasn't merged the C++
+# fixes for current Hyprland APIs yet. Switch back to yayuuu once it does.
 #
-# To re-enable:
-#   1. In default.nix: uncomment the flake-file.inputs.scroll-overview block and re-add ./_overview.nix to imports
-#   2. Run: tack update scroll-overview  (find a commit that actually compiles)
-#   3. Remove Hyprland's independent pin if locking them together again
+# Hyprland plugins have no stable ABI across versions, so Hyprland is pinned via
+# inputs.scroll-overview.inputs.hyprland (see default.nix) rather than independently.
+# Building the plugin against a different Hyprland than its own pin fails with an
+# undefined symbol at plugin load.
 #
-# TODO: Switch inputs.scroll-overview to yayuuu/hyprland-scroll-overview once that repo applies
-# the C++ fixes (Monitor.hpp path, workspace/scheduleFrame API changes).
-#
-# NOTE: pname override: upstream uses pname = "hyprland-scroll-overview" but installs
-# libscrolloverview.so — HM derives the load path from pname, causing a mismatch.
-# Remove if upstream fixes their flake.
+# pname override: upstream flake sets pname = "hyprland-scroll-overview" but installs
+# libscrolloverview.so — the HM module derives the plugin's load path from pname, so
+# without this override it can't find the .so. Remove if upstream fixes their flake.
 {
   inputs,
   lib,

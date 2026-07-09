@@ -63,14 +63,6 @@
     "rev": "f4d01c1d87c7c2ec909549165d5a8338f1bd3315",
     "type": "github"
   },
-  "hyprland": {
-    "lastModified": 1783539707,
-    "narHash": "sha256-3kHnWiN3gr7te1BNqP/SepJj0C0OwFxB/k5QnSUW0P0=",
-    "owner": "hyprwm",
-    "repo": "Hyprland",
-    "rev": "9d284382a62433e8f94d6bcefe3762d4e6fec330",
-    "type": "github"
-  },
   "hyprsplit": {
     "lastModified": 1781205112,
     "narHash": "sha256-PaoUtmk+qIP/ESdxkxnY7mUMpMHjix88qu22R5GLQqE=",
@@ -152,11 +144,11 @@
     "type": "github"
   },
   "noctalia-shell": {
-    "lastModified": 1783547526,
-    "narHash": "sha256-FY8+x1FBd7ipU36ax6C2ca+t/xjcvH7he0oXECCpbVo=",
+    "lastModified": 1783552399,
+    "narHash": "sha256-u8xICSKh3kcfxeOvRJ2Hr97ICPN9UJkPCpsAKSxP1mk=",
     "owner": "noctalia-dev",
     "repo": "noctalia",
-    "rev": "0b91292d8e3998ce53948e046f3b37b004af9598",
+    "rev": "30ec6ef7fd487f642591ca2b8143beab78e27dc9",
     "type": "github"
   },
   "preservation": {
@@ -165,6 +157,14 @@
     "owner": "nix-community",
     "repo": "preservation",
     "rev": "93416f4614ad2dfed5b0dcf12f27e57d27a5ab11",
+    "type": "github"
+  },
+  "scroll-overview": {
+    "lastModified": 1783511866,
+    "narHash": "sha256-Y3hKxg+AfGMtZ7ymt3ifwGAa2N273upfJUykH0WVA2I=",
+    "owner": "myamusashi",
+    "repo": "hyprland-scroll-overview",
+    "rev": "da832136a6410cd1ad5f8a411d3d4c0b43d4d325",
     "type": "github"
   },
   "sidra": {
