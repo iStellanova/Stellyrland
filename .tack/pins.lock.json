@@ -191,6 +191,14 @@
     "rev": "95ddc34601dcded62dc5d3cba27a5d102136f542",
     "type": "github"
   },
+  "terminal-rain-lightning": {
+    "lastModified": 1777582357,
+    "narHash": "sha256-GJvGnvo78l4RK2Y9ACbqOXHLQkNtIwIktbm/FK1vOcc=",
+    "owner": "rmaake1",
+    "repo": "terminal-rain-lightning",
+    "rev": "cc3aa19e1e9aec628a608b0ca6b7c475cce98c05",
+    "type": "github"
+  },
   "treefmt-nix": {
     "lastModified": 1780220602,
     "narHash": "sha256-eynAfOmbmxJnkp7YewvCEbShNnnYJ9gLLqkzsYtBPeM=",
