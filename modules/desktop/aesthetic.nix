@@ -1,4 +1,8 @@
-{ sn, ... }:
+{
+  sn,
+  inputs,
+  ...
+}:
 let
   aestheticPkgs =
     pkgs: with pkgs; [
@@ -7,12 +11,7 @@ let
       (python3Packages.buildPythonApplication {
         pname = "terminal-rain-lightning";
         version = "0.1.0";
-        src = fetchFromGitHub {
-          owner = "rmaake1";
-          repo = "terminal-rain-lightning";
-          rev = "cc3aa19e1e9aec628a608b0ca6b7c475cce98c05";
-          hash = "sha256-GJvGnvo78l4RK2Y9ACbqOXHLQkNtIwIktbm/FK1vOcc=";
-        };
+        src = inputs.terminal-rain-lightning;
         pyproject = true;
         nativeBuildInputs = [
           python3Packages.setuptools
@@ -24,6 +23,11 @@ in
 {
   sn.desktop = {
     includes = [ sn.aesthetic ];
+  };
+
+  flake-file.inputs.terminal-rain-lightning = {
+    url = "github:rmaake1/terminal-rain-lightning";
+    flake = false;
   };
 
   sn.aesthetic.os = { pkgs, ... }: {

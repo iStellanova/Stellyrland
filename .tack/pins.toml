@@ -90,6 +90,10 @@ follows = { nixpkgs = "nixpkgs" }
 url = "github:manic-systems/tack"
 follows = { nixpkgs = "nixpkgs" }
 
+[inputs.terminal-rain-lightning]
+url = "github:rmaake1/terminal-rain-lightning"
+type = "fetch"
+
 [inputs.treefmt-nix]
 url = "github:numtide/treefmt-nix"
 follows = { nixpkgs = "nixpkgs" }
