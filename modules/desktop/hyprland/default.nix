@@ -200,7 +200,14 @@
               RADV_PERFTEST = "nggc";
               VK_ICD_FILENAMES = "/run/opengl-driver/share/vulkan/icd.d/radeon_icd.x86_64.json:/run/opengl-driver-32/share/vulkan/icd.d/radeon_icd.i686.json";
             }
-            |> lib.mapAttrsToList (name: value: { _args = [ name value ]; });
+            |> lib.mapAttrsToList (
+              name: value: {
+                _args = [
+                  name
+                  value
+                ];
+              }
+            );
 
           config = {
             input = {

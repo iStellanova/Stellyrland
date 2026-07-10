@@ -14,7 +14,14 @@ in
         easeOutExpo = "{ type = \"bezier\", points = { { 0.16, 1    }, { 0.3,  1    } } }";
         softAcDecel = "{ type = \"bezier\", points = { { 0.26, 0.26 }, { 0.15, 1    } } }";
       }
-      |> lib.mapAttrsToList (name: points: { _args = [ name (lua points) ]; });
+      |> lib.mapAttrsToList (
+        name: points: {
+          _args = [
+            name
+            (lua points)
+          ];
+        }
+      );
 
     animation = [
       {
