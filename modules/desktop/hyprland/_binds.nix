@@ -98,14 +98,23 @@ let
 
   workspaceNumbers = lib.range 1 12;
   scanCode = wsnum: "code:${toString (9 + wsnum)}";
-  moveKey = wsnum: if wsnum <= 9 then toString wsnum else if wsnum == 10 then "0" else scanCode wsnum;
+  moveKey =
+    wsnum:
+    if wsnum <= 9 then
+      toString wsnum
+    else if wsnum == 10 then
+      "0"
+    else
+      scanCode wsnum;
   workspaceBind = wsnum: "SHIFT + ${moveKey wsnum}";
 
   workspaceFocusBinds = lib.concatMapStringsSep "\n" (
-    wsnum: "    hl.bind(mainMod .. \" + ${scanCode wsnum}\", hs.dsp.focus({ workspace = ${toString wsnum} }))"
+    wsnum:
+    "    hl.bind(mainMod .. \" + ${scanCode wsnum}\", hs.dsp.focus({ workspace = ${toString wsnum} }))"
   ) workspaceNumbers;
   workspaceMoveBinds = lib.concatMapStringsSep "\n" (
-    wsnum: "    hl.bind(mainMod .. \" + ${workspaceBind wsnum}\", hs.dsp.window.move({ workspace = ${toString wsnum}, follow = false }))"
+    wsnum:
+    "    hl.bind(mainMod .. \" + ${workspaceBind wsnum}\", hs.dsp.window.move({ workspace = ${toString wsnum}, follow = false }))"
   ) workspaceNumbers;
 
   we = osConfig.desktop.hyprland.wallpaperEngine;
@@ -122,38 +131,38 @@ in
   wayland.windowManager.hyprland.settings.bind = staticBinds ++ wallpaperReloadBind;
 
   wayland.windowManager.hyprland.extraLuaFiles."hyprsplit-binds" = ''
-    package.path = package.path .. ";${hyprsplitLua}/share/?/init.lua"
-    local hs = require("hyprsplit")
-    hs.config({
-        num_workspaces        = ${toString hp.numWorkspaces},
-        persistent_workspaces = true,
-        force_monitor_priority = true,
-    })
-    ${monitorPriorityLua}
+        package.path = package.path .. ";${hyprsplitLua}/share/?/init.lua"
+        local hs = require("hyprsplit")
+        hs.config({
+            num_workspaces        = ${toString hp.numWorkspaces},
+            persistent_workspaces = true,
+            force_monitor_priority = true,
+        })
+        ${monitorPriorityLua}
 
-    local mainMod = "${mainMod}"
+        local mainMod = "${mainMod}"
 
-    -- Workspace switching (scan codes for layout-independence)
-${workspaceFocusBinds}
+        -- Workspace switching (scan codes for layout-independence)
+    ${workspaceFocusBinds}
 
-    -- Move window to workspace silently (no follow)
-${workspaceMoveBinds}
+        -- Move window to workspace silently (no follow)
+    ${workspaceMoveBinds}
 
-    -- Navigate workspaces (non-wrapping)
-    hl.bind(mainMod .. " + left",         hs.dsp.focus({ workspace = "-1" }))
-    hl.bind(mainMod .. " + right",        hs.dsp.focus({ workspace = "+1" }))
-    hl.bind(mainMod .. " + W",            hs.dsp.focus({ workspace = "-1" }))
-    hl.bind(mainMod .. " + S",            hs.dsp.focus({ workspace = "+1" }))
-    hl.bind(mainMod .. " + bracketleft",  hs.dsp.focus({ workspace = "-1" }))
-    hl.bind(mainMod .. " + bracketright", hs.dsp.focus({ workspace = "+1" }))
-    hl.bind(mainMod .. " + up",           hs.dsp.focus({ workspace = "m+1" }))
-    hl.bind(mainMod .. " + SHIFT + G",    hs.dsp.grab_rogue_windows())
+        -- Navigate workspaces (non-wrapping)
+        hl.bind(mainMod .. " + left",         hs.dsp.focus({ workspace = "-1" }))
+        hl.bind(mainMod .. " + right",        hs.dsp.focus({ workspace = "+1" }))
+        hl.bind(mainMod .. " + W",            hs.dsp.focus({ workspace = "-1" }))
+        hl.bind(mainMod .. " + S",            hs.dsp.focus({ workspace = "+1" }))
+        hl.bind(mainMod .. " + bracketleft",  hs.dsp.focus({ workspace = "-1" }))
+        hl.bind(mainMod .. " + bracketright", hs.dsp.focus({ workspace = "+1" }))
+        hl.bind(mainMod .. " + up",           hs.dsp.focus({ workspace = "m+1" }))
+        hl.bind(mainMod .. " + SHIFT + G",    hs.dsp.grab_rogue_windows())
 
-    -- Mouse scroll workspace navigation
-    hl.bind(mainMod .. " + mouse_down",   hs.dsp.focus({ workspace = "+1" }))
-    hl.bind(mainMod .. " + mouse_up",     hs.dsp.focus({ workspace = "-1" }))
+        -- Mouse scroll workspace navigation
+        hl.bind(mainMod .. " + mouse_down",   hs.dsp.focus({ workspace = "+1" }))
+        hl.bind(mainMod .. " + mouse_up",     hs.dsp.focus({ workspace = "-1" }))
 
-    -- Layout toggle: exec_cmd avoids IPC deadlock when querying active workspace
-    hl.bind(mainMod .. " + Space", hl.dsp.exec_cmd([[data=$(hyprctl activeworkspace -j); id=$(echo "$data" | grep '"id"' | head -1 | tr -dc '0-9'); layout=$(echo "$data" | grep tiledLayout | awk -F'"' '{print $4}'); [ "$layout" = "scrolling" ] && next=dwindle || next=scrolling; hyprctl eval "hl.workspace_rule({ workspace = '$id', layout = '$next' })"]]))
+        -- Layout toggle: exec_cmd avoids IPC deadlock when querying active workspace
+        hl.bind(mainMod .. " + Space", hl.dsp.exec_cmd([[data=$(hyprctl activeworkspace -j); id=$(echo "$data" | grep '"id"' | head -1 | tr -dc '0-9'); layout=$(echo "$data" | grep tiledLayout | awk -F'"' '{print $4}'); [ "$layout" = "scrolling" ] && next=dwindle || next=scrolling; hyprctl eval "hl.workspace_rule({ workspace = '$id', layout = '$next' })"]]))
   '';
 }
