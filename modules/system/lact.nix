@@ -34,7 +34,7 @@
         power_profile_mode_index = 0;
       };
       configData = {
-        version = 5;
+        version = 6;
         daemon = {
           log_level = "info";
           admin_group = "wheel";
