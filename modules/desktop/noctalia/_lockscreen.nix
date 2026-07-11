@@ -1,8 +1,4 @@
-{ osConfig, ... }:
-let
-  primary = osConfig.desktop.noctalia.primaryMonitor;
-  secondary = osConfig.desktop.noctalia.secondaryMonitor;
-in
+{ primary, secondary }:
 {
   programs.noctalia.settings = {
     lockscreen = {
