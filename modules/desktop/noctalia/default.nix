@@ -12,40 +12,24 @@
     url = "github:noctalia-dev/noctalia/cachix";
   };
 
-  sn.noctalia-shell.nixos = { lib, ... }: {
-    options.desktop.noctalia = {
-      primaryMonitor = lib.mkOption {
-        type = lib.types.str;
-        default = "";
-        description = "Primary monitor output name for Noctalia bar and notifications.";
-      };
-      secondaryMonitor = lib.mkOption {
-        type = lib.types.str;
-        default = "";
-        description = "Secondary monitor output name for Noctalia wallpaper sync.";
-      };
-    };
-
-    config = {
-      nix.settings.substituters = [ "https://noctalia.cachix.org" ];
-      nix.settings.trusted-public-keys = [
-        "noctalia.cachix.org-1:pCOR47nnMEo5thcxNDtzWpOxNFQsBRglJzxWPp3dkU4="
-      ];
-    };
+  sn.noctalia-shell.nixos = _: {
+    nix.settings.substituters = [ "https://noctalia.cachix.org" ];
+    nix.settings.trusted-public-keys = [
+      "noctalia.cachix.org-1:pCOR47nnMEo5thcxNDtzWpOxNFQsBRglJzxWPp3dkU4="
+    ];
   };
 
   sn.noctalia-shell.homeManager =
     {
       host,
-      osConfig,
       lib,
       ...
     }:
     let
       wallpaperDir = "${host.homeDir}/Pictures/wallpapers";
       defaultWallpaper = "${wallpaperDir}/wallpaper.png";
-      primary = osConfig.desktop.noctalia.primaryMonitor;
-      secondary = osConfig.desktop.noctalia.secondaryMonitor;
+      primary = if host.monitorPriority == [ ] then "" else lib.elemAt host.monitorPriority 0;
+      secondary = if lib.length host.monitorPriority < 2 then "" else lib.elemAt host.monitorPriority 1;
       monitorSections =
         lib.optionalString (
           primary != ""
@@ -55,7 +39,10 @@
         ) "[wallpaper.monitors.${secondary}]\npath = \"${defaultWallpaper}\"\n\n";
     in
     {
-      imports = [ inputs.noctalia-shell.homeModules.default ] ++ [ ./_lockscreen.nix ];
+      imports = [
+        inputs.noctalia-shell.homeModules.default
+        (import ./_lockscreen.nix { inherit primary secondary; })
+      ];
 
       home.file = lib.mkIf (host.dataPath != null) {
         "Pictures/wallpapers/wallpaper.png".source = "${host.dataPath}/wallpapers/wallpaper.png";

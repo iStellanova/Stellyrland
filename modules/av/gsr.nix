@@ -11,10 +11,13 @@
   sn.gsr.homeManager =
     {
       host,
-      osConfig,
+      lib,
       pkgs,
       ...
     }:
+    let
+      primary = if host.monitorPriority == [ ] then "" else lib.elemAt host.monitorPriority 0;
+    in
     {
       xdg.configFile."gpu-screen-recorder/config".text = ''
         main.advanced_view false
@@ -74,7 +77,7 @@
           ExecStartPre = "${pkgs.coreutils}/bin/mkdir -p %h/Videos/Replays";
           ExecStart = builtins.concatStringsSep " " [
             "${pkgs.gpu-screen-recorder}/bin/gpu-screen-recorder"
-            "-w ${osConfig.desktop.noctalia.primaryMonitor}"
+            "-w ${primary}"
             "-r 120"
             "-c mp4"
             "-k ${if host.features.hdr then "av1_hdr" else "av1"}"
