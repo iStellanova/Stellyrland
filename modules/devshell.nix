@@ -7,9 +7,9 @@ _: {
     }:
     {
       devShells.default = pkgs.mkShellNoCC {
-        packages = [
-          config.treefmt.build.wrapper
-          config.packages.write-tack
+        packages = with config; [
+          treefmt.build.wrapper
+          packages.write-tack
         ];
       };
     };
