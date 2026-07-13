@@ -1,9 +1,10 @@
-{ sn, ... }: {
-  sn.system = {
-    includes = [ sn.psswdmgr ];
-  };
-
-  sn.psswdmgr.os = { pkgs, ... }: {
+_:
+let
+  psswdmgrModule = { pkgs, ... }: {
     environment.systemPackages = [ pkgs.proton-pass ];
   };
+in
+{
+  flake.modules.nixos.psswdmgr = psswdmgrModule;
+  flake.modules.darwin.psswdmgr = psswdmgrModule;
 }

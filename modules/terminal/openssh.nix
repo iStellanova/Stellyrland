@@ -1,9 +1,5 @@
-{ sn, ... }: {
-  sn.terminal = {
-    includes = [ sn.openssh ];
-  };
-
-  sn.openssh.nixos = _: {
+_: {
+  flake.modules.nixos.openssh = _: {
     services.openssh = {
       enable = true;
       settings = {

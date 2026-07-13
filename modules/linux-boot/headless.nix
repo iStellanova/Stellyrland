@@ -1,9 +1,5 @@
-{ sn, ... }: {
-  sn.linux-boot = {
-    includes = [ sn.headless ];
-  };
-
-  sn.headless.nixos =
+_: {
+  flake.modules.nixos.headless =
     {
       config,
       lib,

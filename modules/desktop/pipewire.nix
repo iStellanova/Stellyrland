@@ -1,9 +1,5 @@
-{ sn, ... }: {
-  sn.desktop = {
-    includes = [ sn.pipewire ];
-  };
-
-  sn.pipewire.nixos = _: {
+_: {
+  flake.modules.nixos.pipewire = _: {
     security.rtkit.enable = true;
 
     services.pipewire = {

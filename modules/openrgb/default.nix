@@ -1,5 +1,5 @@
 _: {
-  sn.openrgb.nixos = { pkgs, ... }: {
+  flake.modules.nixos.openrgb = { pkgs, ... }: {
     # Pinned to 1.0rc2: 1.0rc3 segfaults inside libusb_get_device_list when run as root
     # (I2C DRAM detector races with the USB/libusb detector; doesn't repro as non-root
     # since it can't open /dev/i2c-* so the race never fires).
@@ -154,7 +154,7 @@ _: {
     };
   };
 
-  sn.openrgb.homeManager = _: {
+  flake.modules.homeManager.openrgb = _: {
     xdg.configFile."OpenRGB/OpenRGB.json".source = ./OpenRGB.json;
 
     programs.zsh.shellAliases = {

@@ -1,9 +1,5 @@
-{ sn, ... }: {
-  sn.system = {
-    includes = [ sn.lact ];
-  };
-
-  sn.lact.nixos =
+_: {
+  flake.modules.nixos.lact =
     { pkgs, ... }:
     let
       gpuId = "1002:744C-1EAE:7901-0000:03:00.0";

@@ -1,14 +1,10 @@
-{ sn, ... }: {
-  sn.desktop = { host, ... }: {
-    includes = if host.class == "darwin" then [ sn.hiro ] else [ ];
-  };
-
-  sn.hiro.darwin = _: {
+_: {
+  flake.modules.darwin.hiro = _: {
     homebrew.taps = [ "BarutSRB/tap" ];
     homebrew.casks = [ "BarutSRB/tap/omniwm" ];
   };
 
-  sn.hiro.homeManager = _: {
+  flake.modules.homeManager.hiro = _: {
     xdg.configFile."omniwm/settings.toml".text = ''
       monitorBarOverrides = []
       monitorDwindleOverrides = []

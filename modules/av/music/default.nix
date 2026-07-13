@@ -1,9 +1,5 @@
-{ sn, ... }: {
-  sn.av = {
-    includes = [ sn.music ];
-  };
-
-  sn.music.nixos = { config, ... }: {
+_: {
+  flake.modules.nixos.music = { config, ... }: {
     services.mpdscribble = {
       enable = true;
       endpoints."last.fm" = {
@@ -13,7 +9,7 @@
     };
   };
 
-  sn.music.homeManager =
+  flake.modules.homeManager.music =
     {
       pkgs,
       lib,

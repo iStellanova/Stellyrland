@@ -1,9 +1,5 @@
-{ sn, ... }: {
-  sn.terminal = {
-    includes = [ sn.fastfetch ];
-  };
-
-  sn.fastfetch.homeManager =
+_: {
+  flake.modules.homeManager.fastfetch =
     {
       host,
       lib,
@@ -31,28 +27,28 @@
             "break"
             {
               type = "os";
-              key = " ";
+              key = " ";
               keyColor = "34";
             }
             {
               type = "kernel";
-              key = " ";
+              key = " ";
               keyColor = "34";
             }
             {
               type = "command";
-              key = " ";
+              key = " ";
               keyColor = "34";
               text = "size=$(nix path-info -Sh /run/current-system | awk '{print $2}') && echo \"$(nix-store -qR /run/current-system | wc -l | xargs) Paths, \${size}B\"";
             }
             {
               type = "shell";
-              key = " ";
+              key = " ";
               keyColor = "34";
             }
             {
               type = "terminal";
-              key = " ";
+              key = " ";
               keyColor = "34";
             }
             {
@@ -62,7 +58,7 @@
             }
             {
               type = "wm";
-              key = " ";
+              key = " ";
               keyColor = "34";
             }
             {
@@ -72,12 +68,12 @@
             }
             {
               type = "cursor";
-              key = " ";
+              key = " ";
               keyColor = "34";
             }
             {
               type = "terminalfont";
-              key = " ";
+              key = " ";
               keyColor = "34";
             }
             {
@@ -102,13 +98,13 @@
             }
             {
               type = "uptime";
-              key = " ";
+              key = " ";
               keyColor = "34";
             }
             {
               type = "datetime";
               format = "{1}-{3}-{11}";
-              key = " ";
+              key = " ";
               keyColor = "34";
             }
             {

@@ -1,27 +1,38 @@
-{ sn, ... }: {
-  sn.av = {
-    includes = [ sn.media-editing ];
-  };
-
-  sn.media-editing.nixos = { pkgs, ... }: {
-    environment.systemPackages = with pkgs; [
-      davinci-resolve
-      gimp
-      obs-studio
-      parabolic
-    ];
-  };
-
-  sn.media-editing.darwin = _: {
-    homebrew.casks = [
-      "gimp"
-      "obs"
-    ];
-  };
-
-  sn.media-editing.os = { pkgs, ... }: {
+_:
+let
+  osShared = { pkgs, ... }: {
     environment.systemPackages = with pkgs; [
       losslesscut-bin
+    ];
+  };
+in
+{
+  flake.modules.nixos.media-editing = {
+    imports = [
+      osShared
+      (
+        { pkgs, ... }:
+        {
+          environment.systemPackages = with pkgs; [
+            davinci-resolve
+            gimp
+            obs-studio
+            parabolic
+          ];
+        }
+      )
+    ];
+  };
+
+  flake.modules.darwin.media-editing = {
+    imports = [
+      osShared
+      (_: {
+        homebrew.casks = [
+          "gimp"
+          "obs"
+        ];
+      })
     ];
   };
 }

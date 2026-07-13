@@ -1,9 +1,5 @@
-{ sn, ... }: {
-  sn.gaming = {
-    includes = [ sn.steam ];
-  };
-
-  sn.steam.nixos = { pkgs, ... }: {
+_: {
+  flake.modules.nixos.steam = { pkgs, ... }: {
     boot.kernelModules = [ "ntsync" ];
     boot.kernel.sysctl = {
       "vm.max_map_count" = 2147483642;
@@ -20,7 +16,7 @@
     };
   };
 
-  sn.steam.darwin = _: {
+  flake.modules.darwin.steam = _: {
     homebrew.casks = [ "steam" ];
   };
 }

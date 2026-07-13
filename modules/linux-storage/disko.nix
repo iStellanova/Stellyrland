@@ -1,19 +1,11 @@
+{ inputs, ... }:
 {
-  sn,
-  inputs,
-  ...
-}:
-{
-  sn.linux-storage = {
-    includes = [ sn.disko ];
-  };
-
   flake-file.inputs.disko = {
     url = "github:nix-community/disko";
     inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  sn.disko.nixos = { ... }: {
+  flake.modules.nixos.disko = { ... }: {
     imports = [ inputs.disko.nixosModules.disko ];
 
     disko.enableConfig = false;

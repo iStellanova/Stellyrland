@@ -1,15 +1,11 @@
-{ sn, ... }: {
-  sn.productivity = {
-    includes = [ sn.virtual-machines ];
-  };
-
-  sn.virtual-machines.nixos = { pkgs, host, ... }: {
+_: {
+  flake.modules.nixos.virtual-machines = { pkgs, host, ... }: {
     virtualisation.libvirtd.enable = true;
     environment.systemPackages = [ pkgs.virt-manager ];
     users.users.${host.username}.extraGroups = [ "libvirtd" ];
   };
 
-  sn.virtual-machines.darwin = { pkgs, ... }: {
+  flake.modules.darwin.virtual-machines = { pkgs, ... }: {
     environment.systemPackages = [ pkgs.utm ];
   };
 }

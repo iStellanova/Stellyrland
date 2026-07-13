@@ -1,17 +1,14 @@
-{ sn, ... }:
+_:
 let
   zshOsPkg = { pkgs, ... }: {
     environment.systemPackages = [ pkgs.zsh-completions ];
   };
 in
 {
-  sn.terminal = {
-    includes = [ sn.zsh ];
-  };
+  flake.modules.nixos.zsh = zshOsPkg;
+  flake.modules.darwin.zsh = zshOsPkg;
 
-  sn.zsh.os = zshOsPkg;
-
-  sn.zsh.homeManager =
+  flake.modules.homeManager.zsh =
     {
       pkgs,
       lib,

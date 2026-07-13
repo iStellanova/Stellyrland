@@ -1,20 +1,28 @@
-{ sn, ... }: {
-  sn.gaming = {
-    includes = [ sn.game-launchers ];
-  };
-
-  sn.game-launchers.nixos = { pkgs, ... }: {
-    environment.systemPackages = with pkgs; [
-      mangohud
-      goverlay
-      protonplus
-      r2modman
-    ];
-  };
-
-  sn.game-launchers.os = { pkgs, ... }: {
+_:
+let
+  osShared = { pkgs, ... }: {
     environment.systemPackages = with pkgs; [
       prismlauncher
     ];
   };
+in
+{
+  flake.modules.nixos.game-launchers = {
+    imports = [
+      osShared
+      (
+        { pkgs, ... }:
+        {
+          environment.systemPackages = with pkgs; [
+            mangohud
+            goverlay
+            protonplus
+            r2modman
+          ];
+        }
+      )
+    ];
+  };
+
+  flake.modules.darwin.game-launchers = osShared;
 }

@@ -1,28 +1,20 @@
 {
   inputs,
-  sn,
   lib,
   ...
 }:
 {
-  sn.desktop = { host, ... }: {
-    includes = if host.class == "nixos" then [ sn.hyprland ] else [ ];
-  };
-
-  # Hyprland follows scroll-overview's own flake input rather than being pinned independently —
-  # the plugin has no stable ABI across Hyprland versions, so it must be built against exactly
-  # the Hyprland it'll run inside. See _overview.nix for details.
   flake-file.inputs.hyprsplit = {
     url = "github:shezdy/hyprsplit";
     inputs.nixpkgs.follows = "nixpkgs";
   };
-  flake-file.inputs.scroll-overview = {
-    url = "github:myamusashi/hyprland-scroll-overview";
+  flake-file.inputs.hyprland = {
+    url = "github:hyprwm/Hyprland";
     inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  sn.hyprland.nixos = { pkgs, ... }: {
-    imports = [ inputs.scroll-overview.inputs.hyprland.nixosModules.default ];
+  flake.modules.nixos.hyprland = { pkgs, ... }: {
+    imports = [ inputs.hyprland.nixosModules.default ];
 
     options.desktop.hyprland = {
       monitors = lib.mkOption {
@@ -76,10 +68,9 @@
 
       programs.hyprland = {
         enable = true;
-        package =
-          inputs.scroll-overview.inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
+        package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
         portalPackage =
-          inputs.scroll-overview.inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
+          inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
       };
 
       environment.systemPackages = with pkgs; [
@@ -108,7 +99,7 @@
     };
   };
 
-  sn.hyprland.homeManager =
+  flake.modules.homeManager.hyprland =
     {
       pkgs,
       lib,
@@ -122,13 +113,12 @@
     in
     {
       imports = [
-        inputs.scroll-overview.inputs.hyprland.homeManagerModules.default
+        inputs.hyprland.homeManagerModules.default
       ]
       ++ [
         ./_animations.nix
         ./_binds.nix
         ./_cursor.nix
-        ./_overview.nix
         ./_rules.nix
       ];
 
@@ -147,8 +137,7 @@
       wayland.windowManager.hyprland = {
         enable = true;
         configType = "lua";
-        package =
-          inputs.scroll-overview.inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
+        package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
         xwayland.enable = true;
         systemd.enable = true;
         portalPackage = null;

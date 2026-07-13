@@ -1,13 +1,9 @@
-{ sn, ... }: {
-  sn.system = {
-    includes = [ sn.protonvpn ];
-  };
-
-  sn.protonvpn.nixos = { pkgs, ... }: {
+_: {
+  flake.modules.nixos.protonvpn = { pkgs, ... }: {
     environment.systemPackages = [ pkgs.proton-vpn ];
   };
 
-  sn.protonvpn.darwin = _: {
+  flake.modules.darwin.protonvpn = _: {
     homebrew.casks = [ "protonvpn" ];
   };
 }

@@ -1,14 +1,11 @@
-{ inputs, sn, ... }: {
-  sn.communication = {
-    includes = [ sn.discord ];
-  };
-
+{ inputs, ... }:
+{
   flake-file.inputs.nixcord = {
     url = "github:4evy/nixcord";
     inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  sn.discord.homeManager =
+  flake.modules.homeManager.discord =
     { pkgs, lib, ... }:
     {
       imports = [
@@ -19,7 +16,7 @@
       programs.nixcord = lib.mkIf pkgs.stdenv.isLinux (import ./_nixcord-config.nix);
     };
 
-  sn.discord.darwin =
+  flake.modules.darwin.discord =
     { host, ... }:
     {
       imports = [ inputs.nixcord.darwinModules.default ];

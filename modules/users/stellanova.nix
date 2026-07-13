@@ -1,21 +1,30 @@
-{ den, ... }: {
-  den.aspects.stellanova = {
-    includes = [
-      den.batteries.define-user
-      den.batteries.primary-user
-      (den.batteries.user-shell "zsh")
-      den.batteries.host-aspects
-    ];
-
-    homeManager =
-      {
-        host,
-        user,
-        ...
-      }:
-      {
-        home.username = user.name;
-        home.homeDirectory = host.homeDir;
+{
+  self,
+  lib,
+  ...
+}:
+{
+  flake.modules = lib.mkMerge [
+    (self.factory.user "stellanova" true)
+    {
+      nixos.stellanova = {
+        imports = [
+          self.modules.nixos.home-manager
+        ];
       };
-  };
+
+      darwin.stellanova = {
+        imports = [
+          self.modules.darwin.home-manager
+        ];
+      };
+
+      homeManager.stellanova =
+        { host, ... }:
+        {
+          home.homeDirectory = host.homeDir;
+          programs.zsh.enable = true;
+        };
+    }
+  ];
 }

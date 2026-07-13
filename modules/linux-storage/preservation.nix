@@ -1,19 +1,11 @@
+{ inputs, ... }:
 {
-  sn,
-  inputs,
-  ...
-}:
-{
-  sn.linux-storage = {
-    includes = [ sn.preservation ];
-  };
-
   flake-file.inputs.preservation = {
     url = "github:nix-community/preservation";
     inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  sn.preservation.nixos = { host, ... }: {
+  flake.modules.nixos.preservation = { host, ... }: {
     imports = [ inputs.preservation.nixosModules.preservation ];
 
     systemd.tmpfiles.rules = [

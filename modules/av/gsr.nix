@@ -1,14 +1,10 @@
-{ sn, ... }: {
-  sn.av = { host, ... }: {
-    includes = if host.class == "nixos" then [ sn.gsr ] else [ ];
-  };
-
-  sn.gsr.nixos = { pkgs, ... }: {
+_: {
+  flake.modules.nixos.gsr = { pkgs, ... }: {
     programs.gpu-screen-recorder.enable = true;
     environment.systemPackages = [ pkgs.gpu-screen-recorder-gtk ];
   };
 
-  sn.gsr.homeManager =
+  flake.modules.homeManager.gsr =
     {
       host,
       lib,

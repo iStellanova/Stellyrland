@@ -1,9 +1,5 @@
-{ sn, ... }: {
-  sn.dev = {
-    includes = [ sn.helix ];
-  };
-
-  sn.helix.homeManager =
+_: {
+  flake.modules.homeManager.helix =
     {
       host,
       pkgs,

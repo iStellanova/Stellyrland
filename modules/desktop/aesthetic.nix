@@ -1,8 +1,4 @@
-{
-  sn,
-  inputs,
-  ...
-}:
+{ inputs, ... }:
 let
   aestheticPkgs =
     pkgs: with pkgs; [
@@ -19,18 +15,16 @@ let
         ];
       })
     ];
+  osShared = { pkgs, ... }: {
+    environment.systemPackages = aestheticPkgs pkgs;
+  };
 in
 {
-  sn.desktop = {
-    includes = [ sn.aesthetic ];
-  };
-
   flake-file.inputs.terminal-rain-lightning = {
     url = "github:rmaake1/terminal-rain-lightning";
     flake = false;
   };
 
-  sn.aesthetic.os = { pkgs, ... }: {
-    environment.systemPackages = aestheticPkgs pkgs;
-  };
+  flake.modules.nixos.aesthetic = osShared;
+  flake.modules.darwin.aesthetic = osShared;
 }

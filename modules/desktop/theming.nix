@@ -1,19 +1,11 @@
+{ inputs, ... }:
 {
-  sn,
-  inputs,
-  ...
-}:
-{
-  sn.desktop = {
-    includes = [ sn.theming ];
-  };
-
   flake-file.inputs.catppuccin = {
     url = "github:catppuccin/nix";
     inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  sn.theming.nixos = { ... }: {
+  flake.modules.nixos.theming = { ... }: {
     imports = [ inputs.catppuccin.nixosModules.catppuccin ];
 
     catppuccin.enable = true;
@@ -42,7 +34,7 @@
     ];
   };
 
-  sn.theming.homeManager =
+  flake.modules.homeManager.theming =
     {
       pkgs,
       lib,

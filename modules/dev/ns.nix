@@ -1,9 +1,5 @@
-{ sn, ... }: {
-  sn.dev = {
-    includes = [ sn.ns ];
-  };
-
-  sn.ns.homeManager = { pkgs, ... }: {
+_: {
+  flake.modules.homeManager.ns = { pkgs, ... }: {
     home.packages = [
       (pkgs.writeShellApplication {
         name = "ns";
