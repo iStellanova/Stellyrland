@@ -147,9 +147,9 @@
     "type": "github",
     "owner": "noctalia-dev",
     "repo": "noctalia",
-    "rev": "985871ead24de1ecb04f48c6bb07fde7a1eee0a2",
-    "narHash": "sha256-Dt+qoe/acFreCJYuwqPpAxUWNvGlBuaxZzzdN1e8SaE=",
-    "lastModified": 1783912818
+    "rev": "680663a65375c29b225d5605b33285c93ae62d90",
+    "narHash": "sha256-UtF0HvGkASqNHi0M15TpGLEgsqq/F4WKSZUJz1wDz4s=",
+    "lastModified": 1783916491
   },
   "preservation": {
     "type": "github",
