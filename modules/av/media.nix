@@ -1,9 +1,5 @@
-{ sn, ... }: {
-  sn.av = {
-    includes = [ sn.media ];
-  };
-
-  sn.media.nixos = { pkgs, ... }: {
+_: {
+  flake.modules.nixos.media = { pkgs, ... }: {
     environment.systemPackages = with pkgs; [
       ffmpegthumbnailer
       imv
@@ -12,7 +8,7 @@
     ];
   };
 
-  sn.media.darwin =
+  flake.modules.darwin.media =
     { pkgs, ... }:
     {
       homebrew.casks = [
@@ -22,7 +18,7 @@
       environment.systemPackages = [ pkgs.mpv ];
     };
 
-  sn.media.homeManager =
+  flake.modules.homeManager.media =
     {
       pkgs,
       ...

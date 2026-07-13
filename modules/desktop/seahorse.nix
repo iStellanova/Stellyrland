@@ -1,9 +1,5 @@
-{ sn, ... }: {
-  sn.desktop = {
-    includes = [ sn.seahorse ];
-  };
-
-  sn.seahorse.nixos = _: {
+_: {
+  flake.modules.nixos.seahorse = _: {
     programs.seahorse.enable = true;
   };
 }

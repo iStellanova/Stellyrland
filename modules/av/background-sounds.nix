@@ -1,15 +1,11 @@
-{ sn, ... }: {
-  sn.av = {
-    includes = [ sn.background-sounds ];
-  };
-
-  sn.background-sounds.darwin = _: {
+_: {
+  flake.modules.darwin.background-sounds = _: {
     homebrew.casks = [
       "blankie"
     ];
   };
 
-  sn.background-sounds.homeManager =
+  flake.modules.homeManager.background-sounds =
     {
       pkgs,
       lib,

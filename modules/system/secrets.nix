@@ -1,19 +1,11 @@
+{ inputs, ... }:
 {
-  sn,
-  inputs,
-  ...
-}:
-{
-  sn.system = {
-    includes = [ sn.secrets ];
-  };
-
   flake-file.inputs.sops-nix = {
     url = "github:Mic92/sops-nix";
     inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  sn.secrets.nixos =
+  flake.modules.nixos.secrets =
     {
       host,
       config,
@@ -55,7 +47,7 @@
       };
     };
 
-  sn.secrets.darwin = { host, ... }: {
+  flake.modules.darwin.secrets = { host, ... }: {
     imports = [ inputs.sops-nix.darwinModules.sops ];
 
     sops.age.sshKeyPaths = [ "${host.homeDir}/.ssh/stellacode" ];

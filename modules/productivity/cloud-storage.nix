@@ -1,16 +1,12 @@
-{ sn, ... }: {
-  sn.productivity = {
-    includes = [ sn.cloud-storage ];
-  };
-
-  sn.cloud-storage.darwin = _: {
+_: {
+  flake.modules.darwin.cloud-storage = _: {
     homebrew.casks = [
       "proton-drive"
       "onedrive"
     ];
   };
 
-  sn.cloud-storage.homeManager = { pkgs, ... }: {
+  flake.modules.homeManager.cloud-storage = { pkgs, ... }: {
     home.packages = [ pkgs.rclone ];
   };
 }

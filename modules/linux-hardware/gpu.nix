@@ -1,9 +1,5 @@
-{ sn, ... }: {
-  sn.linux-hardware = {
-    includes = [ sn.gpu ];
-  };
-
-  sn.gpu.nixos = { pkgs, ... }: {
+_: {
+  flake.modules.nixos.gpu = { pkgs, ... }: {
     environment.systemPackages = [ pkgs.usbutils ];
 
     hardware.graphics = {

@@ -1,9 +1,5 @@
-{ sn, ... }: {
-  sn.system = {
-    includes = [ sn.users ];
-  };
-
-  sn.users.nixos = { host, ... }: {
+_: {
+  flake.modules.nixos.users = { host, ... }: {
     users.mutableUsers = false;
 
     users.users.${host.username} = {
@@ -21,7 +17,7 @@
     };
   };
 
-  sn.users.darwin = { host, ... }: {
+  flake.modules.darwin.users = { host, ... }: {
     users.users.${host.username} = {
       name = host.username;
       home = host.homeDir;

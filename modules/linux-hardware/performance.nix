@@ -1,9 +1,5 @@
-{ sn, ... }: {
-  sn.linux-hardware = {
-    includes = [ sn.performance ];
-  };
-
-  sn.performance.nixos = { pkgs, ... }: {
+_: {
+  flake.modules.nixos.performance = { pkgs, ... }: {
     zramSwap = {
       enable = true;
       algorithm = "zstd";

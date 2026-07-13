@@ -1,9 +1,5 @@
-{ sn, ... }: {
-  sn.terminal = {
-    includes = [ sn.btop ];
-  };
-
-  sn.btop.homeManager = _: {
+_: {
+  flake.modules.homeManager.btop = _: {
     programs.btop = {
       enable = true;
       settings = {

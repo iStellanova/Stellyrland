@@ -1,4 +1,4 @@
-{ sn, ... }:
+_:
 let
   fontPkgs =
     pkgs:
@@ -14,15 +14,11 @@ let
     ];
 in
 {
-  sn.desktop = {
-    includes = [ sn.fonts ];
-  };
-
-  sn.fonts.nixos = { pkgs, ... }: {
+  flake.modules.nixos.fonts = { pkgs, ... }: {
     fonts.packages = fontPkgs pkgs;
   };
 
-  sn.fonts.darwin = { pkgs, ... }: {
+  flake.modules.darwin.fonts = { pkgs, ... }: {
     fonts.packages = fontPkgs pkgs;
     homebrew.casks = [ "font-sf-pro" ];
   };

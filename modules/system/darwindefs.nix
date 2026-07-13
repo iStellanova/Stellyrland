@@ -1,14 +1,6 @@
+{ lib, ... }:
 {
-  sn,
-  lib,
-  ...
-}:
-{
-  sn.system = {
-    includes = [ sn.darwindefs ];
-  };
-
-  sn.darwindefs.darwin =
+  flake.modules.darwin.darwindefs =
     {
       host,
       config,

@@ -1,9 +1,5 @@
-{ sn, ... }: {
-  sn.desktop = {
-    includes = [ sn.nautilus ];
-  };
-
-  sn.nautilus.nixos =
+_: {
+  flake.modules.nixos.nautilus =
     {
       pkgs,
       lib,
@@ -54,7 +50,7 @@
       ];
     };
 
-  sn.nautilus.homeManager =
+  flake.modules.homeManager.nautilus =
     {
       host,
       pkgs,

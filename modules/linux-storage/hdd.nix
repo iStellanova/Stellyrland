@@ -1,9 +1,5 @@
-{ sn, ... }: {
-  sn.linux-storage = {
-    includes = [ sn.hdd ];
-  };
-
-  sn.hdd.nixos =
+_: {
+  flake.modules.nixos.hdd =
     {
       pkgs,
       config,

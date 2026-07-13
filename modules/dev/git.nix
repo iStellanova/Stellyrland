@@ -1,9 +1,5 @@
-{ sn, ... }: {
-  sn.dev = {
-    includes = [ sn.git ];
-  };
-
-  sn.git.homeManager =
+_: {
+  flake.modules.homeManager.git =
     { host, ... }:
     let
       sshKey = if host.class == "darwin" then "~/.ssh/stellacode" else "/run/secrets/stellacode";

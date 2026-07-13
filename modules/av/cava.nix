@@ -1,9 +1,5 @@
-{ sn, ... }: {
-  sn.av = {
-    includes = [ sn.cava ];
-  };
-
-  sn.cava.homeManager = { pkgs, ... }: {
+_: {
+  flake.modules.homeManager.cava = { pkgs, ... }: {
     programs.cava = {
       enable = true;
       settings = {

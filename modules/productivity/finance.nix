@@ -1,10 +1,6 @@
-{ sn, ... }: {
-  sn.productivity = {
-    includes = [ sn.finance ];
-  };
-
+_: {
   # No nixos stanza: Quicken is Mac/Windows-only, no supported Linux equivalent.
-  sn.finance.darwin = _: {
+  flake.modules.darwin.finance = _: {
     homebrew.casks = [ "quicken" ];
   };
 }

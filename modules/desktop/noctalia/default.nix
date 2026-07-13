@@ -1,25 +1,17 @@
+{ inputs, ... }:
 {
-  sn,
-  inputs,
-  ...
-}:
-{
-  sn.desktop = { host, ... }: {
-    includes = if host.class == "nixos" then [ sn.noctalia-shell ] else [ ];
-  };
-
   flake-file.inputs.noctalia-shell = {
     url = "github:noctalia-dev/noctalia/cachix";
   };
 
-  sn.noctalia-shell.nixos = _: {
+  flake.modules.nixos.noctalia-shell = _: {
     nix.settings.substituters = [ "https://noctalia.cachix.org" ];
     nix.settings.trusted-public-keys = [
       "noctalia.cachix.org-1:pCOR47nnMEo5thcxNDtzWpOxNFQsBRglJzxWPp3dkU4="
     ];
   };
 
-  sn.noctalia-shell.homeManager =
+  flake.modules.homeManager.noctalia-shell =
     {
       host,
       lib,

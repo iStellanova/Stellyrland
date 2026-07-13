@@ -1,9 +1,5 @@
-{ sn, ... }: {
-  sn.linux-storage = {
-    includes = [ sn.storage ];
-  };
-
-  sn.storage.nixos = { pkgs, ... }: {
+_: {
+  flake.modules.nixos.storage = { pkgs, ... }: {
     environment.systemPackages = with pkgs; [
       ntfs3g # Open source NTFS driver
     ];

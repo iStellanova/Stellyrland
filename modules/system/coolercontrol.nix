@@ -1,9 +1,5 @@
-{ sn, ... }: {
-  sn.system = {
-    includes = [ sn.coolercontrol ];
-  };
-
-  sn.coolercontrol.nixos =
+_: {
+  flake.modules.nixos.coolercontrol =
     {
       host,
       pkgs,

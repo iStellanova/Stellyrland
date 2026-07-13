@@ -1,19 +1,11 @@
+{ inputs, ... }:
 {
-  sn,
-  inputs,
-  ...
-}:
-{
-  sn.desktop = {
-    includes = [ sn.noctalia-greeter ];
-  };
-
   flake-file.inputs.noctalia-greeter = {
     url = "github:noctalia-dev/noctalia-greeter";
     inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  sn.noctalia-greeter.nixos = { ... }: {
+  flake.modules.nixos.noctalia-greeter = { ... }: {
     imports = [ inputs.noctalia-greeter.nixosModules.default ];
 
     programs.noctalia-greeter = {

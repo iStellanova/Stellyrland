@@ -1,9 +1,5 @@
-{ sn, ... }: {
-  sn.linux-storage = {
-    includes = [ sn.extra-disk ];
-  };
-
-  sn.extra-disk.nixos = { host, ... }: {
+_: {
+  flake.modules.nixos.extra-disk = { host, ... }: {
     # Extra disk LUKS: TPM2 auto-decrypted at initrd stage 1.
     boot.initrd.luks.devices."cryptextra" = {
       device = "/dev/disk/by-partlabel/disk-extra-luks";
