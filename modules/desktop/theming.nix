@@ -13,25 +13,6 @@
     catppuccin.flavor = "macchiato";
     catppuccin.accent = "sapphire";
     catppuccin.tty.enable = false;
-
-    nixpkgs.overlays = [
-      (final: prev: {
-        python3 = prev.python3.override {
-          packageOverrides = _: pyPrev: {
-            # TODO: revisit — catppuccin's optional matplotlib integration calls
-            # a matplotlib internal (mpl.style.core.read_style_directory) that
-            # was removed upstream, breaking this package's own test suite even
-            # though catppuccin-gtk (the only consumer here) never touches that
-            # codepath. Safe to drop once nixpkgs bumps catppuccin past this.
-            catppuccin = pyPrev.catppuccin.overrideAttrs (_: {
-              doCheck = false;
-              doInstallCheck = false;
-            });
-          };
-        };
-        python3Packages = final.python3.pkgs;
-      })
-    ];
   };
 
   flake.modules.homeManager.theming =
@@ -41,21 +22,10 @@
       ...
     }:
     let
-      catppuccinGtk =
-        (pkgs.catppuccin-gtk.override {
-          accents = [ "sapphire" ];
-          variant = "macchiato";
-        }).overrideAttrs
-          (old: {
-            # TODO: revisit — build.py's arg parser passes type=bool alongside
-            # argparse.BooleanOptionalAction, which Python 3.12+ rejects
-            # outright (previously silently ignored). The action already
-            # implies bool, so dropping type= changes nothing else. Safe to
-            # drop once nixpkgs bumps catppuccin-gtk past this.
-            postPatch = (old.postPatch or "") + ''
-              sed -i '/type=bool,/d' sources/build/args.py
-            '';
-          });
+      catppuccinGtk = pkgs.catppuccin-gtk.override {
+        accents = [ "sapphire" ];
+        variant = "macchiato";
+      };
     in
     {
       imports = [ inputs.catppuccin.homeModules.catppuccin ];
