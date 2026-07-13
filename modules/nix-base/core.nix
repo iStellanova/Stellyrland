@@ -1,9 +1,5 @@
-{ sn, ... }: {
-  sn.nix-base = {
-    includes = [ sn.core ];
-  };
-
-  sn.core.nixos = _: {
+_: {
+  flake.modules.nixos.core = _: {
     time.timeZone = "America/Indianapolis";
     i18n.defaultLocale = "en_US.UTF-8";
 
@@ -22,9 +18,8 @@
     };
   };
 
-  # home.username and homeDirectory are set in the stellanova user aspect.
-  # home.stateVersion is applied universally via den.default in schema.nix.
-  sn.core.homeManager = _: {
+  flake.modules.homeManager.core = _: {
     home.sessionPath = [ "$HOME/.local/state/nix/profiles/scratch/bin" ];
+    home.stateVersion = "25.11";
   };
 }

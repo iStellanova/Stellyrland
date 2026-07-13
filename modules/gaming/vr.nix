@@ -1,13 +1,5 @@
-{
-  sn,
-  ...
-}:
-{
-  sn.gaming = {
-    includes = [ sn.vr ];
-  };
-
-  sn.vr.nixos =
+_: {
+  flake.modules.nixos.vr =
     { pkgs, ... }:
     let
       # USB-only setup (no wireless streaming): the headset never touches the

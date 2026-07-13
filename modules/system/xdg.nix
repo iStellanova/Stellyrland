@@ -1,16 +1,12 @@
-{ sn, ... }: {
-  sn.system = {
-    includes = [ sn.xdg ];
-  };
-
-  sn.xdg.nixos = { pkgs, ... }: {
+_: {
+  flake.modules.nixos.xdg = { pkgs, ... }: {
     environment.systemPackages = with pkgs; [
       xdg-user-dirs
       xdg-utils
     ];
   };
 
-  sn.xdg.homeManager =
+  flake.modules.homeManager.xdg =
     {
       config,
       pkgs,

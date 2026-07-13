@@ -1,16 +1,8 @@
+{ inputs, ... }:
 {
-  sn,
-  inputs,
-  ...
-}:
-{
-  sn.linux-boot = {
-    includes = [ sn.kernel ];
-  };
-
   flake-file.inputs.cachyos-kernel.url = "github:xddxdd/nix-cachyos-kernel/release";
 
-  sn.kernel.nixos = { pkgs, ... }: {
+  flake.modules.nixos.kernel = { pkgs, ... }: {
     nixpkgs.overlays = [ inputs.cachyos-kernel.overlays.pinned ];
 
     nix.settings.substituters = [ "https://attic.xuyh0120.win/lantian" ];

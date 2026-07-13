@@ -1,22 +1,33 @@
-{ sn, ... }: {
-  sn.productivity = {
-    includes = [ sn.ide-suite ];
-  };
-
-  sn.ide-suite.os = { pkgs, ... }: {
+_:
+let
+  osShared = { pkgs, ... }: {
     environment.systemPackages = with pkgs; [
       jetbrains.clion
       jetbrains.pycharm
     ];
   };
-
-  sn.ide-suite.nixos = { pkgs, ... }: {
-    environment.systemPackages = [ pkgs.jetbrains.idea ];
+in
+{
+  flake.modules.nixos.ide-suite = {
+    imports = [
+      osShared
+      (
+        { pkgs, ... }:
+        {
+          environment.systemPackages = [ pkgs.jetbrains.idea ];
+        }
+      )
+    ];
   };
 
-  sn.ide-suite.darwin = _: {
-    homebrew.casks = [
-      "intellij-idea"
+  flake.modules.darwin.ide-suite = {
+    imports = [
+      osShared
+      (_: {
+        homebrew.casks = [
+          "intellij-idea"
+        ];
+      })
     ];
   };
 }

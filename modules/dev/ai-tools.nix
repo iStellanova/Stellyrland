@@ -1,8 +1,4 @@
-{
-  sn,
-  inputs,
-  ...
-}:
+{ inputs, ... }:
 let
   aiPkgs =
     pkgs:
@@ -13,31 +9,39 @@ let
       llm.claude-code
       llm.antigravity-cli
     ];
+  osShared = { pkgs, ... }: {
+    environment.systemPackages = aiPkgs pkgs ++ [ pkgs.mcp-nixos ];
+  };
 in
 {
-  sn.dev = {
-    includes = [ sn.ai-tools ];
-  };
-
   flake-file.inputs.llm-agents = {
     url = "github:numtide/llm-agents.nix";
     inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  sn.ai-tools.os = { pkgs, ... }: {
-    environment.systemPackages = aiPkgs pkgs ++ [ pkgs.mcp-nixos ];
-  };
-
-  sn.ai-tools.nixos = { pkgs, ... }: {
-    environment.systemPackages = with pkgs; [
-      antigravity-fhs
+  flake.modules.nixos.ai-tools = {
+    imports = [
+      osShared
+      (
+        { pkgs, ... }:
+        {
+          environment.systemPackages = with pkgs; [
+            antigravity-fhs
+          ];
+        }
+      )
     ];
   };
 
-  sn.ai-tools.darwin = _: {
-    homebrew.casks = [
-      "claude"
-      "antigravity"
+  flake.modules.darwin.ai-tools = {
+    imports = [
+      osShared
+      (_: {
+        homebrew.casks = [
+          "claude"
+          "antigravity"
+        ];
+      })
     ];
   };
 }

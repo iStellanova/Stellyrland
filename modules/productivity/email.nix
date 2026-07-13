@@ -1,13 +1,9 @@
-{ sn, ... }: {
-  sn.productivity = {
-    includes = [ sn.email ];
-  };
-
-  sn.email.nixos = { pkgs, ... }: {
+_: {
+  flake.modules.nixos.email = { pkgs, ... }: {
     environment.systemPackages = [ pkgs.protonmail-desktop ];
   };
 
-  sn.email.darwin = _: {
+  flake.modules.darwin.email = _: {
     homebrew.casks = [ "proton-mail" ];
   };
 }

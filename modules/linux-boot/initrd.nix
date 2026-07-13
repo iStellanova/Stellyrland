@@ -1,9 +1,5 @@
-{ sn, ... }: {
-  sn.linux-boot = {
-    includes = [ sn.initrd ];
-  };
-
-  sn.initrd.nixos = { lib, ... }: {
+_: {
+  flake.modules.nixos.initrd = { lib, ... }: {
     boot.tmp.useTmpfs = true;
     boot.tmp.tmpfsSize = "50%";
 

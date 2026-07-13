@@ -1,14 +1,6 @@
+{ lib, ... }:
 {
-  sn,
-  lib,
-  ...
-}:
-{
-  sn.gaming = {
-    includes = [ sn.gamescope ];
-  };
-
-  sn.gamescope.nixos =
+  flake.modules.nixos.gamescope =
     { config, ... }:
     let
       cfg = config.desktop.gaming;

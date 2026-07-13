@@ -1,29 +1,12 @@
-{
-  den,
-  sn,
-  ...
-}:
-{
-  den.aspects.stellyrtop = {
-    includes = [
-      sn.nix-base
-      den.batteries.hostname
-      sn.system
-      sn.terminal
-      sn.dev
-      sn.desktop
-      sn.communication
-      sn.av
-      sn.gaming
-      sn.productivity
-    ];
-
-    darwin = { host, ... }: {
+_: {
+  flake.modules.darwin.stellyrtop-host =
+    { host, ... }:
+    {
       system.stateVersion = 5;
 
       networking = {
         computerName = "Stellyrtop";
-        localHostName = host.name;
+        localHostName = host.hostName;
       };
 
       darwin.system.dockApps = [
@@ -53,5 +36,4 @@
         "/Applications/Zen Browser.app"
       ];
     };
-  };
 }

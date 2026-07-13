@@ -1,9 +1,5 @@
-{ sn, ... }: {
-  sn.dev = {
-    includes = [ sn.yazi ];
-  };
-
-  sn.yazi.homeManager =
+_: {
+  flake.modules.homeManager.yazi =
     {
       host,
       pkgs,

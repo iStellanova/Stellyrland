@@ -1,9 +1,5 @@
-{ sn, ... }: {
-  sn.system = {
-    includes = [ sn.homebrew ];
-  };
-
-  sn.homebrew.darwin = _: {
+_: {
+  flake.modules.darwin.homebrew = _: {
     homebrew = {
       enable = true;
       onActivation = {

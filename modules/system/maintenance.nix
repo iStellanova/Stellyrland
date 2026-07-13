@@ -1,13 +1,9 @@
-{ sn, ... }: {
-  sn.system = {
-    includes = [ sn.maintenance ];
-  };
-
-  sn.maintenance.nixos = { pkgs, ... }: {
+_: {
+  flake.modules.nixos.maintenance = { pkgs, ... }: {
     environment.systemPackages = [ pkgs.bleachbit ];
   };
 
-  sn.maintenance.darwin = _: {
+  flake.modules.darwin.maintenance = _: {
     homebrew.casks = [ "cleanmymac" ];
   };
 }

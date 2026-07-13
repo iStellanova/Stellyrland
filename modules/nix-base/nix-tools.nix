@@ -1,9 +1,6 @@
-{ sn, ... }: {
-  sn.nix-base = {
-    includes = [ sn.nix-tools ];
-  };
+_: {
 
-  sn.nix-tools.homeManager =
+  flake.modules.homeManager.nix-tools =
     {
       host,
       pkgs,

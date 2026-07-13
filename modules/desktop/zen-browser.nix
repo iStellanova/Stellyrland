@@ -1,16 +1,8 @@
+{ inputs, ... }:
 {
-  inputs,
-  sn,
-  ...
-}:
-{
-  sn.desktop = {
-    includes = [ sn.zen-browser ];
-  };
-
   flake-file.inputs.zen-browser.url = "github:youwen5/zen-browser-flake";
 
-  sn.zen-browser.nixos = { lib, ... }: {
+  flake.modules.nixos.zen-browser = { lib, ... }: {
     options.programs.zen-browser = {
       profileId = lib.mkOption {
         type = lib.types.str;
@@ -27,11 +19,11 @@
     };
   };
 
-  sn.zen-browser.darwin = _: {
+  flake.modules.darwin.zen-browser = _: {
     homebrew.casks = [ "zen" ];
   };
 
-  sn.zen-browser.homeManager =
+  flake.modules.homeManager.zen-browser =
     {
       osConfig,
       pkgs,

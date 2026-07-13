@@ -1,9 +1,5 @@
-{ sn, ... }: {
-  sn.system = {
-    includes = [ sn.services-base ];
-  };
-
-  sn.services-base.nixos = _: {
+_: {
+  flake.modules.nixos.services-base = _: {
     services.udisks2.enable = true;
     services.gvfs.enable = true;
     services.libinput.enable = true;

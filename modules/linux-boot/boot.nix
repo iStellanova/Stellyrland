@@ -1,19 +1,11 @@
+{ inputs, ... }:
 {
-  sn,
-  inputs,
-  ...
-}:
-{
-  sn.linux-boot = {
-    includes = [ sn.boot ];
-  };
-
   flake-file.inputs.lanzaboote = {
     url = "github:nix-community/lanzaboote";
     inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  sn.boot.nixos =
+  flake.modules.nixos.boot =
     {
       config,
       lib,

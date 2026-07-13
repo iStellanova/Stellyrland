@@ -12,10 +12,6 @@ follows = { nixpkgs = "nixpkgs" }
 url = "github:LnL7/nix-darwin"
 follows = { nixpkgs = "nixpkgs" }
 
-[inputs.den]
-url = "github:denful/den"
-follows = { nixpkgs = "nixpkgs" }
-
 [inputs.disko]
 url = "github:nix-community/disko"
 follows = { nixpkgs = "nixpkgs" }
@@ -28,6 +24,10 @@ url = "github:hercules-ci/flake-parts"
 
 [inputs.home-manager]
 url = "github:nix-community/home-manager/master"
+follows = { nixpkgs = "nixpkgs" }
+
+[inputs.hyprland]
+url = "github:hyprwm/Hyprland"
 follows = { nixpkgs = "nixpkgs" }
 
 [inputs.hyprsplit]
@@ -73,10 +73,6 @@ url = "github:noctalia-dev/noctalia/cachix"
 
 [inputs.preservation]
 url = "github:nix-community/preservation"
-follows = { nixpkgs = "nixpkgs" }
-
-[inputs.scroll-overview]
-url = "github:myamusashi/hyprland-scroll-overview"
 follows = { nixpkgs = "nixpkgs" }
 
 [inputs.sidra]

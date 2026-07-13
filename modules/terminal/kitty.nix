@@ -1,13 +1,9 @@
-{ sn, ... }: {
-  sn.terminal = {
-    includes = [ sn.kitty ];
-  };
-
+_: {
   # Registers kitty at the system level so nix-darwin's native app-linking picks it up
   # (config is still managed via homeManager below; Nix deduplicates the store path).
-  sn.kitty.darwin = { pkgs, ... }: { environment.systemPackages = [ pkgs.kitty ]; };
+  flake.modules.darwin.kitty = { pkgs, ... }: { environment.systemPackages = [ pkgs.kitty ]; };
 
-  sn.kitty.homeManager =
+  flake.modules.homeManager.kitty =
     {
       lib,
       host,

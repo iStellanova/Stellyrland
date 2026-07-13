@@ -1,4 +1,4 @@
-{ sn, ... }:
+_:
 let
   cliPkgs =
     pkgs: with pkgs; [
@@ -7,17 +7,15 @@ let
       zip
       kitty.terminfo
     ];
-in
-{
-  sn.terminal = {
-    includes = [ sn.cli ];
-  };
-
-  sn.cli.os = { pkgs, ... }: {
+  cliOs = { pkgs, ... }: {
     environment.systemPackages = cliPkgs pkgs;
   };
+in
+{
+  flake.modules.nixos.cli = cliOs;
+  flake.modules.darwin.cli = cliOs;
 
-  sn.cli.homeManager =
+  flake.modules.homeManager.cli =
     {
       config,
       host,

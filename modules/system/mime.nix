@@ -1,13 +1,9 @@
-{ sn, ... }: {
-  sn.system = {
-    includes = [ sn.mime ];
-  };
-
-  sn.mime.nixos = { pkgs, ... }: {
+_: {
+  flake.modules.nixos.mime = { pkgs, ... }: {
     environment.systemPackages = [ pkgs.xdg-utils ];
   };
 
-  sn.mime.homeManager =
+  flake.modules.homeManager.mime =
     {
       pkgs,
       lib,

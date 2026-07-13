@@ -1,13 +1,9 @@
-{ sn, ... }: {
-  sn.dev = {
-    includes = [ sn.zed ];
-  };
-
-  sn.zed.darwin = _: {
+_: {
+  flake.modules.darwin.zed = _: {
     homebrew.casks = [ "zed" ];
   };
 
-  sn.zed.homeManager =
+  flake.modules.homeManager.zed =
     {
       host,
       pkgs,
