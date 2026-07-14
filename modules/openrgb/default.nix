@@ -1,47 +1,19 @@
 _: {
   flake.modules.nixos.openrgb = { pkgs, ... }: {
-    # Pinned to 1.0rc2: 1.0rc3 segfaults inside libusb_get_device_list when run as root
-    # (I2C DRAM detector races with the USB/libusb detector; doesn't repro as non-root
-    # since it can't open /dev/i2c-* so the race never fires).
-    #
-    # Pulled whole from nixpkgs@63594d4 (last commit before rc2→rc3 bump) rather than
-    # overrideAttrs-ing on current nixpkgs: rc2 source fails against current Qt6 toolchain,
-    # and this keeps openrgb, plugins, and shared deps from one Hydra-built snapshot.
-    #
-    # TODO: unpin once fixed upstream. Check `nix eval nixpkgs#openrgb.version`;
-    # if past 1.0rc3, verify the crash is gone before dropping this override.
-    nixpkgs.overlays = [
-      (
-        final: _prev:
-        let
-          pinnedNixpkgs = import (final.fetchFromGitHub {
-            owner = "NixOS";
-            repo = "nixpkgs";
-            rev = "63594d4abe8a6d34c99155e3804cec0d4cfcf765";
-            hash = "sha256-HOFVLcA02J6jjatfRgH3JvZtwJnQWY6rbhuSrneoPn0=";
-          }) { inherit (final) system; };
-        in
-        {
-          inherit (pinnedNixpkgs)
-            openrgb
-            openrgb-plugin-effects
-            openrgb-plugin-hardwaresync
-            openrgb-with-all-plugins
-            ;
-        }
-      )
-    ];
-
     services.hardware.openrgb = {
       enable = true;
       package = pkgs.openrgb-with-all-plugins;
       motherboard = "amd";
     };
 
+    # AF_NETLINK is required by libusb's udev hotplug backend; without it, its
+    # socket() call fails and openrgb-1.0rc3 segfaults on startup as root
+    # (reproduced 2026-07-14 via systemd-run bisection of this unit's hardening).
     systemd.services.openrgb.serviceConfig.RestrictAddressFamilies = [
       "AF_UNIX"
       "AF_INET"
       "AF_INET6"
+      "AF_NETLINK"
     ];
 
     # Enable I2C support (required for RAM control and CoolerControl)
@@ -160,12 +132,6 @@ _: {
     programs.zsh.shellAliases = {
       blackout = "openrgb --client 127.0.0.1:6742 --nodetect --color 000000 >/dev/null 2>&1";
       whiteout = "openrgb --client 127.0.0.1:6742 --nodetect --color ffffff >/dev/null 2>&1";
-      # Pinned to 1.0rc2 (see nixos aspect above) due to a root-only libusb crash in
-      # 1.0rc3. Check both before considering an unpin.
-      openrgb-check-updates = ''
-        echo "nixpkgs openrgb version: $(nix eval --raw nixpkgs#openrgb.version)"
-        echo "latest OpenRGB tag: $(curl -s "https://gitlab.com/api/v4/projects/CalcProgrammer1%2FOpenRGB/repository/tags?order_by=updated&per_page=1" | grep -o '"name":"[^"]*"' | head -1)"
-      '';
     };
   };
 }
