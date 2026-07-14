@@ -91,9 +91,9 @@
     "type": "github",
     "owner": "numtide",
     "repo": "llm-agents.nix",
-    "rev": "fcfa6a32a5ae64136babcfdd42c4dd1eeffe47ce",
-    "narHash": "sha256-hyTATCo5b0bnPMdQFsqV7n6FGImaoI9+qNa9m7en+10=",
-    "lastModified": 1784060629
+    "rev": "6a09db3eee47bc89866ccd5505f54edb3e9316e5",
+    "narHash": "sha256-vu+qJa510uJlvU7soTIy8LAN1M1kVHCjDWbBKJoQByA=",
+    "lastModified": 1784062176
   },
   "my-assets": {
     "type": "github",
