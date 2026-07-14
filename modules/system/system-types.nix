@@ -64,7 +64,6 @@
       noctalia-greeter
       noctalia-shell
       pipewire
-      seahorse
       theming
       openrgb
       aesthetic
