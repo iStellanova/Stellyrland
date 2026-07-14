@@ -9,6 +9,7 @@ _: {
     };
 
     system.stateVersion = "25.11";
+    documentation.nixos.enable = false;
     programs.ssh.startAgent = true;
     services.gnome.gcr-ssh-agent.enable = false;
     systemd.oomd.enable = true;
