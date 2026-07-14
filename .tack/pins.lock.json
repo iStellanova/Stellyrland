@@ -59,9 +59,9 @@
     "type": "github",
     "owner": "hyprwm",
     "repo": "Hyprland",
-    "rev": "402eceea96ae77869d9ce9eb6c4dc088065936ab",
-    "narHash": "sha256-0YxCKOIiuoxgEfZQFdm8sdTH4DaNyL4yejWy1tF75V4=",
-    "lastModified": 1783968442
+    "rev": "79bc0ca16e7cca40c247a9200634d150fa8193d1",
+    "narHash": "sha256-vd4VSlddmDAToJv/twyr0O8Siq4U/sOIXeo6DFZIolc=",
+    "lastModified": 1784043142
   },
   "hyprsplit": {
     "type": "github",
@@ -91,9 +91,9 @@
     "type": "github",
     "owner": "numtide",
     "repo": "llm-agents.nix",
-    "rev": "9e2dbe1e09a619318696da505dd183c4d36f3048",
-    "narHash": "sha256-FZa9vA21dkvLerk20uOt5Gn87VND4GBwXoPBk8JSobw=",
-    "lastModified": 1783998605
+    "rev": "5c73869318afcf796a7a465b4b5e31b27f0819d4",
+    "narHash": "sha256-lbdkOH57StVOFMEpFASzEmi+GlK3iX6Uu7Y2zGUgVFE=",
+    "lastModified": 1784012825
   },
   "my-assets": {
     "type": "github",
@@ -147,9 +147,9 @@
     "type": "github",
     "owner": "noctalia-dev",
     "repo": "noctalia",
-    "rev": "812dc88df69444d21b774a47cbff0605029dea90",
-    "narHash": "sha256-MCDTEpiGafBBuAUsahEMI5ngI+w0sh6jR7nCaiYGh5Y=",
-    "lastModified": 1783999111
+    "rev": "77087ad0ccad3909e00e828cadd94aba9e7a02dc",
+    "narHash": "sha256-qWh0984hWNqhPmStTv9teJjOl7TcmLROjmCs/K+js+k=",
+    "lastModified": 1784039158
   },
   "preservation": {
     "type": "github",
