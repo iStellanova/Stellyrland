@@ -65,7 +65,6 @@
 
             # Credentials
             ".ssh"
-            ".local/share/keyrings"
             ".gnupg"
 
             # Browser profile (bookmarks, history, logins, cookies)
