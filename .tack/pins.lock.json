@@ -91,9 +91,9 @@
     "type": "github",
     "owner": "numtide",
     "repo": "llm-agents.nix",
-    "rev": "5c73869318afcf796a7a465b4b5e31b27f0819d4",
-    "narHash": "sha256-lbdkOH57StVOFMEpFASzEmi+GlK3iX6Uu7Y2zGUgVFE=",
-    "lastModified": 1784012825
+    "rev": "fcfa6a32a5ae64136babcfdd42c4dd1eeffe47ce",
+    "narHash": "sha256-hyTATCo5b0bnPMdQFsqV7n6FGImaoI9+qNa9m7en+10=",
+    "lastModified": 1784060629
   },
   "my-assets": {
     "type": "github",
@@ -147,9 +147,9 @@
     "type": "github",
     "owner": "noctalia-dev",
     "repo": "noctalia",
-    "rev": "77087ad0ccad3909e00e828cadd94aba9e7a02dc",
-    "narHash": "sha256-qWh0984hWNqhPmStTv9teJjOl7TcmLROjmCs/K+js+k=",
-    "lastModified": 1784039158
+    "rev": "ad47fc233c977573da53f0d8aeff07543867d75c",
+    "narHash": "sha256-cuBymAStf7h7PLthNglWMbbPDCWByevYK7nQnnfOZvE=",
+    "lastModified": 1784051458
   },
   "preservation": {
     "type": "github",
