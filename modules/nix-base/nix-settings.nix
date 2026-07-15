@@ -30,10 +30,6 @@ let
   osShared = { pkgs, ... }: {
     nix.nixPath = [ ];
     nixpkgs.config.allowUnfree = true;
-    # TODO: drop once nixpkgs bumps vesktop (nixcord) past Electron 41 —
-    # upstream Vesktop is still on 1.6.5 (electron_40), and nixpkgs marked
-    # electron_40 EOL/insecure on 2026-07-14 (commit 05151e55).
-    nixpkgs.config.permittedInsecurePackages = [ "electron-40.10.5" ];
     nix.extraOptions = ''
       !include /etc/nix/access-tokens.conf
     '';
