@@ -15,5 +15,9 @@
         "org.vinegarhq.Sober"
       ];
     };
+    systemd.services.flatpak-managed-install = {
+      after = [ "network-online.target" ];
+      wants = [ "network-online.target" ];
+    };
   };
 }
