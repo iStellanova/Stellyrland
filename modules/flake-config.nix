@@ -27,7 +27,7 @@
   # own separately-pinned default.
   flake-file.tack.package =
     pkgs:
-    inputs.tack.packages.${pkgs.system}.tack.overrideAttrs (_: {
+    inputs.tack.packages.${pkgs.stdenv.hostPlatform.system}.tack.overrideAttrs (_: {
       doCheck = false;
     });
 
