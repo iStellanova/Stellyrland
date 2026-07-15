@@ -1,8 +1,21 @@
-_: {
+{
+  host,
+  lib,
+  ...
+}:
+{
   # Home Manager window/layer rules for Hyprland
   wayland.windowManager.hyprland.settings = {
     # HM maps these to hl.window_rule({...}) Lua calls
     window_rule = [
+      # Always spawn new windows on the primary monitor
+      {
+        match = {
+          class = ".*";
+        };
+        monitor = lib.elemAt host.monitorPriority 0;
+      }
+
       # System Dialogs
       {
         match = {

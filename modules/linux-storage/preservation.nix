@@ -73,6 +73,8 @@
             # App sessions and runtime state
             ".config/vesktop"
             ".config/gemini"
+            ".config/Proton Mail"
+            ".config/Proton Pass"
             ".claude"
             ".antigravity"
             ".antigravity-ide-server"
