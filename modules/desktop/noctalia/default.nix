@@ -63,7 +63,6 @@
 
         settings = {
           shell = {
-            ui_scale = 1.0;
             font_family = "JetBrainsMono Nerd Font";
             avatar_path = lib.optionalString (host.dataPath != null) "${host.dataPath}/icons/avatar.png";
             password_style = "random";
@@ -72,7 +71,7 @@
             polkit_agent = true;
             launch_apps_as_systemd_services = true;
             screen_time_enabled = true;
-            launcher.session_search = true;
+            launcher.providers.session.global = true;
             panel = {
               transparency_mode = "glass";
               session_placement = "floating";
@@ -121,6 +120,17 @@
             monitors = lib.optional (primary != "") primary;
           };
 
+          plugins.enabled = [
+            "lucasoe/proton-pass"
+            "avivbintangaringga/nix-monitor"
+          ];
+
+          plugin_settings."avivbintangaringga/nix-monitor" = {
+            branch = "nixos-unstable";
+            clean_command = "zsh -ic 'clean'";
+            update_command = "zsh -ic 'upgrade'";
+          };
+
           bar.main = {
             enabled = false;
             monitor = lib.optionalAttrs (primary != "") { "${primary}".enabled = true; };
@@ -130,7 +140,7 @@
             center = [ "media" ];
             end = [
               "tray"
-              "volume"
+              "nix-monitor"
               "weather"
               "network"
               "temp"
@@ -193,6 +203,7 @@
             };
 
             network.show_label = false;
+            nix-monitor.type = "avivbintangaringga/nix-monitor:nix-monitor";
             ram.display = "graph";
             sysmon = {
               anchor = false;
