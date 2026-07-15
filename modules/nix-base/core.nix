@@ -15,6 +15,7 @@ _: {
       security.run0 = {
         enable = true;
         sudo-shim.enable = true;
+        persistentAuth.enable = true;
       };
 
       # Disable the background.
