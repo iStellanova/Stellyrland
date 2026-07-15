@@ -46,6 +46,9 @@ _: {
           settings."org/gtk/gtk4/settings/file-chooser" = {
             show-hidden = true;
           };
+          settings."org/gnome/desktop/interface" = {
+            clock-format = "12h";
+          };
         }
       ];
     };
