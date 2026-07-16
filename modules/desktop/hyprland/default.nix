@@ -256,6 +256,7 @@
               sync_gsettings_theme = true;
               warp_on_change_workspace = false;
               no_hardware_cursors = false;
+              no_warps = true;
             };
             render = {
               direct_scanout = false;
