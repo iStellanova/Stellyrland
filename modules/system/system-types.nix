@@ -58,6 +58,7 @@
   flake.modules.nixos.system-desktop = {
     imports = with inputs.self.modules.nixos; [
       system-cli
+      easyeffects
       flatpak
       fonts
       hyprland
@@ -83,6 +84,7 @@
   flake.modules.homeManager.system-desktop-nixos = {
     imports = with inputs.self.modules.homeManager; [
       system-cli
+      easyeffects
       noctalia-shell
       openrgb
       hyprland
