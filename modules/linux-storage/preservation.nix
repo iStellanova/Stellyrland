@@ -75,6 +75,7 @@
             ".config/gemini"
             ".config/Proton Mail"
             ".config/Proton Pass"
+            ".config/Proton/VPN"
             ".claude"
             ".antigravity"
             ".antigravity-ide-server"
