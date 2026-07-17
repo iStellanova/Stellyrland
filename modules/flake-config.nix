@@ -12,26 +12,14 @@
 
   flake-file.tack.recomposable = null;
 
-  # TODO: revisit on Darwin — tack's checkPhase spins up real TCP listeners
-  # for its HTTP-fetch tests. Nix's macOS build sandbox denies network
-  # socket operations for regular (non-fixed-output) derivations, and that
-  # denial surfaces as EADDRNOTAVAIL rather than a permission error, so it
-  # looks like an address problem but isn't one — confirmed by binding
-  # 127.0.0.1:0 directly on this machine outside the sandbox, which works
-  # fine. (Upstream issue manic-systems/tack#81 / PR #82, which swapped a
-  # 127.0.0.2 literal for 127.0.0.1, fixes the same symptom only on
-  # unsandboxed CI runners — it doesn't help here.) Only escape hatches are
-  # `--option sandbox false` (requires being a trusted user in nix.conf) or
-  # tack dropping real sockets from its test suite. Linux's sandbox network
-  # namespace still has a working loopback, so checks run there — confirmed
-  # 2026-07-17 (30/30 pass) — only disabled on Darwin. Reuses our
-  # already-resolved (nixpkgs-followed) tack input rather than flake-file's
-  # own separately-pinned default.
-  flake-file.tack.package =
-    pkgs:
-    inputs.tack.packages.${pkgs.stdenv.hostPlatform.system}.tack.overrideAttrs (
-      lib.optionalAttrs pkgs.stdenv.hostPlatform.isDarwin { doCheck = false; }
-    );
+  # TODO: revisit — deliberately not flake-file's default (pkgs.tack, i.e.
+  # nixpkgs' tack). nixpkgs still tracks the tack v1.0.0 tag, whose
+  # checkPhase opens a real TCP listener in fetch::git_http::tests and dies
+  # with EADDRNOTAVAIL under the macOS sandbox — confirmed still broken
+  # 2026-07-17. Our own nixpkgs-followed input tracks a later, unreleased
+  # commit where that test was fixed. Drop this override once nixpkgs' tack
+  # moves past v1.0.0 to include the fix.
+  flake-file.tack.package = pkgs: inputs.tack.packages.${pkgs.stdenv.hostPlatform.system}.tack;
 
   flake-file.inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
