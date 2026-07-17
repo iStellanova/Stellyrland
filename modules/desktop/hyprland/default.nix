@@ -158,6 +158,7 @@
                   function()
                     hl.exec_cmd("wpctl set-volume @DEFAULT_AUDIO_SOURCE@ 1.0")
                     hl.exec_cmd("udiskie -a -s --file-manager nautilus")
+                    hl.exec_cmd([[sleep 3 && protonvpn-app --start-minimized]])
                     ${weCmd}hl.exec_cmd("systemctl --user restart xdg-desktop-portal-hyprland")
                   end'')
               ];
