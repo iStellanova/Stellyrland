@@ -261,5 +261,15 @@ _: {
         };
       };
     };
+
+    # Autoloads sm7b-voice whenever the Scarlett Solo's mic input becomes
+    # active, so the preset doesn't need to be reselected by hand each login.
+    xdg.dataFile."easyeffects/autoload/input/alsa_input.usb-Focusrite_Scarlett_Solo_4th_Gen_S18V32H358190D-00.HiFi__Mic1__source:Input 1 Inst_Line.json".text =
+      builtins.toJSON {
+        device = "alsa_input.usb-Focusrite_Scarlett_Solo_4th_Gen_S18V32H358190D-00.HiFi__Mic1__source";
+        "device-description" = "Scarlett Solo 4th Gen Input 1 Inst/Line";
+        "device-profile" = "Input 1 Inst/Line";
+        "preset-name" = "sm7b-voice";
+      };
   };
 }
