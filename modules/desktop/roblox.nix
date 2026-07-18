@@ -5,7 +5,7 @@
     inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  flake.modules.nixos.flatpak = { ... }: {
+  flake.modules.nixos.roblox = { ... }: {
     imports = [ inputs.nix-flatpak.nixosModules.nix-flatpak ];
 
     services.flatpak = {
