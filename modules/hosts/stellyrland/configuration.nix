@@ -30,6 +30,8 @@
       hdd
       preservation
       storage
+      lact
+      coolercontrol
 
       # Gaming
       game-launchers
@@ -53,6 +55,8 @@
 
       # Productivity
       email
+      protonvpn
+      psswdmgr
 
       # Host Specific Config
       stellyrland-host

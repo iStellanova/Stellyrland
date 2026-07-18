@@ -36,6 +36,8 @@
       email
       ide-suite
       cloud-storage
+      protonvpn
+      psswdmgr
 
       # Communication
       discord
