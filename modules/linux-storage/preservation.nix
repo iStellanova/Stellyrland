@@ -66,6 +66,7 @@
             # Credentials
             ".ssh"
             ".gnupg"
+            ".config/sops"
 
             # Browser profile (bookmarks, history, logins, cookies)
             ".config/zen"

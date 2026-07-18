@@ -10,6 +10,7 @@ _: {
         boot.secureBoot = true;
         headless.disabledPorts = host.monitorPriority;
         nix-settings.cores = 24;
+        impermanence = true;
       };
 
       desktop = {
