@@ -5,16 +5,12 @@
       core
       lix
       nix-settings
-      coolercontrol
-      lact
       cli
       openssh
       tailscale
       zsh
       maintenance
       mime
-      protonvpn
-      psswdmgr
       secrets
       services-base
       system-tools
@@ -33,8 +29,6 @@
       darwindefs
       homebrew
       maintenance
-      protonvpn
-      psswdmgr
       secrets
       users
     ];
