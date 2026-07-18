@@ -49,6 +49,7 @@
       # Desktop Applications
       zen-browser
       nautilus
+      roblox
 
       # Productivity
       email

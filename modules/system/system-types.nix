@@ -59,7 +59,6 @@
     imports = with inputs.self.modules.nixos; [
       system-cli
       easyeffects
-      flatpak
       fonts
       hyprland
       noctalia-greeter
