@@ -9,41 +9,42 @@
     {
       host,
       config,
+      lib,
       ...
     }:
     {
       imports = [ inputs.sops-nix.nixosModules.sops ];
 
-      sops.age.sshKeyPaths = [ "/persist/etc/ssh/ssh_host_ed25519_key" ];
+      # Single owner of this fact (only sshKeyPaths below needs it): hosts using
+      # the preservation/impermanence layout keep the real ssh host key under
+      # /persist (see linux-storage/preservation.nix); hosts without it use the
+      # normal path. No honest universal default, so each host sets this.
+      options.core.impermanence = lib.mkEnableOption "impermanence-style /persist layout for the ssh host key path";
 
-      sops.defaultSopsFile = ../../secrets/secrets.yaml;
-      sops.defaultSopsFormat = "yaml";
+      config = {
+        sops.age.sshKeyPaths = [
+          (
+            if config.core.impermanence then
+              "/persist/etc/ssh/ssh_host_ed25519_key"
+            else
+              "/etc/ssh/ssh_host_ed25519_key"
+          )
+        ];
 
-      # Decrypt before users are created so the hashed password is available.
-      sops.secrets.user-password = {
-        neededForUsers = true;
-      };
+        # mkDefault: hosts that must not share stellyrland's recipient list
+        # (e.g. onitop) override this to point at their own encrypted file.
+        sops.defaultSopsFile = lib.mkDefault ../../secrets/secrets.yaml;
+        sops.defaultSopsFormat = "yaml";
 
-      users.users.${host.username}.hashedPasswordFile = config.sops.secrets.user-password.path;
+        # Decrypt before users are created so the hashed password is available.
+        # host.passwordSecret is an arbitrary per-host label (like stellacode
+        # below isn't derived from username either) — each host's flake.hosts
+        # entry sets its own, not a single shared "user-password".
+        sops.secrets.${host.passwordSecret} = {
+          neededForUsers = true;
+        };
 
-      # Personal SSH private key — written dynamically on boot.
-      sops.secrets.stellacode = {
-        owner = host.username;
-        mode = "0600";
-      };
-
-      sops.secrets.lastfm-password = { };
-
-      sops.secrets.github-token = {
-        owner = host.username;
-        mode = "0400";
-      };
-
-      # Backup HDD keyfile — root-only, used by backup-hdd service.
-      sops.secrets.hdd-keyfile = {
-        owner = "root";
-        group = "root";
-        mode = "0400";
+        users.users.${host.username}.hashedPasswordFile = config.sops.secrets.${host.passwordSecret}.path;
       };
     };
 

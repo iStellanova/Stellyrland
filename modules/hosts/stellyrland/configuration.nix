@@ -5,6 +5,7 @@
     homeDir = "/home/stellanova";
     hostName = "stellyrland";
     flakePath = "/home/stellanova/Projects/stellyrland";
+    passwordSecret = "stellapsswd";
     monitorPriority = [
       "DP-2"
       "DP-3"
@@ -16,6 +17,7 @@
     imports = with self.modules.nixos; [
       # Base Desktop System
       system-desktop
+      pipewire-lowlatency
 
       # Boot & Hardware & Storage
       boot
@@ -57,6 +59,9 @@
       email
       protonvpn
       psswdmgr
+
+      # Personal Secrets
+      personal-secrets
 
       # Host Specific Config
       stellyrland-host
