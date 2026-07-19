@@ -58,7 +58,7 @@
       noctalia-greeter
       noctalia-shell
       pipewire
-      theming
+      catppuccin
       openrgb
       aesthetic
     ];
@@ -81,7 +81,7 @@
       noctalia-shell
       openrgb
       hyprland
-      theming
+      catppuccin
     ];
   };
 
@@ -89,7 +89,7 @@
     imports = with inputs.self.modules.homeManager; [
       system-cli
       hiro
-      theming
+      catppuccin
     ];
   };
 }

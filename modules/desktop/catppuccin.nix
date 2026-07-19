@@ -5,7 +5,7 @@
     inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  flake.modules.nixos.theming = { ... }: {
+  flake.modules.nixos.catppuccin = { ... }: {
     imports = [ inputs.catppuccin.nixosModules.catppuccin ];
 
     catppuccin.enable = true;
@@ -15,7 +15,7 @@
     catppuccin.tty.enable = false;
   };
 
-  flake.modules.homeManager.theming =
+  flake.modules.homeManager.catppuccin =
     {
       pkgs,
       lib,
