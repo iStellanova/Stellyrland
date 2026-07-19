@@ -13,7 +13,7 @@
     inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  flake.modules.nixos.hyprland = { pkgs, ... }: {
+  flake.modules.nixos.hyprland = { pkgs, host, ... }: {
     imports = [ inputs.hyprland.nixosModules.default ];
 
     options.desktop.hyprland = {
@@ -85,7 +85,9 @@
 
       hardware.graphics.enable32Bit = true;
 
-      services.xserver.videoDrivers = [ "amdgpu" ];
+      # host.graphics ("amd"/"intel"/"nvidia") picks the driver — only "amd"
+      # is wired up so far since that's the only Hyprland host today.
+      services.xserver.videoDrivers = lib.mkIf (host.graphics == "amd") [ "amdgpu" ];
 
       xdg.portal = {
         enable = true;
@@ -103,6 +105,7 @@
     {
       pkgs,
       lib,
+      host,
       osConfig,
       ...
     }:
@@ -186,6 +189,8 @@
               ELECTRON_OZONE_PLATFORM_HINT = "auto";
               OBS_USE_EGL = "1";
               PROTON_ENABLE_WAYLAND = "1";
+            }
+            // lib.optionalAttrs (host.graphics == "amd") {
               AMD_VULKAN_ICD = "RADV";
               RADV_PERFTEST = "nggc";
               VK_ICD_FILENAMES = "/run/opengl-driver/share/vulkan/icd.d/radeon_icd.x86_64.json:/run/opengl-driver-32/share/vulkan/icd.d/radeon_icd.i686.json";
