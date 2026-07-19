@@ -5,8 +5,9 @@
     ];
 
     home-manager.users.oni = {
-      imports = [
-        self.modules.homeManager.core
+      imports = with self.modules.homeManager; [
+        system-cli
+        librewolf
       ];
     };
   };
