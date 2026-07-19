@@ -53,10 +53,8 @@ _: {
       # blobs from linux-firmware — no proprietary broadcom-sta needed.
       hardware.enableRedistributableFirmware = true;
 
-      # Lets stellanova's account push closures via nixos-rebuild
-      # --target-host without nix-copy-closure rejecting them for lacking a
-      # trusted signature (root is implicitly trusted regardless of this
-      # list; oni is deliberately not included — see stellanova-admin).
+      # Lets stellanova push closures via nixos-rebuild --target-host without
+      # nix-copy-closure rejecting them as untrusted.
       nix.settings.trusted-users = [ "stellanova" ];
     };
 }

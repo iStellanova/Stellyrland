@@ -6,9 +6,8 @@
     hostName = "onitop";
     flakePath = "/home/oni/Projects/stellyrland";
     passwordSecret = "onipsswd";
-    # Opt out of the shared sshKeys default — oni's own account should not
-    # carry stellanova's key. Remote admin access is handled separately via
-    # the stellanova-admin aspect (its own dedicated account).
+    # Opt out of the shared sshKeys default — oni's account shouldn't carry
+    # stellanova's key (see stellanova-admin for her own account instead).
     sshKeys = [ ];
   };
 
