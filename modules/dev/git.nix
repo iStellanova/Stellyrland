@@ -1,23 +1,15 @@
 _: {
   flake.modules.homeManager.git =
     { host, ... }:
-    let
-      sshKey = if host.class == "darwin" then "~/.ssh/stellacode" else "/run/secrets/stellacode";
-    in
     {
       programs.ssh = {
         enable = true;
         enableDefaultConfig = false;
 
         settings = {
-          "stellyrland" = {
-            HostName = "stellyrland.tailb15b96.ts.net";
-            User = host.username;
-            IdentityFile = sshKey;
-          };
           "github.com" = {
             User = "git";
-            IdentityFile = sshKey;
+            IdentityFile = host.gitSshKey;
             AddKeysToAgent = "yes";
           };
           "*" = {
@@ -42,7 +34,7 @@ _: {
           commit.gpgSign = true;
           tag.gpgSign = true;
           gpg.format = "ssh";
-          user.signingKey = sshKey;
+          user.signingKey = host.gitSshKey;
           rerere.enabled = true;
           include.path = "~/.gitconfig-identity";
         };
