@@ -18,7 +18,13 @@ _: {
       config = {
         specialisation.headless.configuration = {
           boot.kernelParams = map (port: "video=${port}:d") cfg.disabledPorts;
-          services.getty.greetingLine = lib.mkForce "Welcome to Stellyrland (Headless/Remote Mode)";
+          services.getty.greetingLine = lib.mkForce "Welcome to ${config.networking.hostName} (Headless/Remote Mode)";
+        };
+
+        # Sets the 'headless'/GUI specialisation as the default boot entry and reboots.
+        environment.shellAliases = {
+          reboot-headless = "sudo /run/current-system/specialisation/headless/bin/switch-to-configuration boot && sudo reboot";
+          reboot-gui = "sudo /nix/var/nix/profiles/system/bin/switch-to-configuration boot && sudo reboot";
         };
       };
     };

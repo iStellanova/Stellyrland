@@ -18,7 +18,6 @@ in
   flake.modules.homeManager.cli =
     {
       config,
-      host,
       lib,
       ...
     }:
@@ -62,11 +61,6 @@ in
         cat = "bat";
         grep = "rg";
         man = "tldr";
-      }
-      // lib.optionalAttrs (host.class != "darwin") {
-        # Sets the 'headless' specialisation as the default boot entry and reboots.
-        reboot-headless = "sudo /run/current-system/specialisation/headless/bin/switch-to-configuration boot && sudo reboot";
-        reboot-gui = "sudo /nix/var/nix/profiles/system/bin/switch-to-configuration boot && sudo reboot";
       };
 
       programs.zsh.initContent = lib.mkAfter ''
