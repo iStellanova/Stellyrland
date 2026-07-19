@@ -5,6 +5,8 @@ _: {
       imports = [
         ./_hardware-configuration.nix
         ./_disko-config.nix
+        ./_lact-config.nix
+        ./_coolercontrol-config.nix
       ];
 
       networking.hostName = host.name;

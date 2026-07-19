@@ -34,8 +34,6 @@
       hdd
       preservation
       storage
-      lact
-      coolercontrol
 
       # Gaming
       game-launchers
