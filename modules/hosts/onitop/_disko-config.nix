@@ -49,8 +49,7 @@
         compatibility = "grub2";
       };
       rootFsOptions = {
-        # grub2 compatibility (above) excludes zstd_compress — lz4 is the
-        # fastest compressor GRUB's ZFS reader actually supports.
+        # grub2 compatibility (above) excludes zstd_compress.
         compression = "lz4";
         atime = "off";
         xattr = "sa";
