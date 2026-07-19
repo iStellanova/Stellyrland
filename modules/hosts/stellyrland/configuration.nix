@@ -9,6 +9,7 @@
     gitName = "stellanova";
     userEmail = "iStellanova@users.noreply.github.com";
     gitSshKey = "/run/secrets/stellacode";
+    graphics = "amd";
     monitorPriority = [
       "DP-2"
       "DP-3"
