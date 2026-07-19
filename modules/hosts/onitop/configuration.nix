@@ -6,6 +6,7 @@
     hostName = "onitop";
     flakePath = "/home/oni/Projects/stellyrland";
     passwordSecret = "onipsswd";
+    graphics = "intel";
     # Opt out of the shared sshKeys default — oni's account shouldn't carry
     # stellanova's key (see stellanova-admin for her own account instead).
     sshKeys = [ ];
