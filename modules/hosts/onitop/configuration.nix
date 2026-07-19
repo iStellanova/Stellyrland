@@ -17,6 +17,7 @@
       # Base System
       system-cli
       stellanova-admin
+      zfs-snapshots
 
       # Desktop
       plasma
