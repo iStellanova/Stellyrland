@@ -7,21 +7,31 @@ _: {
     {
       pkgs,
       lib,
+      config,
       ...
     }:
     {
+      # Category -> .desktop file(s) actually installed on this host. The
+      # mime-type mapping below is universal; only these bindings vary.
+      options.mimeDefaultApps = lib.mkOption {
+        type = lib.types.attrsOf (lib.types.listOf lib.types.str);
+        default = { };
+      };
+
       config = lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
         xdg.mimeApps = {
           enable = true;
           defaultApplications =
             let
-              browser = [ "zen.desktop" ];
-              editor = [ "dev.zed.Zed.desktop" ];
-              pdfViewer = [ "org.gnome.Evince.desktop" ];
-              fileManager = [ "org.gnome.Nautilus.desktop" ];
-              imageViewer = [ "imv.desktop" ];
-              musicPlayer = [ "org.gnome.Lollypop.desktop" ];
-              videoPlayer = [ "mpv.desktop" ];
+              apps = config.mimeDefaultApps;
+              browser = apps.browser or [ ];
+              editor = apps.editor or [ ];
+              pdfViewer = apps.pdfViewer or [ ];
+              fileManager = apps.fileManager or [ ];
+              imageViewer = apps.imageViewer or [ ];
+              musicPlayer = apps.musicPlayer or [ ];
+              videoPlayer = apps.videoPlayer or [ ];
+              discordApp = apps.discord or [ ];
             in
             {
               "x-scheme-handler/http" = browser;
@@ -35,7 +45,7 @@ _: {
               "application/x-extension-xhtml" = browser;
               "application/x-extension-xht" = browser;
 
-              "x-scheme-handler/discord" = [ "vesktop.desktop" ];
+              "x-scheme-handler/discord" = discordApp;
 
               "inode/directory" = fileManager;
 
