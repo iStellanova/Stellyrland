@@ -3,6 +3,7 @@ _: {
     environment.systemPackages = with pkgs; [
       gnome-disk-utility
       mission-center
+      libnotify
     ];
   };
 }
