@@ -16,34 +16,40 @@ in
   flake.modules.nixos.tailscale = {
     imports = [
       osShared
-      (_: {
-        services.tailscale = {
-          interfaceName = "userspace-networking";
-          useRoutingFeatures = "none";
-          extraUpFlags = [
-            "--accept-dns=false"
-            "--accept-routes=false"
-            "--ssh"
-          ];
-        };
+      (
+        { config, ... }:
+        {
+          sops.secrets.tailscale_auth_key = { };
 
-        boot.kernel.sysctl = {
-          "net.core.default_qdisc" = "fq";
-          "net.ipv4.tcp_congestion_control" = "bbr";
-        };
+          services.tailscale = {
+            authKeyFile = config.sops.secrets.tailscale_auth_key.path;
+            interfaceName = "userspace-networking";
+            useRoutingFeatures = "none";
+            extraUpFlags = [
+              "--accept-dns=false"
+              "--accept-routes=false"
+              "--ssh"
+            ];
+          };
 
-        networking.firewall = {
-          enable = true;
-          checkReversePath = "loose";
-          allowedUDPPorts = [ 41641 ];
-          allowedUDPPortRanges = [
-            {
-              from = 50000;
-              to = 65535;
-            }
-          ];
-        };
-      })
+          boot.kernel.sysctl = {
+            "net.core.default_qdisc" = "fq";
+            "net.ipv4.tcp_congestion_control" = "bbr";
+          };
+
+          networking.firewall = {
+            enable = true;
+            checkReversePath = "loose";
+            allowedUDPPorts = [ 41641 ];
+            allowedUDPPortRanges = [
+              {
+                from = 50000;
+                to = 65535;
+              }
+            ];
+          };
+        }
+      )
     ];
   };
 }
