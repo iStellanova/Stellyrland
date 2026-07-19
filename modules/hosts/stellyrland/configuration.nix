@@ -6,6 +6,9 @@
     hostName = "stellyrland";
     flakePath = "/home/stellanova/Projects/stellyrland";
     passwordSecret = "stellapsswd";
+    gitName = "stellanova";
+    userEmail = "iStellanova@users.noreply.github.com";
+    gitSshKey = "/run/secrets/stellacode";
     monitorPriority = [
       "DP-2"
       "DP-3"
