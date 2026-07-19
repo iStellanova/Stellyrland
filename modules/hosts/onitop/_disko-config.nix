@@ -1,7 +1,6 @@
 # Disko layout for onitop's disk (Crucial BX500 480GB SATA SSD).
-# disko.enableConfig = false: used only to format at install time, same
-# convention as stellyrland/_disko-config's role — _hardware-configuration.nix
-# is the source of truth for the running system's fileSystems/swapDevices.
+# enableConfig = false: only used to format at install time —
+# _hardware-configuration.nix is the source of truth at runtime.
 { inputs, ... }:
 {
   imports = [ inputs.disko.nixosModules.disko ];
