@@ -95,14 +95,7 @@
             };
           };
 
-          home.pointerCursor = {
-            enable = true;
-            gtk.enable = true;
-            x11.enable = true;
-            package = pkgs.bibata-cursors;
-            name = "Bibata-Modern-Ice";
-            size = 16;
-          };
+          # home.pointerCursor itself is owned by hyprland's _cursor.nix now.
 
           home.packages = with pkgs; [
             kdePackages.qtstyleplugin-kvantum
