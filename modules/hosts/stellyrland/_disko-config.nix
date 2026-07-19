@@ -1,7 +1,6 @@
 # Disko layout for stellyrland's disks (root NVMe + extra NVMe).
-# disko.enableConfig = false: used only to format at install time —
-# _hardware-configuration.nix is the source of truth for the running
-# system's fileSystems/swapDevices.
+# enableConfig = false: only used to format at install time —
+# _hardware-configuration.nix is the source of truth at runtime.
 { inputs, ... }:
 {
   imports = [ inputs.disko.nixosModules.disko ];

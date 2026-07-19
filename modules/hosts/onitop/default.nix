@@ -9,18 +9,13 @@ _: {
 
       networking.hostName = host.name;
 
-      # Separate encrypted file, own recipient list (this host's key +
-      # stellanova's, nothing else) — onitop must never be able to decrypt
-      # stellyrland's personal secrets (see secrets/.sops.yaml).
+      # Separate encrypted file, own recipient list — onitop must never
+      # decrypt stellyrland's personal secrets (see secrets/.sops.yaml).
       sops.defaultSopsFile = ../../../secrets/onitop.yaml;
 
-      # Stock nixpkgs LTS kernel, not stellyrland's CachyOS pin — this host has
-      # no use for CachyOS's gaming-latency scheduler patches, and the specific
-      # CachyOS variant this CPU needs (x86_64-v2, no AVX2/BMI/FMA) isn't cached
-      # anywhere, so it would compile a full kernel from source on every bump.
-      # linuxPackages_6_12 is a real upstream LTS line — cached, and its zfs
-      # module (verified: pkgs.linuxPackages_6_12.zfs_2_4) is a matching fetch,
-      # not a source build.
+      # Not stellyrland's CachyOS kernel — this CPU's variant (x86_64-v2, no
+      # AVX2/BMI/FMA) isn't cached and would compile from source. Stock LTS
+      # is a cached fetch, including its zfs module.
       boot.kernelPackages = pkgs.linuxPackages_6_12;
 
       boot.kernelParams = [
