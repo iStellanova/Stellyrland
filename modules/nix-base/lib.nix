@@ -10,7 +10,9 @@
       ${name} = inputs.nixpkgs.lib.nixosSystem {
         specialArgs = {
           inherit inputs;
-          host = config.flake.hosts.${name} // (config.flake.constants or { }) // { inherit name; };
+          # constants first so a host's own fields (e.g. sshKeys) can actually
+          # override the shared default instead of being clobbered by it.
+          host = (config.flake.constants or { }) // config.flake.hosts.${name} // { inherit name; };
         };
         modules = [
           inputs.self.modules.nixos.${name}
@@ -23,7 +25,7 @@
       ${name} = inputs.darwin.lib.darwinSystem {
         specialArgs = {
           inherit inputs;
-          host = config.flake.hosts.${name} // (config.flake.constants or { }) // { inherit name; };
+          host = (config.flake.constants or { }) // config.flake.hosts.${name} // { inherit name; };
         };
         modules = [
           inputs.self.modules.darwin.${name}
