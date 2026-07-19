@@ -10,7 +10,7 @@
     window_rule =
       # Always spawn new windows on the primary monitor (skipped if the host
       # hasn't declared a monitor priority)
-      lib.optional (host.monitorPriority != [ ]) {
+      lib.optional (host.monitorPriority or [ ] != [ ]) {
         match = {
           class = ".*";
         };
