@@ -30,7 +30,6 @@
       firmware
       gpu
       performance
-      disko
       extra-disk
       hdd
       preservation

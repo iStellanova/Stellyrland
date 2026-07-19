@@ -2,7 +2,10 @@ _: {
   flake.modules.nixos.stellyrland-host =
     { host, lib, ... }:
     {
-      imports = [ ./_hardware-configuration.nix ];
+      imports = [
+        ./_hardware-configuration.nix
+        ./_disko-config.nix
+      ];
 
       networking.hostName = host.name;
 
