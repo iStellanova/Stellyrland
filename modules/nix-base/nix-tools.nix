@@ -87,9 +87,7 @@ _: {
                     shift
                     _nix_prep && nh os build "$FLAKE" -H "$target" --target-host "stellanova@$target" --diff always "$@" && rm -f ./result
                   else
-                    if _nix_prep && nh os switch "$FLAKE" -H "$target" --target-host "stellanova@$target" "$@"; then
-                      notify_remote "$target" "System Update" "Done! Deployment finished successfully."
-                    fi
+                    _nix_prep && nh os switch "$FLAKE" -H "$target" --target-host "stellanova@$target" "$@"
                   fi
                 }
 
