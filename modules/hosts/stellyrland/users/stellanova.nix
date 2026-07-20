@@ -19,8 +19,22 @@
       };
 
       imports = with self.modules.homeManager; [
-        # Base Desktop User Environment
-        system-desktop-nixos
+        # Base
+        base
+        cmdline
+
+        # Desktop-Adjacent
+        mime
+        xdg
+        kitty
+        fastfetch
+
+        # Hyprland Desktop
+        easyeffects
+        noctalia-shell
+        openrgb
+        hyprland
+        catppuccin
 
         # Dev / CLI Tools
         git
