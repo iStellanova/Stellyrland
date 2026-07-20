@@ -18,6 +18,8 @@
         };
         programs.zsh.enable = true;
 
+        imports = [ self.modules.nixos.home-manager ];
+
         home-manager.users."${username}" = {
           imports = [
             self.modules.homeManager."${username}"
@@ -34,6 +36,8 @@
           shell = pkgs.zsh;
         };
 
+        imports = [ self.modules.darwin.home-manager ];
+
         home-manager.users."${username}" = {
           imports = [
             self.modules.homeManager."${username}"
@@ -45,8 +49,12 @@
         programs.zsh.enable = true;
       };
 
-    homeManager."${username}" = {
-      home.username = "${username}";
-    };
+    homeManager."${username}" =
+      { host, ... }:
+      {
+        home.username = "${username}";
+        home.homeDirectory = host.homeDir;
+        programs.zsh.enable = true;
+      };
   };
 }
