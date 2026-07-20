@@ -35,6 +35,7 @@
         ns
         yazi
         zed
+        lazygit
 
         # Desktop Applications
         zen-browser
