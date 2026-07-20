@@ -35,6 +35,7 @@
 
       # Dev Tools
       ai-tools
+      zed
 
       # Desktop Applications
       zen-browser
