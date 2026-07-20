@@ -32,7 +32,7 @@
         ];
 
         # mkDefault: hosts that must not share stellyrland's recipient list
-        # (e.g. onitop) override this to point at their own encrypted file.
+        # (e.g. plasmapulsefinale) override this to point at their own encrypted file.
         sops.defaultSopsFile = lib.mkDefault ../../secrets/secrets.yaml;
         sops.defaultSopsFormat = "yaml";
 

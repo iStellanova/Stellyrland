@@ -1,5 +1,5 @@
 _: {
-  flake.modules.nixos.onitop-host =
+  flake.modules.nixos.plasmapulsefinale-host =
     { host, pkgs, ... }:
     {
       imports = [
@@ -9,9 +9,9 @@ _: {
 
       networking.hostName = host.name;
 
-      # Separate encrypted file, own recipient list — onitop must never
-      # decrypt stellyrland's personal secrets (see secrets/.sops.yaml).
-      sops.defaultSopsFile = ../../../secrets/onitop.yaml;
+      # Separate encrypted file, own recipient list — plasmapulsefinale must
+      # never decrypt stellyrland's personal secrets (see secrets/.sops.yaml).
+      sops.defaultSopsFile = ../../../secrets/plasmapulsefinale.yaml;
 
       # Not stellyrland's CachyOS kernel — this CPU's variant (x86_64-v2, no
       # AVX2/BMI/FMA) isn't cached and would compile from source. Stock LTS

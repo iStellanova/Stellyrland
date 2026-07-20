@@ -5,15 +5,15 @@
 }:
 {
   flake.modules = lib.mkMerge [
-    (self.factory.user "oni" true)
+    (self.factory.user "tan13" true)
     {
-      nixos.oni = {
+      nixos.tan13 = {
         imports = [
           self.modules.nixos.home-manager
         ];
       };
 
-      homeManager.oni =
+      homeManager.tan13 =
         { host, ... }:
         {
           home.homeDirectory = host.homeDir;
