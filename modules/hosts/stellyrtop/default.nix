@@ -6,7 +6,7 @@ _: {
 
       networking = {
         computerName = "Stellyrtop";
-        localHostName = host.hostName;
+        localHostName = host.name;
       };
 
       darwin.system.dockApps = [

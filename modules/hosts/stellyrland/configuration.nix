@@ -3,7 +3,6 @@
     class = "nixos";
     username = "stellanova";
     homeDir = "/home/stellanova";
-    hostName = "stellyrland";
     flakePath = "/home/stellanova/Projects/stellyrland";
     passwordSecret = "stellapsswd";
     gitName = "stellanova";

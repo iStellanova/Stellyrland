@@ -3,10 +3,10 @@ host: {
   options =
     if host.class == "nixos" then
       {
-        nixos.expr = "(builtins.getFlake \"${host.flakePath}\").nixosConfigurations.${host.hostName}.options";
+        nixos.expr = "(builtins.getFlake \"${host.flakePath}\").nixosConfigurations.${host.name}.options";
       }
     else
       {
-        darwin.expr = "(builtins.getFlake \"${host.flakePath}\").darwinConfigurations.${host.hostName}.options";
+        darwin.expr = "(builtins.getFlake \"${host.flakePath}\").darwinConfigurations.${host.name}.options";
       };
 }
