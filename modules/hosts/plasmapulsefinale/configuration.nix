@@ -13,8 +13,17 @@
 
   flake.modules.nixos.plasmapulsefinale = {
     imports = with self.modules.nixos; [
-      # Base System
-      system-cli
+      # Base
+      base
+      cmdline
+
+      # Desktop-Adjacent
+      services-base
+      system-tools
+      maintenance
+      mime
+      xdg
+
       stellanova-admin
       zfs-snapshots
 

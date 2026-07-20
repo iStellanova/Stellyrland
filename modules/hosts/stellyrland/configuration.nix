@@ -18,9 +18,28 @@
 
   flake.modules.nixos.stellyrland = {
     imports = with self.modules.nixos; [
-      # Base Desktop System
-      system-desktop
+      # Base
+      base
+      cmdline
+
+      # Desktop-Adjacent (session/GUI plumbing, not Hyprland-specific)
+      services-base
+      system-tools
+      maintenance
+      mime
+      xdg
+
+      # Hyprland Desktop
+      easyeffects
+      fonts
+      hyprland
+      noctalia-greeter
+      noctalia-shell
+      pipewire
       pipewire-lowlatency
+      catppuccin
+      openrgb
+      aesthetic
 
       # Boot & Hardware & Storage
       boot
