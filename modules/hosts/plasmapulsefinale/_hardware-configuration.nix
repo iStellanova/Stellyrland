@@ -1,4 +1,4 @@
-# Hardware configuration for onitop (x86_64-linux, Dell Latitude E5520).
+# Hardware configuration for plasmapulsefinale (x86_64-linux, Dell Latitude E5520).
 # Based on nixos-generate-config output; maintained manually from this point.
 {
   config,

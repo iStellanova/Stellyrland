@@ -1,10 +1,10 @@
 { self, ... }: {
-  flake.modules.nixos.onitop = {
+  flake.modules.nixos.plasmapulsefinale = {
     imports = [
-      self.modules.nixos.oni
+      self.modules.nixos.tan13
     ];
 
-    home-manager.users.oni = {
+    home-manager.users.tan13 = {
       imports = with self.modules.homeManager; [
         system-cli
         librewolf
