@@ -1,18 +1,18 @@
 { self, ... }: {
-  flake.hosts.onitop = {
+  flake.hosts.plasmapulsefinale = {
     class = "nixos";
-    username = "oni";
-    homeDir = "/home/oni";
-    hostName = "onitop";
-    flakePath = "/home/oni/Projects/stellyrland";
-    passwordSecret = "onipsswd";
+    username = "tan13";
+    homeDir = "/home/tan13";
+    hostName = "plasmapulsefinale";
+    flakePath = "/home/tan13/Projects/stellyrland";
+    passwordSecret = "tan13psswd";
     graphics = "intel";
-    # Opt out of the shared sshKeys default — oni's account shouldn't carry
+    # Opt out of the shared sshKeys default — tan13's account shouldn't carry
     # stellanova's key (see stellanova-admin for her own account instead).
     sshKeys = [ ];
   };
 
-  flake.modules.nixos.onitop = {
+  flake.modules.nixos.plasmapulsefinale = {
     imports = with self.modules.nixos; [
       # Base System
       system-cli
@@ -31,7 +31,7 @@
       roblox
 
       # Host Specific Config
-      onitop-host
+      plasmapulsefinale-host
     ];
   };
 }

@@ -1,4 +1,4 @@
-# Disko layout for onitop's disk (Crucial BX500 480GB SATA SSD).
+# Disko layout for plasmapulsefinale's disk (Crucial BX500 480GB SATA SSD).
 # enableConfig = false: only used to format at install time —
 # _hardware-configuration.nix is the source of truth at runtime.
 { inputs, ... }:

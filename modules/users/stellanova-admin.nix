@@ -1,4 +1,4 @@
-# Reusable remote-admin aspect for hosts stellanova doesn't own (e.g. onitop).
+# Reusable remote-admin aspect for hosts stellanova doesn't own (e.g. plasmapulsefinale).
 # Key-only login, no password, elevation scoped to just this account.
 { self, ... }: {
   flake.modules.nixos.stellanova-admin = { pkgs, ... }: {
@@ -11,7 +11,7 @@
 
     # system-cli's zsh aspect never sets programs.zsh.enable itself — usually
     # inherited from modules/users/<name>.nix, which we skip here since it'd
-    # tie home.homeDirectory to host.homeDir (oni's, not hers).
+    # tie home.homeDirectory to host.homeDir (tan13's, not hers).
     home-manager.users.stellanova = {
       programs.zsh.enable = true;
       imports = with self.modules.homeManager; [
