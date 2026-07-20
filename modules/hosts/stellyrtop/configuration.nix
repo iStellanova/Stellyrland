@@ -3,7 +3,6 @@
     class = "darwin";
     username = "stellanova";
     homeDir = "/Users/stellanova";
-    hostName = "stellyrtop";
     flakePath = "/Users/stellanova/Documents/GitHub/Stellyrland";
     gitName = "stellanova";
     userEmail = "iStellanova@users.noreply.github.com";
