@@ -31,12 +31,15 @@ _: {
         mutableUserSettings = false;
         mutableUserKeymaps = false;
         mutableUserTasks = false;
+        extensions = [
+          "catppuccin"
+          "catppuccin-icons"
+          "catppuccin-blur"
+          "nix"
+        ];
         userSettings = {
-          "inline_completions" = {
+          "edit_predictions" = {
             "provider" = "none";
-          };
-          "features" = {
-            "copilot" = false;
           };
           "format_on_save" = "off";
           "font_family" = "JetBrainsMono Nerd Font Mono";
@@ -101,11 +104,7 @@ _: {
               "settings" = import ./_nixd-lsp-config.nix host;
             };
           };
-          "assistant" = {
-            "version" = 2;
-            "dock" = "right";
-          };
-          "chat_panel" = {
+          "agent" = {
             "dock" = "right";
           };
           "agent_servers" = {
