@@ -3,7 +3,6 @@
     class = "nixos";
     username = "tan13";
     homeDir = "/home/tan13";
-    hostName = "plasmapulsefinale";
     flakePath = "/home/tan13/Projects/stellyrland";
     passwordSecret = "tan13psswd";
     graphics = "intel";
