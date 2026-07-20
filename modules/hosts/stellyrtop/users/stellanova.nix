@@ -14,8 +14,19 @@
       };
 
       imports = with self.modules.homeManager; [
-        # Base Desktop User Environment
-        system-desktop-darwin
+        # Base
+        base
+        cmdline
+
+        # Desktop-Adjacent
+        mime
+        xdg
+        kitty
+        fastfetch
+
+        # Desktop
+        hiro
+        catppuccin
 
         # Dev / CLI Tools
         git

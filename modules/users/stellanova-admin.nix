@@ -9,13 +9,14 @@
       openssh.authorizedKeys.keys = self.constants.sshKeys;
     };
 
-    # system-cli's zsh aspect never sets programs.zsh.enable itself — usually
+    # cmdline's zsh aspect never sets programs.zsh.enable itself — usually
     # inherited from modules/users/<name>.nix, which we skip here since it'd
     # tie home.homeDirectory to host.homeDir (tan13's, not hers).
     home-manager.users.stellanova = {
       programs.zsh.enable = true;
       imports = with self.modules.homeManager; [
-        system-cli
+        base
+        cmdline
       ];
     };
 

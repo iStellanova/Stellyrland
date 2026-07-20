@@ -11,8 +11,18 @@
 
   flake.modules.darwin.stellyrtop = {
     imports = with self.modules.darwin; [
-      # Base Desktop System
-      system-desktop
+      # Base
+      base
+      cmdline
+
+      # Desktop
+      darwindefs
+      homebrew
+      maintenance
+      hiro
+      kitty
+      aesthetic
+      fonts
 
       # Gaming
       game-launchers
