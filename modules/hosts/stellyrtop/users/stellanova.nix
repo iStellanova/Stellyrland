@@ -5,6 +5,8 @@
     ];
 
     home-manager.users.stellanova = {
+      zenBrowser.personalize = true;
+
       # SSH alias for reaching stellyrland from this laptop over tailscale —
       # only meaningful from here, not universal like the rest of git.nix.
       programs.ssh.settings.stellyrland = {
