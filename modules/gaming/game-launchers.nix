@@ -16,7 +16,6 @@ in
           environment.systemPackages = with pkgs; [
             mangohud
             goverlay
-            protonplus
             r2modman
           ];
         }
