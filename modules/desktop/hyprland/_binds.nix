@@ -29,7 +29,7 @@ let
     # Core Applications
     (bind "${mainMod} + Q" "hl.dsp.exec_cmd(\"kitty\")")
     (bind "${mainMod} + E" "hl.dsp.exec_cmd(\"nautilus --new-window\")")
-    (bind "${mainMod} + B" "hl.dsp.exec_cmd(\"zen\")")
+    (bind "${mainMod} + B" "hl.dsp.exec_cmd(\"zen-beta\")")
     (bind "${mainMod} + V" "hl.dsp.exec_cmd(\"zeditor\")")
 
     # System & Session

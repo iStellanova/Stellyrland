@@ -129,7 +129,7 @@
         }
         {
           match = {
-            class = "^(zen)$";
+            class = "^(zen-.*)$";
           };
           opacity = "1.0 override 0.85 override 1.0 override";
         }

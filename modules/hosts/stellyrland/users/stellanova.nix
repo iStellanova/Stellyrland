@@ -8,7 +8,7 @@
       # Actual apps installed on this host — the mime-type mapping itself
       # lives in modules/system/mime.nix.
       mimeDefaultApps = {
-        browser = [ "zen.desktop" ];
+        browser = [ "zen-beta.desktop" ];
         editor = [ "dev.zed.Zed.desktop" ];
         pdfViewer = [ "org.gnome.Evince.desktop" ];
         fileManager = [ "org.gnome.Nautilus.desktop" ];
