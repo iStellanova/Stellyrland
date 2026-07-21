@@ -75,6 +75,10 @@ url = "github:noctalia-dev/noctalia/cachix"
 url = "github:nix-community/preservation"
 follows = { nixpkgs = "nixpkgs" }
 
+[inputs.scroll-overview]
+url = "github:yayuuu/hyprland-scroll-overview"
+follows = { hyprland = "hyprland", nixpkgs = "nixpkgs" }
+
 [inputs.sidra]
 url = "github:wimpysworld/sidra"
 
