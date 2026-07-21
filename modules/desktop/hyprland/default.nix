@@ -12,6 +12,14 @@
     url = "github:hyprwm/Hyprland";
     inputs.nixpkgs.follows = "nixpkgs";
   };
+  # scroll-overview follows our hyprland pin (not the other way around) so we stay in
+  # control of when Hyprland bumps — if the plugin can't build against a newer commit yet,
+  # that's a loud build failure here rather than a silent runtime ABI mismatch.
+  flake-file.inputs.scroll-overview = {
+    url = "github:yayuuu/hyprland-scroll-overview";
+    inputs.nixpkgs.follows = "nixpkgs";
+    inputs.hyprland.follows = "hyprland";
+  };
 
   flake.modules.nixos.hyprland = { pkgs, host, ... }: {
     imports = [ inputs.hyprland.nixosModules.default ];
@@ -122,6 +130,7 @@
         ./_animations.nix
         ./_binds.nix
         ./_cursor.nix
+        ./_overview.nix
         ./_rules.nix
       ];
 
