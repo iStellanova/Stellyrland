@@ -159,6 +159,14 @@
     "narHash": "sha256-mMI9IanU+Xw+pVogD2oT0I2kTmvz2Un/Apc5+CwUpEY=",
     "lastModified": 1757436102
   },
+  "scroll-overview": {
+    "type": "github",
+    "owner": "yayuuu",
+    "repo": "hyprland-scroll-overview",
+    "rev": "9700f4d42a133d1cb7c5fe6a5e034b8e154960db",
+    "narHash": "sha256-Sti6XZJN5VNMTgMTJvPkPG7SjcFBCoTwMFrNAHxnSqc=",
+    "lastModified": 1784589761
+  },
   "sidra": {
     "type": "github",
     "owner": "wimpysworld",
