@@ -123,9 +123,9 @@
     "type": "github",
     "owner": "4evy",
     "repo": "nixcord",
-    "rev": "4b715c93f3945015d776755c1f10189f9a17bb7e",
-    "narHash": "sha256-zRAEruVAVWEDh69lyI+lDEM71wFnFgLDCVw6/6pWyvI=",
-    "lastModified": 1784578363
+    "rev": "b80c77115f6ce1f568f5a45af933882d40052545",
+    "narHash": "sha256-+97zx7gq2KLgkMR8BDzO94MjJLu2BMUSVoI5mzZFTso=",
+    "lastModified": 1784597658
   },
   "nixpkgs": {
     "type": "github",
@@ -147,9 +147,9 @@
     "type": "github",
     "owner": "noctalia-dev",
     "repo": "noctalia",
-    "rev": "32c608f7db3169331e4a178aee144086f21c67db",
-    "narHash": "sha256-olddoz7p5xIqD4xSAsdTuRv7mC7e4N0DfdE9M/4LOG8=",
-    "lastModified": 1784583445
+    "rev": "448f8f56173667095fd79c972e033c523fcbd5a2",
+    "narHash": "sha256-WCp9VCEIZpzuab3pOrfynX79DKok2qvtg1Pe+QMFKcs=",
+    "lastModified": 1784598073
   },
   "preservation": {
     "type": "github",
