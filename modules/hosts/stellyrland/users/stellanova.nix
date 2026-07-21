@@ -5,6 +5,8 @@
     ];
 
     home-manager.users.stellanova = {
+      zenBrowser.personalize = true;
+
       # Actual apps installed on this host — the mime-type mapping itself
       # lives in modules/system/mime.nix.
       mimeDefaultApps = {
