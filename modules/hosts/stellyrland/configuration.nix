@@ -70,7 +70,6 @@
       ai-tools
 
       # Desktop Applications
-      zen-browser
       nautilus
       roblox
 
