@@ -30,10 +30,6 @@ let
   osShared = { pkgs, ... }: {
     nix.nixPath = [ ];
     nixpkgs.config.allowUnfree = true;
-    # TODO: electron-40.10.5 (EOL) pulled in by vesktop; remove once vesktop bumps its electron dep.
-    nixpkgs.config.permittedInsecurePackages = [
-      "electron-40.10.5"
-    ];
     nix.extraOptions = ''
       !include /etc/nix/access-tokens.conf
     '';
