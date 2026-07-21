@@ -71,6 +71,10 @@ follows = { nixpkgs = "nixpkgs" }
 [inputs.noctalia-shell]
 url = "github:noctalia-dev/noctalia/cachix"
 
+[inputs.nur]
+url = "github:nix-community/NUR"
+follows = { nixpkgs = "nixpkgs" }
+
 [inputs.preservation]
 url = "github:nix-community/preservation"
 follows = { nixpkgs = "nixpkgs" }
@@ -99,4 +103,5 @@ url = "github:numtide/treefmt-nix"
 follows = { nixpkgs = "nixpkgs" }
 
 [inputs.zen-browser]
-url = "github:youwen5/zen-browser-flake"
+url = "github:0xc000022070/zen-browser-flake"
+follows = { home-manager = "home-manager", nixpkgs = "nixpkgs" }

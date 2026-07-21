@@ -1,82 +1,83 @@
 { inputs, ... }:
 {
-  flake-file.inputs.zen-browser.url = "github:youwen5/zen-browser-flake";
+  flake-file.inputs.zen-browser = {
+    url = "github:0xc000022070/zen-browser-flake";
+    inputs.nixpkgs.follows = "nixpkgs";
+    inputs.home-manager.follows = "home-manager";
+  };
 
-  flake.modules.nixos.zen-browser = { lib, ... }: {
-    options.programs.zen-browser = {
-      profileId = lib.mkOption {
-        type = lib.types.str;
-        default = "0ubhpx7e";
-        description = "Zen profile directory ID (the hash before .Default Profile)";
-      };
-    };
+  # rycee's Firefox-addon derivations, for extensions.packages below.
+  flake-file.inputs.nur = {
+    url = "github:nix-community/NUR";
+    inputs.nixpkgs.follows = "nixpkgs";
+  };
 
-    config = {
-      nix.settings.substituters = [ "https://zen-browser.cachix.org" ];
-      nix.settings.trusted-public-keys = [
-        "zen-browser.cachix.org-1:z/QLGrEkiBYF/7zoHX1Hpuv0B26QrmbVBSy9yDD2tSs="
+  flake.modules.darwin.zen-browser =
+    { pkgs, ... }:
+    {
+      # Home Manager's own app-linking is unreliable on macOS, so also
+      # register at the system level for Spotlight/Launchpad. Doesn't dedupe
+      # with the homeManager package below (mkFirefoxModule always re-wraps),
+      # but the large shared bits (the actual binary) still content-dedupe.
+      environment.systemPackages = [
+        inputs.zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.default
       ];
     };
-  };
-
-  flake.modules.darwin.zen-browser = _: {
-    homebrew.casks = [ "zen" ];
-  };
 
   flake.modules.homeManager.zen-browser =
+    { pkgs, lib, ... }:
     {
-      osConfig,
-      pkgs,
-      lib,
-      ...
-    }:
-    {
-      home.packages =
-        if pkgs.stdenv.hostPlatform.isLinux then
-          [ inputs.zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.default ]
-        else
-          [ ];
+      imports = [ inputs.zen-browser.homeModules.default ];
 
-      home.file = lib.mkIf pkgs.stdenv.hostPlatform.isLinux (
-        let
-          profile = "${osConfig.programs.zen-browser.profileId}.Default Profile";
-        in
-        {
-          ".config/zen/${profile}/user.js".text = ''
-            user_pref("toolkit.legacyUserProfileCustomizations.stylesheets", true);
-            user_pref("widget.gtk.transparent-background", true);
-            user_pref("browser.tabs.allow_transparent_browser", true);
-            user_pref("zen.widget.linux.transparency", true);
-          '';
+      programs.zen-browser = {
+        enable = true;
+      }
+      // lib.optionalAttrs pkgs.stdenv.hostPlatform.isLinux {
+        profiles.default = {
+          # Existing profile dir, so HM doesn't orphan it into a fresh one.
+          path = "0ubhpx7e.Default Profile";
 
-          ".config/zen/${profile}/chrome/userChrome.css".text = ''
-            /* Zen Browser — Translucent Sidebar
-             * Requires: widget.gtk.transparent-background = true in user.js */
+          settings = {
+            "widget.gtk.transparent-background" = true;
+            "browser.tabs.allow_transparent_browser" = true;
+            "zen.widget.linux.transparency" = true;
+          };
 
-            /* 1. Tint the entire window frame (sidebar, gap, and chrome) for a uniform glass look. */
+          # Matches desktop/catppuccin.nix's system-wide flavor/accent.
+          presets.catppuccin = {
+            enable = true;
+            flavor = "Macchiato";
+            accent = "Sapphire";
+          };
+
+          userChrome = ''
+            @import "catppuccin/userChrome.css";
+
+            /* Layered on top of Catppuccin above. Requires gtk.transparent-background. */
+
+            /* Tint the window frame for a uniform glass look. */
             :root, #main-window {
               background-color: rgba(36, 39, 58, 0.6) !important;
             }
 
-            /* 2. Make all wrappers, sidebar, and content chrome transparent so they inherit the window tint without double-layering. */
+            /* Let wrappers/sidebar inherit the tint instead of painting their own bg. */
             #browser, #zen-main-app-wrapper, #zen-appcontent-wrapper,
             #navigator-toolbox, .browser-toolbox-background {
               background: transparent !important;
               background-color: transparent !important;
             }
 
-            /* 3. Keep webpage content area completely opaque. */
+            /* Keep page content opaque. */
             #appcontent, #tabbrowser-tabpanels, browser {
-              background-color: #1e2030 !important; /* Catppuccin Macchiato Mantle */
+              background-color: var(--zen-main-browser-background) !important;
             }
 
-            /* 4. Remove Zen's background overlay divs — these painted over the sidebar. */
+            /* Zen's own overlay divs paint over the sidebar — drop them. */
             #zen-browser-background, #zen-toolbar-background,
             .zen-browser-generic-background, .zen-tol-background {
               display: none !important;
             }
 
-            /* 5. Remove all borders, outlines, and box-shadows across all main UI components. */
             #navigator-toolbox,
             #zen-appcontent-wrapper,
             #zen-sidebar-splitter,
@@ -88,14 +89,33 @@
               box-shadow: none !important;
             }
 
-            /* 6. Hide splitter visually — opacity keeps it functional and grabbable for resizing. */
+            /* Hide splitter visually; opacity keeps it grabbable for resizing. */
             #zen-sidebar-splitter {
               background: transparent !important;
               background-color: transparent !important;
               opacity: 0 !important;
             }
           '';
-        }
-      );
+
+          extensions.packages =
+            let
+              rycee = inputs.nur.legacyPackages.${pkgs.stdenv.hostPlatform.system}.repos.rycee.firefox-addons;
+            in
+            [
+              rycee.ublock-origin
+              rycee.sponsorblock
+              rycee.proton-pass
+
+              # Not on NUR — fetched from AMO. fixedExtid keeps the addon id
+              # stable so it lands as the same install, not a duplicate.
+              (pkgs.fetchFirefoxAddon {
+                name = "xcancel-redirect";
+                url = "https://addons.mozilla.org/firefox/downloads/file/4480430/xcancelredirect-1.2.xpi";
+                sha256 = "sha256-sCMdx9SiZxynTPclc++fQ7jHNNbu4EV6vjbhDwHk7SA=";
+                fixedExtid = "{99f59414-6b9c-4ba2-8706-4b018bc10bdc}";
+              })
+            ];
+        };
+      };
     };
 }

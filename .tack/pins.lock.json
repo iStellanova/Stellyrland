@@ -91,9 +91,9 @@
     "type": "github",
     "owner": "numtide",
     "repo": "llm-agents.nix",
-    "rev": "bd0604d502e7a2cfde9a9cbfe4331d8d29209f77",
-    "narHash": "sha256-JE3ZGhousfmNa/44qNPdkrmSAALlud2c747R4jOLHug=",
-    "lastModified": 1784603481
+    "rev": "f114fbcecd5923cf1c47ed4836358ccc51982d4c",
+    "narHash": "sha256-OA7wMjO99FS6epFB+p8SORqcuaAl/LDZnMhEORQjOYg=",
+    "lastModified": 1784613847
   },
   "my-assets": {
     "type": "github",
@@ -150,6 +150,14 @@
     "rev": "448f8f56173667095fd79c972e033c523fcbd5a2",
     "narHash": "sha256-WCp9VCEIZpzuab3pOrfynX79DKok2qvtg1Pe+QMFKcs=",
     "lastModified": 1784598073
+  },
+  "nur": {
+    "type": "github",
+    "owner": "nix-community",
+    "repo": "NUR",
+    "rev": "bf369dbe40afe9c83bfdb1413bb1737fc26a4f76",
+    "narHash": "sha256-80WxstzcFcKv8NQ8lSE+JScoDrHEbqD/RI7/CgiqjxE=",
+    "lastModified": 1784613066
   },
   "preservation": {
     "type": "github",
@@ -209,10 +217,10 @@
   },
   "zen-browser": {
     "type": "github",
-    "owner": "youwen5",
+    "owner": "0xc000022070",
     "repo": "zen-browser-flake",
-    "rev": "239dc504b56eabcfc1dce945e7e22ca99694be89",
-    "narHash": "sha256-z2XthIV/68GNghbqmaPVrShPIfMPwpZKTA47REKC5bA=",
-    "lastModified": 1784354557
+    "rev": "0ea161e9ac257510acabfb6e9dbf13630298760d",
+    "narHash": "sha256-ewIv3xH9bQK7uMkU3xK6NWFEW5oIuAtIny8ifJwcY/E=",
+    "lastModified": 1784586513
   }
 }
