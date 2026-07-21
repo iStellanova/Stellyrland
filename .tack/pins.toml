@@ -8,6 +8,10 @@ url = "github:xddxdd/nix-cachyos-kernel/release"
 url = "github:catppuccin/nix"
 follows = { nixpkgs = "nixpkgs" }
 
+[inputs.chaotic]
+url = "github:chaotic-cx/nyx/nyxpkgs-unstable"
+follows = { nixpkgs = "nixpkgs" }
+
 [inputs.darwin]
 url = "github:LnL7/nix-darwin"
 follows = { nixpkgs = "nixpkgs" }
