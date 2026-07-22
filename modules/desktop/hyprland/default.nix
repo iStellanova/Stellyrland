@@ -92,7 +92,6 @@
 
   flake.modules.homeManager.hyprland =
     {
-      pkgs,
       lib,
       host,
       osConfig,
