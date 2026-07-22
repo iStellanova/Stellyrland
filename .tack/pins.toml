@@ -30,10 +30,6 @@ url = "github:hercules-ci/flake-parts"
 url = "github:nix-community/home-manager/master"
 follows = { nixpkgs = "nixpkgs" }
 
-[inputs.hyprland]
-url = "github:hyprwm/Hyprland"
-follows = { nixpkgs = "nixpkgs" }
-
 [inputs.hyprsplit]
 url = "github:shezdy/hyprsplit"
 follows = { nixpkgs = "nixpkgs" }
@@ -82,10 +78,6 @@ follows = { nixpkgs = "nixpkgs" }
 [inputs.preservation]
 url = "github:nix-community/preservation"
 follows = { nixpkgs = "nixpkgs" }
-
-[inputs.scroll-overview]
-url = "github:yayuuu/hyprland-scroll-overview"
-follows = { hyprland = "hyprland", nixpkgs = "nixpkgs" }
 
 [inputs.sidra]
 url = "github:wimpysworld/sidra"
