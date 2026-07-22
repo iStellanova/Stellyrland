@@ -8,22 +8,8 @@
     url = "github:shezdy/hyprsplit";
     inputs.nixpkgs.follows = "nixpkgs";
   };
-  flake-file.inputs.hyprland = {
-    url = "github:hyprwm/Hyprland";
-    inputs.nixpkgs.follows = "nixpkgs";
-  };
-  # scroll-overview follows our hyprland pin (not the other way around) so we stay in
-  # control of when Hyprland bumps — if the plugin can't build against a newer commit yet,
-  # that's a loud build failure here rather than a silent runtime ABI mismatch.
-  flake-file.inputs.scroll-overview = {
-    url = "github:yayuuu/hyprland-scroll-overview";
-    inputs.nixpkgs.follows = "nixpkgs";
-    inputs.hyprland.follows = "hyprland";
-  };
 
   flake.modules.nixos.hyprland = { pkgs, host, ... }: {
-    imports = [ inputs.hyprland.nixosModules.default ];
-
     options.desktop.hyprland = {
       monitors = lib.mkOption {
         type = lib.types.listOf (lib.types.attrsOf lib.types.anything);
@@ -74,12 +60,7 @@
         "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
       ];
 
-      programs.hyprland = {
-        enable = true;
-        package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
-        portalPackage =
-          inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
-      };
+      programs.hyprland.enable = true;
 
       environment.systemPackages = with pkgs; [
         wl-clipboard
@@ -124,13 +105,9 @@
     in
     {
       imports = [
-        inputs.hyprland.homeManagerModules.default
-      ]
-      ++ [
         ./_animations.nix
         ./_binds.nix
         ./_cursor.nix
-        ./_overview.nix
         ./_rules.nix
       ];
 
@@ -149,7 +126,6 @@
       wayland.windowManager.hyprland = {
         enable = true;
         configType = "lua";
-        package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
         xwayland.enable = true;
         systemd.enable = true;
         portalPackage = null;
