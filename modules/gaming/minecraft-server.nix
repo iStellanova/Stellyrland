@@ -1,13 +1,11 @@
 # Stellacraft — Paper 1.21.8 Minecraft server, tunneled through playit.gg
-# (no port-forward/firewall rule needed, agent dials out).
 { inputs, ... }:
 {
   flake-file.inputs.nix-minecraft = {
     url = "github:Infinidoge/nix-minecraft";
     inputs.nixpkgs.follows = "nixpkgs";
   };
-  # playit.gg has no nixpkgs package; this builds playitd/playit-cli from
-  # upstream source and ships a hardened systemd unit for it.
+
   flake-file.inputs.playit-nixos-module = {
     url = "github:pedorich-n/playit-nixos-module";
     inputs.nixpkgs.follows = "nixpkgs";
@@ -26,9 +24,6 @@
         enable = true;
         eula = true;
         openFirewall = false; # ingress is via playit.gg's outbound tunnel, nothing needs to listen publicly
-
-        # journald-native console (`journalctl -u minecraft-server-stellacraft`)
-        # instead of tmux's default, which needs a root shell + the socket path to read.
         managementSystem = {
           tmux.enable = false;
           systemd-socket.enable = true;
@@ -36,8 +31,6 @@
 
         servers.stellacraft = {
           enable = true;
-          # nix-minecraft pins the latest known Paper build per MC version and trails
-          # upstream slightly; `nix flake update nix-minecraft` to catch up.
           package = pkgs.paperServers.paper-1_21_8;
 
           # Aikar's flags — standard G1GC tuning for Paper. https://docs.papermc.io/paper/aikars-flags
@@ -118,8 +111,6 @@
             resource-pack-sha1 = "";
             "rcon.password" = "";
             "rcon.port" = 25575;
-            # Bind all interfaces — a specific WAN IP here would fail to bind on this
-            # host, and playit.gg's tunnel forwards to loopback regardless.
             server-ip = "";
             server-port = 9035;
             simulation-distance = 10;
@@ -148,13 +139,11 @@
             CaffeineDrinker = "d36ed0bb-3620-459e-83f0-e9aef3999197";
             ".iFazwolf" = "00000000-0000-0000-0009-01f552b0e5a6";
           };
-
-          # Bare UUID form: both are level 4 / bypassesPlayerLimit false, the defaults.
           operators = {
             iFazwolf = "92dbab14-8637-45af-9adc-36aca319e1a2";
           };
 
-          # Plugin jars, pinned by hash for reproducibility.
+          # Plugin jars
           symlinks = {
             "plugins/Backuper-3.4.5.jar" = pkgs.fetchurl {
               url = "https://cdn.modrinth.com/data/7cMAqMND/versions/ej6KCtki/Backuper-3.4.5.jar";
@@ -177,7 +166,7 @@
               sha256 = "03ahs6g79j35ljk85c6zlmpsd0k97pc5xbyd182dr5mqp94xdpgb";
             };
             # Filename says 2.3.0 but the jar's actual fabric.mod.json reports 2.5.0 — the
-            # file was updated in place upstream without a rename. Kept the original name.
+            # file was updated in place upstream without a rename.
             "plugins/veinminer-enchant-2.3.0.jar" = pkgs.fetchurl {
               url = "https://cdn.modrinth.com/data/4sP0LXxp/versions/h5oKcjvq/veinminer-enchant-2.3.0.jar";
               sha256 = "057zljji9nl8h88ypi5x56m4ra11ylx2xgid6f48yz37iyqsgw9n";
@@ -186,8 +175,7 @@
               url = "https://cdn.modrinth.com/data/9eGKb6K1/versions/ps3C3lpD/voicechat-bukkit-2.6.6.jar";
               sha256 = "0d9dfm7aivwy8bj2sni6mbxdqmyg0931n80kv9jylw838mh4m2p4";
             };
-            # GeyserMC's own build archive — permanent per-build URLs, more stable than
-            # Modrinth's mirror for these two (which doesn't carry every historical build).
+            # GeyserMC's own build archive
             "plugins/Geyser-Spigot.jar" = pkgs.fetchurl {
               url = "https://download.geysermc.org/v2/projects/geyser/versions/2.9.0/builds/971/downloads/spigot";
               sha256 = "06gv768n94bvv31h5bdr73c670v2fr9z8wc17fly46xwzxpqw654";
@@ -214,13 +202,9 @@
             };
           };
 
-          # World saves, datapacks, and the Paper/Bukkit yaml configs are plain files
-          # under dataDir — runtime state, not something a fetchurl pin applies to.
+          # World saves, datapacks, and the Paper/Bukkit yaml configs are plain files under datadir.
         };
       };
-
-      # Needs a secret key from playit.gg (create a tunnel for TCP/9035, then set
-      # the secret via `sops secrets/secrets.yaml` under `playit-secret-key`).
       sops.secrets.playit-secret-key = { };
       sops.templates.playit-secret.content = ''
         secret_key = "${config.sops.placeholder.playit-secret-key}"
@@ -230,9 +214,6 @@
         enable = true;
         secretPath = config.sops.templates.playit-secret.path;
       };
-
-      # Not required for the tunnel to work (playit dials out regardless of server
-      # state), just avoids a pointless immediate reconnect attempt on cold boot.
       systemd.services.playit.after = [ "minecraft-server-stellacraft.service" ];
     };
 }
