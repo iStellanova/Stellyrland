@@ -19,6 +19,8 @@
         inputs.playit-nixos-module.nixosModules.default
       ];
       nixpkgs.overlays = [ inputs.nix-minecraft.overlay ];
+      users.users.minecraft.uid = 996;
+      users.groups.minecraft.gid = 994;
 
       services.minecraft-servers = {
         enable = true;
