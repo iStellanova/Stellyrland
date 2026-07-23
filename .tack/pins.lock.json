@@ -59,9 +59,9 @@
     "type": "github",
     "owner": "nix-community",
     "repo": "home-manager",
-    "rev": "041a999e8c1c5b731913855909e68d30ca69b8e0",
-    "narHash": "sha256-J5+C9wsO0lhDyUalQzfplDbRjyHDYeEH5+9sdyXtwa8=",
-    "lastModified": 1784725727
+    "rev": "3b0e6bbd65869af1beadf5963a99befc179d209f",
+    "narHash": "sha256-cgRTWuG+u1tBPhm01JrId2k0Bni09phVJ1Q0BZlRd7M=",
+    "lastModified": 1784789275
   },
   "hyprsplit": {
     "type": "github",
@@ -91,9 +91,9 @@
     "type": "github",
     "owner": "numtide",
     "repo": "llm-agents.nix",
-    "rev": "bd95e8c6170a307c9c50353da245cbacdc58accb",
-    "narHash": "sha256-e4QD+UXlr52v9F9AZpdQgc1ylTF0jGMkCpnC531HpaM=",
-    "lastModified": 1784775708
+    "rev": "de9fa923ea0ebed9093f758468d7ed7c5da09739",
+    "narHash": "sha256-woSpbXXGmy1zUnetetY6WiVdXz0WFGAsxHgCc+87oqU=",
+    "lastModified": 1784790164
   },
   "my-assets": {
     "type": "github",
@@ -163,9 +163,9 @@
     "type": "github",
     "owner": "nix-community",
     "repo": "NUR",
-    "rev": "b3fe219f812c51cc460af1879f41a07f06b0f63e",
-    "narHash": "sha256-BeFR01ke0LnCFkAegpAgbVR/V6Fe3rvtcniKLB8DgVQ=",
-    "lastModified": 1784781887
+    "rev": "c38f25566993716171cf0f50874c41fe94602820",
+    "narHash": "sha256-GANjsBnOjh++LALtdJjiuhsSFYXBmeeupx162Zz5/HE=",
+    "lastModified": 1784792763
   },
   "playit-nixos-module": {
     "type": "github",
