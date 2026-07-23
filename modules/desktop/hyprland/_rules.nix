@@ -151,6 +151,14 @@
           };
           opacity = "1.0 override 1.0 override";
         }
+
+        {
+          match = {
+            class = "^(steam)$";
+            title = "^(notificationtoasts_\\d+_desktop)$";
+          };
+          no_focus = true;
+        }
         {
           match = {
             title = "(.*)(YouTube Music)(.*)";
