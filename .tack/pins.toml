@@ -57,6 +57,10 @@ follows = { nixpkgs = "nixpkgs" }
 url = "github:nix-community/nix-index-database"
 follows = { nixpkgs = "nixpkgs" }
 
+[inputs.nix-minecraft]
+url = "github:Infinidoge/nix-minecraft"
+follows = { nixpkgs = "nixpkgs" }
+
 [inputs.nixcord]
 url = "github:4evy/nixcord"
 follows = { nixpkgs = "nixpkgs" }
@@ -73,6 +77,10 @@ url = "github:noctalia-dev/noctalia/cachix"
 
 [inputs.nur]
 url = "github:nix-community/NUR"
+follows = { nixpkgs = "nixpkgs" }
+
+[inputs.playit-nixos-module]
+url = "github:pedorich-n/playit-nixos-module"
 follows = { nixpkgs = "nixpkgs" }
 
 [inputs.preservation]
