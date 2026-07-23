@@ -217,5 +217,12 @@
         secretPath = config.sops.templates.playit-secret.path;
       };
       systemd.services.playit.after = [ "minecraft-server-stellacraft.service" ];
+      systemd.services.minecraft-server-stellacraft.serviceConfig.LogNamespace = "stellacraft";
+      # `--namespace=stellacraft` can't auto-resolve this: the namespaced journald
+      # instance stamps its journal dir with an identifier that doesn't match
+      # /etc/machine-id or the current boot ID (cause unconfirmed — not worth
+      # hardcoding a guess). Resolving the directory at invocation time sidesteps
+      # the question entirely, whatever that identifier is or however it changes.
+      programs.zsh.shellAliases.stellacraft-logs = ''journalctl --directory="$(find /var/log/journal -maxdepth 1 -name '*.stellacraft' | head -1)" -u minecraft-server-stellacraft -f -n all'';
     };
 }
