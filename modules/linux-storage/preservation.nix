@@ -29,6 +29,7 @@
           "/var/log"
           "/var/lib/noctalia-greeter"
           "/var/lib/flatpak"
+          "/srv/minecraft"
         ];
         files = [
           "/etc/adjtime"
