@@ -91,9 +91,9 @@
     "type": "github",
     "owner": "numtide",
     "repo": "llm-agents.nix",
-    "rev": "003c9b8a02533f828bdad0c8c39adc6d57e708fc",
-    "narHash": "sha256-hjLKNm6iRSZbZPXxhKw/Gr9eRL5igMz3CYUrm5IBZW0=",
-    "lastModified": 1784845904
+    "rev": "264604cc0580e87d34a10b82334cf52f8139053f",
+    "narHash": "sha256-Hi41+61t2OmiB9MAq1sjeJ+HRw0T/isE3mL0um5Xmvc=",
+    "lastModified": 1784862776
   },
   "my-assets": {
     "type": "github",
@@ -131,17 +131,17 @@
     "type": "github",
     "owner": "4evy",
     "repo": "nixcord",
-    "rev": "c2b3ed08157735866370e3cdc31cca6b361fe675",
-    "narHash": "sha256-HeH3xvOTJLyBWXLEcNdW4hMurp/Tcbf+OKZpeWUnoGo=",
-    "lastModified": 1784856983
+    "rev": "5601c0c35075a1756246e97d2413c6676debd2df",
+    "narHash": "sha256-a91zXbUIOozxxiTl37qXcKWOfx82O5S9v18Z9DcKvpI=",
+    "lastModified": 1784865488
   },
   "nixpkgs": {
     "type": "github",
     "owner": "nixos",
     "repo": "nixpkgs",
-    "rev": "241313f4e8e508cb9b13278c2b0fa25b9ca27163",
-    "narHash": "sha256-vlHUuqAcbcH2RKmHbPiuQzbv1pnzzavXnI62RD0bqCU=",
-    "lastModified": 1784497964
+    "rev": "e2587caef70cea85dd97d7daab492899902dbf5d",
+    "narHash": "sha256-wWFrV5/Qbm+lyt5x20E/bSbfJiGKMo4RCxZV8cl/WZI=",
+    "lastModified": 1784796856
   },
   "noctalia-greeter": {
     "type": "github",
@@ -155,17 +155,17 @@
     "type": "github",
     "owner": "noctalia-dev",
     "repo": "noctalia",
-    "rev": "8ca2213ec5fc9eefcfddb5bb9a7ae82ef8a54212",
-    "narHash": "sha256-9k7sTfriKBr250UaWve8EgJ2V5FRM+xgwDYrZ6ldcrI=",
-    "lastModified": 1784856007
+    "rev": "7b649fc8453009a3c1fe45b9e8aee9b08b99cb2e",
+    "narHash": "sha256-ljbvforMhs7Fx6Gr+IHwqv+MSkAV5G6XzGMddrdJsHs=",
+    "lastModified": 1784864377
   },
   "nur": {
     "type": "github",
     "owner": "nix-community",
     "repo": "NUR",
-    "rev": "daee068ef77275cfba94c747b017d4ce28dfe83f",
-    "narHash": "sha256-8inZf5UnxrdtBuTK1BnkmI9VPozK0nIzFqg1JbWhZWU=",
-    "lastModified": 1784859059
+    "rev": "12d2bd4c1228af2a20b3aa7418db3300c52a3160",
+    "narHash": "sha256-+PoTanK8TEwRHl283dShpyyRd9erqBVfXvspThR4jOI=",
+    "lastModified": 1784869993
   },
   "playit-nixos-module": {
     "type": "github",
