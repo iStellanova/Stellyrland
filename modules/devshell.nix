@@ -10,6 +10,7 @@ _: {
         packages = with config; [
           treefmt.build.wrapper
           packages.write-tack
+          pkgs.git-crypt
         ];
       };
     };

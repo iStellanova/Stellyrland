@@ -49,6 +49,7 @@
       firmware
       gpu
       performance
+      binfmt
       extra-disk
       hdd
       preservation

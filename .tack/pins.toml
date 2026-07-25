@@ -65,6 +65,9 @@ follows = { nixpkgs = "nixpkgs" }
 url = "github:4evy/nixcord"
 follows = { nixpkgs = "nixpkgs" }
 
+[inputs.nixos-apple-silicon]
+url = "github:nix-community/nixos-apple-silicon?rev=3902c801519264191a7c3dfec8dd1f9faeb38fd5"
+
 [inputs.nixpkgs]
 url = "github:nixos/nixpkgs/nixos-unstable"
 
