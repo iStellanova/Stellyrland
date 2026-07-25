@@ -15,6 +15,7 @@ _: {
           "*" = {
             HashKnownHosts = "yes";
             SendEnv = "LANG LC_*";
+            IdentityFile = host.gitSshKey;
           };
         };
       };
