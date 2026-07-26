@@ -2,7 +2,11 @@ _: {
   flake.modules.homeManager.git =
     { host, pkgs, ... }:
     {
-      home.packages = [ pkgs.git-crypt ];
+      home.packages = [
+        pkgs.git-crypt
+        pkgs.lazygit
+      ];
+
       programs.ssh = {
         enable = true;
         enableDefaultConfig = false;
