@@ -139,9 +139,9 @@
     "type": "github",
     "owner": "4evy",
     "repo": "nixcord",
-    "rev": "c7332c0014528f5750c6a253c37984a1f46f9349",
-    "narHash": "sha256-RGv7KbeN6k7vhC4/UDMi255sNrog6DrG2A6Q7sLcR+Q=",
-    "lastModified": 1785039344
+    "rev": "931f644732f2f502c583d6b873da02fcf1c4c1c1",
+    "narHash": "sha256-vMnr/vBUwIx+YPpRrz4I6Ql88SWydIl0GXQU5poUx5c=",
+    "lastModified": 1785040149
   },
   "nixos-apple-silicon": {
     "type": "github",
@@ -179,9 +179,9 @@
     "type": "github",
     "owner": "nix-community",
     "repo": "NUR",
-    "rev": "16a6023f1ad3901cd192d5b902d206ce80579557",
-    "narHash": "sha256-Y1z0HWSWRez5T7lNFgrnouSErMNWtz+/BH+dRhqo/Vo=",
-    "lastModified": 1785039102
+    "rev": "338f16436b45f06625cf3be65490bd808cd42ed5",
+    "narHash": "sha256-wSN/jcqdXp70Ho0rC5AC8fi358v8xxy5MKA1TKNnWLw=",
+    "lastModified": 1785041055
   },
   "playit-nixos-module": {
     "type": "github",
@@ -243,8 +243,8 @@
     "type": "github",
     "owner": "0xc000022070",
     "repo": "zen-browser-flake",
-    "rev": "a8f9b6d014c9cfe0615dccb2bc7808713f6e62c2",
-    "narHash": "sha256-Mz4G81HXJlUtHoJtA31D+Ob7uma2BX7E/y7F9QazuFc=",
-    "lastModified": 1784985989
+    "rev": "6f5e680db7d105ecf02b4e0d752d48d9083da6c9",
+    "narHash": "sha256-vZjuRK0UgvChYGMeQ8daxiETJ5KQyGx+8u8YHdw5e/g=",
+    "lastModified": 1785039979
   }
 }
