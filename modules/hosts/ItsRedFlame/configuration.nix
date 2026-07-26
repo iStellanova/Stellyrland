@@ -42,7 +42,6 @@
       kdenlive
       blender
       psswdmgr
-      email
       protonvpn
 
       # Gaming
