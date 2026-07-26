@@ -26,6 +26,10 @@ url = "github:vic/flake-file"
 [inputs.flake-parts]
 url = "github:hercules-ci/flake-parts"
 
+[inputs.freesmlauncher]
+url = "github:FreesmTeam/FreesmLauncher"
+follows = { nixpkgs = "nixpkgs" }
+
 [inputs.home-manager]
 url = "github:nix-community/home-manager/master"
 follows = { nixpkgs = "nixpkgs" }
