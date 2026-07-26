@@ -6,8 +6,7 @@
     flakePath = "/home/RedFlame/Projects/stellyrland";
     passwordSecret = "redflamepsswd";
     graphics = "nvidia";
-    # Opt out of the shared sshKeys default — RedFlame's account shouldn't carry
-    # stellanova's key (see stellanova-admin for remote access instead).
+    # Opt out of the shared default — see stellanova-admin for remote access instead.
     sshKeys = [ ];
   };
 
@@ -24,7 +23,7 @@
       mime
       xdg
 
-      # Remote admin (Aiden)
+      # Remote admin
       stellanova-admin
       zfs-snapshots
 

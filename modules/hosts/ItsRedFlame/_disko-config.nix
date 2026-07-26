@@ -1,6 +1,6 @@
 # Disko layout for ItsRedFlame's disk (Samsung 860 EVO 500GB SATA SSD).
 # enableConfig = false: only used to format at install time —
-# facter.json is the source of truth at runtime.
+# _hardware-configuration.nix is the source of truth at runtime.
 { inputs, ... }:
 {
   imports = [ inputs.disko.nixosModules.disko ];
