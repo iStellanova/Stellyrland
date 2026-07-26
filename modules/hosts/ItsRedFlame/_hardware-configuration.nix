@@ -1,9 +1,7 @@
 # Hardware configuration for ItsRedFlame (x86_64-linux, HP desktop, Ryzen 7 1700 + GTX 1660).
 # Kernel modules confirmed via `nixos-generate-config --show-hardware-config` on the live
-# installer (booted from USB, disk not yet formatted — fileSystems/swapDevices below are
-# hand-written to match the disko layout instead, since that flag can't see the not-yet-created
-# ZFS pool). ums_realtek showed up too but that's this USB stick's own storage bridge chip,
-# not needed for booting off the internal SATA disk.
+# installer; fileSystems/swapDevices are hand-written to match the disko layout instead,
+# since the pool didn't exist yet when that flag ran.
 {
   config,
   lib,
