@@ -179,9 +179,9 @@
     "type": "github",
     "owner": "nix-community",
     "repo": "NUR",
-    "rev": "953e4806e595c25ed510500daf6ae5879413b9e1",
-    "narHash": "sha256-EslUXQKSmI/JYeflSVNN5I5PFcyuandaqUWHJRISgWc=",
-    "lastModified": 1785053717
+    "rev": "02e6e825abfcefdc56c2fe5681806d8df72c8ac5",
+    "narHash": "sha256-b5YaS3QexakXapTEceiC3hA+i8prIf0sGHNRa8SU9/E=",
+    "lastModified": 1785054383
   },
   "playit-nixos-module": {
     "type": "github",
