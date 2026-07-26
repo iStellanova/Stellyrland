@@ -1,0 +1,53 @@
+{ self, ... }: {
+  flake.hosts.ItsRedFlame = {
+    class = "nixos";
+    username = "RedFlame";
+    homeDir = "/home/RedFlame";
+    flakePath = "/home/RedFlame/Projects/stellyrland";
+    passwordSecret = "redflamepsswd";
+    graphics = "nvidia";
+    # Opt out of the shared sshKeys default — RedFlame's account shouldn't carry
+    # stellanova's key (see stellanova-admin for remote access instead).
+    sshKeys = [ ];
+  };
+
+  flake.modules.nixos.ItsRedFlame = {
+    imports = with self.modules.nixos; [
+      # Base
+      base
+      cmdline
+
+      # Desktop-Adjacent
+      services-base
+      system-tools
+      maintenance
+      mime
+      xdg
+
+      # Remote admin (Aiden)
+      stellanova-admin
+      zfs-snapshots
+
+      # Boot
+      boot
+
+      # Plasma Desktop
+      plasma
+      fonts
+      pipewire
+      librewolf
+      media
+      audacity
+      obs
+      kdenlive
+
+      # Gaming
+      steam
+      roblox
+      freesm
+
+      # Host Specific Config
+      ItsRedFlame-host
+    ];
+  };
+}

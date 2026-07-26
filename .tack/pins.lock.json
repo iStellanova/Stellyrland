@@ -55,6 +55,14 @@
     "narHash": "sha256-vp6Y/Grm98ESt6ceOkWiHWyZRDV3J1RID4w+6NWK9yA=",
     "lastModified": 1782949081
   },
+  "freesmlauncher": {
+    "type": "github",
+    "owner": "FreesmTeam",
+    "repo": "FreesmLauncher",
+    "rev": "2472f060f1130fd1366130c83396366e74430a0f",
+    "narHash": "sha256-+PnYLABM1fcgdGCBiQWNQkI/QtuZ075M8TGrSvXCjWk=",
+    "lastModified": 1784540723
+  },
   "home-manager": {
     "type": "github",
     "owner": "nix-community",

@@ -6,8 +6,6 @@
     flakePath = "/home/tan13/Projects/stellyrland";
     passwordSecret = "tan13psswd";
     graphics = "intel";
-    # Opt out of the shared sshKeys default — tan13's account shouldn't carry
-    # stellanova's key (see stellanova-admin for her own account instead).
     sshKeys = [ ];
   };
 

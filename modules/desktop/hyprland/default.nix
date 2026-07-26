@@ -74,9 +74,14 @@
 
       hardware.graphics.enable32Bit = true;
 
-      # host.graphics ("amd"/"intel"/"nvidia") picks the driver — only "amd"
-      # is wired up so far since that's the only Hyprland host today.
-      services.xserver.videoDrivers = lib.mkIf (host.graphics == "amd") [ "amdgpu" ];
+      # host.graphics ("amd"/"intel"/"nvidia") picks the driver.
+      services.xserver.videoDrivers =
+        if host.graphics == "amd" then
+          [ "amdgpu" ]
+        else if host.graphics == "nvidia" then
+          [ "nvidia" ]
+        else
+          [ ];
 
       xdg.portal = {
         enable = true;
@@ -152,41 +157,50 @@
             };
 
           env =
-            {
-              HYPRCURSOR_THEME = "Bibata-Modern-Ice";
-              HYPRCURSOR_SIZE = "16";
-              XCURSOR_THEME = "Bibata-Modern-Ice";
-              XCURSOR_SIZE = "16";
-              AQ_MGPU_NO_EXPLICIT = "1";
-              AQ_NO_MODIFIERS = "1";
-              GTK_THEME = "catppuccin-macchiato-sapphire-standard";
-              QT_QPA_PLATFORM = "wayland;xcb";
-              QT_QPA_PLATFORMTHEME = "gtk3";
-              QT_STYLE_OVERRIDE = "kvantum";
-              QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
-              GDK_SCALE = "1.0";
-              GTK_CSD = "0";
-              XDG_CURRENT_DESKTOP = "Hyprland";
-              XDG_SESSION_TYPE = "wayland";
-              XDG_SESSION_DESKTOP = "Hyprland";
-              MOZ_ENABLE_WAYLAND = "1";
-              ELECTRON_OZONE_PLATFORM_HINT = "auto";
-              OBS_USE_EGL = "1";
-              PROTON_ENABLE_WAYLAND = "1";
-            }
-            // lib.optionalAttrs (host.graphics == "amd") {
-              AMD_VULKAN_ICD = "RADV";
-              RADV_PERFTEST = "nggc";
-              VK_ICD_FILENAMES = "/run/opengl-driver/share/vulkan/icd.d/radeon_icd.x86_64.json:/run/opengl-driver-32/share/vulkan/icd.d/radeon_icd.i686.json";
-            }
-            |> lib.mapAttrsToList (
-              name: value: {
+            lib.mapAttrsToList
+              (name: value: {
                 _args = [
                   name
                   value
                 ];
-              }
-            );
+              })
+              (
+                {
+                  HYPRCURSOR_THEME = "Bibata-Modern-Ice";
+                  HYPRCURSOR_SIZE = "16";
+                  XCURSOR_THEME = "Bibata-Modern-Ice";
+                  XCURSOR_SIZE = "16";
+                  AQ_MGPU_NO_EXPLICIT = "1";
+                  AQ_NO_MODIFIERS = "1";
+                  GTK_THEME = "catppuccin-macchiato-sapphire-standard";
+                  QT_QPA_PLATFORM = "wayland;xcb";
+                  QT_QPA_PLATFORMTHEME = "gtk3";
+                  QT_STYLE_OVERRIDE = "kvantum";
+                  QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
+                  GDK_SCALE = "1.0";
+                  GTK_CSD = "0";
+                  XDG_CURRENT_DESKTOP = "Hyprland";
+                  XDG_SESSION_TYPE = "wayland";
+                  XDG_SESSION_DESKTOP = "Hyprland";
+                  MOZ_ENABLE_WAYLAND = "1";
+                  ELECTRON_OZONE_PLATFORM_HINT = "auto";
+                  OBS_USE_EGL = "1";
+                  PROTON_ENABLE_WAYLAND = "1";
+                }
+                // lib.optionalAttrs (host.graphics == "amd") {
+                  AMD_VULKAN_ICD = "RADV";
+                  RADV_PERFTEST = "nggc";
+                  VK_ICD_FILENAMES = "/run/opengl-driver/share/vulkan/icd.d/radeon_icd.x86_64.json:/run/opengl-driver-32/share/vulkan/icd.d/radeon_icd.i686.json";
+                }
+                // lib.optionalAttrs (host.graphics == "nvidia") {
+                  # Cursor renders invisible/corrupted on the proprietary driver otherwise.
+                  WLR_NO_HARDWARE_CURSORS = "1";
+                  __GLX_VENDOR_LIBRARY_NAME = "nvidia";
+                  LIBVA_DRIVER_NAME = "nvidia";
+                  GBM_BACKEND = "nvidia-drm";
+                  VK_ICD_FILENAMES = "/run/opengl-driver/share/vulkan/icd.d/nvidia_icd.x86_64.json:/run/opengl-driver-32/share/vulkan/icd.d/nvidia_icd.i686.json";
+                }
+              );
 
           config = {
             input = {
