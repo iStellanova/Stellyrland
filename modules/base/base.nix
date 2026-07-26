@@ -9,6 +9,7 @@
       tailscale
       secrets
       users
+      avahi
     ];
   };
 
