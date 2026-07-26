@@ -31,7 +31,7 @@
       # Boot
       boot
 
-      # Plasma Desktop
+      # Desktop
       plasma
       fonts
       pipewire
@@ -41,11 +41,16 @@
       audacity
       obs
       kdenlive
+      psswdmgr
+      email
+      protonvpn
 
       # Gaming
       steam
       roblox
+      flatpak
       freesm
+      xclicker
 
       # Host Specific Config
       ItsRedFlame-host
