@@ -30,6 +30,7 @@
 
       # Media
       media-editing
+      obs
       media
       background-sounds
 

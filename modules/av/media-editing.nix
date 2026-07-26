@@ -14,9 +14,7 @@ in
         { pkgs, ... }:
         {
           environment.systemPackages = with pkgs; [
-            davinci-resolve
             gimp
-            obs-studio
             parabolic
           ];
         }
@@ -30,7 +28,6 @@ in
       (_: {
         homebrew.casks = [
           "gimp"
-          "obs"
         ];
       })
     ];

@@ -37,6 +37,7 @@
       pipewire
       librewolf
       media
+      media-editing
       audacity
       obs
       kdenlive
