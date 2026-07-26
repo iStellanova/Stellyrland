@@ -83,11 +83,12 @@ _: {
                   fi
                   local target="$1"
                   shift
+                  local remote="stellanova@$target.local"
                   if [[ "$1" == "check" ]]; then
                     shift
-                    _nix_prep && nh os build "$FLAKE" -H "$target" --target-host "stellanova@$target" --diff always "$@" && rm -f ./result
+                    _nix_prep && nh os build "$FLAKE" -H "$target" --target-host "$remote" --diff always "$@" && rm -f ./result
                   else
-                    _nix_prep && nh os switch "$FLAKE" -H "$target" --target-host "stellanova@$target" "$@"
+                    _nix_prep && nh os switch "$FLAKE" -H "$target" --target-host "$remote" "$@"
                   fi
                 }
 
