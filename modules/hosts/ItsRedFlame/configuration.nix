@@ -41,6 +41,7 @@
       audacity
       obs
       kdenlive
+      blender
       psswdmgr
       email
       protonvpn
