@@ -99,9 +99,9 @@
     "type": "github",
     "owner": "numtide",
     "repo": "llm-agents.nix",
-    "rev": "117d535651dbc455ad92f37fc5b36e322bfddbb7",
-    "narHash": "sha256-VYLmeUWE2Lugk/9sgfPDKFQMJUR2kjvm+oeB1I66WtU=",
-    "lastModified": 1785037569
+    "rev": "dbf8bc592feb8a87bd8e4e70334448e808a8a8d0",
+    "narHash": "sha256-rrSIoNE0sqiFYbnhcf7duJPK3qyKoi09bXAO3aVdFm4=",
+    "lastModified": 1785052062
   },
   "my-assets": {
     "type": "github",
@@ -123,9 +123,9 @@
     "type": "github",
     "owner": "nix-community",
     "repo": "nix-index-database",
-    "rev": "4f8d52a3598b0dc7db7a5e7b419e3edd9d1ecfdb",
-    "narHash": "sha256-Q5kNLlWngt7TaIIZoxDKWMHjiSaNRVqr70FqWCRRfr4=",
-    "lastModified": 1784440659
+    "rev": "11665045df8b9938ef811a3bfdc65cffb02b4b70",
+    "narHash": "sha256-UiK+mmZJuLWQVhJ5b2wDzogIYWAesyRm6LA3h3Ulh3Y=",
+    "lastModified": 1785046085
   },
   "nix-minecraft": {
     "type": "github",
@@ -179,9 +179,9 @@
     "type": "github",
     "owner": "nix-community",
     "repo": "NUR",
-    "rev": "338f16436b45f06625cf3be65490bd808cd42ed5",
-    "narHash": "sha256-wSN/jcqdXp70Ho0rC5AC8fi358v8xxy5MKA1TKNnWLw=",
-    "lastModified": 1785041055
+    "rev": "953e4806e595c25ed510500daf6ae5879413b9e1",
+    "narHash": "sha256-EslUXQKSmI/JYeflSVNN5I5PFcyuandaqUWHJRISgWc=",
+    "lastModified": 1785053717
   },
   "playit-nixos-module": {
     "type": "github",
