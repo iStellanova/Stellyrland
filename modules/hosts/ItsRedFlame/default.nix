@@ -20,6 +20,12 @@ _: {
 
       hardware.enableRedistributableFirmware = true;
 
+      # This board's tpm_crb probe fails (no working TPM), and systemd's
+      # tpm2.target is Wanted-by sysinit.target unconditionally — without
+      # this, boot stalls on the 90s device-unit timeout twice (initrd + root).
+      systemd.tpm2.enable = false;
+      boot.initrd.systemd.tpm2.enable = false;
+
       # GTX 1660 (Turing) — proprietary driver. Runs Plasma/KWin rather than
       # Hyprland: Aquamarine hit an unfixable dual-monitor crash on this GPU.
       services.xserver.videoDrivers = [ "nvidia" ];
