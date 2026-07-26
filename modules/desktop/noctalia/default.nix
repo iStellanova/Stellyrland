@@ -88,7 +88,7 @@
           theme = {
             mode = "dark";
             builtin = "Catppuccin";
-            community_palette = "Catppuccin Lavender";
+            community_palette = "Catppuccin Macchiato Lavender";
             source = "community";
             templates = {
               builtin_ids = [
