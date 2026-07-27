@@ -1,4 +1,5 @@
-_: {
+{ inputs, ... }:
+{
   perSystem =
     {
       pkgs,
@@ -10,6 +11,7 @@ _: {
         packages = with config; [
           treefmt.build.wrapper
           packages.write-tack
+          inputs.tack.packages.${pkgs.stdenv.hostPlatform.system}.tack
           pkgs.git-crypt
         ];
       };
