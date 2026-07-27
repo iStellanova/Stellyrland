@@ -17,6 +17,7 @@
     imports = with inputs.self.modules.darwin; [
       lix
       nix-settings
+      openssh
       tailscale
       secrets
       users
