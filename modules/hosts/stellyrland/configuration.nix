@@ -58,7 +58,6 @@
       # Gaming
       game-launchers
       gamescope
-      minecraft-server
       steam
       vr
 
