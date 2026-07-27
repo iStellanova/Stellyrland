@@ -59,5 +59,21 @@ let
 in
 {
   services.lact.enable = true;
+  #TODO: nixpkgs bumped libdisplay-info to 0.4.0 ahead of lact's Cargo.lock,
+  # whose libdisplay-info-sys 0.3.0 hard-requires < 0.4.0, breaking the build.
+  # Pin lact's own libdisplay-info back to 0.3.0 (doesn't affect the global 0.4.0
+  # used elsewhere, e.g. Hyprland/wlroots). Remove once nixpkgs bumps lact past this.
+  services.lact.package = pkgs.lact.override {
+    libdisplay-info = pkgs.libdisplay-info.overrideAttrs (_: {
+      version = "0.3.0";
+      src = pkgs.fetchFromGitLab {
+        domain = "gitlab.freedesktop.org";
+        owner = "emersion";
+        repo = "libdisplay-info";
+        rev = "0.3.0";
+        hash = "sha256-nXf2KGovNKvcchlHlzKBkAOeySMJXgxMpbi5z9gLrdc=";
+      };
+    });
+  };
   environment.etc."lact/config.yaml".source = lactConfig;
 }
