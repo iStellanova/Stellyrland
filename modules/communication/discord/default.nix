@@ -10,10 +10,10 @@
     {
       imports = [
         inputs.nixcord.homeModules.nixcord
-        ./_discord-music-rpc.nix
+        ./_music-rpc.nix
       ];
 
-      programs.nixcord = lib.mkIf pkgs.stdenv.isLinux (import ./_nixcord-config.nix);
+      programs.nixcord = lib.mkIf pkgs.stdenv.isLinux (import ./_config.nix);
     };
 
   flake.modules.darwin.discord =
@@ -21,7 +21,7 @@
     {
       imports = [ inputs.nixcord.darwinModules.default ];
 
-      programs.nixcord = (import ./_nixcord-config.nix) // {
+      programs.nixcord = (import ./_config.nix) // {
         user = host.username;
       };
     };

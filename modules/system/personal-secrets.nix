@@ -10,6 +10,9 @@ _: {
 
       sops.secrets.lastfm-password = { };
 
+      # No explicit path: defaults to /run/secrets/github-token. The darwin
+      # equivalent (base/secrets.nix) uses an explicit ~/.config path instead —
+      # nix-tools.nix's shell init checks both.
       sops.secrets.github-token = {
         owner = host.username;
         mode = "0400";

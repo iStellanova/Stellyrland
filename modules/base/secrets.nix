@@ -56,6 +56,9 @@
     sops.defaultSopsFile = ../../secrets/secrets.yaml;
     sops.defaultSopsFormat = "yaml";
 
+    # Path is explicit here (unlike the nixos version in system/personal-secrets.nix,
+    # which uses sops-nix's default /run/secrets/ location) — nix-tools.nix's shell
+    # init checks both paths when exporting GITHUB_TOKEN.
     sops.secrets.github-token = {
       path = "${host.homeDir}/.config/github-token";
       owner = host.username;

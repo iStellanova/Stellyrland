@@ -1,9 +1,9 @@
 _: {
-  flake.modules.nixos.storage = { pkgs, ... }: {
-    environment.systemPackages = with pkgs; [
-      ntfs3g # Open source NTFS driver
-    ];
-
+  # Sanoid + Syncoid: local snapshot policy for the one host using impermanence
+  # (root/nix must never be snapshotted — they're ephemeral by design) and a
+  # backup HDD (hdd.nix's weekly replication runs on the same Sanoid/Syncoid
+  # toolkit, not NixOS's separate builtin autoSnapshot module).
+  flake.modules.nixos.zfs-snapshots-sanoid = { pkgs, ... }: {
     # Sanoid: ZFS snapshot management for safe/ datasets.
     # Replaces snapper. Timeline snapshots for /home and /persist only —
     # local/ datasets (root, nix) are ephemeral and never snapshotted.

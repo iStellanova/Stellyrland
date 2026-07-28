@@ -9,6 +9,8 @@ _: {
       hddPartlabel = "disk-hdd-luks";
       mapperName = "crypthdd";
       poolName = "zhdd";
+      # hdd-keyfile is declared in modules/system/personal-secrets.nix, not
+      # here — this module requires personal-secrets to also be imported.
       keyFile = config.sops.secrets.hdd-keyfile.path;
 
       backupScript = pkgs.writeShellScript "backup-hdd" ''

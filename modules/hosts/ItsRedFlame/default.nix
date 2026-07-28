@@ -15,9 +15,6 @@ _: {
       # Own file/recipients — must never decrypt stellyrland's secrets.
       sops.defaultSopsFile = ../../../secrets/ItsRedFlame.yaml;
 
-      # Lets stellanova push via --target-host without nix-copy-closure rejecting it.
-      nix.settings.trusted-users = [ "stellanova" ];
-
       hardware.enableRedistributableFirmware = true;
 
       # This board's tpm_crb probe fails (no working TPM), and systemd's

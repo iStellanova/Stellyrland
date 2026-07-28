@@ -5,6 +5,9 @@
     homeDir = "/home/tan13";
     flakePath = "/home/tan13/Projects/stellyrland";
     passwordSecret = "tan13psswd";
+    # Currently unused — this host runs Plasma with manual GPU driver setup
+    # below, not hyprland's host.graphics-based selection. Kept for if this
+    # host ever switches window managers.
     graphics = "intel";
     sshKeys = [ ];
   };
@@ -23,7 +26,7 @@
       xdg
 
       stellanova-admin
-      zfs-snapshots
+      zfs-snapshots-builtin
 
       # Desktop
       plasma

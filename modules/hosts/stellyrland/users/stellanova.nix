@@ -21,19 +21,12 @@
       };
 
       imports = with self.modules.homeManager; [
-        # Base
-        base
-        cmdline
-
-        # Desktop-Adjacent
-        mime
-        xdg
-        kitty
+        basics
         fastfetch
 
         # Hyprland Desktop
         easyeffects
-        noctalia-shell
+        noctalia
         openrgb
         hyprland
         catppuccin

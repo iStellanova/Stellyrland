@@ -6,11 +6,7 @@
 
     home-manager.users.tan13 = {
       imports = with self.modules.homeManager; [
-        base
-        cmdline
-        mime
-        xdg
-        kitty
+        basics
         fastfetch
         librewolf
       ];

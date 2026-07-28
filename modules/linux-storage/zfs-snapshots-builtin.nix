@@ -1,5 +1,8 @@
 _: {
-  flake.modules.nixos.zfs-snapshots = _: {
+  # NixOS's own dataset-agnostic autoSnapshot — the simpler alternative to
+  # Sanoid (see zfs-snapshots-sanoid.nix), used by hosts without impermanence
+  # or a backup HDD to pair with Syncoid.
+  flake.modules.nixos.zfs-snapshots-builtin = _: {
     # Automatic dataset-agnostic ZFS timeline snapshots
     services.zfs.autoSnapshot = {
       enable = true;

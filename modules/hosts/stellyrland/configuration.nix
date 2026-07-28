@@ -34,7 +34,7 @@
       fonts
       hyprland
       noctalia-greeter
-      noctalia-shell
+      noctalia
       pipewire
       pipewire-lowlatency
       catppuccin
@@ -53,7 +53,7 @@
       extra-disk
       hdd
       preservation
-      storage
+      zfs-snapshots-sanoid
 
       # Gaming
       game-launchers
