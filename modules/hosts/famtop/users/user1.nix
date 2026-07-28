@@ -6,11 +6,7 @@
 
     home-manager.users.user1 = {
       imports = with self.modules.homeManager; [
-        base
-        cmdline
-        mime
-        xdg
-        kitty
+        basics
         fastfetch
         librewolf
       ];

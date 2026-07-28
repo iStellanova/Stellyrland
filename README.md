@@ -77,6 +77,8 @@ flowchart TD
     MK --> SL["stellyrland\nNixOS · x86_64-linux"]
     MK --> ST["stellyrtop\nmacOS · aarch64-darwin"]
     MK --> PPF["plasmapulsefinale\nNixOS · x86_64-linux"]
+    MK --> FT["famtop\nNixOS · aarch64-linux"]
+    MK --> IRF["ItsRedFlame\nNixOS · x86_64-linux"]
 
     style FF fill:#363a4f,color:#cad3f5,stroke:#5b6078
     style IT fill:#363a4f,color:#cad3f5,stroke:#5b6078
@@ -86,6 +88,8 @@ flowchart TD
     style SL fill:#1e2030,color:#8aadf4,stroke:#8aadf4
     style ST fill:#1e2030,color:#a6da95,stroke:#a6da95
     style PPF fill:#1e2030,color:#c6a0f6,stroke:#c6a0f6
+    style FT fill:#1e2030,color:#eed49f,stroke:#eed49f
+    style IRF fill:#1e2030,color:#ed8796,stroke:#ed8796
 ```
 
 ## 📂 Project Structure
@@ -97,7 +101,9 @@ flowchart TD
 ├── docs/                   # Documentation and troubleshooting
 ├── secrets/                # sops-nix encrypted secrets
 │   ├── secrets.yaml
-│   └── plasmapulsefinale.yaml
+│   ├── plasmapulsefinale.yaml
+│   ├── famtop.yaml
+│   └── ItsRedFlame.yaml
 └── modules/                # All aspects, auto-loaded by import-tree
     ├── flake-config.nix    # Flake inputs, target systems, flake-file declarations
     ├── flake-options.nix   # flake.hosts / flake.lib / flake.factory option declarations
@@ -108,7 +114,9 @@ flowchart TD
     ├── hosts/               # Host declarations and host-specific aspect composition
     │   ├── stellyrland/     # NixOS workstation (x86_64-linux)
     │   ├── stellyrtop/      # macOS MacBook (aarch64-darwin)
-    │   └── plasmapulsefinale/ # NixOS desktop (x86_64-linux)
+    │   ├── plasmapulsefinale/ # NixOS desktop (x86_64-linux)
+    │   ├── famtop/          # NixOS family desktop, Apple Silicon (aarch64-linux)
+    │   └── ItsRedFlame/     # NixOS gaming/AV box (x86_64-linux)
     ├── users/               # Shared user aspect definitions
     ├── base/                # Bare necessities for any host: core, lix, nix-settings, openssh, tailscale, secrets, users
     ├── nix-extras/          # home-manager wiring, nix-tools, mkNixos/mkDarwin helpers

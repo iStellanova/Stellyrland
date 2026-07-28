@@ -4,14 +4,14 @@
     url = "github:noctalia-dev/noctalia/cachix";
   };
 
-  flake.modules.nixos.noctalia-shell = _: {
+  flake.modules.nixos.noctalia = _: {
     nix.settings.substituters = [ "https://noctalia.cachix.org" ];
     nix.settings.trusted-public-keys = [
       "noctalia.cachix.org-1:pCOR47nnMEo5thcxNDtzWpOxNFQsBRglJzxWPp3dkU4="
     ];
   };
 
-  flake.modules.homeManager.noctalia-shell =
+  flake.modules.homeManager.noctalia =
     {
       host,
       lib,

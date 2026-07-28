@@ -9,6 +9,10 @@
       openssh.authorizedKeys.keys = self.constants.sshKeys;
     };
 
+    # Lets stellanova push closures via nixos-rebuild --target-host without
+    # nix-copy-closure rejecting them as untrusted.
+    nix.settings.trusted-users = [ "stellanova" ];
+
     # cmdline's zsh aspect never sets programs.zsh.enable itself — usually
     # inherited from modules/users/<name>.nix, which we skip here since it'd
     # tie home.homeDirectory to host.homeDir (tan13's, not hers).

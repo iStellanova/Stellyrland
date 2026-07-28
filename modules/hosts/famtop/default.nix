@@ -10,10 +10,6 @@ _: {
       # decrypt stellyrland's personal secrets (see secrets/.sops.yaml).
       sops.defaultSopsFile = ../../../secrets/famtop.yaml;
 
-      # Lets stellanova push closures via nixos-rebuild --target-host without
-      # nix-copy-closure rejecting them as untrusted.
-      nix.settings.trusted-users = [ "stellanova" ];
-
       # The module's own default auto-detects this on /boot/vendorfw or
       # /mnt/boot/vendorfw — fine building on famtop itself, but those never
       # exist on stellyrland, which is what actually builds this for remote

@@ -88,16 +88,19 @@
           pinsForce = true;
           pinsForceAction = "remove";
 
+          search = {
+            force = true; # re-assert on every rebuild
+            default = "ddg";
+          };
+        }
+        // lib.optionalAttrs pkgs.stdenv.hostPlatform.isLinux {
+          # Sine installs a bootloader inside the Zen app — unsupported on
+          # macOS (breaks the upstream code signature), so Linux-only.
           # Sine store slug is "Nebula" (capital, no "-zen" suffix) — a
           # wrong slug here fails silently at activation, not at build time.
           sine = {
             enable = true;
             mods = [ "Nebula" ];
-          };
-
-          search = {
-            force = true; # re-assert on every rebuild
-            default = "ddg";
           };
         };
       };
