@@ -8,6 +8,12 @@
     url = "github:shezdy/hyprsplit";
     inputs.nixpkgs.follows = "nixpkgs";
   };
+  # Source only, no flake eval — their flake.nix pins its own independent Hyprland and
+  # would conflict with pkgs.hyprland. We build it ourselves in _overview.nix instead.
+  flake-file.inputs.scroll-overview = {
+    url = "github:yayuuu/hyprland-scroll-overview";
+    flake = false;
+  };
 
   flake.modules.nixos.hyprland = { pkgs, host, ... }: {
     options.desktop.hyprland = {
@@ -112,6 +118,7 @@
         ./_animations.nix
         ./_binds.nix
         ./_cursor.nix
+        ./_overview.nix
         ./_rules.nix
       ];
 
