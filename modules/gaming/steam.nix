@@ -3,6 +3,10 @@
     url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
     inputs.nixpkgs.follows = "nixpkgs";
   };
+
+  # On NixOS, The flags for gaming in HDR are as follows:
+  # PROTON_ENABLE_WAYLAND=1 PROTON_USE_NTSYNC=1 RADV_PERFTEST=gpl %command%
+  # Use CachyOS's Proton.
   flake.modules.nixos.steam = { pkgs, ... }: {
     nixpkgs.overlays = [ inputs.chaotic.overlays.default ];
 

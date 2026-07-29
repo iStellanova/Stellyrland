@@ -152,13 +152,29 @@
           opacity = "1.0 override 1.0 override";
         }
 
+        # gamescope requests its internal fullscreen via -f, but Hyprland
+        # doesn't auto-fullscreen its outer toplevel window for that.
         {
           match = {
-            class = "^(steam)$";
-            title = "^(notificationtoasts_\\d+_desktop)$";
+            class = "^(gamescope)$";
           };
-          no_focus = true;
+          fullscreen = true;
         }
+
+        (
+          {
+            match = {
+              class = "^(steam)$";
+              title = "^(notificationtoasts_\\d+_desktop)$";
+            };
+            no_focus = true;
+          }
+          // lib.optionalAttrs (host.monitorPriority or [ ] != [ ]) {
+            # Reassigning monitor (done blanket-wide above) without `silent`
+            # is what drags your view to the notification; see hyprwm/Hyprland#5618.
+            monitor = "${lib.elemAt host.monitorPriority 0} silent";
+          }
+        )
         {
           match = {
             title = "(.*)(YouTube Music)(.*)";
