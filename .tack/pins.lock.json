@@ -99,9 +99,9 @@
     "type": "github",
     "owner": "numtide",
     "repo": "llm-agents.nix",
-    "rev": "e23b9c324dd5a79189d97e5603067517ac629c0d",
-    "narHash": "sha256-U7x7jYEBE3kFpmZI3CGP7fLC/uz/KxS3uTtg36AoEok=",
-    "lastModified": 1785380302
+    "rev": "510857bf921a19cb0abe479d42f64d49bc331243",
+    "narHash": "sha256-sliUxY8COPJGd8Y2D9OdeYAe7Io4VCPrEkJLohAL1Fo=",
+    "lastModified": 1785363533
   },
   "my-assets": {
     "type": "github",
@@ -131,9 +131,9 @@
     "type": "github",
     "owner": "4evy",
     "repo": "nixcord",
-    "rev": "9e0853c383b037c630840f993f75eae3095e3dc5",
-    "narHash": "sha256-8tAgIblbxz3QZZLvnc7vGpc0y0SmeOJqIo8tEX9XmE8=",
-    "lastModified": 1785379815
+    "rev": "d8c23e12bee47f5dc46e91681aa4b79843bd0c49",
+    "narHash": "sha256-QSrljoOlxdVGXLPddRAOLzftW8qJPF85gssoaOVduhg=",
+    "lastModified": 1785356435
   },
   "nixos-apple-silicon": {
     "type": "github",
@@ -163,17 +163,17 @@
     "type": "github",
     "owner": "noctalia-dev",
     "repo": "noctalia",
-    "rev": "74ae1cb5f7048a9c024903788bc6ad7f45e907fc",
-    "narHash": "sha256-XimkvVE08sY7EAmpPWx2kE6YKhPA8HcW+LrjCwf09rw=",
-    "lastModified": 1785377861
+    "rev": "f77f480c17236c17c58aaaba6d5b5c92dcf04f40",
+    "narHash": "sha256-LPDHy448+RHUD7D+INt/ImItn6F38hceUJl6CAKfBaA=",
+    "lastModified": 1785360473
   },
   "nur": {
     "type": "github",
     "owner": "nix-community",
     "repo": "NUR",
-    "rev": "047f5c4125038f5d0a778def78f59fe019c0c5b2",
-    "narHash": "sha256-/IAnKMlA4RCwj5v1z0oNec3qOrywgyFIEn0W6g/ATDc=",
-    "lastModified": 1785383067
+    "rev": "a1f0c7ccdccb8dcb7939ff64d2523c5fe755d54e",
+    "narHash": "sha256-zUR685kCPiRRximuANtQIpXITc8utP5ATr2OvhiclzM=",
+    "lastModified": 1785363297
   },
   "preservation": {
     "type": "github",
@@ -182,14 +182,6 @@
     "rev": "93416f4614ad2dfed5b0dcf12f27e57d27a5ab11",
     "narHash": "sha256-mMI9IanU+Xw+pVogD2oT0I2kTmvz2Un/Apc5+CwUpEY=",
     "lastModified": 1757436102
-  },
-  "scroll-overview": {
-    "type": "github",
-    "owner": "yayuuu",
-    "repo": "hyprland-scroll-overview",
-    "rev": "de7482505f6ea4e3a2832b275f3d2e2020b6353c",
-    "narHash": "sha256-uI9LdQiomLvmhP2UkeDG6rNZn4pjMgHatCosRbnAFX4=",
-    "lastModified": 1785200133
   },
   "sidra": {
     "type": "github",
