@@ -26,7 +26,7 @@ in
         { pkgs, ... }:
         {
           environment.systemPackages = with pkgs; [
-            antigravity-fhs
+            antigravity-ide-fhs
           ];
         }
       )
