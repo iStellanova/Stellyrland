@@ -75,10 +75,6 @@
         type = 0;
         timestampMode = 0;
       };
-      favoriteGifSearch = {
-        enable = true;
-        searchOption = "hostandpath";
-      };
       fixSpotifyEmbeds.enable = true;
       fixYoutubeEmbeds.enable = true;
       gameActivityToggle = {
