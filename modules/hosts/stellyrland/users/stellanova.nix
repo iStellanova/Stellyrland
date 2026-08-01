@@ -35,7 +35,7 @@
         git
         helix
         nix-index
-        nixvim-writing
+        nvf-writing
         ns
         yazi
         zed

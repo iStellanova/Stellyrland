@@ -71,9 +71,6 @@ url = "github:nix-community/nixos-apple-silicon?rev=3902c801519264191a7c3dfec8dd
 [inputs.nixpkgs]
 url = "github:nixos/nixpkgs/nixos-unstable"
 
-[inputs.nixvim]
-url = "github:nix-community/nixvim"
-
 [inputs.noctalia-greeter]
 url = "github:noctalia-dev/noctalia-greeter"
 follows = { nixpkgs = "nixpkgs" }
@@ -83,6 +80,10 @@ url = "github:noctalia-dev/noctalia/cachix"
 
 [inputs.nur]
 url = "github:nix-community/NUR"
+follows = { nixpkgs = "nixpkgs" }
+
+[inputs.nvf]
+url = "github:notashelf/nvf"
 follows = { nixpkgs = "nixpkgs" }
 
 [inputs.preservation]
