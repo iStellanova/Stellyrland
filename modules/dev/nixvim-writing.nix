@@ -95,7 +95,7 @@
                   "Summary:",
                   meta.summary or "—",
                 })
-                vim.bo[self.state.bufnr].wrap = true
+                vim.wo[self.state.winid].wrap = true
               end,
             })
             require("telescope.builtin").find_files({
