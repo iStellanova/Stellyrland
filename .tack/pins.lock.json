@@ -238,5 +238,13 @@
     "rev": "e1a0481218312579ad67eda819ad964176fbe28b",
     "narHash": "sha256-q+5Exb733cSl8HATB7DwZ50VNRaBxiy8sr+VSqYXuFM=",
     "lastModified": 1785456211
+  },
+  "nixvim": {
+    "type": "github",
+    "owner": "nix-community",
+    "repo": "nixvim",
+    "rev": "a19efae6c1afe426e8243d79f6dfbab186be6df8",
+    "narHash": "sha256-rYFSM491MFFA1V6oax5PngXbevGt6n0o8sKhwFoItE0=",
+    "lastModified": 1785527278
   }
 }
