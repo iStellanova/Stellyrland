@@ -128,7 +128,7 @@ flowchart TD
     │   └── noctalia/        # Noctalia shell and greeter
     ├── terminal/            # CLI tools, shell aesthetics, cmdline aggregate
     │   └── zsh/             # Zsh config, completion, syntax highlighting
-    ├── dev/                 # Zed, Helix, AI tools, Git, dev packages
+    ├── dev/                 # Zed, Helix, nixvim writing setup, AI tools, Git, dev packages
     ├── gaming/              # Gamescope, HDR, game launchers
     ├── av/                  # GPU Screen Recorder, media players, EasyEffects
     ├── communication/       # Messaging apps
