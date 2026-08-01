@@ -75,7 +75,6 @@
       # Desktop Applications
       nautilus
       roblox
-      writing
 
       # Productivity
       email
