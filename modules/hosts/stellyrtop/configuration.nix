@@ -44,7 +44,6 @@
       # Productivity
       virtual-machines
       finance
-      writing
       school
       office-suite
       email
