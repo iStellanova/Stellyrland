@@ -99,9 +99,9 @@
     "type": "github",
     "owner": "numtide",
     "repo": "llm-agents.nix",
-    "rev": "e222bd1e402f711646012624665af754d00bfa62",
-    "narHash": "sha256-mwIyMLuxUzYDYLk09QL0uKtkNvjQJ0LKOWErMeqNSz4=",
-    "lastModified": 1785566656
+    "rev": "5b0823520773202a3e10618eba82f0c485040660",
+    "narHash": "sha256-/pvRVm+vQ5br0lTlaqO1a8Hn7XZBKDjDWyKl7RV8gN8=",
+    "lastModified": 1785613687
   },
   "my-assets": {
     "type": "github",
@@ -131,9 +131,9 @@
     "type": "github",
     "owner": "4evy",
     "repo": "nixcord",
-    "rev": "5febd0b2dc5f9246e8ae1e74c1cd01e0484abe5a",
-    "narHash": "sha256-ZGTOCeTMUluq5L4t0LXLOlQUMA9pMRaJRYM0Jz49720=",
-    "lastModified": 1785594524
+    "rev": "d3da3560efc5ab158d1889b7df1b2fe29d3795ce",
+    "narHash": "sha256-TBFu1I6SzdxZyF7RetSlzHzEETE0XGiuZHpSWteq8JM=",
+    "lastModified": 1785614885
   },
   "nixos-apple-silicon": {
     "type": "github",
@@ -179,9 +179,9 @@
     "type": "github",
     "owner": "nix-community",
     "repo": "NUR",
-    "rev": "071ffd9688a21b1e30fc7451ddfe187bcc24b437",
-    "narHash": "sha256-mvTgsdL/6zWODwt8nne3Nn55o6r+fHRj6gRaHP3vv8c=",
-    "lastModified": 1785609271
+    "rev": "a08c95a47afe8a1e259823a734ae37e3f5726a58",
+    "narHash": "sha256-IVqkqy5MBqwaNzGmRUIu9d3Ckc+ftY857LTys9Mfw+k=",
+    "lastModified": 1785615263
   },
   "preservation": {
     "type": "github",
