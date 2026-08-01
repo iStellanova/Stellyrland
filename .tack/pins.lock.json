@@ -151,14 +151,6 @@
     "narHash": "sha256-KoTsyMQqnXQZq8deCEnu4QkyldkwH/bpMMhUcfMdGIw=",
     "lastModified": 1785571196
   },
-  "nixvim": {
-    "type": "github",
-    "owner": "nix-community",
-    "repo": "nixvim",
-    "rev": "a19efae6c1afe426e8243d79f6dfbab186be6df8",
-    "narHash": "sha256-rYFSM491MFFA1V6oax5PngXbevGt6n0o8sKhwFoItE0=",
-    "lastModified": 1785527278
-  },
   "noctalia-greeter": {
     "type": "github",
     "owner": "noctalia-dev",
@@ -182,6 +174,14 @@
     "rev": "a08c95a47afe8a1e259823a734ae37e3f5726a58",
     "narHash": "sha256-IVqkqy5MBqwaNzGmRUIu9d3Ckc+ftY857LTys9Mfw+k=",
     "lastModified": 1785615263
+  },
+  "nvf": {
+    "type": "github",
+    "owner": "notashelf",
+    "repo": "nvf",
+    "rev": "fbf73761f56c7b41f8095bd1a8fcadefea30a05b",
+    "narHash": "sha256-ILww3rsO4JA9bY2pV56Pg/VrRADQmIw/alhpM4eUIYY=",
+    "lastModified": 1785524545
   },
   "preservation": {
     "type": "github",
