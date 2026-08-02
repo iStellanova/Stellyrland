@@ -20,8 +20,9 @@
     let
       wallpaperDir = "${host.homeDir}/Pictures/wallpapers";
       defaultWallpaper = "${wallpaperDir}/wallpaper.png";
-      primary = if host.monitorPriority == [ ] then "" else lib.elemAt host.monitorPriority 0;
-      secondary = if lib.length host.monitorPriority < 2 then "" else lib.elemAt host.monitorPriority 1;
+      monitorPriority = host.monitorPriority or [ ];
+      primary = if monitorPriority == [ ] then "" else lib.elemAt monitorPriority 0;
+      secondary = if lib.length monitorPriority < 2 then "" else lib.elemAt monitorPriority 1;
       monitorSections =
         lib.optionalString (
           primary != ""
@@ -33,8 +34,10 @@
     {
       imports = [
         inputs.noctalia-shell.homeModules.default
-        (import ./_lockscreen.nix { inherit primary secondary; })
+        ./_lockscreen.nix
       ];
+
+      _module.args = { inherit primary secondary; };
 
       home.file = lib.mkIf (host.dataPath != null) {
         "Pictures/wallpapers/wallpaper.png".source = "${host.dataPath}/wallpapers/wallpaper.png";

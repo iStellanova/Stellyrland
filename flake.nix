@@ -6,11 +6,11 @@
       inputs = rawInputs // {
         self = self';
       };
-      self' = outputs // {
+      self' = result // {
         inherit inputs;
         inherit (self) outPath;
       };
-      outputs = rawInputs.flake-parts.lib.mkFlake { inherit inputs; } (rawInputs.import-tree ./modules);
+      result = inputs.flake-parts.lib.mkFlake { inherit inputs; } (inputs.import-tree ./modules);
     in
-    outputs;
+    result;
 }

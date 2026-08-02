@@ -12,7 +12,7 @@ _: {
       ...
     }:
     let
-      primary = if host.monitorPriority == [ ] then "" else lib.elemAt host.monitorPriority 0;
+      primary = if host.monitorPriority or [ ] == [ ] then "" else lib.elemAt host.monitorPriority 0;
     in
     {
       xdg.configFile."gpu-screen-recorder/config".text = ''

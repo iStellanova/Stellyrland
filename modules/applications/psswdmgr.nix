@@ -1,10 +1,10 @@
 _:
 let
-  psswdmgrModule = { pkgs, ... }: {
+  osShared = { pkgs, ... }: {
     environment.systemPackages = [ pkgs.proton-pass ];
   };
 in
 {
-  flake.modules.nixos.psswdmgr = psswdmgrModule;
-  flake.modules.darwin.psswdmgr = psswdmgrModule;
+  flake.modules.nixos.psswdmgr = osShared;
+  flake.modules.darwin.psswdmgr = osShared;
 }

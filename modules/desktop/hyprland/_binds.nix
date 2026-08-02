@@ -1,12 +1,12 @@
 {
   inputs,
   lib,
+  lua,
   osConfig,
   pkgs,
   ...
 }:
 let
-  lua = lib.generators.mkLuaInline;
   bind = key: dispatcher: {
     _args = [
       key

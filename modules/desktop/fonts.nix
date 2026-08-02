@@ -9,7 +9,7 @@ let
       noto-fonts
       noto-fonts-cjk-sans
     ]
-    ++ pkgs.lib.optionals (!pkgs.stdenv.isDarwin) [
+    ++ pkgs.lib.optionals pkgs.stdenv.isLinux [
       noto-fonts-color-emoji
     ];
 in

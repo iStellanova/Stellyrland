@@ -1,13 +1,13 @@
 _:
 let
-  networkingPkgs =
+  tailscalePkgs =
     pkgs: with pkgs; [
       tailscale
       wget
     ];
   osShared = { pkgs, ... }: {
     services.tailscale.enable = true;
-    environment.systemPackages = networkingPkgs pkgs;
+    environment.systemPackages = tailscalePkgs pkgs;
   };
 in
 {

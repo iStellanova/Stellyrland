@@ -17,47 +17,47 @@ _: {
       };
 
       programs.zsh.initContent = ''
-                if [[ -s "/run/secrets/github-token" ]]; then
-                  export GITHUB_TOKEN="$(cat /run/secrets/github-token)"
-                elif [[ -s "$HOME/.config/github-token" ]]; then
-                  export GITHUB_TOKEN="$(cat "$HOME/.config/github-token")"
-                fi
+        if [[ -s "/run/secrets/github-token" ]]; then
+          export GITHUB_TOKEN="$(cat /run/secrets/github-token)"
+        elif [[ -s "$HOME/.config/github-token" ]]; then
+          export GITHUB_TOKEN="$(cat "$HOME/.config/github-token")"
+        fi
 
-                _nix_prep() {
-                  git -C "$FLAKE" add . && (cd "$FLAKE" && nix fmt) && git -C "$FLAKE" add .
-                }
+        _nix_prep() {
+          git -C "$FLAKE" add . && (cd "$FLAKE" && nix fmt) && git -C "$FLAKE" add .
+        }
 
-                rebuild() {
-                  if [[ "$1" == "check" ]]; then
-                    _nix_prep && ${
-                      if pkgs.stdenv.isDarwin then
-                        "nh darwin build $FLAKE && rm -f ./result"
-                      else
-                        "nh os build $FLAKE --diff always && rm -f ./result"
-                    }
-                  else
-                    _nix_prep && ${
-                      if pkgs.stdenv.isDarwin then "nh darwin switch $FLAKE" else "nh os switch $FLAKE"
-                    }
-                  fi
-                }
+        rebuild() {
+          if [[ "$1" == "check" ]]; then
+            _nix_prep && ${
+              if pkgs.stdenv.isDarwin then
+                "nh darwin build $FLAKE && rm -f ./result"
+              else
+                "nh os build $FLAKE --diff always && rm -f ./result"
+            }
+          else
+            _nix_prep && ${
+              if pkgs.stdenv.isDarwin then "nh darwin switch $FLAKE" else "nh os switch $FLAKE"
+            }
+          fi
+        }
 
-                upgrade() {
-                  if [[ "$1" == "check" ]]; then
-                    (cd "$FLAKE" && nix run .#write-tack) && _nix_prep && ${
-                      if pkgs.stdenv.isDarwin then
-                        "nh darwin build $FLAKE && rm -f ./result"
-                      else
-                        "nh os build $FLAKE --diff always && rm -f ./result"
-                    }
-                  else
-                    (cd "$FLAKE" && nix run .#write-tack) && _nix_prep && ${
-                      if pkgs.stdenv.isDarwin then "nh darwin switch $FLAKE" else "nh os switch $FLAKE"
-                    }
-                  fi
-                }
+        upgrade() {
+          if [[ "$1" == "check" ]]; then
+            (cd "$FLAKE" && nix run .#write-tack) && _nix_prep && ${
+              if pkgs.stdenv.isDarwin then
+                "nh darwin build $FLAKE && rm -f ./result"
+              else
+                "nh os build $FLAKE --diff always && rm -f ./result"
+            }
+          else
+            (cd "$FLAKE" && nix run .#write-tack) && _nix_prep && ${
+              if pkgs.stdenv.isDarwin then "nh darwin switch $FLAKE" else "nh os switch $FLAKE"
+            }
+          fi
+        }
 
-                notify_remote() {
+        notify_remote() {
           if [[ -z "$1" ]]; then
             echo "Usage: notify_remote <host> [title] [message]"
             return 1
@@ -76,27 +76,27 @@ _: {
              fi" 2>/dev/null || true
         }
 
-                deploy() {
-                  if [[ -z "$1" ]]; then
-                    echo "Usage: deploy <host> [check|extra-args...]"
-                    return 1
-                  fi
-                  local target="$1"
-                  shift
-                  local remote="stellanova@$target.local"
-                  if [[ "$1" == "check" ]]; then
-                    shift
-                    _nix_prep && nh os build "$FLAKE" -H "$target" --target-host "$remote" --diff always "$@" && rm -f ./result
-                  else
-                    _nix_prep && nh os switch "$FLAKE" -H "$target" --target-host "$remote" "$@"
-                  fi
-                }
+        deploy() {
+          if [[ -z "$1" ]]; then
+            echo "Usage: deploy <host> [check|extra-args...]"
+            return 1
+          fi
+          local target="$1"
+          shift
+          local remote="stellanova@$target.local"
+          if [[ "$1" == "check" ]]; then
+            shift
+            _nix_prep && nh os build "$FLAKE" -H "$target" --target-host "$remote" --diff always "$@" && rm -f ./result
+          else
+            _nix_prep && nh os switch "$FLAKE" -H "$target" --target-host "$remote" "$@"
+          fi
+        }
 
-                nix-add() { local profile="$HOME/.local/state/nix/profiles/scratch"; NIXPKGS_ALLOW_UNFREE=1 nix profile add --profile "$profile" --impure nixpkgs#$1; }
-                nix-remove() {
-                  if [[ ! -d ~/.local/state/nix/profiles/scratch ]]; then echo "Scratch profile doesn't exist"; return 1; fi
-                  nix profile remove --profile ~/.local/state/nix/profiles/scratch $1
-                }
+        nix-add() { local profile="$HOME/.local/state/nix/profiles/scratch"; NIXPKGS_ALLOW_UNFREE=1 nix profile add --profile "$profile" --impure nixpkgs#$1; }
+        nix-remove() {
+          if [[ ! -d ~/.local/state/nix/profiles/scratch ]]; then echo "Scratch profile doesn't exist"; return 1; fi
+          nix profile remove --profile ~/.local/state/nix/profiles/scratch $1
+        }
       '';
 
       programs.nh = {

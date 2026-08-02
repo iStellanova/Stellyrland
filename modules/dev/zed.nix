@@ -1,4 +1,5 @@
-_: {
+{ inputs, ... }:
+{
   flake.modules.darwin.zed = _: {
     homebrew.casks = [ "zed" ];
   };
@@ -11,19 +12,9 @@ _: {
       ...
     }:
     {
-      home.packages = [
-        pkgs.nixd
-        pkgs.nixfmt
-        pkgs.pyright
-        pkgs.black
-        pkgs.bash-language-server
-        pkgs.shfmt
-        pkgs.lua-language-server
-        pkgs.stylua
-        pkgs.ripgrep
-        pkgs.fd
-        pkgs.mcp-nixos
-      ];
+      imports = [ inputs.self.modules.homeManager.editor-lsp ];
+
+      home.packages = [ pkgs.mcp-nixos ];
 
       programs.zed-editor = {
         enable = true;

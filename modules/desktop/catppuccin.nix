@@ -39,7 +39,7 @@
 
           catppuccin.bat.enable = true;
         }
-        (lib.mkIf pkgs.stdenv.hostPlatform.isDarwin {
+        (lib.mkIf pkgs.stdenv.isDarwin {
           # Noctalia owns these on Linux; catppuccin manages them on Darwin instead.
           catppuccin.kitty.enable = true;
           catppuccin.eza.enable = true;
@@ -49,7 +49,7 @@
           catppuccin.zsh-syntax-highlighting.enable = true;
           catppuccin.cava.enable = true;
         })
-        (lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
+        (lib.mkIf pkgs.stdenv.isLinux {
           catppuccin.kvantum.enable = true;
 
           # Apps handled by Noctalia — keep disabled here to avoid conflicts.

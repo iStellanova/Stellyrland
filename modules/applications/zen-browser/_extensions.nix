@@ -3,6 +3,7 @@
   pkgs,
   config,
   lib,
+  ...
 }:
 {
   config = lib.mkIf config.zenBrowser.personalize {

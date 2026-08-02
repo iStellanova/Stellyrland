@@ -1,12 +1,14 @@
-_: {
+{ inputs, ... }:
+{
   flake.modules.homeManager.helix =
     {
       host,
-      pkgs,
       lib,
       ...
     }:
     {
+      imports = [ inputs.self.modules.homeManager.editor-lsp ];
+
       programs.helix = {
         enable = true;
         defaultEditor = true;
@@ -126,19 +128,6 @@ _: {
             config = import ./_nixd-lsp-config.nix host;
           };
         };
-
-        extraPackages = with pkgs; [
-          nixd
-          pyright
-          bash-language-server
-          lua-language-server
-          nixfmt
-          black
-          shfmt
-          stylua
-          ripgrep
-          fd
-        ];
       };
     };
 }
