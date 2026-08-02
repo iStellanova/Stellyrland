@@ -51,9 +51,9 @@
     "type": "github",
     "owner": "hercules-ci",
     "repo": "flake-parts",
-    "rev": "17c9d6cdfc60c64f4ee8d306f9bc0b4ccb51481e",
-    "narHash": "sha256-vp6Y/Grm98ESt6ceOkWiHWyZRDV3J1RID4w+6NWK9yA=",
-    "lastModified": 1782949081
+    "rev": "427bf4bd9435fdf21321c8cc628c24efc14c0f7a",
+    "narHash": "sha256-4dtXQk/NMePegK/nWp5NSeuZKLATItOq61lpEvmXqGw=",
+    "lastModified": 1785627969
   },
   "freesmlauncher": {
     "type": "github",
@@ -99,9 +99,9 @@
     "type": "github",
     "owner": "numtide",
     "repo": "llm-agents.nix",
-    "rev": "5b0823520773202a3e10618eba82f0c485040660",
-    "narHash": "sha256-/pvRVm+vQ5br0lTlaqO1a8Hn7XZBKDjDWyKl7RV8gN8=",
-    "lastModified": 1785613687
+    "rev": "dc05e3383a1eafd61e68cc90d5e0ab1423d0fa38",
+    "narHash": "sha256-rNGIp0MfjAmDNwS3A0LuDdLwnVi2DoDiCgYXNy0eV+c=",
+    "lastModified": 1785623431
   },
   "my-assets": {
     "type": "github",
@@ -163,25 +163,25 @@
     "type": "github",
     "owner": "noctalia-dev",
     "repo": "noctalia",
-    "rev": "73e498510e6f134b038a1c399bfe18e4e807102a",
-    "narHash": "sha256-BembuDefgisohYMY/RGe1gi1Ldkr0CUjP1TMgLphUI4=",
-    "lastModified": 1785603479
+    "rev": "0e271529989f77afae73e16eacc5beb191812685",
+    "narHash": "sha256-g/f7khb725NLQAjxDqSYolkUHAR5hMIh5Xh/zsQgu0c=",
+    "lastModified": 1785631582
   },
   "nur": {
     "type": "github",
     "owner": "nix-community",
     "repo": "NUR",
-    "rev": "a08c95a47afe8a1e259823a734ae37e3f5726a58",
-    "narHash": "sha256-IVqkqy5MBqwaNzGmRUIu9d3Ckc+ftY857LTys9Mfw+k=",
-    "lastModified": 1785615263
+    "rev": "5003e630e7b646e7718ffabf69ba927ad8af96ee",
+    "narHash": "sha256-QgzJIGJRyWnbwKGQE1siz3jduCT+oVM3xYzXd65f/34=",
+    "lastModified": 1785633052
   },
   "nvf": {
     "type": "github",
     "owner": "notashelf",
     "repo": "nvf",
-    "rev": "fbf73761f56c7b41f8095bd1a8fcadefea30a05b",
-    "narHash": "sha256-ILww3rsO4JA9bY2pV56Pg/VrRADQmIw/alhpM4eUIYY=",
-    "lastModified": 1785524545
+    "rev": "c82d4e47cc1baab21d4954760db49941aaa39b49",
+    "narHash": "sha256-j4NzdhN4dgpvORbKdteIcw8M2WJyKrIgalBxT/CNk+c=",
+    "lastModified": 1785632973
   },
   "preservation": {
     "type": "github",
@@ -195,9 +195,9 @@
     "type": "github",
     "owner": "yayuuu",
     "repo": "hyprland-scroll-overview",
-    "rev": "48da39f7a9a6fc902405ae58d6cc5af4d6afcc68",
-    "narHash": "sha256-rK6M/T3cJjmzbfYvSujsb8qxWDMFgM1XuuWf3MIATzI=",
-    "lastModified": 1785585632
+    "rev": "34f297c481daf63ee732c0fbdda5bae7677d3e09",
+    "narHash": "sha256-dk9fNF8HCs9tsQsisAK89iITjKBS1NVCjJl8UjqZffA=",
+    "lastModified": 1785626878
   },
   "sidra": {
     "type": "github",
