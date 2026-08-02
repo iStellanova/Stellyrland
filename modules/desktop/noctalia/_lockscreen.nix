@@ -1,4 +1,4 @@
-{ primary, secondary }:
+{ primary, secondary, ... }:
 {
   programs.noctalia.settings = {
     lockscreen = {

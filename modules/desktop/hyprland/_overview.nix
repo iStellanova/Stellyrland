@@ -6,6 +6,7 @@
 {
   inputs,
   lib,
+  lua,
   pkgs,
   ...
 }:
@@ -35,7 +36,7 @@ in
       {
         _args = [
           "SUPER + X"
-          (lib.generators.mkLuaInline ''hl.plugin.scrolloverview.overview("toggle")'')
+          (lua ''hl.plugin.scrolloverview.overview("toggle")'')
         ];
       }
     ];

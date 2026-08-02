@@ -14,7 +14,7 @@ _: {
       ...
     }:
     {
-      config = lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
+      config = lib.mkIf pkgs.stdenv.isLinux {
         xdg.userDirs = {
           enable = true;
           setSessionVariables = true;

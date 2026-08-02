@@ -1,5 +1,4 @@
 {
-  inputs,
   lib,
   ...
 }:
@@ -122,7 +121,7 @@
         ./_rules.nix
       ];
 
-      _module.args.inputs = inputs;
+      _module.args.lua = lib.generators.mkLuaInline;
 
       programs.zsh.shellAliases = {
         screenoff = "HYPRLAND_INSTANCE_SIGNATURE=$(basename /run/user/$(id -u)/hypr/*/) hyprctl eval \"hl.dispatch(hl.dsp.dpms({ action = 'off' }))\"";

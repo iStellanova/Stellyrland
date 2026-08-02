@@ -31,7 +31,7 @@
       { lib, pkgs, ... }:
       {
         users.users."${username}" = {
-          name = "${username}";
+          name = username;
           home = "/Users/${username}";
           shell = pkgs.zsh;
         };

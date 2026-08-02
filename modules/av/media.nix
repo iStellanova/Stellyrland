@@ -15,7 +15,7 @@ _: {
         "background-music"
         "vlc"
       ];
-      environment.systemPackages = [ pkgs.mpv ];
+      environment.systemPackages = [ pkgs.nicotine-plus ];
     };
 
   flake.modules.homeManager.media =

@@ -46,14 +46,7 @@
       # yet while imports is still being assembled.
       imports = [
         inputs.zen-browser.homeModules.default
-        (import ./_extensions.nix {
-          inherit
-            inputs
-            pkgs
-            config
-            lib
-            ;
-        })
+        ./_extensions.nix
         ./_spaces.nix
         ./universal/_essentials.nix
         ./universal/_pinned-tabs.nix
@@ -68,8 +61,7 @@
         profiles.default = {
           # Reuses each OS's existing profile dir so HM doesn't orphan it
           # into a fresh one. Only valid for stellanova's own profiles.
-          path =
-            if pkgs.stdenv.hostPlatform.isLinux then "0ubhpx7e.Default Profile" else "h7j9ua1w.Default Profile";
+          path = if pkgs.stdenv.isLinux then "0ubhpx7e.Default Profile" else "h7j9ua1w.Default Profile";
 
           settings = {
             "zen.workspaces.separate-essentials" = true;
@@ -77,7 +69,7 @@
             "extensions.enabledScopes" = 15;
             "extensions.startupScanScopes" = 15;
           }
-          // lib.optionalAttrs pkgs.stdenv.hostPlatform.isLinux {
+          // lib.optionalAttrs pkgs.stdenv.isLinux {
             "widget.gtk.transparent-background" = true;
             "browser.tabs.allow_transparent_browser" = true;
             "zen.widget.linux.transparency" = true;
@@ -93,7 +85,7 @@
             default = "ddg";
           };
         }
-        // lib.optionalAttrs pkgs.stdenv.hostPlatform.isLinux {
+        // lib.optionalAttrs pkgs.stdenv.isLinux {
           # Sine installs a bootloader inside the Zen app — unsupported on
           # macOS (breaks the upstream code signature), so Linux-only.
           # Sine store slug is "Nebula" (capital, no "-zen" suffix) — a

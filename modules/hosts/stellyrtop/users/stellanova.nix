@@ -16,14 +16,7 @@
       };
 
       imports = with self.modules.homeManager; [
-        # Base
-        base
-        cmdline
-
-        # Desktop-Adjacent
-        mime
-        xdg
-        kitty
+        basics
         fastfetch
 
         # Desktop

@@ -1,7 +1,4 @@
-{ lib, ... }:
-let
-  lua = lib.generators.mkLuaInline;
-in
+{ lib, lua, ... }:
 {
   wayland.windowManager.hyprland.settings = {
     curve =

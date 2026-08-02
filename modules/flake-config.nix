@@ -10,8 +10,6 @@
     inputs.flake-parts.flakeModules.modules
   ];
 
-  flake-file.tack.recomposable = null;
-
   # TODO: revisit — deliberately not flake-file's default (pkgs.tack, i.e.
   # nixpkgs' tack). nixpkgs still tracks the tack v1.0.0 tag, whose
   # checkPhase opens a real TCP listener in fetch::git_http::tests and dies

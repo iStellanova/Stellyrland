@@ -18,7 +18,7 @@ _: {
         default = { };
       };
 
-      config = lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
+      config = lib.mkIf pkgs.stdenv.isLinux {
         xdg.mimeApps = {
           enable = true;
           defaultApplications =

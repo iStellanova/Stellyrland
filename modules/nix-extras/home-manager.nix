@@ -9,7 +9,7 @@ let
         backupFileExtension = "backup";
         overwriteBackup = true;
         extraSpecialArgs = {
-          inherit host;
+          inherit host inputs;
         };
       };
     };

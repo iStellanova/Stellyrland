@@ -61,7 +61,7 @@ _: {
       ...
     }:
     {
-      home.file.".config/gtk-3.0/bookmarks" = lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
+      home.file.".config/gtk-3.0/bookmarks" = lib.mkIf pkgs.stdenv.isLinux {
         text = ''
           file://${host.homeDir}/Downloads
           file://${host.homeDir}/Pictures

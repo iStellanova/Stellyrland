@@ -21,7 +21,7 @@
           session.default = "hyprland";
           user.default = "stellanova";
           output = {
-            name = lib.elemAt host.monitorPriority 0;
+            name = if host.monitorPriority or [ ] == [ ] then "" else lib.elemAt host.monitorPriority 0;
             width = 3440;
             height = 1440;
           };
