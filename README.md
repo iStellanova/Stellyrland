@@ -9,16 +9,16 @@
   <img src="https://img.shields.io/badge/Nix-Lix-d690e0?style=for-the-badge&logo=nixos&logoColor=24273a" />
   <br/>
   <img src="https://img.shields.io/badge/Dendritic-flake--parts-f5a97f?style=for-the-badge&logoColor=24273a" />&nbsp;
-  <img src="https://img.shields.io/badge/Hyprland-Flake-7dc4e4?style=for-the-badge&logoColor=24273a" />&nbsp;
+  <img src="https://img.shields.io/badge/Hyprland-Nixpkgs-7dc4e4?style=for-the-badge&logoColor=24273a" />&nbsp;
   <img src="https://img.shields.io/badge/nix--darwin-Master-a6da95?style=for-the-badge&logoColor=24273a" />&nbsp;
 </p>
 
 ---
 
-This is my personal configuration for my systems, managed by the nix language and the lix package manager.
-I stick to the dendritic style, making use of flake-parts.
-Documentation will explain all concepts I use here.
-I use this to tinker, deploy, and manage my computers from home and remote. :)
+This is my personal configuration for my systems, managed by the nix language
+and the lix package manager. I stick to the dendritic style, making use of
+flake-parts. Documentation will explain all concepts I use here. I use this to
+tinker, deploy, and manage my computers from home and remote. :)
 
 <table align="center">
   <tr>
@@ -44,8 +44,8 @@ I use this to tinker, deploy, and manage my computers from home and remote. :)
   </tr>
 </table>
 
-> **Note:**<br>
-> This is a personal configuration. This is not meant to be forked or used by others.
+> **Note:**<br> This is a personal configuration. This is not meant to be forked
+> or used by others.
 
 <p align="center"><strong>DOCUMENTATION</strong></p>
 <p align="center">
@@ -138,15 +138,23 @@ flowchart TD
 ```
 
 ## ✨ Notable Configurations
-- **Zero-Boilerplate Imports:** All modules under `modules/` are auto-loaded by a small `importTree` helper inlined in `flake.nix` (no external flake input) — no explicit imports needed anywhere in the config.
-- **BORE Scheduler:** CachyOS kernel with BORE scheduling.
-  Optimized for the X3D CPU — smarter about which workloads get the extra cache vs extra clock.
+
+- **Zero-Boilerplate Imports:** All modules under `modules/` are auto-loaded by
+  a small `importTree` helper inlined in `flake.nix` (no external flake input) —
+  no explicit imports needed anywhere in the config.
+- **BORE Scheduler:** CachyOS kernel with BORE scheduling. Optimized for the X3D
+  CPU — smarter about which workloads get the extra cache vs extra clock.
 - **Smart Cleanup:** `nh` configured to strictly retain the last 20 generations.
   Keeps the system version-controlled with multiple rollback points.
-- **ZFS Preservation + Sanoid Snapshots:** Root and home roll back to blank ZFS snapshots on every boot; `/persist` survives. Sanoid manages daily snapshots of home and persist, with automated post-rebuild snapshots and monthly pool scrubs.
+- **ZFS Preservation + Sanoid Snapshots:** Root and home roll back to blank ZFS
+  snapshots on every boot; `/persist` survives. Sanoid manages daily snapshots
+  of home and persist, with automated post-rebuild snapshots and monthly pool
+  scrubs.
 
 ## 🛠️ Specifications
-- **Architecture:** Dendritic (Keeps things separate and maintainable as aspects that can be toggled.)
+
+- **Architecture:** Dendritic (Keeps things separate and maintainable as aspects
+  that can be toggled.)
 - **Framework:** Flake-Parts
 - **OS:** NixOS (Unstable) & macOS (Darwin)
 - **Package Manager:** Lix (Community-created Nix variant)
@@ -159,6 +167,7 @@ flowchart TD
 ## 💻 Hardware
 
 ### 🖥️ Stellyrland (Workstation)
+
 - **CPU:** AMD Ryzen 9 9950X3D
 - **GPU:** AMD Radeon 7900XTX 24GB (Tuned)
 - **Architecture:** x86_64
@@ -167,6 +176,7 @@ flowchart TD
 - **OS:** NixOS
 
 ### 💻 Stellyrtop (MacBook)
+
 - **CPU:** Apple M4
 - **Architecture:** aarch64-darwin
 - **Memory:** 16GB Unified
@@ -174,11 +184,14 @@ flowchart TD
 - **OS:** macOS (nix-darwin)
 
 ## ⚠️ AI Disclaimer
-AI is utilized in the development of this system, largely for learning, review, and debugging.
-I'm still actively learning Nix!
-More elaboration on my AI morals [here](./docs/ai.md).
+
+AI is utilized in the development of this system, largely for learning, review,
+and debugging. I'm still actively learning Nix! More elaboration on my AI morals
+[here](./docs/ai.md).
 
 ## 📜 Credits & Inspiration
+
 - **[Vic](https://github.com/vic):** for Flake-File.
 - **Vimjoyer:** For inspiring my adoption of the dendritic pattern.
-- **[Hand7s](https://github.com/s0me1newithhand7s):** For inspiring many features I adopted.
+- **[Hand7s](https://github.com/s0me1newithhand7s):** For inspiring many
+  features I adopted.
