@@ -21,7 +21,6 @@
       maintenance
       hiro
       kitty
-      aesthetic
       fonts
 
       # Gaming

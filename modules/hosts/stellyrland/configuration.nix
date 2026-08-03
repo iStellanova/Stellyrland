@@ -39,7 +39,6 @@
       pipewire-lowlatency
       catppuccin
       openrgb
-      aesthetic
 
       # Boot & Hardware & Storage
       boot
