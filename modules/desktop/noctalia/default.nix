@@ -1,6 +1,6 @@
 { inputs, ... }:
 {
-  flake-file.inputs.noctalia-shell = {
+  flake-file.inputs.noctalia = {
     url = "github:noctalia-dev/noctalia/cachix";
   };
 
@@ -33,7 +33,7 @@
     in
     {
       imports = [
-        inputs.noctalia-shell.homeModules.default
+        inputs.noctalia.homeModules.default
         ./_lockscreen.nix
       ];
 
@@ -191,7 +191,10 @@
             };
             # Clock format: Wkdy, Mon DD 12hr am/pm
             clock.format = "{:%a, %b %d %I:%M %p}";
-            cpu.display = "graph";
+            cpu = {
+              visualization = "graph";
+              show_value = true;
+            };
             launcher = {
               anchor = false;
               capsule = true;
@@ -207,16 +210,16 @@
 
             network.show_label = false;
             nix-monitor.type = "avivbintangaringga/nix-monitor:nix-monitor";
-            ram.display = "graph";
-            sysmon = {
-              anchor = false;
-              display = "graph";
-              show_label = true;
-              stat = "cpu_usage";
+            ram = {
+              visualization = "graph";
+              show_value = true;
             };
-            temp.display = "graph";
+            temp = {
+              visualization = "graph";
+              show_value = true;
+            };
             volume.show_label = false;
-            workspaces.display = "none";
+            workspaces.show_labels = false;
           };
 
           desktop_widgets = {

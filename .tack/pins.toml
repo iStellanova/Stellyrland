@@ -74,12 +74,12 @@ url = "github:nix-community/nixos-apple-silicon?rev=3902c801519264191a7c3dfec8dd
 [inputs.nixpkgs]
 url = "github:nixos/nixpkgs/nixos-unstable"
 
+[inputs.noctalia]
+url = "github:noctalia-dev/noctalia/cachix"
+
 [inputs.noctalia-greeter]
 url = "github:noctalia-dev/noctalia-greeter"
 follows = { nixpkgs = "nixpkgs" }
-
-[inputs.noctalia-shell]
-url = "github:noctalia-dev/noctalia/cachix"
 
 [inputs.nur]
 url = "github:nix-community/NUR"
