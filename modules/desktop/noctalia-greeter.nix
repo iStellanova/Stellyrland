@@ -20,6 +20,7 @@
         settings = {
           session.default = "hyprland";
           user.default = "stellanova";
+          idle.timeout = 300;
           output = {
             name = if host.monitorPriority or [ ] == [ ] then "" else lib.elemAt host.monitorPriority 0;
             width = 3440;
