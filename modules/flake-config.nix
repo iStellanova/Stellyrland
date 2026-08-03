@@ -22,7 +22,6 @@
   flake-file.inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     flake-parts.url = "github:hercules-ci/flake-parts";
-    import-tree.url = "github:vic/import-tree";
     flake-file.url = lib.mkDefault "github:vic/flake-file";
     tack = {
       url = "github:manic-systems/tack";
