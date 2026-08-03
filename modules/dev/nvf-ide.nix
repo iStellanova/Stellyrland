@@ -38,6 +38,7 @@
             shiftwidth = 2;
             tabstop = 2;
             softtabstop = 2;
+            autoread = true;
           };
 
           clipboard = {
@@ -48,7 +49,11 @@
 
           visuals.nvim-web-devicons.enable = true;
 
-          filetree.neo-tree.enable = true;
+          filetree.neo-tree = {
+            enable = true;
+            setupOpts.filesystem.use_libuv_file_watcher = true;
+            setupOpts.git_status_async = true;
+          };
 
           utility.multicursors.enable = true;
 
@@ -157,6 +162,12 @@
             vim.keymap.set("v", "<leader>as", "<cmd>ClaudeCodeSend<cr>", { desc = "Send selection to Claude" })
             vim.keymap.set("n", "<leader>aa", "<cmd>ClaudeCodeDiffAccept<cr>", { desc = "Accept Claude diff" })
             vim.keymap.set("n", "<leader>ad", "<cmd>ClaudeCodeDiffDeny<cr>", { desc = "Deny Claude diff" })
+          '';
+
+          luaConfigRC.autoread-checktime = ''
+            vim.api.nvim_create_autocmd({ "FocusGained", "BufEnter", "CursorHold", "CursorHoldI" }, {
+              command = "checktime",
+            })
           '';
 
           luaConfigRC.codecompanion-keymaps = ''
