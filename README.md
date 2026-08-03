@@ -138,7 +138,7 @@ flowchart TD
 ```
 
 ## ✨ Notable Configurations
-- **Zero-Boilerplate Imports:** All modules under `modules/` are auto-loaded by `import-tree` — no explicit imports needed anywhere in the config.
+- **Zero-Boilerplate Imports:** All modules under `modules/` are auto-loaded by a small `importTree` helper inlined in `flake.nix` (no external flake input) — no explicit imports needed anywhere in the config.
 - **BORE Scheduler:** CachyOS kernel with BORE scheduling.
   Optimized for the X3D CPU — smarter about which workloads get the extra cache vs extra clock.
 - **Smart Cleanup:** `nh` configured to strictly retain the last 20 generations.

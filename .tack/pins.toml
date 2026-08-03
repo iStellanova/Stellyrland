@@ -41,9 +41,6 @@ follows = { nixpkgs = "nixpkgs" }
 url = "github:shezdy/hyprsplit"
 follows = { nixpkgs = "nixpkgs" }
 
-[inputs.import-tree]
-url = "github:vic/import-tree"
-
 [inputs.lanzaboote]
 url = "github:nix-community/lanzaboote"
 follows = { nixpkgs = "nixpkgs" }
