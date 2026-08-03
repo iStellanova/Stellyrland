@@ -35,6 +35,9 @@
             foldexpr = "v:lua.vim.treesitter.foldexpr()";
             foldlevelstart = 99;
             foldlevel = 99;
+            shiftwidth = 2;
+            tabstop = 2;
+            softtabstop = 2;
           };
 
           clipboard = {
