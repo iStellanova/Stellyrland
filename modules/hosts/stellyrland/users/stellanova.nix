@@ -38,8 +38,8 @@
         nvf-ide
         nvf-writing
         ns
+        opencode
         yazi
-        zed
 
         # Desktop Applications
         zen-browser

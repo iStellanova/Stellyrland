@@ -29,8 +29,8 @@
         nix-index
         nvf-writing
         ns
+        opencode
         yazi
-        zed
 
         # Desktop Applications
         zen-browser

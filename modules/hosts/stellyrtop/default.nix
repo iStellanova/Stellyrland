@@ -29,7 +29,6 @@ _: {
         "/Applications/Keynote Creator Studio.app"
         "/Applications/Numbers Creator Studio.app"
         "/System/Applications/Music.app"
-        "/Applications/Antigravity.app"
         "/Applications/Beat.app"
         "/Applications/Claude.app"
         "${host.homeDir}/Applications/Home Manager Apps/kitty.app"
