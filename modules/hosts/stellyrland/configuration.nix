@@ -68,9 +68,6 @@
       music
       gsr
 
-      # Dev Tools
-      ai-tools
-
       # Desktop Applications
       nautilus
       roblox

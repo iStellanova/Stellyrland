@@ -5,7 +5,6 @@
     inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  # Also declared in ai-tools.nix; duplicate declarations of the same input merge fine.
   flake-file.inputs.llm-agents = {
     url = "github:numtide/llm-agents.nix";
     inputs.nixpkgs.follows = "nixpkgs";
@@ -65,13 +64,15 @@
           binds.whichKey = {
             enable = true;
             register = {
-              "<leader>a" = "+Claude";
-              "<leader>c" = "+Gemini";
               "<leader>f" = "+Find";
+              "<leader>o" = "+OpenCode";
             };
           };
 
-          statusline.lualine.enable = true;
+          statusline.lualine = {
+            enable = true;
+            activeSection.z = [ "require('opencode').statusline" ];
+          };
           tabline.nvimBufferline.enable = true;
 
           git.enable = true;
@@ -119,28 +120,10 @@
 
           lsp.servers.nixd.settings = import ./_nixd-lsp-config.nix host;
 
-          # gemini_cli, not claude_code: the claude_code ACP adapter needs a
-          # consumer CLAUDE_CODE_OAUTH_TOKEN, which Anthropic's ToS bans outside
-          # Claude Code/claude.ai itself. gemini_cli's ACP flag is built for
-          # third-party clients and reuses `gemini auth login` directly.
-          assistant.codecompanion-nvim = {
-            enable = true;
-            setupOpts.interactions.chat.adapter = "gemini_cli";
-          };
-
-          # claudecode.nvim speaks Claude Code's own IDE-integration protocol
-          # (lock file + local WebSocket/MCP) and launches `claude` as a
-          # subprocess — no OAuth token reuse. provider = "native" is a plain
-          # split, skipping the optional snacks.nvim dependency.
-          extraPlugins.claudecode-nvim = {
-            package = pkgs.vimPlugins.claudecode-nvim;
-            setup = ''
-              require("claudecode").setup({
-                terminal = {
-                  provider = "native",
-                },
-              })
-            '';
+          # Connects nvim to the system `opencode --port` server (see
+          # opencode/default.nix), sharing context so the auth plugins apply here too.
+          extraPlugins.opencode-nvim = {
+            package = pkgs.vimPlugins.opencode-nvim;
           };
 
           luaConfigRC.filetree-keymaps = ''
@@ -155,13 +138,38 @@
             })
           '';
 
-          luaConfigRC.claude-keymaps = ''
-            vim.keymap.set("n", "<leader>ac", "<cmd>ClaudeCode<cr>", { desc = "Toggle Claude" })
-            vim.keymap.set("n", "<leader>af", "<cmd>ClaudeCodeFocus<cr>", { desc = "Focus Claude" })
-            vim.keymap.set("n", "<leader>ab", "<cmd>ClaudeCodeAdd %<cr>", { desc = "Add buffer to Claude" })
-            vim.keymap.set("v", "<leader>as", "<cmd>ClaudeCodeSend<cr>", { desc = "Send selection to Claude" })
-            vim.keymap.set("n", "<leader>aa", "<cmd>ClaudeCodeDiffAccept<cr>", { desc = "Accept Claude diff" })
-            vim.keymap.set("n", "<leader>ad", "<cmd>ClaudeCodeDiffDeny<cr>", { desc = "Deny Claude diff" })
+          luaConfigRC.opencode = ''
+            -- opencode.nvim discovers a running `opencode --port` server, else
+            -- starts one via server.start; host it in toggleterm for <leader>ot.
+            local opencode_term
+
+            local function get_opencode_term()
+              if not opencode_term then
+                opencode_term = require("toggleterm.terminal").Terminal:new({
+                  cmd = "opencode --port",
+                  direction = "vertical",
+                })
+              end
+              return opencode_term
+            end
+
+            vim.g.opencode_opts = {
+              server = {
+                start = function()
+                  get_opencode_term():open()
+                end,
+              },
+            }
+
+            vim.keymap.set({ "n", "x" }, "<leader>oa", function()
+              require("opencode").ask("@this: ")
+            end, { desc = "Ask opencode" })
+            vim.keymap.set({ "n", "x" }, "<leader>os", function()
+              require("opencode").select()
+            end, { desc = "Opencode actions" })
+            vim.keymap.set({ "n", "t" }, "<leader>ot", function()
+              get_opencode_term():toggle()
+            end, { desc = "Toggle opencode" })
           '';
 
           luaConfigRC.autoread-checktime = ''
@@ -170,13 +178,8 @@
             })
           '';
 
-          luaConfigRC.codecompanion-keymaps = ''
-            vim.keymap.set("n", "<leader>cc", "<cmd>CodeCompanionChat toggle<cr>", { desc = "Toggle Gemini chat" })
-            vim.keymap.set("n", "<leader>ca", "<cmd>CodeCompanionActions<cr>", { desc = "Gemini actions" })
-          '';
-
           # Terminal-mode maps exit terminal-insert first so <C-hjkl> also works
-          # for leaving Claude's panel.
+          # for leaving opencode's embedded terminal.
           luaConfigRC.window-nav-keymaps = ''
             vim.keymap.set("n", "<C-h>", "<C-w>h", { desc = "Window left" })
             vim.keymap.set("n", "<C-l>", "<C-w>l", { desc = "Window right" })
@@ -189,12 +192,10 @@
             vim.keymap.set("t", "<C-k>", [[<C-\><C-n><C-w>k]], { desc = "Window up" })
           '';
 
-          # nodejs: Claude Code's session hooks shell out to `node`; without it
-          # on PATH the IDE-integration handshake never completes.
+          # opencode.nvim shells out to `opencode --port`; keep it on PATH inside
+          # nvim even though programs.opencode also installs it.
           extraPackages = [
-            inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.claude-code
-            inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.gemini-cli
-            pkgs.nodejs
+            inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.opencode
           ];
         };
       };

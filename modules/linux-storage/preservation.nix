@@ -80,7 +80,8 @@
             ".config/Proton/VPN"
             ".claude"
             ".antigravity"
-            ".antigravity-ide-server"
+            ".config/opencode"
+            ".local/share/opencode"
 
             # Editor runtime (extensions, compiled LSPs)
             ".local/share/zed"
