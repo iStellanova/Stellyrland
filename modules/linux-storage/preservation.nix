@@ -8,6 +8,12 @@
   flake.modules.nixos.preservation = { host, ... }: {
     imports = [ inputs.preservation.nixosModules.preservation ];
 
+    # On a live switch, Home Manager must wait for newly added preserved paths
+    # instead of writing files beneath a mount that is about to appear.
+    systemd.services."home-manager-${host.username}".unitConfig.RequiresMountsFor = [
+      "/home/${host.username}/.hermes"
+    ];
+
     systemd.tmpfiles.rules = [
       # Returns /etc/nixos's pointer from the config project.
       "L+ /etc/nixos - - - - ${host.flakePath}"
@@ -80,6 +86,7 @@
             ".config/Proton/VPN"
             ".claude"
             ".antigravity"
+            ".hermes"
             ".config/opencode"
             ".local/share/opencode"
 
