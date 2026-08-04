@@ -1,5 +1,7 @@
 { inputs, ... }:
 let
+  theme = import ./_theme.nix;
+
   hermesConfig = {
     _config_version = 33;
 
@@ -20,6 +22,8 @@ let
       home_mode = "auto";
       timeout = 180;
     };
+
+    display.skin = theme.name;
 
     approvals = {
       mode = "smart";
@@ -54,7 +58,18 @@ in
     }:
     let
       upstreamPackage = inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.hermes-agent;
-
+      stellxiePackage = upstreamPackage.overrideAttrs (old: {
+        postFixup = (old.postFixup or "") + ''
+          banner="$out/lib/python${pkgs.python3.pythonVersion}/site-packages/hermes_cli/banner.py"
+          substituteInPlace "$banner" \
+            --replace-fail \
+              "base = f\"Hermes Agent v{VERSION} ({RELEASE_DATE})\"" \
+              "base = f\"Stellxie v{VERSION} ({RELEASE_DATE})\"" \
+            --replace-fail \
+              'colored_names.append(f"[yellow]{name}[/]")' \
+              "colored_names.append(f\"[{_skin_color('ui_accent', '#8aadf4')}]{name}[/]\")"
+        '';
+      });
       configFile = pkgs.writeText "hermes-config.yaml" (
         builtins.toJSON (
           hermesConfig
@@ -68,9 +83,10 @@ in
           }
         )
       );
+      themeFile = pkgs.writeText "${theme.name}.yaml" (builtins.toJSON theme);
     in
     {
-      home.packages = [ upstreamPackage ];
+      home.packages = [ stellxiePackage ];
 
       home.file = {
         ".hermes/SOUL.md" = {
@@ -79,11 +95,13 @@ in
         };
       };
 
-      # Use a writable config so session UI settings can still be changed.
-      # A Home Manager activation reapplies the declarative baseline.
+      # These writable files are restored to their declarative baseline on each
+      # Home Manager activation, so session UI settings and skin tweaks work
+      # between rebuilds without making the Nix source stop being authoritative.
       home.activation.hermesConfig = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-        mkdir -p "$HOME/.hermes"
+        mkdir -p "$HOME/.hermes/skins"
         install -m 0600 ${configFile} "$HOME/.hermes/config.yaml"
+        install -m 0600 ${themeFile} "$HOME/.hermes/skins/${theme.name}.yaml"
       '';
     };
 }
