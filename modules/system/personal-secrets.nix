@@ -8,6 +8,16 @@ _: {
         mode = "0600";
       };
 
+      # Separate credentials for the transparent Stellxie GitHub collaborator.
+      sops.secrets.stellxie-github-auth = {
+        owner = host.username;
+        mode = "0600";
+      };
+      sops.secrets.stellxie-github-signing = {
+        owner = host.username;
+        mode = "0600";
+      };
+
       sops.secrets.lastfm-password = { };
 
       # No explicit path: defaults to /run/secrets/github-token. The darwin
