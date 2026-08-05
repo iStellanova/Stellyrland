@@ -17,6 +17,11 @@ _: {
         owner = host.username;
         mode = "0600";
       };
+      sops.secrets.hermes-discord-env = {
+        owner = host.username;
+        mode = "0400";
+        path = "/run/secrets/hermes-discord.env";
+      };
 
       sops.secrets.lastfm-password = { };
 
