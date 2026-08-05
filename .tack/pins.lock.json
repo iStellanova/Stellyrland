@@ -19,9 +19,9 @@
     "type": "github",
     "owner": "chaotic-cx",
     "repo": "nyx",
-    "rev": "d36aaa93226d7d311aa80a973aef27525ba21dce",
-    "narHash": "sha256-o+wsx2QYnHsq21v5bQ699ny8GASuZ8UnTfz9r6mP2gc=",
-    "lastModified": 1785908543
+    "rev": "fa310e7e0e399793cba338c04c91f1cc8d0cc319",
+    "narHash": "sha256-LxS/hLjEt870RG8mvDAGON+aGCAXBsGpsnRlwZXXnp8=",
+    "lastModified": 1785935515
   },
   "darwin": {
     "type": "github",
@@ -67,9 +67,9 @@
     "type": "github",
     "owner": "nix-community",
     "repo": "home-manager",
-    "rev": "a9bcd0057073751a54ce5fd4b0dc63a391b6f349",
-    "narHash": "sha256-nuRhZbDKkfh8S+/M5TvQLVYiRXnJlvGhhybFFZW4jx4=",
-    "lastModified": 1785936982
+    "rev": "44a1a0ab16b1b6b8e6b673227d870c3a89cab35e",
+    "narHash": "sha256-oVALwpE6ztz2Ll6vGlCHJs7fhblEmOFz3/TTcgZnrqM=",
+    "lastModified": 1785944609
   },
   "hyprsplit": {
     "type": "github",
@@ -123,9 +123,9 @@
     "type": "github",
     "owner": "4evy",
     "repo": "nixcord",
-    "rev": "eee5f607d20ce6fe3dddbfb1156ccaeb05bec830",
-    "narHash": "sha256-OPIJJ+BkPGMeWB2de9S08nPeAcCsc9RneIWdtvF5Cc4=",
-    "lastModified": 1785922960
+    "rev": "7f4ae1ab6c9874c0b44ee3aa156bcce4c564b43a",
+    "narHash": "sha256-g53BwgNUl1k7wJxym+iXK3IGKjpvvxVpVujL4GVgZOE=",
+    "lastModified": 1785952032
   },
   "nixos-apple-silicon": {
     "type": "github",
@@ -163,9 +163,9 @@
     "type": "github",
     "owner": "nix-community",
     "repo": "NUR",
-    "rev": "58bd3acf831419b80ccd8fbebe3097be8b668d0a",
-    "narHash": "sha256-APyVGwTHTEkXmII7chA8qytluNRi2kr5By6dQ89rCtc=",
-    "lastModified": 1785940205
+    "rev": "4bf07efee5987a702a65ba5603f706f574717e9f",
+    "narHash": "sha256-3B851FIctH7wkBlSgt+ML/HxbVZTY+gEeIGdUuvrirY=",
+    "lastModified": 1785952151
   },
   "nvf": {
     "type": "github",
@@ -219,9 +219,9 @@
     "type": "github",
     "owner": "numtide",
     "repo": "treefmt-nix",
-    "rev": "d1187f8bc71fb8aab02395869ec3f5c1920f75c0",
-    "narHash": "sha256-XE1lKgQ3eIO3E7zWryqcRsax+mYXod/5RHBn4YaR9YE=",
-    "lastModified": 1785360170
+    "rev": "ae7910970dddc408fe6ab1c8e4b277bb21d72dc0",
+    "narHash": "sha256-NLSyTCW4K4ofhNBllt3omPasm6QpralXH1DBZOc91Dw=",
+    "lastModified": 1785945821
   },
   "zen-browser": {
     "type": "github",
