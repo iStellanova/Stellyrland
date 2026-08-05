@@ -115,7 +115,10 @@
             };
             lua.enable = true;
             bash.enable = true;
-            markdown.enable = true;
+            markdown = {
+              enable = true;
+              extensions.render-markdown-nvim.enable = true;
+            };
           };
 
           lsp.servers.nixd.settings = import ./_nixd-lsp-config.nix host;
