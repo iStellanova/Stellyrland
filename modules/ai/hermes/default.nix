@@ -2,7 +2,7 @@
 let
   theme = import ./_theme.nix;
 
-  hermesConfig = {
+  baseHermesConfig = {
     _config_version = 33;
 
     model = {
@@ -58,9 +58,24 @@ in
     }:
     let
       upstreamPackage = inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.hermes-agent;
+      fetching = import ./_fetching.nix { inherit pkgs; };
+      searxngPluginManifest = pkgs.writeText "hermes-web-searxng-plugin.yaml" ''
+        name: web-searxng
+        version: 1.0.0
+        description: "SearXNG web search — free, self-hosted, privacy-respecting metasearch engine. Requires SEARXNG_URL pointing at your instance."
+        author: NousResearch
+        kind: backend
+        provides_web_providers:
+          - searxng
+      '';
       stellxiePackage = upstreamPackage.overrideAttrs (old: {
         postFixup = (old.postFixup or "") + ''
-          banner="$out/lib/python${pkgs.python3.pythonVersion}/site-packages/hermes_cli/banner.py"
+          package_root="$out/lib/python${pkgs.python3.pythonVersion}/site-packages"
+          banner="$package_root/hermes_cli/banner.py"
+          # llm-agents omits bundled manifests; Hermes needs this to discover SearXNG.
+          install -Dm644 \
+            ${searxngPluginManifest} \
+            "$package_root/plugins/web/searxng/plugin.yaml"
           substituteInPlace "$banner" \
             --replace-fail \
               "base = f\"Hermes Agent v{VERSION} ({RELEASE_DATE})\"" \
@@ -72,13 +87,15 @@ in
       });
       configFile = pkgs.writeText "hermes-config.yaml" (
         builtins.toJSON (
-          hermesConfig
+          (baseHermesConfig // fetching.hermesConfig)
           // {
-            mcp_servers.nixos = {
-              command = "${pkgs.mcp-nixos}/bin/mcp-nixos";
-              args = [ ];
-              supports_parallel_tool_calls = true;
-              sampling.enabled = false;
+            mcp_servers = fetching.hermesConfig.mcp_servers // {
+              nixos = {
+                command = "${pkgs.mcp-nixos}/bin/mcp-nixos";
+                args = [ ];
+                supports_parallel_tool_calls = true;
+                sampling.enabled = false;
+              };
             };
           }
         )
@@ -86,22 +103,28 @@ in
       themeFile = pkgs.writeText "${theme.name}.yaml" (builtins.toJSON theme);
     in
     {
-      home.packages = [ stellxiePackage ];
+      home.packages = [ stellxiePackage ] ++ fetching.packages;
+
+      home.sessionVariables = fetching.sessionVariables;
 
       home.file = {
         ".hermes/SOUL.md" = {
           text = soul;
           force = true;
         };
+      }
+      // fetching.files;
+
+      # Keep the managed baseline authoritative on each Home Manager activation.
+      home.activation = {
+        hermesFetching = lib.hm.dag.entryAfter [ "writeBoundary" ] fetching.activation;
+        hermesConfig = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+          mkdir -p "$HOME/.hermes/skins"
+          install -m 0600 ${configFile} "$HOME/.hermes/config.yaml"
+          install -m 0600 ${themeFile} "$HOME/.hermes/skins/${theme.name}.yaml"
+        '';
       };
 
-      # These writable files are restored to their declarative baseline on each
-      # Home Manager activation, so session UI settings and skin tweaks work
-      # between rebuilds without making the Nix source stop being authoritative.
-      home.activation.hermesConfig = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-        mkdir -p "$HOME/.hermes/skins"
-        install -m 0600 ${configFile} "$HOME/.hermes/config.yaml"
-        install -m 0600 ${themeFile} "$HOME/.hermes/skins/${theme.name}.yaml"
-      '';
+      systemd.user.services.hermes-searxng = fetching.searxngService;
     };
 }
