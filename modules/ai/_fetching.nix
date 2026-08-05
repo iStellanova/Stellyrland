@@ -1,4 +1,4 @@
-{ pkgs }:
+{ pkgs, interactiveToolsets }:
 let
   searxngUrl = "http://127.0.0.1:8088";
 
@@ -63,11 +63,7 @@ in
     # Local, zero-cost headless Chromium through agent-browser.
     browser.engine = "chrome";
 
-    platform_toolsets.cli = [
-      "hermes-cli"
-      "web"
-      "browser"
-    ];
+    platform_toolsets.cli = interactiveToolsets;
 
     mcp_servers.github = {
       command = "${githubMcpRunner}";
