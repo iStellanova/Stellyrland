@@ -17,9 +17,9 @@ _: {
     # Systemd initrd is required for TPM2 auto-unlock and the rollback service.
     boot.initrd.systemd.enable = true;
 
-    # Passwordless root in initrd emergency shell — required because root is locked
-    # in the main system; without this, any initrd failure drops to an inaccessible shell.
-    boot.initrd.systemd.emergencyAccess = true;
+    # Keep the initrd emergency shell authenticated: a boot failure is recovered
+    # through trusted recovery media rather than granting console root access.
+    boot.initrd.systemd.emergencyAccess = false;
 
     # Tighter udev timeout for the initrd stage (fewer devices).
     # Prevents Kraken Z USB stalls from hanging the sequence for the default 90s.

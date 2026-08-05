@@ -24,7 +24,7 @@ _: {
         fi
 
         _nix_prep() {
-          git -C "$FLAKE" add . && (cd "$FLAKE" && nix fmt) && git -C "$FLAKE" add .
+          (cd "$FLAKE" && nix fmt && git diff --check)
         }
 
         rebuild() {
@@ -44,7 +44,7 @@ _: {
 
         upgrade() {
           if [[ "$1" == "check" ]]; then
-            (cd "$FLAKE" && nix run .#write-tack) && _nix_prep && ${
+            (cd "$FLAKE" && nix develop . --accept-flake-config --command tack look --verbose) && _nix_prep && ${
               if pkgs.stdenv.isDarwin then
                 "nh darwin build $FLAKE && rm -f ./result"
               else
