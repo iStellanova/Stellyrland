@@ -107,7 +107,7 @@
             enableTreesitter = true;
             enableFormat = true;
 
-            # nixd/nixfmt, not nvf's nil/alejandra defaults, to match Zed and Helix.
+            # nixd/nixfmt, not NVF's nil/alejandra defaults, to match Zed.
             nix = {
               enable = true;
               lsp.servers = [ "nixd" ];
