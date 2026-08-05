@@ -25,7 +25,6 @@
 
         # Dev / CLI Tools
         git
-        helix
         nix-index
         nvf-writing
         ns

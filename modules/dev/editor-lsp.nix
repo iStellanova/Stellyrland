@@ -1,5 +1,5 @@
 _: {
-  # Language servers + formatters shared by every editor aspect (helix, zed).
+  # Language servers + formatters shared by editor aspects (Zed and Neovim).
   flake.modules.homeManager.editor-lsp = { pkgs, ... }: {
     home.packages = with pkgs; [
       nixd

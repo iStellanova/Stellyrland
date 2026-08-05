@@ -99,7 +99,6 @@
                 "cava"
                 "hyprland"
                 "kitty"
-                "helix"
               ];
               community_ids = [
                 "yazi"
