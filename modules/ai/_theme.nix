@@ -15,8 +15,10 @@
     ui_primary = "#cad3f5";
     ui_label = "#b8c0e0";
     banner_dim = "#a5adcb";
-    banner_border = "#494d64";
-    ui_border = "#494d64";
+    # The Ink TUI reserves its own startup card; matching its structural rules
+    # to the base surface keeps the working transcript visually quiet.
+    banner_border = "#24273a";
+    ui_border = "#24273a";
 
     ui_ok = "#a6da95";
     ui_warn = "#eed49f";
@@ -24,17 +26,19 @@
 
     prompt = "#8aadf4";
     input_rule = "#8aadf4";
-    response_border = "#5b6078";
+    response_border = "#24273a";
     status_bar_bg = "#1e2030";
     status_bar_text = "#cad3f5";
     status_bar_good = "#a6da95";
     status_bar_warn = "#eed49f";
     status_bar_critical = "#ed8796";
     session_label = "#8aadf4";
-    session_border = "#494d64";
+    session_border = "#24273a";
 
-    diff_added = "#a6da95";
-    diff_removed = "#ed8796";
+    # The TUI uses these as line backgrounds; keep them dark enough that the
+    # brighter word colors remain readable in inline diffs.
+    diff_added = "#2d4a3a";
+    diff_removed = "#4d303b";
     diff_added_word = "#a6da95";
     diff_removed_word = "#ed8796";
 
@@ -58,37 +62,27 @@
 
   branding = {
     agent_name = "Stellxie";
-    welcome = "Welcome to Stellxie! Type your message or /help for commands.";
-    goodbye = "Goodbye!";
-    response_label = " Stellxie ";
-    prompt_symbol = "❯";
-    help_header = "(^_^)? Commands";
+    welcome = "";
+    goodbye = "";
+    response_label = "";
+    prompt_symbol = "›";
+    help_header = "Commands";
   };
 
-  banner_logo = ''
-    [bold #cad3f5] ___ _____ ___ _    _   __  _____ ___ [/]
-    [bold #b7bdf8]/ __|_   _| __| |  | |  \ \/ /_ _| __|[/]
-    [#8aadf4]\__ \ | | | _|| |__| |__ >  < | || _| [/]
-    [#8aadf4]|___/ |_| |___|____|____/_/\_\___|___|[/]
-  '';
+  banner_logo = "";
+  banner_hero = "";
 
-  banner_hero = ''
-    [#8aadf4]⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣀⡀⠀⣀⣀⠀⢀⣀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀[/]
-    [#8aadf4]⠀⠀⠀⠀⠀⠀⢀⣠⣴⣾⣿⣿⣇⠸⣿⣿⠇⣸⣿⣿⣷⣦⣄⡀⠀⠀⠀⠀⠀⠀[/]
-    [#8aadf4]⠀⢀⣠⣴⣶⠿⠋⣩⡿⣿⡿⠻⣿⡇⢠⡄⢸⣿⠟⢿⣿⢿⣍⠙⠿⣶⣦⣄⡀⠀[/]
-    [#8aadf4]⠀⠀⠉⠉⠁⠶⠟⠋⠀⠉⠀⢀⣈⣁⡈⢁⣈⣁⡀⠀⠉⠀⠙⠻⠶⠈⠉⠉⠀⠀[/]
-    [#8aadf4]⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣴⣿⡿⠛⢁⡈⠛⢿⣿⣦⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀[/]
-    [#8aadf4]⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠿⣿⣦⣤⣈⠁⢠⣴⣿⠿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀[/]
-    [#8aadf4]⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠉⠻⢿⣿⣦⡉⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀[/]
-    [#8aadf4]⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⢷⣦⣈⠛⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀[/]
-    [#8aadf4]⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⣴⠦⠈⠙⠿⣦⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀[/]
-    [#8aadf4]⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠸⣿⣤⡈⠁⢤⣿⠇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀[/]
-    [#8aadf4]⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠛⠷⠄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀[/]
-    [#8aadf4]⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣀⠑⢶⣄⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀[/]
-    [#8aadf4]⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⠁⢰⡆⠈⡿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀[/]
-    [#8aadf4]⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠳⠈⣡⠞⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀[/]
-    [#8aadf4]⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀[/]
-  '';
+  tool_prefix = "·";
 
-  tool_prefix = "┊";
+  spinner = {
+    waiting_faces = [ "·" ];
+    thinking_faces = [
+      "·"
+      "∙"
+      "●"
+      "∙"
+    ];
+    thinking_verbs = [ "working" ];
+    wings = [ ];
+  };
 }

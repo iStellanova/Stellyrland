@@ -23,7 +23,12 @@ let
       timeout = 180;
     };
 
-    display.skin = theme.name;
+    display = {
+      interface = "tui";
+      skin = theme.name;
+      show_reasoning = false;
+      show_cost = false;
+    };
 
     approvals = {
       mode = "smart";
