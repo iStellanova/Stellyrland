@@ -41,12 +41,6 @@ in
             enable = true;
             checkReversePath = "loose";
             allowedUDPPorts = [ 41641 ];
-            allowedUDPPortRanges = [
-              {
-                from = 50000;
-                to = 65535;
-              }
-            ];
           };
         }
       )
