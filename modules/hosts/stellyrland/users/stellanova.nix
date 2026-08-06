@@ -11,7 +11,6 @@
       # lives in modules/system/mime.nix.
       mimeDefaultApps = {
         browser = [ "zen-beta.desktop" ];
-        editor = [ "dev.zed.Zed.desktop" ];
         pdfViewer = [ "org.gnome.Evince.desktop" ];
         fileManager = [ "org.gnome.Nautilus.desktop" ];
         imageViewer = [ "imv.desktop" ];
