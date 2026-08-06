@@ -1,6 +1,7 @@
 { inputs, ... }:
 let
   theme = import ./_theme.nix;
+  skills = import ./_skills.nix { inherit inputs; };
 
   baseHermesConfig = {
     _config_version = 33;
@@ -55,10 +56,13 @@ let
   '';
 in
 {
-  flake-file.inputs.llm-agents = {
-    url = "github:numtide/llm-agents.nix";
-    inputs.nixpkgs.follows = "nixpkgs";
-  };
+  flake-file.inputs = {
+    llm-agents = {
+      url = "github:numtide/llm-agents.nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+  }
+  // skills.flakeInputs;
 
   flake.modules.homeManager.hermes =
     {
@@ -106,7 +110,7 @@ in
       discord = import ./_discord.nix { inherit stellxiePackage interactiveToolsets; };
       configFile = pkgs.writeText "hermes-config.yaml" (
         builtins.toJSON (
-          (baseHermesConfig // fetching.hermesConfig)
+          (baseHermesConfig // fetching.hermesConfig // skills.hermesConfig)
           // {
             platform_toolsets =
               fetching.hermesConfig.platform_toolsets // discord.hermesConfig.platform_toolsets;
@@ -134,6 +138,7 @@ in
           force = true;
         };
       }
+      // skills.files
       // fetching.files;
 
       # Keep the managed baseline authoritative on each Home Manager activation.

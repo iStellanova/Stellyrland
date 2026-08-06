@@ -86,6 +86,10 @@ follows = { nixpkgs = "nixpkgs" }
 url = "github:notashelf/nvf"
 follows = { nixpkgs = "nixpkgs" }
 
+[inputs.ponytail]
+url = "github:DietrichGebert/ponytail"
+type = "fetch"
+
 [inputs.preservation]
 url = "github:nix-community/preservation"
 follows = { nixpkgs = "nixpkgs" }
