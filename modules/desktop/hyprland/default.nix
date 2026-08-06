@@ -60,23 +60,6 @@
     };
 
     config = {
-      # TODO: Drop this overlay once nixpkgs packages a Glaze 7.x release or
-      # Hyprland accepts Glaze 8.x. Hyprland 0.56.1 requires glaze >=7,<8,
-      # while this nixpkgs revision packages Glaze 8.0.0; CMake otherwise falls
-      # back to a sandboxed Git fetch.
-      nixpkgs.overlays = [
-        (_final: prev: {
-          glaze = prev.glaze.overrideAttrs (_old: {
-            src = prev.fetchFromGitHub {
-              owner = "stephenberry";
-              repo = "glaze";
-              rev = "v7.9.1";
-              hash = "sha256-NRRq5MGF2f5PW0teYnq58ELzson+U6KHVPaY6r30KLA=";
-            };
-          });
-        })
-      ];
-
       nix.settings.substituters = [ "https://hyprland.cachix.org" ];
       nix.settings.trusted-public-keys = [
         "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
