@@ -91,9 +91,9 @@
     "type": "github",
     "owner": "numtide",
     "repo": "llm-agents.nix",
-    "rev": "7a05bf4d03aefb08bda598d4075e518db56af6f3",
-    "narHash": "sha256-9ZQILtlWKUxYYtdqsUhbdnYaBurfzlmh8hQBic0wDSo=",
-    "lastModified": 1786123978
+    "rev": "7b528aeaf31c25c8a2a4f81216b44863d8b52c6e",
+    "narHash": "sha256-ch2A0gUa0+rc1U00utv79mGcSMmXZOLDWj+OtAA+ytw=",
+    "lastModified": 1786128148
   },
   "my-assets": {
     "type": "github",
@@ -110,6 +110,14 @@
     "rev": "20d42f0ee98c9fe9f85e8d1de474f1409ed10d05",
     "narHash": "sha256-0H8jDwR4Kegb3heaTrH1ftbgKfZVDT8JE+46uXxDy/Q=",
     "lastModified": 1783368811
+  },
+  "nix-homebrew": {
+    "type": "github",
+    "owner": "zhaofengli",
+    "repo": "nix-homebrew",
+    "rev": "937ce52c7d046310571f3a070713804ead496843",
+    "narHash": "sha256-qV6OoNuly4ntqpCg7esIeJjUboxSnQNlLPxz+y5h9/o=",
+    "lastModified": 1785544760
   },
   "nix-index-database": {
     "type": "github",
@@ -163,9 +171,9 @@
     "type": "github",
     "owner": "nix-community",
     "repo": "NUR",
-    "rev": "1b61b8128398e6e6aa7be99e26e8ddb2c96133d9",
-    "narHash": "sha256-K6csOc19UXeXTGhYeNdNkZFD7WYpg7SOA05Geclfkyk=",
-    "lastModified": 1786124842
+    "rev": "0b47f4ac9e6a41f6db0a421778080fceda9242dd",
+    "narHash": "sha256-uV1kQlFyghjd5QWN+U/M68NuiIcDPd2f2ZRNemk4SRU=",
+    "lastModified": 1786130227
   },
   "nvf": {
     "type": "github",
