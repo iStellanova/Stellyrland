@@ -62,7 +62,6 @@
 
       # Media
       media-editing
-      davinci-resolve
       obs
       media
       music
