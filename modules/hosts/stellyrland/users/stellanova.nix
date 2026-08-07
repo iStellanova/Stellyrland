@@ -47,7 +47,6 @@
         # AV / Media
         cava
         gsr
-        sidra
         media
         music
         background-sounds
