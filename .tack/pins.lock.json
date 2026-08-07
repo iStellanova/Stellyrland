@@ -123,9 +123,9 @@
     "type": "github",
     "owner": "4evy",
     "repo": "nixcord",
-    "rev": "99ffe102bd3a3cd685f5017ee5e1f3a9e0c59b43",
-    "narHash": "sha256-8Odgiu3KoOsTxf9RgjsyIXkg4HfPqvLiN3r2/e7CI8s=",
-    "lastModified": 1786063662
+    "rev": "e53464ed96c1e233d2cef94f99a32701ad40b2e3",
+    "narHash": "sha256-zrVK8+EH6p3p4PgYJP9QD3PNYyK89+TTbzNCa0Ibdwc=",
+    "lastModified": 1786071394
   },
   "nixos-apple-silicon": {
     "type": "github",
@@ -163,9 +163,9 @@
     "type": "github",
     "owner": "nix-community",
     "repo": "NUR",
-    "rev": "62ab4ce6e8d4ebd70f058b53a29aa50b976993b7",
-    "narHash": "sha256-E28I2i02Vm4RTN5SuhXx4KvtNREerte43zqJh1Ru/PM=",
-    "lastModified": 1786070708
+    "rev": "76c5372e8cb8a1178e076638c870eda1bbbf1ee8",
+    "narHash": "sha256-b0qNCk6s1cRkTFgmgwKfikyD3/obestoqVeuEOuVzQA=",
+    "lastModified": 1786071641
   },
   "nvf": {
     "type": "github",
@@ -198,14 +198,6 @@
     "rev": "d1fc8d4ee35cdc597b6f3b4c8b93acebc5d5467f",
     "narHash": "sha256-NgpsyCvLvuPxqN3L2ObJ/TWfrfl/jyAGncSPectIvis=",
     "lastModified": 1785939388
-  },
-  "sidra": {
-    "type": "github",
-    "owner": "wimpysworld",
-    "repo": "sidra",
-    "rev": "0597e5438fe98fef935cb528c2c9aa5db60171c9",
-    "narHash": "sha256-tS2eSSpa1uLPUyIAJBpf00+A9KSHpC92gKMLavmHuio=",
-    "lastModified": 1785827118
   },
   "sops-nix": {
     "type": "github",

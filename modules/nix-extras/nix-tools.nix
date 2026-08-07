@@ -24,7 +24,7 @@ _: {
         fi
 
         _nix_prep() {
-          (cd "$FLAKE" && nix fmt && git --no-pager diff --check)
+          git -C "$FLAKE" add . && (cd "$FLAKE" && nix fmt) && git -C "$FLAKE" add .
         }
 
         rebuild() {
@@ -37,7 +37,7 @@ _: {
             }
           else
             _nix_prep && ${
-              if pkgs.stdenv.isDarwin then "nh darwin switch $FLAKE" else "nh os switch $FLAKE --diff never"
+              if pkgs.stdenv.isDarwin then "nh darwin switch $FLAKE" else "nh os switch $FLAKE"
             }
           fi
         }
@@ -52,7 +52,7 @@ _: {
             }
           else
             (cd "$FLAKE" && nix run .#write-tack) && _nix_prep && ${
-              if pkgs.stdenv.isDarwin then "nh darwin switch $FLAKE" else "nh os switch $FLAKE --diff never"
+              if pkgs.stdenv.isDarwin then "nh darwin switch $FLAKE" else "nh os switch $FLAKE"
             }
           fi
         }
