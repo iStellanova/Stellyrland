@@ -98,9 +98,6 @@ follows = { nixpkgs = "nixpkgs" }
 url = "github:yayuuu/hyprland-scroll-overview"
 type = "fetch"
 
-[inputs.sidra]
-url = "github:wimpysworld/sidra"
-
 [inputs.sops-nix]
 url = "github:Mic92/sops-nix"
 follows = { nixpkgs = "nixpkgs" }
