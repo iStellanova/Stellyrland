@@ -2,6 +2,7 @@ _: {
   flake.modules.darwin.hiro = _: {
     homebrew.taps = [ "BarutSRB/tap" ];
     homebrew.casks = [ "BarutSRB/tap/omniwm" ];
+    nix-homebrew.trust.casks = [ "BarutSRB/tap/omniwm" ];
   };
 
   flake.modules.homeManager.hiro = _: {
