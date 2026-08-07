@@ -91,9 +91,9 @@
     "type": "github",
     "owner": "numtide",
     "repo": "llm-agents.nix",
-    "rev": "7b528aeaf31c25c8a2a4f81216b44863d8b52c6e",
-    "narHash": "sha256-ch2A0gUa0+rc1U00utv79mGcSMmXZOLDWj+OtAA+ytw=",
-    "lastModified": 1786128148
+    "rev": "36079afb0bdbc47ca59e653d7383ec28b8f9a414",
+    "narHash": "sha256-chPzLFD1Z9HTWWK9Nf1NEYWWB2hc8R9ZGFv7Ne7WzQU=",
+    "lastModified": 1786138165
   },
   "my-assets": {
     "type": "github",
@@ -131,9 +131,9 @@
     "type": "github",
     "owner": "4evy",
     "repo": "nixcord",
-    "rev": "2e9b0e8599956f32e7e18a543edb9a14e9359652",
-    "narHash": "sha256-CBZOH5XpxtEfMovdYbDjlTkjdu2ux89L5Oa75Q16kqQ=",
-    "lastModified": 1786121960
+    "rev": "8cf78f40ceec225b3a09e78d217bcb0bf9717810",
+    "narHash": "sha256-S/WgDNILwNyHSqeBUD3A3FnsZtwgkv0hrSMmrPaH+B8=",
+    "lastModified": 1786132515
   },
   "nixos-apple-silicon": {
     "type": "github",
@@ -171,9 +171,9 @@
     "type": "github",
     "owner": "nix-community",
     "repo": "NUR",
-    "rev": "0b47f4ac9e6a41f6db0a421778080fceda9242dd",
-    "narHash": "sha256-uV1kQlFyghjd5QWN+U/M68NuiIcDPd2f2ZRNemk4SRU=",
-    "lastModified": 1786130227
+    "rev": "2623e92b311bea2acb672e73d01ccaeb242dba92",
+    "narHash": "sha256-iD6CikWHFtwNIEDs2YO46ddPQMtctZw5U+UuDuuw/NM=",
+    "lastModified": 1786137591
   },
   "nvf": {
     "type": "github",
@@ -187,9 +187,9 @@
     "type": "github",
     "owner": "DietrichGebert",
     "repo": "ponytail",
-    "rev": "16f29800fd2681bdf24f3eb4ccffe38be3baec6b",
-    "narHash": "sha256-Y7d4s7uqjH6IbEXhqAiQ+yaxr6iiGcv2X64LuMtG1T8=",
-    "lastModified": 1784151135
+    "rev": "0a4dd63ad4541f4f655c4108a295916f3c1d8fda",
+    "narHash": "sha256-8cYggVltBAlZ/Zj4pl1bOu7mQdZFXCmDGW4RSpvRA+w=",
+    "lastModified": 1786137205
   },
   "preservation": {
     "type": "github",
