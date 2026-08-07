@@ -34,6 +34,7 @@
       pipewire
       librewolf
       media
+      obs
 
       # Gaming
       steam
