@@ -1,19 +1,12 @@
 { self, ... }: {
-  config.flake.factory.user = username: isAdmin: {
+  config.flake.factory.user = username: {
     nixos."${username}" =
       {
-        lib,
         pkgs,
         ...
       }:
       {
         users.users."${username}" = {
-          isNormalUser = true;
-          home = "/home/${username}";
-          extraGroups = lib.optionals isAdmin [
-            "wheel"
-            "networkmanager"
-          ];
           shell = pkgs.zsh;
         };
         programs.zsh.enable = true;
@@ -28,11 +21,9 @@
       };
 
     darwin."${username}" =
-      { lib, pkgs, ... }:
+      { pkgs, ... }:
       {
         users.users."${username}" = {
-          name = username;
-          home = "/Users/${username}";
           shell = pkgs.zsh;
         };
 
@@ -44,7 +35,7 @@
           ];
         };
 
-        system.primaryUser = lib.mkIf isAdmin "${username}";
+        system.primaryUser = username;
 
         programs.zsh.enable = true;
       };
