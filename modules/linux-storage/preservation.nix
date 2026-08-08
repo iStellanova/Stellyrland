@@ -84,7 +84,6 @@
             ".config/Proton Mail"
             ".config/Proton Pass"
             ".config/Proton/VPN"
-            ".claude"
             ".antigravity"
             ".hermes"
             ".config/opencode"
@@ -154,10 +153,6 @@
           files = [
             {
               file = ".zsh_history";
-              how = "symlink";
-            }
-            {
-              file = ".claude.json";
               how = "symlink";
             }
             # Noctalia runtime data — configureParent creates .local/state/noctalia/ at boot
