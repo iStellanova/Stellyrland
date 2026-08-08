@@ -1,3 +1,3 @@
 { self, ... }: {
-  flake.modules = self.factory.user "user1" true;
+  flake.modules = self.factory.user "user1";
 }
