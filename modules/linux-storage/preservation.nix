@@ -101,6 +101,7 @@
             ".local/share/PrismLauncher"
 
             ".local/share/r2modman"
+            ".config/r2modman"
 
             # Nix user state — profile dir must survive rollback so
             # home-manager-stellanova.service's setupVars() doesn't exit 1 at boot
