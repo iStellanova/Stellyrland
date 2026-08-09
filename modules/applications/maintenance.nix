@@ -1,7 +1,6 @@
 _: {
   flake.modules.nixos.maintenance = { pkgs, ... }: {
     environment.systemPackages = with pkgs; [
-      bleachbit
       nix-tree
     ];
   };
