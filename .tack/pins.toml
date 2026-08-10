@@ -19,6 +19,10 @@ follows = { nixpkgs = "nixpkgs" }
 url = "github:LnL7/nix-darwin"
 follows = { nixpkgs = "nixpkgs" }
 
+[inputs.deploy-rs]
+url = "github:serokell/deploy-rs"
+follows = { nixpkgs = "nixpkgs" }
+
 [inputs.disko]
 url = "github:nix-community/disko"
 follows = { nixpkgs = "nixpkgs" }
