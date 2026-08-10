@@ -19,7 +19,10 @@
     features.hdr = true;
   };
 
-  flake.modules.nixos.stellyrland = {
+  flake.modules.nixos.stellyrland = { host, ... }: {
+    # Lets stellyrlab transfer locally coordinated closures to this target.
+    nix.settings.trusted-users = [ host.username ];
+
     imports = with self.modules.nixos; [
       # Base
       base

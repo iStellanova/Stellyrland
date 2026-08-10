@@ -24,7 +24,7 @@ _: {
         fi
 
         _nix_prep() {
-          git -C "$FLAKE" add . && (cd "$FLAKE" && nix fmt) && git -C "$FLAKE" add .
+          (cd "$FLAKE" && nix fmt -- --ci) && git -C "$FLAKE" diff --check
         }
 
         rebuild() {
@@ -83,12 +83,13 @@ _: {
           fi
           local target="$1"
           shift
-          local remote="deploy-$target"
+          local target_host=()
+          [[ "$target" == "stellyrlab" ]] || target_host=(--target-host "deploy-$target")
           if [[ "$1" == "check" ]]; then
             shift
-            _nix_prep && nh os build "$FLAKE" -H "$target" --target-host "$remote" --diff always "$@" && rm -f ./result
+            _nix_prep && nh os build "$FLAKE" -H "$target" "''${target_host[@]}" --diff always "$@" && rm -f ./result
           else
-            _nix_prep && nh os switch "$FLAKE" -H "$target" --target-host "$remote" "$@"
+            _nix_prep && nh os switch "$FLAKE" -H "$target" "''${target_host[@]}" "$@"
           fi
         }
 

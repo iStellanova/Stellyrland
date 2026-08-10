@@ -19,6 +19,7 @@
           fastfetch
           git
           hermes
+          nvf-ide
         ];
 
         programs.ssh = {
