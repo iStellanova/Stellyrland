@@ -83,13 +83,28 @@ _: {
           fi
           local target="$1"
           shift
-          local target_host=()
-          [[ "$target" == "stellyrlab" ]] || target_host=(--target-host "deploy-$target")
-          if [[ "$1" == "check" ]]; then
-            shift
-            _nix_prep && nh os build "$FLAKE" -H "$target" "''${target_host[@]}" --diff always "$@" && rm -f ./result
+          if [[ "$target" == "stellyrland" ]]; then
+            if [[ "$1" == "check" ]]; then
+              shift
+              _nix_prep && nix run "$FLAKE#deploy-rs" -- --dry-activate "$FLAKE#$target" -- "$@"
+            else
+              _nix_prep && nix run "$FLAKE#deploy-rs" -- "$FLAKE#$target" -- "$@"
+            fi
+          elif [[ "$target" == "stellyrlab" ]]; then
+            if [[ "$1" == "check" ]]; then
+              shift
+              _nix_prep && nh os build "$FLAKE" -H "$target" --diff always "$@" && rm -f ./result
+            else
+              _nix_prep && nh os switch "$FLAKE" -H "$target" "$@"
+            fi
           else
-            _nix_prep && nh os switch "$FLAKE" -H "$target" "''${target_host[@]}" "$@"
+            local target_host=(--target-host "deploy-$target")
+            if [[ "$1" == "check" ]]; then
+              shift
+              _nix_prep && nh os build "$FLAKE" -H "$target" "''${target_host[@]}" --diff always "$@" && rm -f ./result
+            else
+              _nix_prep && nh os switch "$FLAKE" -H "$target" "''${target_host[@]}" "$@"
+            fi
           fi
         }
 
