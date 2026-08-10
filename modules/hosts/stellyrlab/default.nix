@@ -12,12 +12,20 @@ _: {
         networkmanager.enable = true;
       };
       nix.settings.trusted-users = [ host.username ];
+      users.users.${host.username}.linger = true;
       system.stateVersion = "26.05";
 
       # i915 is unstable on this laptop.
       boot = {
         kernelPackages = pkgs.linuxPackages_6_12;
-        blacklistedKernelModules = [ "i915" ];
+        blacklistedKernelModules = [
+          "i915"
+          "nouveau"
+          "nvidia"
+          "nvidia_drm"
+          "nvidia_modeset"
+          "nvidia_uvm"
+        ];
         zfs = {
           devNodes = "/dev/mapper";
           forceImportRoot = true;
@@ -26,6 +34,7 @@ _: {
           supportedFilesystems = [ "zfs" ];
           systemd = {
             enable = true;
+            tpm2.enable = true;
             services.zfs-import-zroot = {
               after = [ "systemd-cryptsetup@cryptroot.service" ];
               requires = [ "systemd-cryptsetup@cryptroot.service" ];
@@ -34,6 +43,10 @@ _: {
           luks.devices.cryptroot = {
             device = "/dev/disk/by-partlabel/disk-main-root";
             allowDiscards = true;
+            crypttabExtraOpts = [
+              "tpm2-device=auto"
+              "tpm2-pcrs=0+2+7"
+            ];
           };
         };
       };
