@@ -84,6 +84,7 @@ in
             IdentityFile = "/run/secrets/stellyrlab-deploy-key";
             IdentitiesOnly = "yes";
             BatchMode = "yes";
+            SetEnv.TERM = "xterm-256color";
             StrictHostKeyChecking = "yes";
             UserKnownHostsFile = toString deploymentKnownHosts;
           };
