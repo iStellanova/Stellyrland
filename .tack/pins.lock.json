@@ -31,14 +31,7 @@
     "narHash": "sha256-0tLW8Ff5yt8AH97jw4ZpFJ0OCJ122zIlgWGDmOfU/VU=",
     "lastModified": 1785389976
   },
-  "deploy-rs": {
-    "type": "github",
-    "owner": "serokell",
-    "repo": "deploy-rs",
-    "rev": "4dcc87bbf8b3e63ecbe2bf3bb77d729ced7d91d8",
-    "narHash": "sha256-/b79w+zO/+sJ1ADXUfkemP+0kBV+HPxmZVY7xlPI2ag=",
-    "lastModified": 1786220854
-  },
+
   "disko": {
     "type": "github",
     "owner": "nix-community",
