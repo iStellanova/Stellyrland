@@ -140,7 +140,7 @@ in
                       fi
                       ;;
                     darwin)
-                      local source_flake="git+ssh://git@github.com/iStellanova/Stellyrland.git?rev=$(git -C "$FLAKE" rev-parse HEAD)"
+                      local source_flake="github:iStellanova/Stellyrland/$(git -C "$FLAKE" rev-parse HEAD)"
                       if [[ "$1" == "check" ]]; then
                         shift
                         _deployment_prep && ssh "$target" "darwin-rebuild build --flake '$source_flake#$target'"
