@@ -76,42 +76,6 @@ _: {
              fi" 2>/dev/null || true
         }
 
-        deploy() {
-          if [[ -z "$1" ]]; then
-            echo "Usage: deploy <host> [check|extra-args...]"
-            return 1
-          fi
-          local target="$1"
-          shift
-          if [[ "$target" == "stellyrland" ]]; then
-            local deploy_args=()
-            if [[ "$1" == "check" ]]; then
-              shift
-              deploy_args=(--dry-activate)
-            fi
-            local target_path
-            _nix_prep &&
-              target_path="$(nix eval --raw "$FLAKE#nixosConfigurations.$target.config.system.build.toplevel")" &&
-              nom build "$target_path" --no-link &&
-              dix "$(ssh -o BatchMode=yes -o ConnectTimeout=10 "deploy-$target" readlink -f /run/current-system)" "$target_path" &&
-              nix run "$FLAKE#deploy-rs" -- "''${deploy_args[@]}" "$FLAKE#$target" -- "$@"
-          elif [[ "$target" == "stellyrlab" ]]; then
-            if [[ "$1" == "check" ]]; then
-              shift
-              _nix_prep && nh os build "$FLAKE" -H "$target" --diff always "$@" && rm -f ./result
-            else
-              _nix_prep && nh os switch "$FLAKE" -H "$target" "$@"
-            fi
-          else
-            local target_host=(--target-host "deploy-$target")
-            if [[ "$1" == "check" ]]; then
-              shift
-              _nix_prep && nh os build "$FLAKE" -H "$target" "''${target_host[@]}" --diff always "$@" && rm -f ./result
-            else
-              _nix_prep && nh os switch "$FLAKE" -H "$target" "''${target_host[@]}" "$@"
-            fi
-          fi
-        }
 
         nix-add() { local profile="$HOME/.local/state/nix/profiles/scratch"; NIXPKGS_ALLOW_UNFREE=1 nix profile add --profile "$profile" --impure nixpkgs#$1; }
         nix-remove() {

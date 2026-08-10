@@ -25,7 +25,6 @@ let
   nixToolsPkgs =
     pkgs: with pkgs; [
       nix-output-monitor
-      dix
     ];
   osShared = { pkgs, ... }: {
     nix.nixPath = [ ];
