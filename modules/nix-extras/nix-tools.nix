@@ -84,12 +84,17 @@ _: {
           local target="$1"
           shift
           if [[ "$target" == "stellyrland" ]]; then
+            local deploy_args=()
             if [[ "$1" == "check" ]]; then
               shift
-              _nix_prep && nix run "$FLAKE#deploy-rs" -- --dry-activate "$FLAKE#$target" -- "$@"
-            else
-              _nix_prep && nix run "$FLAKE#deploy-rs" -- "$FLAKE#$target" -- "$@"
+              deploy_args=(--dry-activate)
             fi
+            local target_path
+            _nix_prep &&
+              target_path="$(nix eval --raw "$FLAKE#nixosConfigurations.$target.config.system.build.toplevel")" &&
+              nom build "$target_path" --no-link &&
+              dix "$(ssh -o BatchMode=yes -o ConnectTimeout=10 "deploy-$target" readlink -f /run/current-system)" "$target_path" &&
+              nix run "$FLAKE#deploy-rs" -- "''${deploy_args[@]}" "$FLAKE#$target" -- "$@"
           elif [[ "$target" == "stellyrlab" ]]; then
             if [[ "$1" == "check" ]]; then
               shift
