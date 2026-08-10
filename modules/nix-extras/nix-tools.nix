@@ -24,7 +24,7 @@ _: {
         fi
 
         _nix_prep() {
-          (cd "$FLAKE" && nix fmt -- --ci) && git -C "$FLAKE" diff --check
+          (cd "$FLAKE" && nix fmt -- --ci) && git -C "$FLAKE" --no-pager diff --check
         }
 
         rebuild() {
