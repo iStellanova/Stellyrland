@@ -2,6 +2,7 @@ _:
 let
   targets = {
     stellyrland = {
+      kind = "nixos";
       hostName = "stellyrland.tailb15b96.ts.net";
       hostNames = [
         "stellyrland.local"
@@ -10,6 +11,7 @@ let
       publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAPDq0bTLCKn1lKqYn+22wRYiEsNFoMvMlRh1Klm8edA";
     };
     stellyrtop = {
+      kind = "darwin";
       hostName = "stellyrtop.tailb15b96.ts.net";
       hostNames = [ "stellyrtop.tailb15b96.ts.net" ];
       publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJuUvoUL9cDXQKdtmHxidbuOK8iuC/ItVWyPFzXySxSm";
@@ -87,6 +89,9 @@ in
           };
         }) targets
       );
+      deploymentTypes = lib.concatStringsSep "\n" (
+        lib.mapAttrsToList (name: target: "  ${name} ${target.kind}") targets
+      );
     in
     {
       programs.ssh = {
@@ -96,41 +101,58 @@ in
       };
 
       programs.zsh.initContent = ''
-        _deployment_prep() {
-          (cd "$FLAKE" && nix fmt -- --ci) && git -C "$FLAKE" diff --check
-        }
+                _deployment_prep() {
+                  (cd "$FLAKE" && nix fmt -- --ci) && git -C "$FLAKE" diff --check
+                }
 
-        deploy() {
-          if [[ -z "$1" ]]; then
-            echo "Usage: deploy <stellyrlab|stellyrland> [check|extra-args...]"
-            return 1
-          fi
-          local target="$1"
-          shift
-          case "$target" in
-            stellyrlab)
-              if [[ "$1" == "check" ]]; then
-                shift
-                _deployment_prep && nixos-rebuild build --flake "$FLAKE#$target" "$@"
-              else
-                _deployment_prep && nixos-rebuild switch --flake "$FLAKE#$target" --elevate=run0 "$@"
-              fi
-              ;;
-            stellyrland)
-              local target_host=(--target-host "$target")
-              if [[ "$1" == "check" ]]; then
-                shift
-                _deployment_prep && nh os switch "$FLAKE#$target" --hostname "$target" "''${target_host[@]}" --elevation-strategy=program:sudo --dry --diff always "$@"
-              else
-                _deployment_prep && nh os switch "$FLAKE#$target" --hostname "$target" "''${target_host[@]}" --elevation-strategy=program:sudo --diff always "$@"
-              fi
-              ;;
-            *)
-              echo "No controller deployment path for $target"
-              return 1
-              ;;
-          esac
-        }
+                typeset -A _deployment_types=(
+        ${deploymentTypes}
+                )
+
+                deploy() {
+                  if [[ -z "$1" ]]; then
+                    echo "Usage: deploy <host> [check|extra-args...]"
+                    return 1
+                  fi
+                  local target="$1"
+                  shift
+
+                  if [[ "$target" == stellyrlab ]]; then
+                    if [[ "$1" == "check" ]]; then
+                      shift
+                      _deployment_prep && nixos-rebuild build --flake "$FLAKE#$target" "$@"
+                    else
+                      _deployment_prep && nixos-rebuild switch --flake "$FLAKE#$target" --elevate=run0 "$@"
+                    fi
+                    return $?
+                  fi
+
+                  local deployment_type="''${_deployment_types[$target]}"
+                  case "$deployment_type" in
+                    nixos)
+                      local target_host=(--target-host "$target")
+                      if [[ "$1" == "check" ]]; then
+                        shift
+                        _deployment_prep && nh os switch "$FLAKE#$target" --hostname "$target" "''${target_host[@]}" --elevation-strategy=program:sudo --dry --diff always "$@"
+                      else
+                        _deployment_prep && nh os switch "$FLAKE#$target" --hostname "$target" "''${target_host[@]}" --elevation-strategy=program:sudo --diff always "$@"
+                      fi
+                      ;;
+                    darwin)
+                      local source_flake="git+ssh://git@github.com/iStellanova/Stellyrland.git?rev=$(git -C "$FLAKE" rev-parse HEAD)"
+                      if [[ "$1" == "check" ]]; then
+                        shift
+                        _deployment_prep && ssh "$target" "darwin-rebuild build --flake '$source_flake#$target'"
+                      else
+                        _deployment_prep && ssh -tt "$target" "sudo darwin-rebuild switch --flake '$source_flake#$target'"
+                      fi
+                      ;;
+                    *)
+                      echo "No controller deployment path for $target"
+                      return 1
+                      ;;
+                  esac
+                }
       '';
     };
 }
