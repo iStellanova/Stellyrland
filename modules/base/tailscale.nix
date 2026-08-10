@@ -17,7 +17,7 @@ in
     imports = [
       osShared
       (
-        { config, ... }:
+        { config, pkgs, ... }:
         {
           sops.secrets.tailscale_auth_key = { };
 
@@ -28,8 +28,19 @@ in
             extraUpFlags = [
               "--accept-dns=false"
               "--accept-routes=false"
-              "--ssh"
+              "--ssh=false"
             ];
+          };
+
+          systemd.services.tailscale-settings = {
+            after = [ "tailscaled-autoconnect.service" ];
+            requires = [ "tailscaled-autoconnect.service" ];
+            wantedBy = [ "multi-user.target" ];
+            serviceConfig = {
+              Type = "oneshot";
+              RemainAfterExit = true;
+            };
+            script = "${pkgs.tailscale}/bin/tailscale set --accept-dns=false --accept-routes=false --ssh=false";
           };
 
           boot.kernel.sysctl = {
