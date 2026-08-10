@@ -14,6 +14,7 @@
       boot
       cmdline
       maintenance
+      personal-secrets
       stellyrlab-host
     ];
   };

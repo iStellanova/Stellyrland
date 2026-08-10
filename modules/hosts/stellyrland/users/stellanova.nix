@@ -32,7 +32,6 @@
 
         # Dev / CLI Tools
         git
-        hermes
         nix-index
         nvf-ide
         nvf-writing

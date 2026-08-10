@@ -53,6 +53,10 @@ let
     more detail is useful. Treat tools and model providers as replaceable
     capabilities: your identity, memory, and relationship with the user belong
     to the Hermes framework, not to whichever model is currently active.
+
+    You live on stellyrlab. For requested work on stellyrland, use its declared
+    SSH alias and the canonical checkout at /home/stellanova/Projects/stellyrland.
+    Inspect its Git status before editing and run validation there.
   '';
 in
 {
@@ -66,6 +70,7 @@ in
 
   flake.modules.homeManager.hermes =
     {
+      config,
       lib,
       pkgs,
       ...
@@ -128,32 +133,46 @@ in
       themeFile = pkgs.writeText "${theme.name}.yaml" (builtins.toJSON theme);
     in
     {
-      home.packages = [ stellxiePackage ] ++ fetching.packages;
+      options.services.hermes-serve.enable = lib.mkEnableOption "the local Stellxie remote backend";
 
-      home.sessionVariables = fetching.sessionVariables;
+      config = {
+        home.packages = [ stellxiePackage ] ++ fetching.packages;
 
-      home.file = {
-        ".hermes/SOUL.md" = {
-          text = soul;
-          force = true;
+        home.sessionVariables = fetching.sessionVariables;
+
+        home.file = {
+          ".hermes/SOUL.md" = {
+            text = soul;
+            force = true;
+          };
+        }
+        // skills.files
+        // fetching.files;
+
+        # Keep the managed baseline authoritative on each Home Manager activation.
+        home.activation = {
+          hermesFetching = lib.hm.dag.entryAfter [ "writeBoundary" ] fetching.activation;
+          hermesConfig = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+            mkdir -p "$HOME/.hermes/skins"
+            install -m 0600 ${configFile} "$HOME/.hermes/config.yaml"
+            install -m 0600 ${themeFile} "$HOME/.hermes/skins/${theme.name}.yaml"
+          '';
         };
-      }
-      // skills.files
-      // fetching.files;
 
-      # Keep the managed baseline authoritative on each Home Manager activation.
-      home.activation = {
-        hermesFetching = lib.hm.dag.entryAfter [ "writeBoundary" ] fetching.activation;
-        hermesConfig = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-          mkdir -p "$HOME/.hermes/skins"
-          install -m 0600 ${configFile} "$HOME/.hermes/config.yaml"
-          install -m 0600 ${themeFile} "$HOME/.hermes/skins/${theme.name}.yaml"
-        '';
-      };
-
-      systemd.user.services = {
-        hermes-searxng = fetching.searxngService;
-        hermes-gateway = discord.service;
+        systemd.user.services = {
+          hermes-searxng = fetching.searxngService;
+          hermes-gateway = discord.service;
+          hermes-serve = lib.mkIf config.services.hermes-serve.enable {
+            Unit.Description = "Stellxie Hermes remote backend";
+            Service = {
+              # ponytail: SSH forwarding is the access boundary; add public auth only when needed.
+              ExecStart = "${stellxiePackage}/bin/hermes serve --host 127.0.0.1 --port 9119";
+              Restart = "always";
+              RestartSec = 5;
+            };
+            Install.WantedBy = [ "default.target" ];
+          };
+        };
       };
     };
 }
