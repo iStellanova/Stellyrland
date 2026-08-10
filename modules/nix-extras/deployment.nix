@@ -102,7 +102,7 @@ in
 
       programs.zsh.initContent = ''
                 _deployment_prep() {
-                  (cd "$FLAKE" && nix fmt -- --ci) && git -C "$FLAKE" diff --check
+                  (cd "$FLAKE" && nix fmt -- --ci) && git -C "$FLAKE" --no-pager diff --check
                 }
 
                 typeset -A _deployment_types=(
