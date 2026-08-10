@@ -23,7 +23,7 @@ _: {
             IdentityFile = "/run/secrets/stellxie-github-auth";
             IdentitiesOnly = "yes";
           };
-          "* !github-stellxie" = {
+          "* !github-stellxie !deploy-stellyrland !deploy-stellyrtop" = {
             HashKnownHosts = "yes";
             SendEnv = "LANG LC_*";
             IdentityFile = host.gitSshKey;
