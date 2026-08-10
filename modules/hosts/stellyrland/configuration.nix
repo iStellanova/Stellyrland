@@ -23,7 +23,7 @@
     # Lets stellyrlab transfer locally coordinated closures to this target.
     nix.settings.trusted-users = [ host.username ];
 
-    # The controller uses native nixos-rebuild remote run0 elevation.
+    # The controller uses native nh remote run0 elevation.
     system.tools.nixos-rebuild.enableRun0Elevation = true;
 
     imports = with self.modules.nixos; [

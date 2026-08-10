@@ -75,7 +75,7 @@ in
       );
       deploymentAliases = lib.listToAttrs (
         lib.mapAttrsToList (name: target: {
-          name = "deploy-${name}";
+          inherit name;
           value = {
             HostName = target.hostName;
             User = "stellanova";
@@ -92,17 +92,7 @@ in
       programs.ssh = {
         enable = true;
         enableDefaultConfig = false;
-        settings = deploymentAliases // {
-          stellyrland = {
-            HostName = "stellyrland.local";
-            User = "stellanova";
-            IdentityFile = "/run/secrets/stellacode";
-            IdentitiesOnly = "yes";
-            BatchMode = "yes";
-            StrictHostKeyChecking = "yes";
-            UserKnownHostsFile = toString deploymentKnownHosts;
-          };
-        };
+        settings = deploymentAliases;
       };
 
       programs.zsh.initContent = ''
@@ -127,12 +117,12 @@ in
               fi
               ;;
             stellyrland)
-              local target_host=(--target-host "deploy-$target")
+              local target_host=(--target-host "$target")
               if [[ "$1" == "check" ]]; then
                 shift
-                _deployment_prep && nixos-rebuild dry-activate --flake "$FLAKE#$target" "''${target_host[@]}" --elevate=run0 --ask-elevate-password "$@"
+                _deployment_prep && nh os switch "$FLAKE#$target" --hostname "$target" "''${target_host[@]}" --elevation-strategy=program:sudo --dry --diff always "$@"
               else
-                _deployment_prep && nixos-rebuild switch --flake "$FLAKE#$target" "''${target_host[@]}" --elevate=run0 --ask-elevate-password "$@"
+                _deployment_prep && nh os switch "$FLAKE#$target" --hostname "$target" "''${target_host[@]}" --elevation-strategy=program:sudo --diff always "$@"
               fi
               ;;
             *)
