@@ -9,6 +9,7 @@
     hostname = "deploy-stellyrland";
     sshUser = "stellanova";
     user = "root";
+    sshOpts = [ "-tt" ];
     interactiveSudo = true;
     profiles.system.path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos inputs.self.nixosConfigurations.stellyrland;
   };
