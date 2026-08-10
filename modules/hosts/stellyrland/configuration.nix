@@ -8,6 +8,9 @@
     gitName = "stellanova";
     userEmail = "iStellanova@users.noreply.github.com";
     gitSshKey = "/run/secrets/stellacode";
+    sshKeys = self.constants.sshKeys ++ [
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDRgqL5g6rGjR1yoD4XKOx/iHXJgYR9L6U4SU9sfOd7z stellyrlab deployment controller"
+    ];
     graphics = "amd";
     monitorPriority = [
       "DP-2"
