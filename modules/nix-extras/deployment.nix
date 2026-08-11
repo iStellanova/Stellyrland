@@ -83,7 +83,7 @@ in
       );
       deploymentAliases = lib.listToAttrs (
         lib.mapAttrsToList (name: target: {
-          inherit name;
+          name = "deploy-${name}";
           value = {
             HostName = target.hostName;
             User = "stellanova";
@@ -137,7 +137,7 @@ in
                   local deployment_type="''${_deployment_types[$target]}"
                   case "$deployment_type" in
                     nixos)
-                      local target_host=(--target-host "$target")
+                      local target_host=(--target-host "deploy-$target")
                       if [[ "$1" == "check" ]]; then
                         shift
                         _deployment_prep && nh os switch "$FLAKE#$target" --hostname "$target" "''${target_host[@]}" --elevation-strategy=program:sudo --dry --diff always "$@"
@@ -149,9 +149,9 @@ in
                       local source_flake="github:iStellanova/Stellyrland/$(git -C "$FLAKE" rev-parse HEAD)"
                       if [[ "$1" == "check" ]]; then
                         shift
-                        _deployment_prep && ssh "$target" "nh darwin build '$source_flake#$target' --hostname '$target' --diff always"
+                        _deployment_prep && ssh "deploy-$target" "nh darwin build '$source_flake#$target' --hostname '$target' --diff always"
                       else
-                        _deployment_prep && ssh -tt "$target" "nh darwin switch '$source_flake#$target' --hostname '$target' --elevation-strategy=program:sudo --diff always"
+                        _deployment_prep && ssh -tt "deploy-$target" "nh darwin switch '$source_flake#$target' --hostname '$target' --elevation-strategy=program:sudo --diff always"
                       fi
                       ;;
                     *)
