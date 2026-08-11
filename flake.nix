@@ -20,7 +20,6 @@
         {
           imports = builtins.filter (p: lib.hasSuffix ".nix" p && !(lib.hasInfix "/_" p)) files;
         };
-
       result = inputs.flake-parts.lib.mkFlake { inherit inputs; } (importTree ./modules);
     in
     result;
