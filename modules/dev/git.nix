@@ -54,7 +54,6 @@ _: {
           gpg.ssh.allowedSignersFile = "${config.home.homeDirectory}/.config/git/allowed_signers";
           user.signingKey = host.gitSshKey;
           rerere.enabled = true;
-          include.path = "~/.gitconfig-identity";
         };
       };
     };
