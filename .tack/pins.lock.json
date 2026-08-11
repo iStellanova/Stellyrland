@@ -91,9 +91,9 @@
     "type": "github",
     "owner": "numtide",
     "repo": "llm-agents.nix",
-    "rev": "5b6721acbc198851658de3f93444d2be308ffe77",
-    "narHash": "sha256-YTLO0pwBI3eAxT6tssly2MY1lhntcNOV3Xg1agIL5x4=",
-    "lastModified": 1786389530
+    "rev": "1f2ee1ae801d5ba4195b81ff2ff2c2429f3a9baf",
+    "narHash": "sha256-AVQf47gVcJZHI8mPHyIcWZcpB3jI/4UzdVimmL79Ris=",
+    "lastModified": 1786409560
   },
   "my-assets": {
     "type": "github",
@@ -171,9 +171,9 @@
     "type": "github",
     "owner": "nix-community",
     "repo": "NUR",
-    "rev": "c5feb5ca4b66aba47f8444ebd52ad6f8aceb16e0",
-    "narHash": "sha256-mrLzp4JIwI8VxuuAY/ZGTax0rBUhTWwNJ2MnwUVvGFM=",
-    "lastModified": 1786390614
+    "rev": "7362b5fa1cacb667f22403f8195d5303a174e914",
+    "narHash": "sha256-yorij3+6mvXd+uf3jK7OfHIIHzAeOlUfcNTelkowHuI=",
+    "lastModified": 1786409179
   },
   "nvf": {
     "type": "github",
