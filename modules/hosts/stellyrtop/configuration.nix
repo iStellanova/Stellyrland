@@ -37,7 +37,6 @@
       zen-browser
 
       # Productivity
-      virtual-machines
       finance
       school
       office-suite
