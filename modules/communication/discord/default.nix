@@ -16,6 +16,14 @@
       programs.nixcord = lib.mkIf pkgs.stdenv.isLinux (import ./_config.nix);
     };
 
+  flake.modules.nixos.discord =
+    { lib, host, ... }:
+    {
+      imports = lib.optional (host.persistence or false) {
+        preservation.preserveAt."/persist".users.${host.username}.directories = [ ".config/vesktop" ];
+      };
+    };
+
   flake.modules.darwin.discord =
     { host, ... }:
     {

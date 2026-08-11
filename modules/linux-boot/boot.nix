@@ -9,15 +9,22 @@
     {
       config,
       lib,
+      host,
       pkgs,
       ...
     }:
     {
-      imports = [ inputs.lanzaboote.nixosModules.lanzaboote ];
+      imports = [
+        inputs.lanzaboote.nixosModules.lanzaboote
+      ]
+      ++ lib.optional (host.persistence or false) {
+        preservation.preserveAt."/persist".directories = [ "/var/lib/sbctl" ];
+      };
 
       options.core.boot.secureBoot = lib.mkEnableOption "Lanzaboote Secure Boot (disable for initial install)";
 
       config = {
+
         environment.systemPackages = [
           pkgs.efibootmgr
           pkgs.sbctl

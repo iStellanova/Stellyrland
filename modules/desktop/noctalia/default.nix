@@ -4,12 +4,42 @@
     url = "github:noctalia-dev/noctalia/cachix";
   };
 
-  flake.modules.nixos.noctalia = _: {
-    nix.settings.substituters = [ "https://noctalia.cachix.org" ];
-    nix.settings.trusted-public-keys = [
-      "noctalia.cachix.org-1:pCOR47nnMEo5thcxNDtzWpOxNFQsBRglJzxWPp3dkU4="
-    ];
-  };
+  flake.modules.nixos.noctalia =
+    {
+      lib,
+      host,
+      ...
+    }:
+    {
+      nix.settings.substituters = [ "https://noctalia.cachix.org" ];
+      nix.settings.trusted-public-keys = [
+        "noctalia.cachix.org-1:pCOR47nnMEo5thcxNDtzWpOxNFQsBRglJzxWPp3dkU4="
+      ];
+
+      imports = lib.optional (host.persistence or false) {
+        preservation.preserveAt."/persist" = {
+          directories = [ "/var/lib/noctalia-greeter" ];
+          users.${host.username}.files = [
+            {
+              file = ".local/state/noctalia/screen_time.json";
+              how = "symlink";
+            }
+            {
+              file = ".local/state/noctalia/usage_counts.json";
+              how = "symlink";
+            }
+            {
+              file = ".local/state/noctalia/recently_used.json";
+              how = "symlink";
+            }
+            {
+              file = ".local/state/noctalia/notification_history.json";
+              how = "symlink";
+            }
+          ];
+        };
+      };
+    };
 
   flake.modules.homeManager.noctalia =
     {

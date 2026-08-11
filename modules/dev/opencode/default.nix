@@ -31,4 +31,15 @@
         tui.theme = "catppuccin-macchiato-transparent";
       };
     };
+
+  flake.modules.nixos.opencode =
+    { lib, host, ... }:
+    {
+      imports = lib.optional (host.persistence or false) {
+        preservation.preserveAt."/persist".users.${host.username}.directories = [
+          ".config/opencode"
+          ".local/share/opencode"
+        ];
+      };
+    };
 }
