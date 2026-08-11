@@ -1,6 +1,12 @@
 _:
 let
   targets = {
+    plasmapulsefinale = {
+      kind = "nixos";
+      hostName = "plasmapulsefinale.tailb15b96.ts.net";
+      hostNames = [ "plasmapulsefinale.tailb15b96.ts.net" ];
+      publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIB+IEKcruyMNZYEp9PHYHC6Z/AkEoJnxByunqql9zO71";
+    };
     stellyrland = {
       kind = "nixos";
       hostName = "stellyrland.tailb15b96.ts.net";
@@ -143,9 +149,9 @@ in
                       local source_flake="github:iStellanova/Stellyrland/$(git -C "$FLAKE" rev-parse HEAD)"
                       if [[ "$1" == "check" ]]; then
                         shift
-                        _deployment_prep && ssh "$target" "darwin-rebuild build --flake '$source_flake#$target'"
+                        _deployment_prep && ssh "$target" "nh darwin build '$source_flake#$target' --hostname '$target' --diff always"
                       else
-                        _deployment_prep && ssh -tt "$target" "sudo darwin-rebuild switch --flake '$source_flake#$target'"
+                        _deployment_prep && ssh -tt "$target" "nh darwin switch '$source_flake#$target' --hostname '$target' --elevation-strategy=program:sudo --diff always"
                       fi
                       ;;
                     *)
