@@ -1,6 +1,8 @@
 _: {
   flake.modules.nixos.hdd =
     {
+      host,
+      lib,
       pkgs,
       config,
       ...
@@ -12,6 +14,37 @@ _: {
       # hdd-keyfile is declared in modules/system/personal-secrets.nix, not
       # here — this module requires personal-secrets to also be imported.
       keyFile = config.sops.secrets.hdd-keyfile.path;
+      sourceKey = config.sops.secrets.stellyrlab-deploy-key.path;
+      sshOptions = "--sshoption=StrictHostKeyChecking=yes --sshoption=UserKnownHostsFile=/etc/ssh/ssh_known_hosts";
+
+      syncSource =
+        sourceName: source:
+        lib.concatStringsSep "\n" (
+          lib.mapAttrsToList (
+            _dirName: dir:
+            let
+              isRemote = source.host != null;
+              sourceDataset = if isRemote then "${host.username}@${source.host}:${dir.source}" else dir.source;
+              sshOptions' = lib.optionalString isRemote ''
+                --sshkey ${sourceKey} \\
+                ${sshOptions} \\
+              '';
+            in
+            ''
+              echo "Syncing ${sourceName}:${dir.source} → ${poolName}/${dir.target}..."
+              ${pkgs.sanoid}/bin/syncoid \\
+                --recursive \\
+                --no-privilege-elevation \\
+                --force-delete \\
+                ${sshOptions'}
+                ${sourceDataset} ${poolName}/${dir.target}
+            ''
+          ) source.dirs
+        );
+
+      syncSources = lib.concatStringsSep "\n" (
+        lib.mapAttrsToList (sourceName: source: syncSource sourceName source) host.backupHdd.sources
+      );
 
       backupScript = pkgs.writeShellScript "backup-hdd" ''
         set -euo pipefail
@@ -49,19 +82,7 @@ _: {
           echo "ZFS pool ${poolName} already imported."
         fi
 
-        echo "Syncing zroot/safe/home → ${poolName}/home..."
-        ${pkgs.sanoid}/bin/syncoid \
-          --recursive \
-          --no-privilege-elevation \
-          --force-delete \
-          zroot/safe/home ${poolName}/home
-
-        echo "Syncing zroot/safe/persist → ${poolName}/persist..."
-        ${pkgs.sanoid}/bin/syncoid \
-          --recursive \
-          --no-privilege-elevation \
-          --force-delete \
-          zroot/safe/persist ${poolName}/persist
+        ${syncSources}
 
         echo "Backup complete. Exporting pool and closing LUKS..."
         ${pkgs.zfs}/bin/zpool export ${poolName}
@@ -86,8 +107,9 @@ _: {
         after = [
           "local-fs.target"
           "zfs.target"
+          "network-online.target"
         ];
-        unitConfig.RequiresMountsFor = [ "/persist" ];
+        wants = [ "network-online.target" ];
         serviceConfig = {
           Type = "oneshot";
           ExecStart = "${backupScript}";
@@ -102,6 +124,25 @@ _: {
         timerConfig = {
           OnCalendar = "weekly";
           Persistent = true;
+        };
+      };
+    };
+
+  # Source-side delegation for the homelab receiver. The deployment identity
+  # can send only the safe datasets; it cannot receive or access other pools.
+  flake.modules.nixos.hdd-source =
+    { host, pkgs, ... }:
+    {
+      systemd.services.backup-hdd-zfs-delegation = {
+        description = "Delegate safe ZFS replication to the homelab receiver";
+        after = [ "zfs.target" ];
+        wantedBy = [ "zfs.target" ];
+        serviceConfig = {
+          Type = "oneshot";
+          RemainAfterExit = true;
+          ExecStart = ''
+            ${pkgs.zfs}/bin/zfs allow -d -u ${host.username} snapshot,send,destroy,hold,release zroot/safe
+          '';
         };
       };
     };

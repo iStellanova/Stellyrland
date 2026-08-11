@@ -59,7 +59,7 @@
       performance
       binfmt
       extra-disk
-      hdd
+      hdd-source
       preservation
       zfs-snapshots-sanoid
 
