@@ -1,7 +1,17 @@
 _: {
-  flake.modules.nixos.protonvpn = { pkgs, ... }: {
-    environment.systemPackages = [ pkgs.proton-vpn ];
-  };
+  flake.modules.nixos.protonvpn =
+    {
+      lib,
+      host,
+      pkgs,
+      ...
+    }:
+    {
+      environment.systemPackages = [ pkgs.proton-vpn ];
+      imports = lib.optional (host.persistence or false) {
+        preservation.preserveAt."/persist".users.${host.username}.directories = [ ".config/Proton/VPN" ];
+      };
+    };
 
   flake.modules.darwin.protonvpn = _: {
     homebrew.casks = [ "protonvpn" ];

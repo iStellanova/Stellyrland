@@ -1,6 +1,11 @@
 _: {
   flake.modules.nixos.vr =
-    { pkgs, ... }:
+    {
+      lib,
+      host,
+      pkgs,
+      ...
+    }:
     let
       # USB-only setup (no wireless streaming): the headset never touches the
       # LAN, so there's no discovery step. This tunnel doesn't survive
@@ -13,6 +18,7 @@ _: {
       '';
     in
     {
+
       # Valve/HTC udev rules for Index controllers and Vive trackers.
       # Base stations are not USB devices and need no udev rules.
       hardware.steam-hardware.enable = true;
@@ -48,5 +54,15 @@ _: {
         xrizer
         opencomposite
       ];
+
+      imports = lib.optional (host.persistence or false) {
+        preservation.preserveAt."/persist".users.${host.username}.directories = [
+          ".config/openvr"
+          ".config/wivrn"
+          ".config/motoc"
+          ".config/openxr"
+          ".android"
+        ];
+      };
     };
 }

@@ -3,6 +3,7 @@
     class = "nixos";
     username = "stellanova";
     homeDir = "/home/stellanova";
+    persistence = true;
     flakePath = "/home/stellanova/Projects/stellyrland";
     passwordSecret = "stellapsswd";
     gitName = "stellanova";
@@ -62,6 +63,7 @@
       hdd-source
       preservation
       zfs-snapshots-sanoid
+      zfs-snapshots-builtin
 
       # Gaming
       game-launchers
@@ -78,12 +80,17 @@
 
       # Desktop Applications
       nautilus
+      zen-browser
       roblox
 
       # Productivity
       email
       protonvpn
       psswdmgr
+
+      # Persistence companions for Home Manager applications
+      opencode
+      discord
 
       # Personal Secrets
       personal-secrets

@@ -8,16 +8,7 @@
   flake.modules.nixos.preservation = { host, ... }: {
     imports = [ inputs.preservation.nixosModules.preservation ];
 
-    # On a live switch, Home Manager must wait for newly added preserved paths
-    # instead of writing files beneath a mount that is about to appear.
-    systemd.services."home-manager-${host.username}".unitConfig.RequiresMountsFor = [
-      "/home/${host.username}/.hermes"
-    ];
-
     systemd.tmpfiles.rules = [
-      # Returns /etc/nixos's pointer from the config project.
-      "L+ /etc/nixos - - - - ${host.flakePath}"
-
       # @blank was taken before nixos-install, so home reverts to root:root after rollback;
       # fix ownership so HM can create ~/.cache etc. as the user.
       "d /home/${host.username} 0700 ${host.username} users -"
@@ -27,15 +18,8 @@
       enable = true;
       preserveAt."/persist" = {
         directories = [
-          "/var/lib/sbctl"
           "/var/lib/nixos"
-          "/var/lib/tailscale"
-          "/var/lib/NetworkManager"
-          "/etc/NetworkManager"
           "/var/log"
-          "/var/lib/noctalia-greeter"
-          "/var/lib/flatpak"
-          "/srv/minecraft"
         ];
         files = [
           "/etc/adjtime"
@@ -75,34 +59,6 @@
             ".gnupg"
             ".config/sops"
 
-            # Browser profile (bookmarks, history, logins, cookies)
-            ".config/zen"
-
-            # App sessions and runtime state
-            ".config/vesktop"
-            ".config/gemini"
-            ".config/Proton Mail"
-            ".config/Proton Pass"
-            ".config/Proton/VPN"
-            ".antigravity"
-            ".hermes"
-            ".config/opencode"
-            ".local/share/opencode"
-
-            # Editor runtime (extensions, compiled LSPs)
-            ".local/share/zed"
-
-            # Steam client data (game library lives on ExtraDisk)
-            ".local/share/Steam"
-            ".steam"
-
-            # Game launchers and saves
-            ".local/share/Paradox Interactive"
-            ".local/share/PrismLauncher"
-
-            ".local/share/r2modman"
-            ".config/r2modman"
-
             # Nix user state — profile dir must survive rollback so
             # home-manager-stellanova.service's setupVars() doesn't exit 1 at boot
             {
@@ -119,64 +75,6 @@
             }
             ".local/state/home-manager"
 
-            # Audio session volumes and per-app mix
-            ".local/state/wireplumber"
-
-            # Hyprland version tracking — prevents "what's new" popup on every boot
-            ".local/share/hyprland"
-
-            # Zoxide jump database — accumulated frecency weights for smart cd
-            ".local/share/zoxide"
-
-            # direnv allow list — prevents re-allow after every rollback
-            ".local/share/direnv"
-
-            # Flatpak user app data
-            ".var/app"
-
-            # OpenVR driver path registry — SteamVR reads this to find the
-            # xrizer/OpenComposite compat layer WiVRn's steam.enable whitelists here
-            ".config/openvr"
-
-            # WiVRn's known_keys.json (paired Quest trust list) and dashboard cookie —
-            # without this the Quest needs re-pairing on every boot
-            ".config/wivrn"
-
-            # motoc playspace calibration profiles (aligns lighthouse and headset tracking origins)
-            ".config/motoc"
-
-            # OpenXR active runtime pointer — selects WiVRn vs SteamVR's own runtime
-            ".config/openxr"
-
-            # ADB USB-debugging trust keypair — avoids re-approving the Quest every boot
-            ".android"
-          ];
-          files = [
-            {
-              file = ".zsh_history";
-              how = "symlink";
-            }
-            # Noctalia runtime data — configureParent creates .local/state/noctalia/ at boot
-            {
-              file = ".local/state/noctalia/screen_time.json";
-              how = "symlink";
-              configureParent = true;
-            }
-            {
-              file = ".local/state/noctalia/usage_counts.json";
-              how = "symlink";
-              configureParent = true;
-            }
-            {
-              file = ".local/state/noctalia/recently_used.json";
-              how = "symlink";
-              configureParent = true;
-            }
-            {
-              file = ".local/state/noctalia/notification_history.json";
-              how = "symlink";
-              configureParent = true;
-            }
           ];
         };
       };

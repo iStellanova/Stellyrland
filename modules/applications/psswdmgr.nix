@@ -5,6 +5,15 @@ let
   };
 in
 {
-  flake.modules.nixos.psswdmgr = osShared;
+  flake.modules.nixos.psswdmgr =
+    { lib, host, ... }:
+    {
+      imports = [
+        osShared
+      ]
+      ++ lib.optional (host.persistence or false) {
+        preservation.preserveAt."/persist".users.${host.username}.directories = [ ".config/Proton Pass" ];
+      };
+    };
   flake.modules.darwin.psswdmgr = osShared;
 }

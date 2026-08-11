@@ -1,29 +1,43 @@
 _: {
-  flake.modules.nixos.pipewire = _: {
-    security.rtkit.enable = true;
+  flake.modules.nixos.pipewire =
+    {
+      lib,
+      host,
+      ...
+    }:
+    {
 
-    services.pipewire = {
-      enable = true;
-      pulse.enable = true;
-      alsa.enable = true;
-      alsa.support32Bit = true;
-      wireplumber = {
+      security.rtkit.enable = true;
+
+      services.pipewire = {
         enable = true;
-        extraConfig = {
-          "10-ignore-vols" = {
-            "monitor.alsa.rules" = [
-              {
-                matches = [ { "media.class" = "Audio/Source"; } ];
-                actions = {
-                  update-props = {
-                    "node.ignore-session-volume" = true;
+        pulse.enable = true;
+        alsa.enable = true;
+        alsa.support32Bit = true;
+        wireplumber = {
+          enable = true;
+          extraConfig = {
+            "10-ignore-vols" = {
+              "monitor.alsa.rules" = [
+                {
+                  matches = [ { "media.class" = "Audio/Source"; } ];
+                  actions = {
+                    update-props = {
+                      "node.ignore-session-volume" = true;
+                    };
                   };
-                };
-              }
-            ];
+                }
+              ];
+            };
           };
         };
       };
+
+      imports = lib.optional (host.persistence or false) {
+        preservation.preserveAt."/persist".users.${host.username}.directories = [
+          ".local/state/wireplumber"
+        ];
+      };
+
     };
-  };
 }

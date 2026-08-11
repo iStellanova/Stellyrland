@@ -10,9 +10,34 @@ let
   cliOs = { pkgs, ... }: {
     environment.systemPackages = cliPkgs pkgs;
   };
+  cliNixos =
+    {
+      lib,
+      host,
+      ...
+    }:
+    {
+      imports = [
+        cliOs
+      ]
+      ++ lib.optional (host.persistence or false) {
+        preservation.preserveAt."/persist".users.${host.username} = {
+          directories = [
+            ".local/share/zoxide"
+            ".local/share/direnv"
+          ];
+          files = [
+            {
+              file = ".zsh_history";
+              how = "symlink";
+            }
+          ];
+        };
+      };
+    };
 in
 {
-  flake.modules.nixos.cli = cliOs;
+  flake.modules.nixos.cli = cliNixos;
   flake.modules.darwin.cli = cliOs;
 
   flake.modules.homeManager.cli =

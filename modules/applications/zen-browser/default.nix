@@ -22,6 +22,14 @@
       ];
     };
 
+  flake.modules.nixos.zen-browser =
+    { lib, host, ... }:
+    {
+      imports = lib.optional (host.persistence or false) {
+        preservation.preserveAt."/persist".users.${host.username}.directories = [ ".config/zen" ];
+      };
+    };
+
   flake.modules.homeManager.zen-browser =
     {
       config,

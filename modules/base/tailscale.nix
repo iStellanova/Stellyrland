@@ -17,8 +17,18 @@ in
     imports = [
       osShared
       (
-        { config, pkgs, ... }:
         {
+          config,
+          lib,
+          host,
+          pkgs,
+          ...
+        }:
+        {
+          imports = lib.optional (host.persistence or false) {
+            preservation.preserveAt."/persist".directories = [ "/var/lib/tailscale" ];
+          };
+
           sops.secrets.tailscale_auth_key = { };
 
           services.tailscale = {
