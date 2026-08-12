@@ -9,6 +9,7 @@ let
     ];
   cliOs = { pkgs, ... }: {
     environment.systemPackages = cliPkgs pkgs;
+    environment.variables.TERMINFO_DIRS = [ "${pkgs.kitty.terminfo}/share/terminfo" ];
   };
   cliNixos =
     {
