@@ -1,6 +1,12 @@
 _: {
   flake.modules.nixos.timecontrol =
-    { config, lib, host, pkgs, ... }:
+    {
+      config,
+      lib,
+      host,
+      pkgs,
+      ...
+    }:
     let
       weekdays = [
         "Monday"
@@ -44,14 +50,13 @@ _: {
       config = lib.mkIf config.timecontrol.enable {
         assertions = [
           {
-            assertion = lib.all (day: builtins.elem day weekdays) (builtins.attrNames config.timecontrol.schedule);
+            assertion = lib.all (day: builtins.elem day weekdays) (
+              builtins.attrNames config.timecontrol.schedule
+            );
             message = "timecontrol.schedule keys must be weekday names.";
           }
           {
-            assertion = lib.all (
-              window:
-              window.start < window.end
-            ) (
+            assertion = lib.all (window: window.start < window.end) (
               lib.concatLists (lib.attrValues config.timecontrol.schedule)
             );
             message = "timecontrol windows must start before they end; overnight windows are unsupported.";
@@ -62,40 +67,34 @@ _: {
           lib.concatLists (
             lib.mapAttrsToList (
               day: windows:
-              lib.imap0 (
-                index: window:
-                {
-                  name = "timecontrol-start-${lib.toLower day}-${toString index}";
-                  value = {
-                    description = "Allow ${config.timecontrol.user} logins on ${day}";
-                    serviceConfig = {
-                      Type = "oneshot";
-                      ExecStart = "${pkgs.shadow}/bin/passwd -u ${lib.escapeShellArg config.timecontrol.user}";
-                    };
+              lib.imap0 (index: _window: {
+                name = "timecontrol-start-${lib.toLower day}-${toString index}";
+                value = {
+                  description = "Allow ${config.timecontrol.user} logins on ${day}";
+                  serviceConfig = {
+                    Type = "oneshot";
+                    ExecStart = "${pkgs.shadow}/bin/passwd -u ${lib.escapeShellArg config.timecontrol.user}";
                   };
-                }
-              ) windows
+                };
+              }) windows
             ) config.timecontrol.schedule
           )
           ++ lib.concatLists (
             lib.mapAttrsToList (
               day: windows:
-              lib.imap0 (
-                index: window:
-                {
-                  name = "timecontrol-stop-${lib.toLower day}-${toString index}";
-                  value = {
-                    description = "End ${config.timecontrol.user} login time on ${day}";
-                    serviceConfig = {
-                      Type = "oneshot";
-                      ExecStart = pkgs.writeShellScript "timecontrol-stop-${lib.toLower day}-${toString index}" ''
-                        ${pkgs.systemd}/bin/loginctl terminate-user ${lib.escapeShellArg config.timecontrol.user} || true
-                        exec ${pkgs.shadow}/bin/passwd -l ${lib.escapeShellArg config.timecontrol.user}
-                      '';
-                    };
+              lib.imap0 (index: _window: {
+                name = "timecontrol-stop-${lib.toLower day}-${toString index}";
+                value = {
+                  description = "End ${config.timecontrol.user} login time on ${day}";
+                  serviceConfig = {
+                    Type = "oneshot";
+                    ExecStart = pkgs.writeShellScript "timecontrol-stop-${lib.toLower day}-${toString index}" ''
+                      ${pkgs.systemd}/bin/loginctl terminate-user ${lib.escapeShellArg config.timecontrol.user} || true
+                      exec ${pkgs.shadow}/bin/passwd -l ${lib.escapeShellArg config.timecontrol.user}
+                    '';
                   };
-                }
-              ) windows
+                };
+              }) windows
             ) config.timecontrol.schedule
           )
         );
@@ -104,37 +103,31 @@ _: {
           lib.concatLists (
             lib.mapAttrsToList (
               day: windows:
-              lib.imap0 (
-                index: window:
-                {
-                  name = "timecontrol-start-${lib.toLower day}-${toString index}";
-                  value = {
-                    wantedBy = [ "timers.target" ];
-                    timerConfig = {
-                      OnCalendar = "${day} ${window.start}";
-                      Persistent = true;
-                    };
+              lib.imap0 (index: window: {
+                name = "timecontrol-start-${lib.toLower day}-${toString index}";
+                value = {
+                  wantedBy = [ "timers.target" ];
+                  timerConfig = {
+                    OnCalendar = "${day} ${window.start}";
+                    Persistent = true;
                   };
-                }
-              ) windows
+                };
+              }) windows
             ) config.timecontrol.schedule
           )
           ++ lib.concatLists (
             lib.mapAttrsToList (
               day: windows:
-              lib.imap0 (
-                index: window:
-                {
-                  name = "timecontrol-stop-${lib.toLower day}-${toString index}";
-                  value = {
-                    wantedBy = [ "timers.target" ];
-                    timerConfig = {
-                      OnCalendar = "${day} ${window.end}";
-                      Persistent = true;
-                    };
+              lib.imap0 (index: window: {
+                name = "timecontrol-stop-${lib.toLower day}-${toString index}";
+                value = {
+                  wantedBy = [ "timers.target" ];
+                  timerConfig = {
+                    OnCalendar = "${day} ${window.end}";
+                    Persistent = true;
                   };
-                }
-              ) windows
+                };
+              }) windows
             ) config.timecontrol.schedule
           )
         );

@@ -1,6 +1,12 @@
 _:
 let
   targets = {
+    ItsRedFlame = {
+      kind = "nixos";
+      hostName = "itsredflame.tailb15b96.ts.net";
+      hostNames = [ "itsredflame.tailb15b96.ts.net" ];
+      publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJgWFxH/qllaNX5axfrDfplGpn/URESTGNX/t4TGgJ6q";
+    };
     plasmapulsefinale = {
       kind = "nixos";
       hostName = "plasmapulsefinale.tailb15b96.ts.net";
