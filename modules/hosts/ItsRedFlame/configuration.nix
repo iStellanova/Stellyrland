@@ -21,6 +21,7 @@
 
       # Desktop-Adjacent
       services-base
+      timecontrol
       system-tools
       maintenance
       mime
