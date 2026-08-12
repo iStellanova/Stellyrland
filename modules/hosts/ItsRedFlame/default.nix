@@ -9,6 +9,60 @@ _: {
 
       networking.hostName = host.name;
 
+      timecontrol.enable = true;
+      timecontrol.schedule = {
+        Monday = [
+          {
+            start = "16:00";
+            end = "18:00";
+          }
+        ];
+        Tuesday = [
+          {
+            start = "16:00";
+            end = "18:00";
+          }
+        ];
+        Wednesday = [
+          {
+            start = "16:00";
+            end = "18:00";
+          }
+        ];
+        Thursday = [
+          {
+            start = "16:00";
+            end = "18:00";
+          }
+        ];
+        Friday = [
+          {
+            start = "16:00";
+            end = "18:00";
+          }
+        ];
+        Saturday = [
+          {
+            start = "10:00";
+            end = "12:00";
+          }
+          {
+            start = "16:00";
+            end = "18:00";
+          }
+        ];
+        Sunday = [
+          {
+            start = "10:00";
+            end = "12:00";
+          }
+          {
+            start = "16:00";
+            end = "18:00";
+          }
+        ];
+      };
+
       # Avoids importing a ZFS pool that may already be in use elsewhere.
       boot.zfs.forceImportRoot = false;
 
