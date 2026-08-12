@@ -93,7 +93,11 @@ in
       programs.ssh = {
         enable = true;
         enableDefaultConfig = false;
-        settings = deploymentAliases;
+        settings = deploymentAliases // {
+          stellyrtop = {
+            SetEnv.TERM = "xterm-256color";
+          };
+        };
       };
 
       programs.zsh.initContent = ''
