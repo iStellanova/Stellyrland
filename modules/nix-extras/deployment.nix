@@ -25,12 +25,11 @@ let
   };
 in
 {
-  flake.modules.nixos.deployment-controller =
+  flake.modules.nixos.deployment-distributor =
     {
       config,
       host,
       lib,
-      pkgs,
       ...
     }:
     {
@@ -59,19 +58,9 @@ in
         ];
       };
 
-      systemd.services.tailscale-settings.script = lib.mkForce "${pkgs.tailscale}/bin/tailscale set --accept-dns=true --accept-routes=false --ssh=false";
-
-      services.tailscale = {
-        interfaceName = lib.mkForce "tailscale0";
-        extraUpFlags = lib.mkForce [
-          "--accept-dns=true"
-          "--accept-routes=false"
-          "--ssh=false"
-        ];
-      };
     };
 
-  flake.modules.homeManager.deployment-controller =
+  flake.modules.homeManager.deployment-distributor =
     { lib, pkgs, ... }:
     let
       deploymentKnownHosts = pkgs.writeText "deployment-known-hosts" (

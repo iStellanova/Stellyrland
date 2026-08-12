@@ -9,9 +9,7 @@
     gitName = "stellanova";
     userEmail = "iStellanova@users.noreply.github.com";
     gitSshKey = "/run/secrets/stellacode";
-    sshKeys = self.constants.sshKeys ++ [
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDRgqL5g6rGjR1yoD4XKOx/iHXJgYR9L6U4SU9sfOd7z stellyrlab deployment controller"
-    ];
+
     graphics = "amd";
     monitorPriority = [
       "DP-2"
@@ -20,16 +18,11 @@
     features.hdr = true;
   };
 
-  flake.modules.nixos.stellyrland = { host, ... }: {
-    # Lets stellyrlab transfer locally coordinated closures to this target.
-    nix.settings.trusted-users = [ host.username ];
-
-    # The controller uses native nh remote run0 elevation.
-    system.tools.nixos-rebuild.enableRun0Elevation = true;
-
+  flake.modules.nixos.stellyrland = {
     imports = with self.modules.nixos; [
       # Base
       base
+      deployment-recipient
       cmdline
 
       # Desktop-Adjacent (session/GUI plumbing, not Hyprland-specific)

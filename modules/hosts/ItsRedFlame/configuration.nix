@@ -9,8 +9,7 @@
     # below, not hyprland's host.graphics-based selection. Kept for if this
     # host ever switches window managers.
     graphics = "nvidia";
-    # Opt out of the shared default — see stellanova-admin for remote access instead.
-    sshKeys = [ ];
+
   };
 
   flake.modules.nixos.ItsRedFlame = {
@@ -18,6 +17,7 @@
       # Base
       base
       cmdline
+      deployment-recipient
 
       # Desktop-Adjacent
       services-base
@@ -26,8 +26,6 @@
       mime
       xdg
 
-      # Remote admin
-      stellanova-admin
       zfs-snapshots-builtin
 
       # Boot

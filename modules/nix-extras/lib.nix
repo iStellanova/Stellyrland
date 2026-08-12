@@ -10,7 +10,7 @@
       ${name} = inputs.nixpkgs.lib.nixosSystem {
         specialArgs = {
           inherit inputs;
-          # constants first so a host's own fields (e.g. sshKeys) can actually
+          # constants first so a host's own fields can actually
           # override the shared default instead of being clobbered by it.
           host = (config.flake.constants or { }) // config.flake.hosts.${name} // { inherit name; };
         };

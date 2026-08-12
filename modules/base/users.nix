@@ -13,7 +13,6 @@ _: {
         "render"
         "networkmanager"
       ];
-      openssh.authorizedKeys.keys = host.sshKeys;
     };
   };
 
