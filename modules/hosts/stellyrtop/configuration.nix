@@ -14,6 +14,7 @@
       # Base
       base
       cmdline
+      deployment-recipient
 
       # Desktop
       darwindefs
