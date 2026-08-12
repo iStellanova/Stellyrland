@@ -11,7 +11,7 @@
         git
         hermes
         nvf-ide
-        deployment-controller
+        deployment-distributor
       ];
       services.hermes-serve.enable = true;
     };

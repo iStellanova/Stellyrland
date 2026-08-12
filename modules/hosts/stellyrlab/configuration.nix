@@ -8,7 +8,7 @@
     gitName = "stellanova";
     userEmail = "iStellanova@users.noreply.github.com";
     gitSshKey = "/run/secrets/stellacode";
-    sshKeys = self.constants.sshKeys;
+
     backupHdd = {
       sources = {
         stellyrland = {
@@ -46,7 +46,7 @@
       personal-secrets
       hdd
       stellyrlab-host
-      deployment-controller
+      deployment-distributor
       zfs-snapshots-builtin
     ];
   };

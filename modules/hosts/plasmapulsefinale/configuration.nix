@@ -9,16 +9,10 @@
     # below, not hyprland's host.graphics-based selection. Kept for if this
     # host ever switches window managers.
     graphics = "intel";
-    sshKeys = [ ];
+
   };
 
   flake.modules.nixos.plasmapulsefinale = {
-    # Explicit controller opt-in; stellanova-admin intentionally covers
-    # personal access only because it is reused by non-deployment hosts.
-    users.users.stellanova.openssh.authorizedKeys.keys = [
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDRgqL5g6rGjR1yoD4XKOx/iHXJgYR9L6U4SU9sfOd7z stellyrlab deployment controller"
-    ];
-
     imports = with self.modules.nixos; [
       # Base
       base
@@ -31,7 +25,7 @@
       mime
       xdg
 
-      stellanova-admin
+      deployment-recipient
       zfs-snapshots-builtin
 
       # Desktop

@@ -11,9 +11,9 @@ let
   };
 in
 {
-  flake.modules.darwin.tailscale = osShared;
+  flake.modules.darwin.tailnet = osShared;
 
-  flake.modules.nixos.tailscale = {
+  flake.modules.nixos.tailnet = {
     imports = [
       osShared
       (
@@ -33,10 +33,10 @@ in
 
           services.tailscale = {
             authKeyFile = config.sops.secrets.tailscale_auth_key.path;
-            interfaceName = "userspace-networking";
-            useRoutingFeatures = "none";
+            interfaceName = "tailscale0";
+            useRoutingFeatures = "client";
             extraUpFlags = [
-              "--accept-dns=false"
+              "--accept-dns=true"
               "--accept-routes=false"
               "--ssh=false"
             ];
@@ -50,7 +50,7 @@ in
               Type = "oneshot";
               RemainAfterExit = true;
             };
-            script = "${pkgs.tailscale}/bin/tailscale set --accept-dns=false --accept-routes=false --ssh=false";
+            script = "${pkgs.tailscale}/bin/tailscale set --accept-dns=true --accept-routes=false --ssh=false";
           };
 
           boot.kernel.sysctl = {

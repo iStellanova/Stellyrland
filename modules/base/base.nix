@@ -6,7 +6,7 @@
       lix
       nix-settings
       openssh
-      tailscale
+      tailnet
       secrets
       users
       avahi
@@ -18,7 +18,7 @@
       lix
       nix-settings
       openssh
-      tailscale
+      tailnet
       secrets
       users
     ];
