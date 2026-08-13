@@ -12,7 +12,14 @@ _: {
 
     services.ananicy = {
       enable = true;
-      package = pkgs.ananicy-cpp;
+      # TODO: Remove this upstream workaround once an ananicy-cpp release includes the missing standard headers.
+      package = pkgs.ananicy-cpp.overrideAttrs (old: {
+        postPatch = (old.postPatch or "") + ''
+          sed -i '1i#include <cstdint>' src/platform/linux/backtrace.cpp
+          sed -i '1i#include <cstring>' src/utility/argument_parsing/argument.cpp
+          sed -i '1i#include <cstring>' src/platform/linux/singleton_process.cpp
+        '';
+      });
       rulesProvider = pkgs.ananicy-rules-cachyos;
     };
 
