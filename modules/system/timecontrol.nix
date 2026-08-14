@@ -51,8 +51,7 @@ _: {
         let
           windows = lib.concatLists (
             lib.mapAttrsToList (
-              day: dayWindows:
-              lib.imap0 (index: window: { inherit day index window; }) dayWindows
+              day: dayWindows: lib.imap0 (index: window: { inherit day index window; }) dayWindows
             ) config.timecontrol.schedule
           );
         in
@@ -105,7 +104,11 @@ _: {
 
           systemd.timers = lib.listToAttrs (
             lib.concatMap (
-              { day, index, window }:
+              {
+                day,
+                index,
+                window,
+              }:
               [
                 {
                   name = "timecontrol-start-${lib.toLower day}-${toString index}";
