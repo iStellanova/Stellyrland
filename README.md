@@ -116,7 +116,6 @@ flowchart TD
 │   └── ItsRedFlame.yaml
 └── modules/                  # Flake-parts modules auto-loaded by importTree
     ├── flake-config.nix      # Flake inputs, Tack/flake-file setup, supported systems
-    ├── flake-options.nix     # flake.hosts / flake.lib / flake.factory option declarations
     ├── constants.nix         # Shared defaults merged into every host's `host.*`
     ├── treefmt.nix           # Repo-wide formatter configuration
     ├── devshell.nix          # Development shell and write-tack app
@@ -132,7 +131,7 @@ flowchart TD
     │   └── ItsRedFlame/      # NixOS gaming/AV box (x86_64-linux)
     ├── users/                # Shared user aspect definitions
     ├── base/                 # Core, Lix, Nix settings, SSH, Tailscale, SOPS, users
-    ├── nix/                  # Nix, Home Manager, deployment, and operational helpers
+    ├── nix/                  # Nix, Home Manager, deployment, operational helpers, and flake options
     ├── linux/                # Linux boot, hardware, and storage configuration
     │   ├── boot/
     │   ├── hardware/
