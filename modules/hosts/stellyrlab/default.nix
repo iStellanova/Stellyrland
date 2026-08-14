@@ -17,6 +17,12 @@ _: {
 
       # i915 is unstable on this laptop.
       boot = {
+        loader.systemd-boot = {
+          enable = true;
+          configurationLimit = 15;
+          consoleMode = "max";
+        };
+        loader.efi.canTouchEfiVariables = true;
         kernelPackages = pkgs.linuxPackages_6_12;
         blacklistedKernelModules = [
           "i915"
@@ -51,7 +57,6 @@ _: {
         };
       };
 
-      core.boot.secureBoot = false;
       services.logind.settings.Login = {
         HandleLidSwitch = "ignore";
         HandleLidSwitchExternalPower = "ignore";

@@ -40,7 +40,6 @@
   flake.modules.nixos.stellyrlab = {
     imports = with self.modules.nixos; [
       base
-      boot
       cmdline
       maintenance
       personal-secrets
