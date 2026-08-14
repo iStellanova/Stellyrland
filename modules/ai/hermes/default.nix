@@ -139,6 +139,7 @@ in
         home.packages = [ stellxiePackage ] ++ fetching.packages;
 
         home.sessionVariables = fetching.sessionVariables;
+        systemd.user.sessionVariables = fetching.sessionVariables;
 
         home.file = {
           ".hermes/SOUL.md" = {
@@ -146,12 +147,10 @@ in
             force = true;
           };
         }
-        // skills.files
-        // fetching.files;
+        // skills.files;
 
         # Keep the managed baseline authoritative on each Home Manager activation.
         home.activation = {
-          hermesFetching = lib.hm.dag.entryAfter [ "writeBoundary" ] fetching.activation;
           hermesConfig = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
             mkdir -p "$HOME/.hermes/skins"
             install -m 0600 ${configFile} "$HOME/.hermes/config.yaml"
