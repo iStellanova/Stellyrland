@@ -69,7 +69,8 @@
         profiles.default = {
           # Reuses each OS's existing profile dir so HM doesn't orphan it
           # into a fresh one. Only valid for stellanova's own profiles.
-          path = if pkgs.stdenv.hostPlatform.isLinux then "0ubhpx7e.Default Profile" else "h7j9ua1w.Default Profile";
+          path =
+            if pkgs.stdenv.hostPlatform.isLinux then "0ubhpx7e.Default Profile" else "h7j9ua1w.Default Profile";
 
           settings = {
             "zen.workspaces.separate-essentials" = true;

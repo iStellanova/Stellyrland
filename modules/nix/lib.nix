@@ -5,10 +5,12 @@
   ...
 }:
 let
-  attrsOf = type: lib.mkOption {
-    type = lib.types.lazyAttrsOf type;
-    default = { };
-  };
+  attrsOf =
+    type:
+    lib.mkOption {
+      type = lib.types.lazyAttrsOf type;
+      default = { };
+    };
   mkSystem = class: systemFn: system: name: {
     ${name} = systemFn {
       specialArgs = {
