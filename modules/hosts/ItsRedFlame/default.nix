@@ -9,6 +9,9 @@ _: {
 
       networking.hostName = host.name;
 
+      boot.loader.systemd-boot.enable = true;
+      boot.loader.efi.canTouchEfiVariables = true;
+
       timecontrol.enable = true;
       timecontrol.schedule = {
         Monday = [
