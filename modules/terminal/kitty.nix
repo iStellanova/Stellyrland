@@ -28,9 +28,6 @@ _: {
           cursor_trail_start_threshold = 0;
           allow_remote_control = "yes";
           listen_on = "unix:/tmp/kitty";
-          bold_font = "auto";
-          italic_font = "auto";
-          bold_italic_font = "auto";
           hide_window_decorations = lib.mkIf (host.class == "darwin") "titlebar-only";
         };
         extraConfig = lib.mkIf (host.class != "darwin") ''
