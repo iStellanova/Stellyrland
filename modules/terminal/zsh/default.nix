@@ -19,7 +19,6 @@ in
       home.file.".p10k.zsh".text = import ./_p10k.nix { inherit lib; };
 
       programs.zsh = {
-        enableCompletion = true;
         autosuggestion.enable = true;
         syntaxHighlighting.enable = true;
         historySubstringSearch = {
@@ -43,14 +42,6 @@ in
           ];
         };
 
-        shellAliases = {
-          c = "clear";
-          cd = "zd";
-          ".." = "cd ..";
-          "..." = "cd ../..";
-          "...." = "cd ../../..";
-        };
-
         initContent = lib.mkMerge [
           (lib.mkBefore ''
             if [[ -r "''${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-''${(%):-%n}.zsh" ]]; then
@@ -64,13 +55,6 @@ in
             zstyle ':completion:*:descriptions' format '[%d]'
             zstyle ':completion:*' list-colors ''${(s.:.)LS_COLORS}
 
-            # zd - Smart 'cd'. Falls back to 'z' (zoxide) for rapid jumping if the directory
-            # isn't a direct child of the current path.
-            zd() {
-              if [ $# -eq 0 ]; then builtin cd ~ && return
-              elif [ -d "$1" ]; then builtin cd "$1"
-              else z "$@" && printf "\U000F17A9 " && pwd; fi
-            }
             ${lib.optionalString (host.class != "darwin") ''
               open() { xdg-open "$@" >/dev/null 2>&1 &; }
             ''}
