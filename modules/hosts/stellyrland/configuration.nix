@@ -44,7 +44,6 @@
 
       # Boot & Hardware & Storage
       boot
-      headless
       initrd
       kernel
       firmware
