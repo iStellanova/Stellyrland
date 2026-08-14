@@ -4,35 +4,37 @@
   lib,
   ...
 }:
-{
-  config.flake.lib = {
-    mkNixos = system: name: {
-      ${name} = inputs.nixpkgs.lib.nixosSystem {
-        specialArgs = {
-          inherit inputs;
-          # constants first so a host's own fields can actually
-          # override the shared default instead of being clobbered by it.
-          host = (config.flake.constants or { }) // config.flake.hosts.${name} // { inherit name; };
-        };
-        modules = [
-          inputs.self.modules.nixos.${name}
-          { nixpkgs.hostPlatform = lib.mkDefault system; }
-        ];
+let
+  attrsOf = type: lib.mkOption {
+    type = lib.types.lazyAttrsOf type;
+    default = { };
+  };
+  mkSystem = class: systemFn: system: name: {
+    ${name} = systemFn {
+      specialArgs = {
+        inherit inputs;
+        host = (config.flake.constants or { }) // config.flake.hosts.${name} // { inherit name; };
       };
+      modules = [
+        inputs.self.modules.${class}.${name}
+        { nixpkgs.hostPlatform = lib.mkDefault system; }
+      ];
     };
-
-    mkDarwin = system: name: {
-      ${name} = inputs.darwin.lib.darwinSystem {
-        specialArgs = {
-          inherit inputs;
-          host = (config.flake.constants or { }) // config.flake.hosts.${name} // { inherit name; };
-        };
-        modules = [
-          inputs.self.modules.darwin.${name}
-          { nixpkgs.hostPlatform = lib.mkDefault system; }
-        ];
-      };
+  };
+in
+{
+  options.flake = {
+    darwinConfigurations = attrsOf lib.types.raw;
+    hosts = attrsOf lib.types.raw;
+    lib = attrsOf lib.types.raw;
+    factory = lib.mkOption {
+      type = lib.types.attrsOf lib.types.unspecified;
+      default = { };
     };
   };
 
+  config.flake.lib = {
+    mkNixos = mkSystem "nixos" inputs.nixpkgs.lib.nixosSystem;
+    mkDarwin = mkSystem "darwin" inputs.darwin.lib.darwinSystem;
+  };
 }
