@@ -89,8 +89,6 @@
           NSGlobalDomain.NSNavPanelExpandedStateForSaveMode = true;
           NSGlobalDomain.NSNavPanelExpandedStateForSaveMode2 = true;
 
-          # Catppuccin Macchiato sapphire accent (closest named: Blue = 4)
-          # Also tints folder icons on macOS Sequoia+
           CustomUserPreferences."NSGlobalDomain" = {
             AppleAccentColor = 4;
             AppleHighlightColor = "0.490196 0.768627 0.894118 Other";
