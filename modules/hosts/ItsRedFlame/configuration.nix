@@ -24,7 +24,6 @@
       timecontrol
       system-tools
       maintenance
-      mime
       xdg
 
       zfs-snapshots-builtin

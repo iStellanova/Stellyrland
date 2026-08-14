@@ -20,7 +20,6 @@
       # Desktop-Adjacent
       services-base
       system-tools
-      mime
       xdg
 
       # Desktop

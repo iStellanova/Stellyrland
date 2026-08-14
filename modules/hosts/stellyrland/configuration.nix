@@ -29,7 +29,6 @@
       services-base
       system-tools
       maintenance
-      mime
       xdg
 
       # Hyprland Desktop

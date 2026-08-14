@@ -1,6 +1,4 @@
 _: {
-  flake.modules.nixos.mime = { };
-
   flake.modules.homeManager.mime =
     {
       pkgs,
