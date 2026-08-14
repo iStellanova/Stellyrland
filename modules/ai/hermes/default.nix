@@ -112,13 +112,13 @@ in
               "colored_names.append(f\"[{_skin_color('ui_accent', '#8aadf4')}]{name}[/]\")"
         '';
       });
-      discord = import ./_discord.nix { inherit stellxiePackage interactiveToolsets; };
       configFile = pkgs.writeText "hermes-config.yaml" (
         builtins.toJSON (
           (baseHermesConfig // fetching.hermesConfig // skills.hermesConfig)
           // {
-            platform_toolsets =
-              fetching.hermesConfig.platform_toolsets // discord.hermesConfig.platform_toolsets;
+            platform_toolsets = fetching.hermesConfig.platform_toolsets // {
+              discord = interactiveToolsets;
+            };
             mcp_servers = fetching.hermesConfig.mcp_servers // {
               nixos = {
                 command = "${pkgs.mcp-nixos}/bin/mcp-nixos";
@@ -161,7 +161,20 @@ in
 
         systemd.user.services = {
           hermes-searxng = fetching.searxngService;
-          hermes-gateway = discord.service;
+          hermes-gateway = {
+            Unit = {
+              Description = "Stellxie Hermes Discord gateway";
+              After = [ "network-online.target" ];
+              Wants = [ "network-online.target" ];
+            };
+            Service = {
+              EnvironmentFile = "/run/secrets/hermes-discord.env";
+              ExecStart = "${stellxiePackage}/bin/hermes gateway run";
+              Restart = "always";
+              RestartSec = 5;
+            };
+            Install.WantedBy = [ "default.target" ];
+          };
           hermes-serve = lib.mkIf config.services.hermes-serve.enable {
             Unit.Description = "Stellxie Hermes remote backend";
             Service = {
