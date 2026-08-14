@@ -22,7 +22,6 @@
       services-base
       system-tools
       maintenance
-      mime
       xdg
 
       deployment-recipient
