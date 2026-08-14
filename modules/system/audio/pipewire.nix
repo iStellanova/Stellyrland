@@ -15,7 +15,6 @@ _: {
         alsa.enable = true;
         alsa.support32Bit = true;
         wireplumber = {
-          enable = true;
           extraConfig = {
             "10-ignore-vols" = {
               "monitor.alsa.rules" = [
