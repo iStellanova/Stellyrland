@@ -65,7 +65,7 @@ _: {
         selected_battery = "Auto";
         show_battery_watts = true;
         log_level = "WARNING";
-        save_config_on_exit = true;
+        save_config_on_exit = false;
         nvml_measure_pcie_speeds = true;
         rsmi_measure_pcie_speeds = true;
         gpu_mirror_graph = true;
