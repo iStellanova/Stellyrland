@@ -1,7 +1,5 @@
 _: {
-  flake.modules.nixos.mime = { pkgs, ... }: {
-    environment.systemPackages = [ pkgs.xdg-utils ];
-  };
+  flake.modules.nixos.mime = { };
 
   flake.modules.homeManager.mime =
     {
