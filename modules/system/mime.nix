@@ -66,7 +66,10 @@ _: {
                   "audio/mp4"
                   "audio/x-flac"
                 ];
-                pdfViewer = [ "application/pdf" "application/x-pdf" ];
+                pdfViewer = [
+                  "application/pdf"
+                  "application/x-pdf"
+                ];
                 videoPlayer = [
                   "video/mp4"
                   "video/x-matroska"
@@ -78,9 +81,7 @@ _: {
                 ];
               };
             in
-            lib.concatMapAttrs (
-              category: types: lib.genAttrs types (_: apps.${category} or [ ])
-            ) mimeTypes;
+            lib.concatMapAttrs (category: types: lib.genAttrs types (_: apps.${category} or [ ])) mimeTypes;
         };
       };
     };

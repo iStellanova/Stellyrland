@@ -1716,7 +1716,7 @@ let
 in
 builtins.toJSON {
   Detectors = {
-    detectors = detectors;
+    inherit detectors;
   };
   "Gigabyte RGB Fusion 2 USB" = {
     CustomLayout = {

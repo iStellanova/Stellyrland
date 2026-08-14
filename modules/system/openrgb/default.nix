@@ -1,5 +1,6 @@
 _: {
-  flake.modules.nixos.openrgb = { lib, pkgs, ... }:
+  flake.modules.nixos.openrgb =
+    { lib, pkgs, ... }:
     let
       openrgbConfig = pkgs.writeText "OpenRGB.json" (import ./_config.nix { inherit lib; });
     in
@@ -32,7 +33,8 @@ _: {
       ];
     };
 
-  flake.modules.homeManager.openrgb = { lib, pkgs, ... }:
+  flake.modules.homeManager.openrgb =
+    { lib, pkgs, ... }:
     let
       openrgbConfig = pkgs.writeText "OpenRGB.json" (import ./_config.nix { inherit lib; });
     in
