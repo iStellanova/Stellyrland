@@ -43,9 +43,7 @@
       openrgb
 
       # Boot & Hardware & Storage
-      boot
-      initrd
-      kernel
+      lanzaboote
       firmware
       gpu
       performance

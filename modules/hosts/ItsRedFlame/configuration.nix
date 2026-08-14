@@ -28,9 +28,6 @@
 
       zfs-snapshots-builtin
 
-      # Boot
-      boot
-
       # Desktop
       plasma
       fonts

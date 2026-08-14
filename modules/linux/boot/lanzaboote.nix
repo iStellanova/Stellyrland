@@ -5,7 +5,7 @@
     inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  flake.modules.nixos.boot =
+  flake.modules.nixos.lanzaboote =
     {
       lib,
       host,
