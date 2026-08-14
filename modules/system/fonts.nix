@@ -9,7 +9,7 @@ let
       noto-fonts
       noto-fonts-cjk-sans
     ]
-    ++ pkgs.lib.optionals pkgs.stdenv.isLinux [
+    ++ pkgs.lib.optionals pkgs.stdenv.hostPlatform.isLinux [
       noto-fonts-color-emoji
     ];
 in

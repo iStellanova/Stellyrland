@@ -13,7 +13,7 @@
         ./_music-rpc.nix
       ];
 
-      programs.nixcord = lib.mkIf pkgs.stdenv.isLinux (import ./_config.nix);
+      programs.nixcord = lib.mkIf pkgs.stdenv.hostPlatform.isLinux (import ./_config.nix);
     };
 
   flake.modules.nixos.discord =

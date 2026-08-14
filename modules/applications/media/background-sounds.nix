@@ -12,6 +12,6 @@ _: {
       ...
     }:
     {
-      home.packages = lib.optional pkgs.stdenv.isLinux pkgs.blanket;
+      home.packages = lib.optional pkgs.stdenv.hostPlatform.isLinux pkgs.blanket;
     };
 }

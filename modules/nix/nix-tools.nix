@@ -30,14 +30,14 @@ _: {
         rebuild() {
           if [[ "$1" == "check" ]]; then
             _nix_prep && ${
-              if pkgs.stdenv.isDarwin then
+              if pkgs.stdenv.hostPlatform.isDarwin then
                 "nh darwin build $FLAKE && rm -f ./result"
               else
                 "nh os build $FLAKE --diff always && rm -f ./result"
             }
           else
             _nix_prep && ${
-              if pkgs.stdenv.isDarwin then "nh darwin switch $FLAKE" else "nh os switch $FLAKE"
+              if pkgs.stdenv.hostPlatform.isDarwin then "nh darwin switch $FLAKE" else "nh os switch $FLAKE"
             }
           fi
         }
@@ -45,14 +45,14 @@ _: {
         upgrade() {
           if [[ "$1" == "check" ]]; then
             (cd "$FLAKE" && nix develop . --accept-flake-config --command tack look --verbose) && _nix_prep && ${
-              if pkgs.stdenv.isDarwin then
+              if pkgs.stdenv.hostPlatform.isDarwin then
                 "nh darwin build $FLAKE && rm -f ./result"
               else
                 "nh os build $FLAKE --diff always && rm -f ./result"
             }
           else
             (cd "$FLAKE" && nix run .#write-tack) && _nix_prep && ${
-              if pkgs.stdenv.isDarwin then "nh darwin switch $FLAKE" else "nh os switch $FLAKE"
+              if pkgs.stdenv.hostPlatform.isDarwin then "nh darwin switch $FLAKE" else "nh os switch $FLAKE"
             }
           fi
         }
