@@ -19,10 +19,10 @@
         enable = true;
         settings = {
           session.default = "hyprland";
-          user.default = "stellanova";
+          user.default = host.username;
           idle.timeout = 300;
           output = {
-            name = if host.monitorPriority or [ ] == [ ] then "" else lib.elemAt host.monitorPriority 0;
+            name = lib.head ((host.monitorPriority or [ ]) ++ [ "" ]);
             width = 3440;
             height = 1440;
           };
@@ -36,8 +36,6 @@
         };
       };
 
-      systemd.tmpfiles.rules = [
-        "d /persist/var/lib/noctalia-greeter 0750 greeter greeter -"
-      ];
+      systemd.tmpfiles.rules = lib.optional (host.persistence or false) "d /persist/var/lib/noctalia-greeter 0750 greeter greeter -";
     };
 }
