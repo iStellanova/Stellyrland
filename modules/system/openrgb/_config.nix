@@ -1715,62 +1715,10 @@ let
   };
 in
 builtins.toJSON {
-  AutoStart = {
-    client = "localhost:6742";
-    custom = "";
-    enabled = false;
-    host = "0.0.0.0";
-    port = "6742";
-    profile = "";
-    setclient = false;
-    setcustom = false;
-    setminimized = false;
-    setprofile = false;
-    setserver = false;
-    setserverhost = false;
-    setserverport = false;
-  };
-  CorsairDominatorSettings = {
-    model = "CMT";
-  };
   Detectors = {
     detectors = detectors;
   };
-  "Gigabyte RGB Fusion 2 SMBus" = {
-    SupportedDevices = [
-      "B450 AORUS ELITE"
-      "B450 AORUS ELITE V2"
-      "B450 AORUS M"
-      "B450 AORUS PRO WIFI-CF"
-      "B450 AORUS PRO-CF"
-      "B450 AORUS PRO-CF4"
-      "B450 I AORUS PRO WIFI-CF"
-      "B450M DS3H-CF"
-      "X299 DESIGNARE EX-CF"
-      "X399 AORUS XTREME-CF"
-      "X399 DESIGNARE EX-CF"
-      "X470 AORUS GAMING 5 WIFI"
-      "X470 AORUS GAMING 5 WIFI-CF"
-      "X470 AORUS GAMING 7 WIFI-CF"
-      "X470 AORUS GAMING 7 WIFI-50-CF"
-      "X470 AORUS ULTRA GAMING"
-      "X470 AORUS ULTRA GAMING-CF"
-      "B360M AORUS Gaming 3-CF"
-      "Z370 AORUS Gaming 5-CF"
-      "Z370 AORUS Ultra Gaming-CF"
-    ];
-  };
   "Gigabyte RGB Fusion 2 USB" = {
-    Calibration = {
-      Data = {
-        HDR_D_LED1 = "GRB";
-        HDR_D_LED2 = "GRB";
-        Mainboard = "BRG";
-        Spare0 = "BGR";
-        Spare1 = "OFF";
-      };
-      Enabled = false;
-    };
     CustomLayout = {
       Data = {
         "D_LED1 Bottom" = [
@@ -1836,33 +1784,5 @@ builtins.toJSON {
         name = "Hardware Sync";
       }
     ];
-  };
-  UserInterface = {
-    RunZoneChecks = true;
-    autoload_profiles = {
-      exit_profile = {
-        enabled = false;
-        name = "";
-      };
-      resume_profile = {
-        enabled = false;
-        name = "";
-      };
-      suspend_profile = {
-        enabled = false;
-        name = "";
-      };
-    };
-    geometry = {
-      height = 0;
-      load_geometry = false;
-      save_on_exit = false;
-      width = 0;
-      x = 0;
-      y = 0;
-    };
-    greyscale_tray_icon = false;
-    language = "default";
-    minimize_on_close = false;
   };
 }
