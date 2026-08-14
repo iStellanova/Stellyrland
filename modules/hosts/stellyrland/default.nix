@@ -12,7 +12,6 @@ _: {
       networking.hostName = host.name;
 
       core = {
-        headless.disabledPorts = host.monitorPriority;
         nix-settings.cores = 24;
         impermanence = true;
       };
