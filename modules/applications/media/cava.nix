@@ -4,7 +4,7 @@ _: {
       enable = true;
       settings = {
         general.live-config = 1;
-        input.method = if pkgs.stdenv.isDarwin then "portaudio" else "pulse";
+        input.method = if pkgs.stdenv.hostPlatform.isDarwin then "portaudio" else "pulse";
         input.source = "auto";
         output.method = "noncurses";
         output.channels = "stereo";
