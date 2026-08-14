@@ -8,7 +8,6 @@ _: {
       security.polkit.enable = true;
       networking.networkmanager.enable = true;
       programs.dconf.enable = true;
-      services.dbus.implementation = "broker";
 
       imports = lib.optional (host.persistence or false) {
         preservation.preserveAt."/persist".directories = [
