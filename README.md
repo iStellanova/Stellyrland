@@ -71,7 +71,7 @@ flowchart TD
         DECL["flake-file input declarations\nkept beside their consumers"]
         AGG["flake.modules.*.*\nreusable NixOS / Darwin / Home Manager aspects"]
         HOSTDATA["flake.hosts.*\nper-host data and aspect composition"]
-        MK["mkNixos / mkDarwin\nmodules/nix-extras/lib.nix"]
+        MK["mkNixos / mkDarwin\nmodules/nix/lib.nix"]
     end
 
     DECL -.-> TACK
@@ -132,20 +132,16 @@ flowchart TD
     │   └── ItsRedFlame/      # NixOS gaming/AV box (x86_64-linux)
     ├── users/                # Shared user aspect definitions
     ├── base/                 # Core, Lix, Nix settings, SSH, Tailscale, SOPS, users
-    ├── nix-extras/           # Home Manager wiring, operational helpers, mkNixos/mkDarwin
-    ├── linux-boot/           # UKI, Secure Boot, kernel, initrd ZFS rollback
-    ├── linux-hardware/       # Asahi, firmware, GPU, and performance configuration
-    ├── linux-storage/        # Disko, ZFS datasets/preservation, Sanoid/Syncoid
-    ├── desktop/              # Hyprland, Noctalia, Catppuccin, Plasma, GNOME, audio
-    │   ├── hyprland/         # Hyprland bindings, animations, rules, cursor, overview
-    │   └── noctalia/         # Noctalia shell, lockscreen, and greeter
-    ├── terminal/             # CLI tools, Kitty, and Zsh configuration
-    │   └── zsh/              # Zsh completion, syntax highlighting, and prompt
-    ├── dev/                  # Neovim IDE/writing, Zed, OpenCode, Git, dev tools
-    ├── gaming/               # Gamescope, HDR, launchers, Steam, VR, Roblox
-    ├── av/                   # Recording, editing, playback, music, and audio effects
-    ├── communication/        # Discord and music RPC
-    ├── applications/         # Browsers, office, finance, school, VMs, cloud storage
+    ├── nix/                  # Nix, Home Manager, deployment, and operational helpers
+    ├── linux/                # Linux boot, hardware, and storage configuration
+    │   ├── boot/
+    │   ├── hardware/
+    │   └── storage/
+    ├── applications/         # User-facing applications, grouped by domain
+    │   ├── communication/
+    │   ├── development/
+    │   ├── gaming/
+    │   └── media/
     ├── system/               # Darwin, Homebrew, MIME, XDG, service, and secret definitions
     └── openrgb/              # Peripheral RGB control
 ```
