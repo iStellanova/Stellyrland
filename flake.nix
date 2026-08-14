@@ -2,19 +2,16 @@
   outputs =
     { self, ... }:
     let
-      rawInputs = import ./.tack;
-      inputs = rawInputs // {
-        self = self';
+      inputs = (import ./.tack) // {
+        self = result // {
+          inherit inputs;
+          inherit (self) outPath;
+        };
       };
-      self' = result // {
-        inherit inputs;
-        inherit (self) outPath;
-      };
-      # Recursively imports modules with a tree function.
       importTree =
         dir:
         let
-          inherit (rawInputs.nixpkgs) lib;
+          inherit (inputs.nixpkgs) lib;
           files = map toString (lib.filesystem.listFilesRecursive dir);
         in
         {
