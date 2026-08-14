@@ -36,6 +36,7 @@
         };
       };
 
-      systemd.tmpfiles.rules = lib.optional (host.persistence or false) "d /persist/var/lib/noctalia-greeter 0750 greeter greeter -";
+      systemd.tmpfiles.rules = lib.optional (host.persistence or false
+      ) "d /persist/var/lib/noctalia-greeter 0750 greeter greeter -";
     };
 }
