@@ -18,23 +18,9 @@ let
       }
     ];
 
-    terminal = {
-      backend = "local";
-      home_mode = "auto";
-      timeout = 180;
-    };
-
-    display = {
-      interface = "tui";
-      skin = theme.name;
-      show_reasoning = false;
-      show_cost = false;
-    };
-
-    approvals = {
-      mode = "smart";
-      timeout = 300;
-    };
+    display.interface = "tui";
+    display.skin = theme.name;
+    display.show_reasoning = false;
 
     # A single interactive process does not need WAL concurrency, and the
     # rollback host stores home on ZFS where SQLite WAL is less robust.
@@ -69,121 +55,77 @@ in
   // skills.flakeInputs;
 
   flake.modules.homeManager.hermes =
-    {
-      config,
-      lib,
-      pkgs,
-      ...
-    }:
+    { pkgs, ... }:
     let
       interactiveToolsets = [
         "hermes-cli"
         "web"
         "browser"
       ];
-      upstreamPackage = inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.hermes-agent;
+      hermesPackage = inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.hermes-agent;
       fetching = import ./_fetching.nix { inherit pkgs interactiveToolsets; };
-      searxngPluginManifest = pkgs.writeText "hermes-web-searxng-plugin.yaml" ''
-        name: web-searxng
-        version: 1.0.0
-        description: "SearXNG web search — free, self-hosted, privacy-respecting metasearch engine. Requires SEARXNG_URL pointing at your instance."
-        author: NousResearch
-        kind: backend
-        provides_web_providers:
-          - searxng
-      '';
-      stellxiePackage = upstreamPackage.overrideAttrs (old: {
-        postFixup = (old.postFixup or "") + ''
-          package_root="$out/lib/python${pkgs.python3.pythonVersion}/site-packages"
-          banner="$package_root/hermes_cli/banner.py"
-          # Restore bundled discovery metadata and the Discord platform adapter.
-          install -Dm644 \
-            ${searxngPluginManifest} \
-            "$package_root/plugins/web/searxng/plugin.yaml"
-          cp -r \
-            ${old.src}/plugins/platforms/discord \
-            "$package_root/plugins/platforms/"
-          substituteInPlace "$banner" \
-            --replace-fail \
-              "base = f\"Hermes Agent v{VERSION} ({RELEASE_DATE})\"" \
-              "base = f\"Stellxie v{VERSION} ({RELEASE_DATE})\"" \
-            --replace-fail \
-              'colored_names.append(f"[yellow]{name}[/]")' \
-              "colored_names.append(f\"[{_skin_color('ui_accent', '#8aadf4')}]{name}[/]\")"
-        '';
-      });
-      configFile = pkgs.writeText "hermes-config.yaml" (
-        builtins.toJSON (
-          (baseHermesConfig // fetching.hermesConfig // skills.hermesConfig)
-          // {
-            platform_toolsets = fetching.hermesConfig.platform_toolsets // {
-              discord = interactiveToolsets;
-            };
-            mcp_servers = fetching.hermesConfig.mcp_servers // {
-              nixos = {
-                command = "${pkgs.mcp-nixos}/bin/mcp-nixos";
-                args = [ ];
-                supports_parallel_tool_calls = true;
-                sampling.enabled = false;
-              };
-            };
-          }
-        )
-      );
-      themeFile = pkgs.writeText "${theme.name}.yaml" (builtins.toJSON theme);
     in
     {
-      options.services.hermes-serve.enable = lib.mkEnableOption "the local Stellxie remote backend";
+      home.packages = [ hermesPackage ] ++ fetching.packages;
 
-      config = {
-        home.packages = [ stellxiePackage ] ++ fetching.packages;
+      home.sessionVariables = fetching.sessionVariables;
+      systemd.user.sessionVariables = fetching.sessionVariables;
 
-        home.sessionVariables = fetching.sessionVariables;
-        systemd.user.sessionVariables = fetching.sessionVariables;
-
-        home.file = {
-          ".hermes/SOUL.md" = {
-            text = soul;
-            force = true;
-          };
-        }
-        // skills.files;
-
-        # Keep the managed baseline authoritative on each Home Manager activation.
-        home.activation = {
-          hermesConfig = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-            mkdir -p "$HOME/.hermes/skins"
-            install -m 0600 ${configFile} "$HOME/.hermes/config.yaml"
-            install -m 0600 ${themeFile} "$HOME/.hermes/skins/${theme.name}.yaml"
-          '';
+      home.file = {
+        ".hermes/SOUL.md" = {
+          text = soul;
+          force = true;
         };
+        ".hermes/config.yaml" = {
+          text = builtins.toJSON (
+            (baseHermesConfig // fetching.hermesConfig // skills.hermesConfig)
+            // {
+              platform_toolsets = fetching.hermesConfig.platform_toolsets // {
+                discord = interactiveToolsets;
+              };
+              mcp_servers = fetching.hermesConfig.mcp_servers // {
+                nixos = {
+                  command = "${pkgs.mcp-nixos}/bin/mcp-nixos";
+                  supports_parallel_tool_calls = true;
+                  sampling.enabled = false;
+                };
+              };
+            }
+          );
+          force = true;
+        };
+        ".hermes/skins/${theme.name}.yaml" = {
+          text = builtins.toJSON theme;
+          force = true;
+        };
+      }
+      // skills.files;
 
-        systemd.user.services = {
-          hermes-searxng = fetching.searxngService;
-          hermes-gateway = {
-            Unit = {
-              Description = "Stellxie Hermes Discord gateway";
-              After = [ "network-online.target" ];
-              Wants = [ "network-online.target" ];
-            };
-            Service = {
-              EnvironmentFile = "/run/secrets/hermes-discord.env";
-              ExecStart = "${stellxiePackage}/bin/hermes gateway run";
-              Restart = "always";
-              RestartSec = 5;
-            };
-            Install.WantedBy = [ "default.target" ];
+      systemd.user.services = {
+        hermes-searxng = fetching.searxngService;
+        hermes-gateway = {
+          Unit = {
+            Description = "Stellxie Hermes Discord gateway";
+            After = [ "network-online.target" ];
+            Wants = [ "network-online.target" ];
           };
-          hermes-serve = lib.mkIf config.services.hermes-serve.enable {
-            Unit.Description = "Stellxie Hermes remote backend";
-            Service = {
-              # ponytail: SSH forwarding is the access boundary; add public auth only when needed.
-              ExecStart = "${stellxiePackage}/bin/hermes serve --host 127.0.0.1 --port 9119";
-              Restart = "always";
-              RestartSec = 5;
-            };
-            Install.WantedBy = [ "default.target" ];
+          Service = {
+            EnvironmentFile = "/run/secrets/hermes-discord.env";
+            ExecStart = "${hermesPackage}/bin/hermes gateway run";
+            Restart = "always";
+            RestartSec = 5;
           };
+          Install.WantedBy = [ "default.target" ];
+        };
+        hermes-serve = {
+          Unit.Description = "Stellxie Hermes remote backend";
+          Service = {
+            # ponytail: SSH forwarding is the access boundary; add public auth only when needed.
+            ExecStart = "${hermesPackage}/bin/hermes serve --host 127.0.0.1 --port 9119";
+            Restart = "always";
+            RestartSec = 5;
+          };
+          Install.WantedBy = [ "default.target" ];
         };
       };
     };

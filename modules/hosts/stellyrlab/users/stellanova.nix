@@ -13,7 +13,6 @@
         nvf-ide
         deployment-distributor
       ];
-      services.hermes-serve.enable = true;
     };
   };
 }
