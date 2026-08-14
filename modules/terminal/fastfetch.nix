@@ -39,7 +39,7 @@ _: {
               type = "command";
               key = " ";
               keyColor = "34";
-              text = "size=$(nix path-info -Sh /run/current-system | awk '{print $2}') && echo \"$(nix-store -qR /run/current-system | wc -l | xargs) Paths, \${size}B\"";
+              text = "read -r paths bytes <<< \"$(nix path-info -r --json /run/current-system | jq -r '[length, (map(.narSize) | add)] | @tsv')\"; printf '%s Paths, %s\\n' \"$paths\" \"$(numfmt --to=iec --suffix=B \"$bytes\")\"";
             }
             {
               type = "shell";
