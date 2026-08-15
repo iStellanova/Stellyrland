@@ -12,9 +12,19 @@
       ...
     }:
     {
-      imports = [ inputs.self.modules.homeManager.editor-lsp ];
-
-      home.packages = [ pkgs.mcp-nixos ];
+      home.packages = with pkgs; [
+        mcp-nixos
+        nixd
+        nixfmt
+        pyright
+        black
+        bash-language-server
+        shfmt
+        lua-language-server
+        stylua
+        ripgrep
+        fd
+      ];
 
       programs.zed-editor = {
         enable = true;
