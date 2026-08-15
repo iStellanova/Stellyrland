@@ -17,11 +17,9 @@
       programs.opencode = {
         enable = true;
         enableMcpIntegration = true;
-        # Uses opencode package from llm-agents. Properly packaged with patches.
-        # Supposedly nixpkgs and the official flake have issues on nixos.
+        # The nixpkgs and upstream packages fail on NixOS; use llm-agents.
         package = inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.opencode;
 
-        # External Models.
         settings.plugin = [
           "opencode-claude-auth@latest"
           "opencode-antigravity-auth@latest"
