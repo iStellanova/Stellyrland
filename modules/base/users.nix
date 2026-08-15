@@ -7,10 +7,6 @@ _: {
       isNormalUser = true;
       extraGroups = [
         "wheel"
-        "storage"
-        "disk"
-        "video"
-        "render"
         "networkmanager"
       ];
     };

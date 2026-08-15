@@ -8,6 +8,10 @@ _: {
       security.polkit.enable = true;
       networking.networkmanager.enable = true;
       programs.dconf.enable = true;
+      users.users.${host.username}.extraGroups = [
+        "video"
+        "render"
+      ];
 
       imports = lib.optional (host.persistence or false) {
         preservation.preserveAt."/persist".directories = [
