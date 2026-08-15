@@ -68,7 +68,7 @@ _: {
         smartmontools
       ];
 
-      # ponytail: single disk; add replication when a destination exists.
+      # Selective snapshots support local rollback and HDD replication.
       services.sanoid = {
         enable = true;
         datasets = {

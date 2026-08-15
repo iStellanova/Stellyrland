@@ -48,7 +48,6 @@
       hdd-source
       preservation
       zfs-snapshots-sanoid
-      zfs-snapshots-builtin
 
       # Gaming
       game-launchers
