@@ -134,6 +134,8 @@
       ];
 
       hardware.amdgpu.initrd.enable = false;
+      hardware.enableRedistributableFirmware = true;
+      hardware.cpu.amd.updateMicrocode = true;
 
       desktop = {
         gaming.hdr.enable = host.features.hdr;
