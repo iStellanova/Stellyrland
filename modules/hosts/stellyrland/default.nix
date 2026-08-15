@@ -80,6 +80,25 @@
         ];
       };
 
+      boot.initrd.luks.devices."cryptextra" = {
+        device = "/dev/disk/by-partlabel/disk-extra-luks";
+        allowDiscards = true;
+        crypttabExtraOpts = [
+          "tpm2-device=auto"
+          "tpm2-pcrs=0+2+7"
+        ];
+      };
+
+      fileSystems."/ExtraDisk" = {
+        device = "zextra/data";
+        fsType = "zfs";
+        options = [
+          "nofail"
+          "x-gvfs-show"
+          "x-gvfs-name=Extra Disk"
+        ];
+      };
+
       boot.initrd.systemd.services.rollback = {
         description = "Rollback ZFS root and home to blank snapshots";
         wantedBy = [ "initrd.target" ];
@@ -131,6 +150,7 @@
 
       systemd.tmpfiles.rules = [
         "w /sys/bus/platform/drivers/amd_x3d_vcache/AMDI0101:00/amd_x3d_mode - - - - cache"
+        "d /ExtraDisk 0755 ${host.username} users -"
       ];
 
       hardware.amdgpu.initrd.enable = false;
