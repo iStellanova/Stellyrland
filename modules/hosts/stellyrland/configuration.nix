@@ -45,7 +45,6 @@
       # Boot & Hardware & Storage
       lanzaboote
       binfmt
-      extra-disk
       hdd-source
       preservation
       zfs-snapshots-sanoid
