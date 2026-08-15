@@ -96,7 +96,7 @@ let
     )
   ];
 
-  workspaceNumbers = lib.range 1 12;
+  workspaceNumbers = lib.range 1 hp.numWorkspaces;
   scanCode = wsnum: "code:${toString (9 + wsnum)}";
   moveKey =
     wsnum:

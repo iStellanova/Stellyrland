@@ -26,35 +26,32 @@ _: {
           ".local/share/hyprland"
         ];
       };
-      config = {
-        programs.hyprland.enable = true;
-        hardware.graphics.enable32Bit = true;
-        environment.systemPackages = with pkgs; [
-          wl-clipboard
-          file-roller
-          libnotify
-          udiskie
-          linux-wallpaperengine
+
+      programs.hyprland.enable = true;
+      hardware.graphics.enable32Bit = true;
+      environment.systemPackages = with pkgs; [
+        wl-clipboard
+        udiskie
+        linux-wallpaperengine
+      ];
+
+      # host.graphics ("amd"/"intel"/"nvidia") picks the driver.
+      services.xserver.videoDrivers =
+        if host.graphics == "amd" then
+          [ "amdgpu" ]
+        else if host.graphics == "nvidia" then
+          [ "nvidia" ]
+        else
+          [ ];
+
+      xdg.portal = {
+        enable = true;
+        xdgOpenUsePortal = true;
+        extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+        config.common.default = [
+          "hyprland"
+          "gtk"
         ];
-
-        # host.graphics ("amd"/"intel"/"nvidia") picks the driver.
-        services.xserver.videoDrivers =
-          if host.graphics == "amd" then
-            [ "amdgpu" ]
-          else if host.graphics == "nvidia" then
-            [ "nvidia" ]
-          else
-            [ ];
-
-        xdg.portal = {
-          enable = true;
-          xdgOpenUsePortal = true;
-          extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
-          config.common.default = [
-            "hyprland"
-            "gtk"
-          ];
-        };
       };
     };
 
@@ -84,9 +81,7 @@ _: {
         systemd.enable = true;
         portalPackage = null;
 
-        settings = {
-          monitor = osConfig.desktop.hyprland.monitors;
-        };
+        settings.monitor = osConfig.desktop.hyprland.monitors;
       };
     };
 }
