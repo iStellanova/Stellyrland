@@ -8,6 +8,7 @@ _: {
     {
       environment.systemPackages = with pkgs; [
         nautilus
+        file-roller
         sushi
         evince
         gst_all_1.gstreamer
