@@ -1,13 +1,8 @@
 _:
 let
-  tailscalePkgs =
-    pkgs: with pkgs; [
-      tailscale
-      wget
-    ];
   osShared = { pkgs, ... }: {
     services.tailscale.enable = true;
-    environment.systemPackages = tailscalePkgs pkgs;
+    environment.systemPackages = [ pkgs.tailscale ];
   };
 in
 {
@@ -21,7 +16,6 @@ in
           config,
           lib,
           host,
-          pkgs,
           ...
         }:
         {
@@ -40,17 +34,11 @@ in
               "--accept-routes=false"
               "--ssh=false"
             ];
-          };
-
-          systemd.services.tailscale-settings = {
-            after = [ "tailscaled-autoconnect.service" ];
-            requires = [ "tailscaled-autoconnect.service" ];
-            wantedBy = [ "multi-user.target" ];
-            serviceConfig = {
-              Type = "oneshot";
-              RemainAfterExit = true;
-            };
-            script = "${pkgs.tailscale}/bin/tailscale set --accept-dns=true --accept-routes=false --ssh=false";
+            extraSetFlags = [
+              "--accept-dns=true"
+              "--accept-routes=false"
+              "--ssh=false"
+            ];
           };
 
           boot.kernel.sysctl = {
