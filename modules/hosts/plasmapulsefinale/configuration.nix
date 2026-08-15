@@ -13,6 +13,7 @@
   };
 
   flake.modules.nixos.plasmapulsefinale = {
+    system.stateVersion = "25.11";
     imports = with self.modules.nixos; [
       # Base
       base
