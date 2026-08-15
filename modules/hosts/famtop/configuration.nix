@@ -24,6 +24,7 @@
 
       # Desktop
       gnome
+      flatpak
       fonts
       pipewire
       librewolf
