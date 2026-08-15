@@ -46,7 +46,6 @@
       hdd
       stellyrlab-host
       deployment-distributor
-      zfs-snapshots-builtin
     ];
   };
 }
