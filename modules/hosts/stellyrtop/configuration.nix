@@ -20,7 +20,7 @@
       darwindefs
       homebrew
       maintenance
-      hiro
+      omniwm
       kitty
       fonts
 

@@ -1,11 +1,11 @@
 _: {
-  flake.modules.darwin.hiro = _: {
+  flake.modules.darwin.omniwm = _: {
     homebrew.taps = [ "BarutSRB/tap" ];
     homebrew.casks = [ "BarutSRB/tap/omniwm" ];
     nix-homebrew.trust.casks = [ "BarutSRB/tap/omniwm" ];
   };
 
-  flake.modules.homeManager.hiro = _: {
+  flake.modules.homeManager.omniwm = _: {
     xdg.configFile."omniwm/settings.toml".text = ''
       monitorBarOverrides = []
       monitorDwindleOverrides = []
