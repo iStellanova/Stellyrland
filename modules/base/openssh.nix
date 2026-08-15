@@ -12,8 +12,7 @@ _: {
 
   flake.modules.darwin.openssh = _: {
     services.openssh.enable = true;
-    # nix-darwin's openssh module has no `settings` option (unlike nixos'),
-    # so the same hardening goes through raw sshd_config text instead.
+    # nix-darwin lacks NixOS's structured `settings` option; use raw sshd_config text.
     services.openssh.extraConfig = ''
       PasswordAuthentication no
       KbdInteractiveAuthentication no
