@@ -27,8 +27,6 @@ _: {
         ))
       ];
 
-      # Hosts can override this install-time compatibility boundary.
-      system.stateVersion = lib.mkDefault "25.11";
       documentation.nixos.enable = false;
       programs.ssh.startAgent = true;
       services.gnome.gcr-ssh-agent.enable = false;

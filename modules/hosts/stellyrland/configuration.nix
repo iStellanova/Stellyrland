@@ -19,6 +19,7 @@
   };
 
   flake.modules.nixos.stellyrland = {
+    system.stateVersion = "25.11";
     imports = with self.modules.nixos; [
       # Base
       base
