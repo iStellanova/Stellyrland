@@ -56,38 +56,41 @@ _: {
           exit 1
         fi
 
+        mapperOpened=false
+        poolImported=false
         cleanup() {
           echo "Cleaning up..."
-          ${pkgs.zfs}/bin/zpool export ${poolName} 2>/dev/null || true
-          ${pkgs.cryptsetup}/bin/cryptsetup close ${mapperName} 2>/dev/null || true
+          if $poolImported; then
+            ${pkgs.zfs}/bin/zpool export ${poolName} 2>/dev/null || true
+          fi
+          if $mapperOpened; then
+            ${pkgs.cryptsetup}/bin/cryptsetup close ${mapperName} 2>/dev/null || true
+          fi
         }
         trap cleanup EXIT
 
-        # Open LUKS container
         if [ ! -e "/dev/mapper/${mapperName}" ]; then
           echo "Opening encrypted HDD..."
           ${pkgs.cryptsetup}/bin/cryptsetup open \
             --key-file ${keyFile} \
             /dev/disk/by-partlabel/${hddPartlabel} \
             ${mapperName}
+          mapperOpened=true
         else
           echo "Encrypted HDD already open."
         fi
 
-        # Import ZFS pool (pool lives on the mapper device, not a directory)
         if ! ${pkgs.zfs}/bin/zpool list ${poolName} &>/dev/null; then
           echo "Importing ZFS pool ${poolName}..."
           ${pkgs.zfs}/bin/zpool import -d /dev/mapper/${mapperName} ${poolName}
+          poolImported=true
         else
           echo "ZFS pool ${poolName} already imported."
         fi
 
         ${syncSources}
 
-        echo "Backup complete. Exporting pool and closing LUKS..."
-        ${pkgs.zfs}/bin/zpool export ${poolName}
-        ${pkgs.cryptsetup}/bin/cryptsetup close ${mapperName}
-        trap - EXIT
+        echo "Backup complete."
         echo "Done."
       '';
     in
@@ -100,8 +103,8 @@ _: {
         SUBSYSTEM=="block", ENV{DM_NAME}=="${mapperName}", ENV{UDISKS_IGNORE}="1"
       '';
 
-      # Unlock → import pool → syncoid → export → lock.
-      # The trap ensures the HDD is always cleanly exported and locked even if syncoid fails.
+      # Unlock → import pool → syncoid. The trap cleans up resources opened by this run,
+      # even if syncoid fails.
       systemd.services.backup-hdd = {
         description = "Syncoid ZFS backup of home and persist to encrypted HDD";
         after = [
