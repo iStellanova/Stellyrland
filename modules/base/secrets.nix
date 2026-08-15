@@ -25,15 +25,12 @@
           )
         ];
 
-        # mkDefault: hosts that must not share stellyrland's recipient list
-        # (e.g. plasmapulsefinale) override this to point at their own encrypted file.
+        # Hosts with separate encrypted files override this default.
         sops.defaultSopsFile = lib.mkDefault ../../secrets/secrets.yaml;
         sops.defaultSopsFormat = "yaml";
 
-        # Decrypt before users are created so the hashed password is available.
-        # host.passwordSecret is an arbitrary per-host label (like stellacode
-        # below isn't derived from username either) — each host's flake.hosts
-        # entry sets its own, not a single shared "user-password".
+        # Needed before users are created so the hashed password is available.
+        # This is a per-host secret name, not a username-derived value.
         sops.secrets.${host.passwordSecret} = {
           neededForUsers = true;
         };
@@ -50,9 +47,7 @@
     sops.defaultSopsFile = ../../secrets/secrets.yaml;
     sops.defaultSopsFormat = "yaml";
 
-    # Path is explicit here (unlike the nixos version in system/personal-secrets.nix,
-    # which uses sops-nix's default /run/secrets/ location) — nix-tools.nix's shell
-    # init checks both paths when exporting GITHUB_TOKEN.
+    # nix-tools.nix checks this user-owned path when exporting GITHUB_TOKEN.
     sops.secrets.github-token = {
       path = "${host.homeDir}/.config/github-token";
       owner = host.username;
