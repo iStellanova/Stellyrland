@@ -20,7 +20,7 @@
         fastfetch
 
         # Desktop
-        hiro
+        omniwm
         catppuccin
 
         # Dev / CLI Tools
