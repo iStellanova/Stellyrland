@@ -44,8 +44,6 @@
 
       # Boot & Hardware & Storage
       lanzaboote
-      gpu
-      performance
       binfmt
       extra-disk
       hdd-source

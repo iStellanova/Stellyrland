@@ -136,6 +136,44 @@
       hardware.amdgpu.initrd.enable = false;
       hardware.enableRedistributableFirmware = true;
       hardware.cpu.amd.updateMicrocode = true;
+      environment.systemPackages = [ pkgs.usbutils ];
+      hardware.graphics = {
+        enable = true;
+        extraPackages = with pkgs; [
+          rocmPackages.clr.icd
+          rocmPackages.clr
+        ];
+      };
+
+      zramSwap = {
+        enable = true;
+        algorithm = "zstd";
+        swapDevices = 1;
+        priority = 100;
+        memoryPercent = 100;
+      };
+
+      services.fstrim.enable = true;
+      services.irqbalance.enable = true;
+
+      services.ananicy = {
+        enable = true;
+        # Remove when an ananicy-cpp release includes these standard headers.
+        package = pkgs.ananicy-cpp.overrideAttrs (old: {
+          postPatch = (old.postPatch or "") + ''
+            sed -i '1i#include <cstdint>' src/platform/linux/backtrace.cpp
+            sed -i '1i#include <cstring>' src/utility/argument_parsing/argument.cpp
+            sed -i '1i#include <cstring>' src/platform/linux/singleton_process.cpp
+          '';
+        });
+        rulesProvider = pkgs.ananicy-rules-cachyos;
+      };
+
+      services.scx = {
+        enable = true;
+        # LAVD favors latency-sensitive threads on the X3D CCD.
+        scheduler = "scx_lavd";
+      };
 
       desktop = {
         gaming.hdr.enable = host.features.hdr;
