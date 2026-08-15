@@ -44,7 +44,6 @@
 
       # Boot & Hardware & Storage
       lanzaboote
-      firmware
       gpu
       performance
       binfmt
