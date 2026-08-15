@@ -251,17 +251,6 @@
             workspaces.show_labels = false;
           };
 
-          desktop_widgets = {
-            enabled = false;
-            schema_version = 1;
-            grid = {
-              cell_size = 16;
-              major_interval = 4;
-              visible = false;
-            };
-            widget = [
-            ];
-          };
         };
       };
     };
