@@ -47,7 +47,6 @@
       binfmt
       hdd-source
       preservation
-      zfs-snapshots-sanoid
 
       # Gaming
       game-launchers
