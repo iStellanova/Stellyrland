@@ -2,32 +2,22 @@
 {
   defs = {
     macAccent = "#c6a0f6";
-    macRosewater = "#f4dbd6";
-    macFlamingo = "#f0c6c6";
     macPink = "#f5bde6";
-    macMauve = "#c6a0f6";
     macRed = "#ed8796";
-    macMaroon = "#ee99a0";
     macPeach = "#f5a97f";
     macYellow = "#eed49f";
     macGreen = "#a6da95";
     macTeal = "#8bd5ca";
     macSky = "#91d7e3";
-    macSapphire = "#7dc4e4";
     macBlue = "#8aadf4";
-    macLavender = "#b7bdf8";
     macText = "#cad3f5";
     macSubtext1 = "#b8c0e0";
     macSubtext0 = "#a5adcb";
     macOverlay2 = "#939ab7";
-    macOverlay1 = "#8087a2";
-    macOverlay0 = "#6e738d";
     macSurface2 = "#5b6078";
     macSurface1 = "#494d64";
     macSurface0 = "#363a4f";
-    macBase = "#24273a";
     macMantle = "#1e2030";
-    macCrust = "#181926";
   };
   theme = {
     primary = {
