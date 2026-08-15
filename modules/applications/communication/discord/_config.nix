@@ -16,12 +16,9 @@
     };
   };
 
-  quickCss = "";
-
   config = {
     autoUpdate = true;
     autoUpdateNotification = true;
-    useQuickCss = true;
 
     themeLinks = [
       "https://catppuccin.github.io/discord/dist/catppuccin-macchiato-sapphire.theme.css"
