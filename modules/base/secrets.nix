@@ -15,16 +15,10 @@
     {
       imports = [ inputs.sops-nix.nixosModules.sops ];
 
-      # Single owner of this fact (only sshKeyPaths below needs it): hosts using
-      # the preservation/impermanence layout keep the real ssh host key under
-      # /persist (see linux/storage/preservation.nix); hosts without it use the
-      # normal path. No honest universal default, so each host sets this.
-      options.core.impermanence = lib.mkEnableOption "impermanence-style /persist layout for the ssh host key path";
-
       config = {
         sops.age.sshKeyPaths = [
           (
-            if config.core.impermanence then
+            if host.persistence or false then
               "/persist/etc/ssh/ssh_host_ed25519_key"
             else
               "/etc/ssh/ssh_host_ed25519_key"

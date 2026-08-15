@@ -22,17 +22,12 @@ let
       "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
     ];
   };
-  nixToolsPkgs =
-    pkgs: with pkgs; [
-      nix-output-monitor
-    ];
-  osShared = { pkgs, ... }: {
+  osShared = { ... }: {
     nix.nixPath = [ ];
     nixpkgs.config.allowUnfree = true;
     nix.extraOptions = ''
       !include /etc/nix/access-tokens.conf
     '';
-    environment.systemPackages = nixToolsPkgs pkgs;
   };
 in
 {
@@ -40,34 +35,12 @@ in
     imports = [
       osShared
       (
-        { config, pkgs, ... }:
+        { ... }:
         {
-          options.core.nix-settings.cores = lib.mkOption {
-            type = lib.types.ints.unsigned;
-            default = 0;
-            description = "Cores available to the Nix daemon per build (0 = all cores).";
-          };
-
           config = {
             nix.enable = lib.mkDefault true;
-            nix.daemonCPUSchedPolicy = "batch";
-            nix.daemonIOSchedPriority = 7;
-            nix.settings = commonNixSettings // {
-              cores = config.core.nix-settings.cores;
-            };
-
+            nix.settings = commonNixSettings;
             programs.nix-ld.enable = true;
-            programs.nix-ld.libraries = with pkgs; [
-              stdenv.cc.cc
-              zlib
-              fuse3
-              icu
-              nss
-              openssl
-              curl
-              expat
-            ];
-
             environment.variables = {
               NIXOS_OZONE_WL = "1";
             };
@@ -88,7 +61,6 @@ in
             });
           })
         ];
-
         nix.enable = lib.mkDefault false;
         nix.settings = commonNixSettings;
       })

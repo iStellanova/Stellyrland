@@ -20,11 +20,6 @@
 
       networking.hostName = host.name;
 
-      core = {
-        nix-settings.cores = 24;
-        impermanence = true;
-      };
-
       boot.tmp.useTmpfs = true;
       boot.tmp.tmpfsSize = "50%";
 
