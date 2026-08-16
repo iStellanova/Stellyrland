@@ -15,8 +15,7 @@
   flake.modules.darwin.zen-browser =
     { pkgs, ... }:
     {
-      # Home Manager's own app-linking is unreliable on macOS, so also
-      # register at the system level for Spotlight/Launchpad.
+      # Register system-wide; Home Manager app-linking is unreliable on macOS.
       environment.systemPackages = [
         inputs.zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.default
       ];
@@ -48,10 +47,7 @@
         '';
       };
 
-      # Unconditional: each imported file gates its own `config` with
-      # `mkIf config.zenBrowser.personalize`. Using `config` here instead, to
-      # pick which files to import, would be circular — config doesn't exist
-      # yet while imports is still being assembled.
+      # Imports stay unconditional; child files gate themselves to avoid an import/config cycle.
       imports = [
         inputs.zen-browser.homeModules.default
         ./_extensions.nix
@@ -67,8 +63,7 @@
       }
       // lib.optionalAttrs config.zenBrowser.personalize {
         profiles.default = {
-          # Reuses each OS's existing profile dir so HM doesn't orphan it
-          # into a fresh one. Only valid for stellanova's own profiles.
+          # Reuse each OS's profile directory; valid only for stellanova's profiles.
           path =
             if pkgs.stdenv.hostPlatform.isLinux then "0ubhpx7e.Default Profile" else "h7j9ua1w.Default Profile";
 
@@ -95,10 +90,8 @@
           };
         }
         // lib.optionalAttrs pkgs.stdenv.hostPlatform.isLinux {
-          # Sine installs a bootloader inside the Zen app — unsupported on
-          # macOS (breaks the upstream code signature), so Linux-only.
-          # Sine store slug is "Nebula" (capital, no "-zen" suffix) — a
-          # wrong slug here fails silently at activation, not at build time.
+          # Sine modifies the app bundle and breaks macOS code signing, so Linux-only.
+          # "Nebula" is case-sensitive; a wrong slug fails silently at activation.
           sine = {
             enable = true;
             mods = [ "Nebula" ];
