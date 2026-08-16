@@ -22,7 +22,7 @@ let
       "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
     ];
   };
-  osShared = { ... }: {
+  osShared = _: {
     nix.nixPath = [ ];
     nixpkgs.config.allowUnfree = true;
     nix.extraOptions = ''
@@ -35,7 +35,7 @@ in
     imports = [
       osShared
       (
-        { ... }:
+        _:
         {
           config = {
             nix.enable = lib.mkDefault true;

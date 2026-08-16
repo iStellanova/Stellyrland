@@ -1,4 +1,4 @@
-{ inputs, ... }:
+_:
 {
   flake.modules.darwin.zed = _: {
     homebrew.casks = [ "zed" ];
