@@ -14,13 +14,10 @@
     { pkgs, host, ... }:
     {
       imports = [ inputs.nvf.homeManagerModules.default ];
-
       programs.nvf = {
         enable = true;
-
         settings.vim = {
           enableLuaLoader = true;
-
           theme = {
             enable = true;
             name = "catppuccin";
@@ -47,7 +44,6 @@
           };
 
           visuals.nvim-web-devicons.enable = true;
-
           filetree.neo-tree = {
             enable = true;
             setupOpts.filesystem.use_libuv_file_watcher = true;
@@ -55,12 +51,9 @@
           };
 
           utility.multicursors.enable = true;
-
           mini.surround.enable = true;
           mini.ai.enable = true;
-
           telescope.enable = true;
-
           binds.whichKey = {
             enable = true;
             register = {
@@ -74,10 +67,8 @@
             activeSection.z = [ "require('opencode').statusline" ];
           };
           tabline.nvimBufferline.enable = true;
-
           git.enable = true;
           git.gitsigns.enable = true;
-
           comments.comment-nvim.enable = true;
           autopairs.nvim-autopairs.enable = true;
           utility.motion.flash-nvim.enable = true;
@@ -95,14 +86,13 @@
           };
 
           autocomplete.blink-cmp.enable = true;
-
           formatter.conform-nvim.enable = true;
-
           lsp = {
             enable = true;
             inlayHints.enable = true;
             formatOnSave = true;
           };
+
           languages = {
             enableTreesitter = true;
             enableFormat = true;
@@ -113,7 +103,12 @@
               lsp.servers = [ "nixd" ];
               format.type = [ "nixfmt" ];
             };
-            lua.enable = true;
+
+            lua = {
+              enable = true;
+              extensions.lazydev.enable = true;
+            };
+
             bash.enable = true;
             markdown = {
               enable = true;
