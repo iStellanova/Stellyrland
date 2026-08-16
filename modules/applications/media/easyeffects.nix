@@ -65,159 +65,159 @@
       };
     in
     {
-    services.easyeffects = {
-      enable = true;
-      preset = "sm7b-voice";
+      services.easyeffects = {
+        enable = true;
+        preset = "sm7b-voice";
 
-      # SM7B (via inline booster + Scarlett Solo Gen 4) voice chain.
-      extraPresets.sm7b-voice.input = {
-        blocklist = [ ];
-        plugins_order = [
-          "rnnoise#0"
-          "gate#0"
-          "equalizer#0"
-          "compressor#0"
-          "limiter#0"
-        ];
+        # SM7B (via inline booster + Scarlett Solo Gen 4) voice chain.
+        extraPresets.sm7b-voice.input = {
+          blocklist = [ ];
+          plugins_order = [
+            "rnnoise#0"
+            "gate#0"
+            "equalizer#0"
+            "compressor#0"
+            "limiter#0"
+          ];
 
-        "rnnoise#0" = {
-          bypass = false;
-          "enable-vad" = false;
-          "input-gain" = 0.0;
-          "model-name" = "\"\"";
-          "output-gain" = 0.0;
-          release = 20.0;
-          "use-standard-model" = true;
-          "vad-thres" = 30.0;
-          wet = 0.0;
-        };
-
-        "gate#0" = {
-          attack = 5.0;
-          bypass = false;
-          "curve-threshold" = -50.0;
-          "curve-zone" = -2.0;
-          dry = -80.01;
-          "hpf-frequency" = 10.0;
-          "hpf-mode" = "Off";
-          hysteresis = true;
-          "hysteresis-threshold" = -3.0;
-          "hysteresis-zone" = -1.0;
-          "input-gain" = 0.0;
-          "input-to-link" = 0.0;
-          "input-to-sidechain" = 0.0;
-          "link-to-input" = 0.0;
-          "link-to-sidechain" = 0.0;
-          "lpf-frequency" = 20000.0;
-          "lpf-mode" = "Off";
-          makeup = 1.0;
-          "output-gain" = 0.0;
-          reduction = -12.0;
-          release = 250.0;
-          sidechain = {
-            lookahead = 0.0;
-            mode = "RMS";
-            preamp = 0.0;
-            reactivity = 10.0;
-            source = "Middle";
-            "stereo-split-source" = "Left/Right";
-            type = "Internal";
+          "rnnoise#0" = {
+            bypass = false;
+            "enable-vad" = false;
+            "input-gain" = 0.0;
+            "model-name" = "\"\"";
+            "output-gain" = 0.0;
+            release = 20.0;
+            "use-standard-model" = true;
+            "vad-thres" = 30.0;
+            wet = 0.0;
           };
-          "sidechain-to-input" = 0.0;
-          "sidechain-to-link" = 0.0;
-          "stereo-split" = false;
-          wet = -1.0;
-        };
 
-        "equalizer#0" = {
-          balance = 0.1;
-          bypass = false;
-          "input-gain" = 0.0;
-          left = equalizerBands;
-          mode = "IIR";
-          "num-bands" = 5;
-          "output-gain" = 0.0;
-          "pitch-left" = 0.0;
-          "pitch-right" = 0.0;
-          right = equalizerBands;
-          "split-channels" = false;
-        };
-
-        "compressor#0" = {
-          attack = 15.0;
-          "boost-amount" = 0.0;
-          "boost-threshold" = -72.0;
-          bypass = false;
-          dry = -80.01;
-          "hpf-frequency" = 10.0;
-          "hpf-mode" = "Off";
-          "input-gain" = 0.0;
-          "input-to-link" = 0.0;
-          "input-to-sidechain" = 0.0;
-          knee = -6.0;
-          "link-to-input" = 0.0;
-          "link-to-sidechain" = 0.0;
-          "lpf-frequency" = 20000.0;
-          "lpf-mode" = "Off";
-          makeup = 3.0;
-          mode = "Downward";
-          "output-gain" = 0.0;
-          ratio = 3.0;
-          release = 200.0;
-          "release-threshold" = -40.0;
-          sidechain = {
-            lookahead = 0.0;
-            mode = "RMS";
-            preamp = 0.0;
-            reactivity = 10.0;
-            source = "Middle";
-            "stereo-split-source" = "Left/Right";
-            type = "Feed-forward";
+          "gate#0" = {
+            attack = 5.0;
+            bypass = false;
+            "curve-threshold" = -50.0;
+            "curve-zone" = -2.0;
+            dry = -80.01;
+            "hpf-frequency" = 10.0;
+            "hpf-mode" = "Off";
+            hysteresis = true;
+            "hysteresis-threshold" = -3.0;
+            "hysteresis-zone" = -1.0;
+            "input-gain" = 0.0;
+            "input-to-link" = 0.0;
+            "input-to-sidechain" = 0.0;
+            "link-to-input" = 0.0;
+            "link-to-sidechain" = 0.0;
+            "lpf-frequency" = 20000.0;
+            "lpf-mode" = "Off";
+            makeup = 1.0;
+            "output-gain" = 0.0;
+            reduction = -12.0;
+            release = 250.0;
+            sidechain = {
+              lookahead = 0.0;
+              mode = "RMS";
+              preamp = 0.0;
+              reactivity = 10.0;
+              source = "Middle";
+              "stereo-split-source" = "Left/Right";
+              type = "Internal";
+            };
+            "sidechain-to-input" = 0.0;
+            "sidechain-to-link" = 0.0;
+            "stereo-split" = false;
+            wet = -1.0;
           };
-          "sidechain-to-input" = 0.0;
-          "sidechain-to-link" = 0.0;
-          "stereo-split" = false;
-          threshold = -18.0;
-          wet = 0.0;
-        };
 
-        "limiter#0" = {
-          alr = false;
-          "alr-attack" = 5.0;
-          "alr-knee" = 0.0;
-          "alr-release" = 50.0;
-          attack = 2.0;
-          bypass = false;
-          dithering = "16bit";
-          "gain-boost" = false;
-          "input-gain" = 0.0;
-          "input-to-link" = 0.0;
-          "input-to-sidechain" = 0.0;
-          "link-to-input" = 0.0;
-          "link-to-sidechain" = 0.0;
-          lookahead = 2.0;
-          mode = "Herm Wide";
-          "output-gain" = 7.0;
-          oversampling = "None";
-          release = 5.0;
-          "sidechain-preamp" = 0.0;
-          "sidechain-to-input" = 0.0;
-          "sidechain-to-link" = 0.0;
-          "sidechain-type" = "Internal";
-          "stereo-link" = 100.0;
-          threshold = -1.5;
+          "equalizer#0" = {
+            balance = 0.1;
+            bypass = false;
+            "input-gain" = 0.0;
+            left = equalizerBands;
+            mode = "IIR";
+            "num-bands" = 5;
+            "output-gain" = 0.0;
+            "pitch-left" = 0.0;
+            "pitch-right" = 0.0;
+            right = equalizerBands;
+            "split-channels" = false;
+          };
+
+          "compressor#0" = {
+            attack = 15.0;
+            "boost-amount" = 0.0;
+            "boost-threshold" = -72.0;
+            bypass = false;
+            dry = -80.01;
+            "hpf-frequency" = 10.0;
+            "hpf-mode" = "Off";
+            "input-gain" = 0.0;
+            "input-to-link" = 0.0;
+            "input-to-sidechain" = 0.0;
+            knee = -6.0;
+            "link-to-input" = 0.0;
+            "link-to-sidechain" = 0.0;
+            "lpf-frequency" = 20000.0;
+            "lpf-mode" = "Off";
+            makeup = 3.0;
+            mode = "Downward";
+            "output-gain" = 0.0;
+            ratio = 3.0;
+            release = 200.0;
+            "release-threshold" = -40.0;
+            sidechain = {
+              lookahead = 0.0;
+              mode = "RMS";
+              preamp = 0.0;
+              reactivity = 10.0;
+              source = "Middle";
+              "stereo-split-source" = "Left/Right";
+              type = "Feed-forward";
+            };
+            "sidechain-to-input" = 0.0;
+            "sidechain-to-link" = 0.0;
+            "stereo-split" = false;
+            threshold = -18.0;
+            wet = 0.0;
+          };
+
+          "limiter#0" = {
+            alr = false;
+            "alr-attack" = 5.0;
+            "alr-knee" = 0.0;
+            "alr-release" = 50.0;
+            attack = 2.0;
+            bypass = false;
+            dithering = "16bit";
+            "gain-boost" = false;
+            "input-gain" = 0.0;
+            "input-to-link" = 0.0;
+            "input-to-sidechain" = 0.0;
+            "link-to-input" = 0.0;
+            "link-to-sidechain" = 0.0;
+            lookahead = 2.0;
+            mode = "Herm Wide";
+            "output-gain" = 7.0;
+            oversampling = "None";
+            release = 5.0;
+            "sidechain-preamp" = 0.0;
+            "sidechain-to-input" = 0.0;
+            "sidechain-to-link" = 0.0;
+            "sidechain-type" = "Internal";
+            "stereo-link" = 100.0;
+            threshold = -1.5;
+          };
         };
       };
+
+      # Autoloads sm7b-voice whenever the Scarlett Solo's mic input becomes
+      # active, so the preset doesn't need to be reselected by hand each login.
+      xdg.dataFile."easyeffects/autoload/input/alsa_input.usb-Focusrite_Scarlett_Solo_4th_Gen_S18V32H358190D-00.HiFi__Mic1__source:Input 1 Inst_Line.json".text =
+        builtins.toJSON {
+          device = "alsa_input.usb-Focusrite_Scarlett_Solo_4th_Gen_S18V32H358190D-00.HiFi__Mic1__source";
+          "device-description" = "Scarlett Solo 4th Gen Input 1 Inst/Line";
+          "device-profile" = "Input 1 Inst/Line";
+          "preset-name" = "sm7b-voice";
+        };
     };
-
-    # Autoloads sm7b-voice whenever the Scarlett Solo's mic input becomes
-    # active, so the preset doesn't need to be reselected by hand each login.
-    xdg.dataFile."easyeffects/autoload/input/alsa_input.usb-Focusrite_Scarlett_Solo_4th_Gen_S18V32H358190D-00.HiFi__Mic1__source:Input 1 Inst_Line.json".text =
-      builtins.toJSON {
-        device = "alsa_input.usb-Focusrite_Scarlett_Solo_4th_Gen_S18V32H358190D-00.HiFi__Mic1__source";
-        "device-description" = "Scarlett Solo 4th Gen Input 1 Inst/Line";
-        "device-profile" = "Input 1 Inst/Line";
-        "preset-name" = "sm7b-voice";
-      };
-  };
 }

@@ -202,18 +202,16 @@ _: {
         };
       };
 
-      home.packages =
-        with pkgs;
-        [
-          imagemagick
-          poppler-utils
-          ffmpegthumbnailer
-          viu
-          hexyl
-          ouch
-          epr
-          mpv
-          rsync
-        ];
+      home.packages = with pkgs; [
+        imagemagick
+        poppler-utils
+        ffmpegthumbnailer
+        viu
+        hexyl
+        ouch
+        epr
+        mpv
+        rsync
+      ];
     };
 }
