@@ -1,4 +1,4 @@
-_: {
+{
   flake.modules.nixos.media = { pkgs, ... }: {
     environment.systemPackages = with pkgs; [
       ffmpegthumbnailer
