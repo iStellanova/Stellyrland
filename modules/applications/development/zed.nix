@@ -1,6 +1,6 @@
 _:
 {
-  flake.modules.darwin.zed = _: {
+  flake.modules.darwin.zed = {
     homebrew.casks = [ "zed" ];
   };
 
@@ -121,14 +121,6 @@ _:
           };
           "agent_servers" = {
             "claude-acp" = {
-              "type" = "registry";
-            };
-            "gemini" = {
-              "default_mode" = "autoEdit";
-              "favorite_models" = [ "gemini-3-flash-preview" ];
-              "type" = "registry";
-            };
-            "gemini-cli" = {
               "type" = "registry";
             };
             "mcp-nixos" = {
