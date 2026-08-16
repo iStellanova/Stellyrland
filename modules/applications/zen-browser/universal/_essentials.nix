@@ -1,7 +1,6 @@
 { config, lib, ... }:
 {
-  # Essentials are workspace-specific, not shared — School has its own
-  # matching copy in ../school/_essentials.nix with different ids.
+  # Essentials are workspace-specific; School has a separate set with different IDs.
   config = lib.mkIf config.zenBrowser.personalize {
     programs.zen-browser.profiles.default.pins = {
       "Claude" = {
