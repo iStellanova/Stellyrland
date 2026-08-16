@@ -8,7 +8,7 @@
   };
 
   flake.modules.darwin.media =
-    { pkgs, ... }:
+    _:
     {
       homebrew.casks = [
         "background-music"
