@@ -1,6 +1,6 @@
 { self, ... }:
 {
-  flake.modules.nixos.deployment-recipient = _: {
+  flake.modules.nixos.deployment-recipient = {
     users.users.stellanova.openssh.authorizedKeys.keys = [
       self.constants.stellyrlabDeploymentKey
     ];
@@ -8,7 +8,7 @@
     system.tools.nixos-rebuild.enableRun0Elevation = true;
   };
 
-  flake.modules.darwin.deployment-recipient = _: {
+  flake.modules.darwin.deployment-recipient = {
     users.users.stellanova.openssh.authorizedKeys.keys = [
       self.constants.stellyrlabDeploymentKey
     ];

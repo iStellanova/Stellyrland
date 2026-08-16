@@ -1,4 +1,4 @@
-_: {
+{
   flake.modules.nixos.stellyrlab-host =
     { host, pkgs, ... }:
     {

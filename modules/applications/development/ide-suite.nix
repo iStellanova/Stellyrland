@@ -1,4 +1,3 @@
-_:
 let
   osShared = { pkgs, ... }: {
     environment.systemPackages = with pkgs; [
@@ -16,11 +15,11 @@ in
   flake.modules.darwin.ide-suite = {
     imports = [
       osShared
-      (_: {
+      {
         homebrew.casks = [
           "intellij-idea"
         ];
-      })
+      }
     ];
   };
 }

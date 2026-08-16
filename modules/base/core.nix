@@ -1,4 +1,4 @@
-_: {
+{
   flake.modules.nixos.core =
     {
       config,
@@ -37,7 +37,7 @@ _: {
       };
     };
 
-  flake.modules.homeManager.core = _: {
+  flake.modules.homeManager.core = {
     home.sessionPath = [ "$HOME/.local/state/nix/profiles/scratch/bin" ];
     home.stateVersion = "25.11";
   };

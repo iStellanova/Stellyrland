@@ -1,4 +1,4 @@
-_: {
+{
   # Registers kitty at the system level so nix-darwin's native app-linking picks it up
   # (config is still managed via homeManager below; Nix deduplicates the store path).
   flake.modules.darwin.kitty = { pkgs, ... }: { environment.systemPackages = [ pkgs.kitty ]; };
