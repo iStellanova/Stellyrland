@@ -26,7 +26,6 @@
         # Dev / CLI Tools
         git
         nvf-writing
-        ns
         opencode
         yazi
 

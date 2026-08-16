@@ -34,7 +34,6 @@
         git
         nvf-ide
         nvf-writing
-        ns
         opencode
         yazi
 
