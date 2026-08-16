@@ -11,23 +11,16 @@ in
     {
       lib,
       host,
+      pkgs,
       ...
     }:
     {
-      imports = [
-        osShared
-        (
-          { pkgs, ... }:
-          {
-            environment.systemPackages = with pkgs; [
-              mangohud
-              goverlay
-              r2modman
-            ];
-          }
-        )
-      ]
-      ++ lib.optional (host.persistence or false) {
+      environment.systemPackages = with pkgs; [
+        prismlauncher
+        r2modman
+      ];
+
+      imports = lib.optional (host.persistence or false) {
         preservation.preserveAt."/persist".users.${host.username}.directories = [
           ".local/share/Paradox Interactive"
           ".local/share/PrismLauncher"
