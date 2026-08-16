@@ -25,7 +25,6 @@
 
         # Dev / CLI Tools
         git
-        nix-index
         nvf-writing
         ns
         opencode

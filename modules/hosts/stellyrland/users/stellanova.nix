@@ -32,7 +32,6 @@
 
         # Dev / CLI Tools
         git
-        nix-index
         nvf-ide
         nvf-writing
         ns
