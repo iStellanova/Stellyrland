@@ -66,6 +66,7 @@ in
         extraOptions = [
           "--group-directories-first"
           "--header"
+          "--short-nix"
         ];
       };
 
