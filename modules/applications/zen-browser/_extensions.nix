@@ -16,8 +16,7 @@
         rycee.sponsorblock
         rycee.proton-pass
 
-        # Not on NUR — fetched from AMO. fixedExtid keeps the addon id
-        # stable so it lands as the same install, not a duplicate.
+        # AMO-only; fixedExtid preserves the installed addon identity.
         (pkgs.fetchFirefoxAddon {
           name = "xcancel-redirect";
           url = "https://addons.mozilla.org/firefox/downloads/file/4480430/xcancelredirect-1.2.xpi";
