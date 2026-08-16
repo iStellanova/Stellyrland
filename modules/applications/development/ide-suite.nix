@@ -8,16 +8,9 @@ let
   };
 in
 {
-  flake.modules.nixos.ide-suite = {
-    imports = [
-      osShared
-      (
-        { pkgs, ... }:
-        {
-          environment.systemPackages = [ pkgs.jetbrains.idea ];
-        }
-      )
-    ];
+  flake.modules.nixos.ide-suite = { pkgs, ... }: {
+    imports = [ osShared ];
+    environment.systemPackages = [ pkgs.jetbrains.idea ];
   };
 
   flake.modules.darwin.ide-suite = {
