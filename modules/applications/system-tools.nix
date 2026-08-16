@@ -1,5 +1,5 @@
 _: {
-  # No darwin stanza: these are GNOME-specific system utilities, no macOS equivalent.
+  # No Darwin stanza: these are Linux desktop utilities.
   flake.modules.nixos.system-tools = { pkgs, ... }: {
     environment.systemPackages = with pkgs; [
       gnome-disk-utility
