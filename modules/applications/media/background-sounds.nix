@@ -1,5 +1,5 @@
-_: {
-  flake.modules.darwin.background-sounds = _: {
+{
+  flake.modules.darwin.background-sounds = {
     homebrew.casks = [
       "blankie"
     ];
