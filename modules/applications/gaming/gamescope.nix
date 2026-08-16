@@ -2,9 +2,6 @@
 {
   flake.modules.nixos.gamescope =
     { config, ... }:
-    let
-      cfg = config.desktop.gaming;
-    in
     {
       options.desktop.gaming.hdr.enable = lib.mkEnableOption "HDR support for gamescope and DXVK";
 
@@ -15,8 +12,8 @@
           "--fullscreen"
           "--expose-wayland"
         ]
-        ++ lib.optionals cfg.hdr.enable [ "--hdr-enabled" ];
-        env = lib.mkIf cfg.hdr.enable {
+        ++ lib.optionals config.desktop.gaming.hdr.enable [ "--hdr-enabled" ];
+        env = lib.mkIf config.desktop.gaming.hdr.enable {
           "DXVK_HDR" = "1";
         };
       };
