@@ -31,7 +31,6 @@
 
         # Desktop Applications
         zen-browser
-        nautilus
 
         # AV / Media
         cava
