@@ -1,4 +1,4 @@
-_: {
+{
   flake.modules.homeManager.cava = { pkgs, ... }: {
     programs.cava = {
       enable = true;
