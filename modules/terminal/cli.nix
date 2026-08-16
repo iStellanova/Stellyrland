@@ -1,4 +1,4 @@
-_:
+{ inputs, ... }:
 let
   cliPkgs =
     pkgs: with pkgs; [
@@ -38,6 +38,11 @@ let
     };
 in
 {
+  flake-file.inputs.nix-index-database = {
+    url = "github:nix-community/nix-index-database";
+    inputs.nixpkgs.follows = "nixpkgs";
+  };
+
   flake.modules.nixos.cli = cliNixos;
   flake.modules.darwin.cli = cliOs;
 
@@ -48,6 +53,8 @@ in
       ...
     }:
     {
+      imports = [ inputs.nix-index-database.homeModules.nix-index ];
+
       # Works around an eza bug where theme.yml (vs theme.yaml) is silently
       # ignored when EZA_CONFIG_DIR is unset: https://github.com/eza-community/eza/blob/main/src/options/theme.rs
       home.sessionVariables.EZA_CONFIG_DIR = "${config.home.homeDirectory}/.config/eza";
@@ -58,6 +65,8 @@ in
       programs.ripgrep.enable = true;
       programs.bat.enable = true;
       programs.fd.enable = true;
+      programs.nix-index.enable = true;
+      programs.nix-index-database.comma.enable = true;
 
       programs.eza = {
         enable = true;
