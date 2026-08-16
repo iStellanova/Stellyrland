@@ -7,14 +7,13 @@
     home-manager.users.stellanova = {
       zenBrowser.personalize = true;
 
-      # Actual apps installed on this host — the mime-type mapping itself
-      # lives in modules/system/mime.nix.
+      # Installed desktop files; MIME types are defined in modules/system/mime.nix.
       mimeDefaultApps = {
         browser = [ "zen-beta.desktop" ];
         pdfViewer = [ "org.gnome.Evince.desktop" ];
         fileManager = [ "org.gnome.Nautilus.desktop" ];
         imageViewer = [ "imv.desktop" ];
-        musicPlayer = [ "org.gnome.Lollypop.desktop" ];
+        musicPlayer = [ "mpv.desktop" ];
         videoPlayer = [ "mpv.desktop" ];
         discord = [ "vesktop.desktop" ];
       };
