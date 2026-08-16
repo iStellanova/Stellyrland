@@ -56,14 +56,15 @@ in
       programs.zoxide.enable = true;
       programs.jq.enable = true;
       programs.ripgrep.enable = true;
-
       programs.bat.enable = true;
+      programs.fd.enable = true;
 
       programs.eza = {
         enable = true;
         enableZshIntegration = true;
         icons = "auto";
         extraOptions = [
+          "-lh"
           "--group-directories-first"
           "--header"
           "--short-nix"
@@ -80,11 +81,6 @@ in
       };
 
       programs.zsh.shellAliases = {
-        ls = "eza -lh";
-        ll = "eza -al";
-        lt = "eza -a --tree --level=2";
-        ff = "sudo fd -HI -a --exclude .snapshots";
-        is = "fzf --preview=\"bat --style=numbers --color=always {}\"";
         cat = "bat";
         grep = "rg";
         man = "tldr";
@@ -95,8 +91,6 @@ in
         zstyle ':fzf-tab:*' fzf-preview 'bat --color=always --style=numbers $realpath'
         zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --color=always $realpath'
       '';
-
-      programs.fd.enable = true;
 
       programs.direnv = {
         enable = true;
