@@ -238,61 +238,37 @@
               name: "Directories",
               borders: "ALL",
               border_symbols: Rounded,
-              pane: Split(
-                  size: "100%",
-                  direction: Vertical,
-                  panes: [(pane: Pane(Directories), size: "100%", borders: "ALL", border_symbols: Rounded)],
-              )
+              pane: Pane(Directories),
           ),
           (
               name: "Artists",
               borders: "ALL",
               border_symbols: Rounded,
-              pane: Split(
-                  size: "100%",
-                  direction: Vertical,
-                  panes: [(pane: Pane(Artists), size: "100%", borders: "ALL", border_symbols: Rounded)],
-              )
+              pane: Pane(Artists),
           ),
           (
               name: "Album Artists",
               borders: "ALL",
               border_symbols: Rounded,
-              pane: Split(
-                  size: "100%",
-                  direction: Vertical,
-                  panes: [(pane: Pane(AlbumArtists), size: "100%", borders: "ALL", border_symbols: Rounded)],
-              )
+              pane: Pane(AlbumArtists),
           ),
           (
               name: "Albums",
               borders: "ALL",
               border_symbols: Rounded,
-              pane: Split(
-                  size: "100%",
-                  direction: Vertical,
-                  panes: [(pane: Pane(Albums), size: "100%", borders: "ALL", border_symbols: Rounded)],
-              )
+              pane: Pane(Albums),
           ),
           (
               name: "Playlists",
               borders: "ALL",
               border_symbols: Rounded,
-              pane: Split(
-                  size: "100%",
-                  direction: Vertical,
-                  panes: [(pane: Pane(Playlists), size: "100%", borders: "ALL", border_symbols: Rounded)],
-              )
+              pane: Pane(Playlists),
           ),
           (
               name: "Search",
               borders: "ALL",
               border_symbols: Rounded,
-              pane: Split(
-                  size: "100%",
-                  direction: Vertical,
-                  panes: [(pane: Pane(Search), size: "100%", borders: "ALL", border_symbols: Rounded)],
-              )
+              pane: Pane(Search),
           ),
       ],
   )

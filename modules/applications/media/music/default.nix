@@ -1,4 +1,4 @@
-_: {
+{
   flake.modules.nixos.music = { config, ... }: {
     services.mpdscribble = {
       enable = true;
@@ -18,7 +18,6 @@ _: {
     }:
     lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
       home.packages = with pkgs; [
-        mpc
         rmpc
       ];
 
@@ -42,9 +41,7 @@ _: {
       };
 
       xdg.configFile."rmpc/config.ron".text = import ./_config.nix { inherit (host) homeDir; };
-
       services.mpdris2.enable = true;
-
       systemd.user.services.mpdris2.Unit.After = [ "mpd.service" ];
     };
 }
