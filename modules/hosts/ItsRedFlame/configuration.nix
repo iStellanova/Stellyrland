@@ -35,6 +35,7 @@
       pipewire
       librewolf
       media
+      soulseek
       media-editing
       audacity
       obs

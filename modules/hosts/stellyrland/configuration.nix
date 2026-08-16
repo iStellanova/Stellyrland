@@ -59,6 +59,7 @@
       media-editing
       obs
       media
+      soulseek
       music
       gsr
 

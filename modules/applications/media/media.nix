@@ -4,7 +4,6 @@
       ffmpegthumbnailer
       imv
       pavucontrol
-      nicotine-plus
     ];
   };
 
@@ -15,7 +14,6 @@
         "background-music"
         "vlc"
       ];
-      environment.systemPackages = [ pkgs.nicotine-plus ];
     };
 
   flake.modules.homeManager.media =
@@ -26,7 +24,6 @@
     {
       home.packages = with pkgs; [
         ani-cli
-        ffmpeg
         mpv
       ];
     };

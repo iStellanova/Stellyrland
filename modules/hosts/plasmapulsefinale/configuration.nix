@@ -34,6 +34,7 @@
       pipewire
       librewolf
       media
+      soulseek
       obs
 
       # Gaming

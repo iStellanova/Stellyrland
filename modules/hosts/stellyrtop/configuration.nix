@@ -32,6 +32,7 @@
       media-editing
       obs
       media
+      soulseek
       background-sounds
 
       # Desktop Applications
