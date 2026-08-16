@@ -3,14 +3,12 @@ _: {
     {
       config,
       host,
+      lib,
       pkgs,
       ...
     }:
     {
-      home.packages = [
-        pkgs.git-crypt
-        pkgs.lazygit
-      ];
+      home.packages = [ pkgs.lazygit ];
 
       home.file.".config/git/allowed_signers".text = ''
         iStellanova@users.noreply.github.com ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAID23408QRe02peABnmkDcmpu2DVSwN3H+Jm7kcVenTDr topcoat.graver.7c@icloud.com
@@ -27,16 +25,18 @@ _: {
             IdentityFile = host.gitSshKey;
             AddKeysToAgent = "yes";
           };
+          "* !github-stellxie !deploy-*" = {
+            HashKnownHosts = "yes";
+            SendEnv = "LANG LC_*";
+            IdentityFile = host.gitSshKey;
+          };
+        }
+        // lib.optionalAttrs (host.class == "nixos") {
           "github-stellxie" = {
             HostName = "github.com";
             User = "git";
             IdentityFile = "/run/secrets/stellxie-github-auth";
             IdentitiesOnly = "yes";
-          };
-          "* !github-stellxie !deploy-*" = {
-            HashKnownHosts = "yes";
-            SendEnv = "LANG LC_*";
-            IdentityFile = host.gitSshKey;
           };
         };
       };
