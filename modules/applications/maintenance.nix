@@ -1,11 +1,10 @@
 _: {
   flake.modules.nixos.maintenance = { pkgs, ... }: {
-    environment.systemPackages = with pkgs; [
-      nix-tree
-    ];
+    environment.systemPackages = [ pkgs.nix-tree ];
   };
 
-  flake.modules.darwin.maintenance = _: {
+  flake.modules.darwin.maintenance = { pkgs, ... }: {
     homebrew.casks = [ "cleanmymac" ];
+    environment.systemPackages = [ pkgs.nix-tree ];
   };
 }
