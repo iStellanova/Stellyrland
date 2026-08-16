@@ -16,7 +16,6 @@
     }:
     {
       nixpkgs.overlays = [ inputs.chaotic.overlays.default ];
-
       boot.kernelModules = [ "ntsync" ];
       boot.kernel.sysctl = {
         "vm.max_map_count" = 2147483642;
