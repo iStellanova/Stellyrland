@@ -4,7 +4,7 @@
     inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  # On NixOS, The flags for gaming in HDR are as follows:
+  # For Steam game HDR:
   # PROTON_ENABLE_WAYLAND=1 PROTON_USE_NTSYNC=1 RADV_PERFTEST=gpl %command%
   # Use CachyOS's Proton.
   flake.modules.nixos.steam =
@@ -15,7 +15,6 @@
       ...
     }:
     {
-
       nixpkgs.overlays = [ inputs.chaotic.overlays.default ];
 
       boot.kernelModules = [ "ntsync" ];
@@ -28,7 +27,6 @@
         enable = true;
         localNetworkGameTransfers.openFirewall = true;
         extraPackages = with pkgs; [
-          libcap
           gamescope-wsi
         ];
         extraCompatPackages = with pkgs; [
@@ -43,10 +41,9 @@
           ".steam"
         ];
       };
-
     };
 
-  flake.modules.darwin.steam = _: {
+  flake.modules.darwin.steam = {
     homebrew.casks = [ "steam" ];
   };
 }
