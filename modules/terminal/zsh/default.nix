@@ -1,4 +1,3 @@
-_:
 let
   zshOsPkg = { pkgs, ... }: {
     environment.systemPackages = [ pkgs.zsh-completions ];

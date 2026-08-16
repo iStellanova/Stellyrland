@@ -1,4 +1,4 @@
-_: {
+{
   flake.modules.nixos.ItsRedFlame-host =
     { host, config, ... }:
     {

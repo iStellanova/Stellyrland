@@ -1,4 +1,4 @@
-_: {
+{
   flake.modules.darwin.stellyrtop-host =
     { host, ... }:
     {

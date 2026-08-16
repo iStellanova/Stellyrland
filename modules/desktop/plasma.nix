@@ -1,5 +1,5 @@
-_: {
-  flake.modules.nixos.plasma = _: {
+{
+  flake.modules.nixos.plasma = {
     services.desktopManager.plasma6.enable = true;
 
     services.displayManager.sddm = {

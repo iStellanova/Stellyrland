@@ -1,4 +1,3 @@
-_:
 let
   osShared = { pkgs, ... }: {
     environment.systemPackages = with pkgs; [

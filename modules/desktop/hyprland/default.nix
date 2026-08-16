@@ -1,4 +1,4 @@
-_: {
+{
   flake-file.inputs.hyprsplit = {
     url = "github:shezdy/hyprsplit";
     inputs.nixpkgs.follows = "nixpkgs";

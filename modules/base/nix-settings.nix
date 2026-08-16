@@ -22,7 +22,7 @@ let
       "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
     ];
   };
-  osShared = _: {
+  osShared = {
     nix.nixPath = [ ];
     nixpkgs.config.allowUnfree = true;
     nix.extraOptions = ''
@@ -34,26 +34,23 @@ in
   flake.modules.nixos.nix-settings = {
     imports = [
       osShared
-      (
-        _:
-        {
-          config = {
-            nix.enable = lib.mkDefault true;
-            nix.settings = commonNixSettings;
-            programs.nix-ld.enable = true;
-            environment.variables = {
-              NIXOS_OZONE_WL = "1";
-            };
+      {
+        config = {
+          nix.enable = lib.mkDefault true;
+          nix.settings = commonNixSettings;
+          programs.nix-ld.enable = true;
+          environment.variables = {
+            NIXOS_OZONE_WL = "1";
           };
-        }
-      )
+        };
+      }
     ];
   };
 
   flake.modules.darwin.nix-settings = {
     imports = [
       osShared
-      (_: {
+      {
         nixpkgs.overlays = [
           (_final: prev: {
             mcp-nixos = prev.mcp-nixos.overrideAttrs (old: {
@@ -63,7 +60,7 @@ in
         ];
         nix.enable = lib.mkDefault false;
         nix.settings = commonNixSettings;
-      })
+      }
     ];
   };
 }

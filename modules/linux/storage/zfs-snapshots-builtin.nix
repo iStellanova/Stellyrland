@@ -1,7 +1,7 @@
-_: {
+{
   # NixOS's dataset-agnostic autoSnapshot for hosts without a host-specific
   # Sanoid policy.
-  flake.modules.nixos.zfs-snapshots-builtin = _: {
+  flake.modules.nixos.zfs-snapshots-builtin = {
     # Automatic dataset-agnostic ZFS timeline snapshots
     services.zfs.autoSnapshot = {
       enable = true;

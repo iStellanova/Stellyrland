@@ -1,5 +1,5 @@
-_: {
-  flake.modules.darwin.cloud-storage = _: {
+{
+  flake.modules.darwin.cloud-storage = {
     homebrew.casks = [
       "proton-drive"
       "onedrive"

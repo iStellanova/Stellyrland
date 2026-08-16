@@ -1,4 +1,3 @@
-_:
 let
   osShared = { pkgs, ... }: {
     services.tailscale.enable = true;

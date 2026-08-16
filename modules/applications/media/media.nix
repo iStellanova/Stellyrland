@@ -7,14 +7,12 @@
     ];
   };
 
-  flake.modules.darwin.media =
-    _:
-    {
-      homebrew.casks = [
-        "background-music"
-        "vlc"
-      ];
-    };
+  flake.modules.darwin.media = {
+    homebrew.casks = [
+      "background-music"
+      "vlc"
+    ];
+  };
 
   flake.modules.homeManager.media =
     {
