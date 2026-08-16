@@ -1,4 +1,4 @@
-_: {
+{
   flake.modules.nixos.gsr = { pkgs, ... }: {
     programs.gpu-screen-recorder.enable = true;
     environment.systemPackages = [ pkgs.gpu-screen-recorder-gtk ];
@@ -12,7 +12,7 @@ _: {
       ...
     }:
     let
-      primary = if host.monitorPriority or [ ] == [ ] then "" else lib.elemAt host.monitorPriority 0;
+      primary = lib.head ((host.monitorPriority or [ ]) ++ [ "" ]);
     in
     {
       xdg.configFile."gpu-screen-recorder/config".text = ''
@@ -55,12 +55,6 @@ _: {
         replay.save_recording_hotkey 0 0
         replay.start_stop_recording_hotkey 0 0
         replay.time 30
-        streaming.custom.container flv
-        streaming.custom.url
-        streaming.service twitch
-        streaming.start_stop_recording_hotkey 0 0
-        streaming.twitch.key
-        streaming.youtube.key
       '';
 
       systemd.user.services.gsr-replay = {
