@@ -1,10 +1,70 @@
-_: {
-  flake.modules.nixos.easyeffects = _: {
+{
+  flake.modules.nixos.easyeffects = {
     # Required for the easyeffects service to work correctly.
     programs.dconf.enable = true;
   };
 
-  flake.modules.homeManager.easyeffects = _: {
+  flake.modules.homeManager.easyeffects =
+    let
+      equalizerBands = {
+        band0 = {
+          frequency = 80.0;
+          gain = 0.0;
+          mode = "RLC (BT)";
+          mute = false;
+          q = 0.7;
+          slope = "x2";
+          solo = false;
+          type = "Hi-pass";
+          width = 4.0;
+        };
+        band1 = {
+          frequency = 220.0;
+          gain = -2.0;
+          mode = "RLC (MT)";
+          mute = false;
+          q = 0.7;
+          slope = "x1";
+          solo = false;
+          type = "Bell";
+          width = 4.0;
+        };
+        band2 = {
+          frequency = 350.0;
+          gain = -2.0;
+          mode = "BWC (MT)";
+          mute = false;
+          q = 1.2;
+          slope = "x2";
+          solo = false;
+          type = "Bell";
+          width = 4.0;
+        };
+        band3 = {
+          frequency = 3500.0;
+          gain = 2.0;
+          mode = "BWC (BT)";
+          mute = false;
+          q = 0.9;
+          slope = "x2";
+          solo = false;
+          type = "Bell";
+          width = 4.0;
+        };
+        band4 = {
+          frequency = 10000.0;
+          gain = 2.0;
+          mode = "LRX (MT)";
+          mute = false;
+          q = 0.7;
+          slope = "x1";
+          solo = false;
+          type = "Hi-shelf";
+          width = 4.0;
+        };
+      };
+    in
+    {
     services.easyeffects = {
       enable = true;
       preset = "sm7b-voice";
@@ -73,125 +133,13 @@ _: {
           balance = 0.1;
           bypass = false;
           "input-gain" = 0.0;
-          left = {
-            band0 = {
-              frequency = 80.0;
-              gain = 0.0;
-              mode = "RLC (BT)";
-              mute = false;
-              q = 0.7;
-              slope = "x2";
-              solo = false;
-              type = "Hi-pass";
-              width = 4.0;
-            };
-            band1 = {
-              frequency = 220.0;
-              gain = -2.0;
-              mode = "RLC (MT)";
-              mute = false;
-              q = 0.7;
-              slope = "x1";
-              solo = false;
-              type = "Bell";
-              width = 4.0;
-            };
-            band2 = {
-              frequency = 350.0;
-              gain = -2.0;
-              mode = "BWC (MT)";
-              mute = false;
-              q = 1.2;
-              slope = "x2";
-              solo = false;
-              type = "Bell";
-              width = 4.0;
-            };
-            band3 = {
-              frequency = 3500.0;
-              gain = 2.0;
-              mode = "BWC (BT)";
-              mute = false;
-              q = 0.9;
-              slope = "x2";
-              solo = false;
-              type = "Bell";
-              width = 4.0;
-            };
-            band4 = {
-              frequency = 10000.0;
-              gain = 2.0;
-              mode = "LRX (MT)";
-              mute = false;
-              q = 0.7;
-              slope = "x1";
-              solo = false;
-              type = "Hi-shelf";
-              width = 4.0;
-            };
-          };
+          left = equalizerBands;
           mode = "IIR";
           "num-bands" = 5;
           "output-gain" = 0.0;
           "pitch-left" = 0.0;
           "pitch-right" = 0.0;
-          right = {
-            band0 = {
-              frequency = 80.0;
-              gain = 0.0;
-              mode = "RLC (BT)";
-              mute = false;
-              q = 0.7;
-              slope = "x2";
-              solo = false;
-              type = "Hi-pass";
-              width = 4.0;
-            };
-            band1 = {
-              frequency = 220.0;
-              gain = -2.0;
-              mode = "RLC (MT)";
-              mute = false;
-              q = 0.7;
-              slope = "x1";
-              solo = false;
-              type = "Bell";
-              width = 4.0;
-            };
-            band2 = {
-              frequency = 350.0;
-              gain = -2.0;
-              mode = "BWC (MT)";
-              mute = false;
-              q = 1.2;
-              slope = "x2";
-              solo = false;
-              type = "Bell";
-              width = 4.0;
-            };
-            band3 = {
-              frequency = 3500.0;
-              gain = 2.0;
-              mode = "BWC (BT)";
-              mute = false;
-              q = 0.9;
-              slope = "x2";
-              solo = false;
-              type = "Bell";
-              width = 4.0;
-            };
-            band4 = {
-              frequency = 10000.0;
-              gain = 2.0;
-              mode = "LRX (MT)";
-              mute = false;
-              q = 0.7;
-              slope = "x1";
-              solo = false;
-              type = "Hi-shelf";
-              width = 4.0;
-            };
-          };
+          right = equalizerBands;
           "split-channels" = false;
         };
 
