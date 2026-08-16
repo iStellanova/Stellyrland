@@ -30,6 +30,7 @@
       pipewire
       librewolf
       media
+      soulseek
 
       # Apple Silicon hardware/kernel/bootloader
       asahi
