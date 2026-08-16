@@ -13,7 +13,7 @@
     {
       home.packages = with pkgs; [
         mcp-nixos
-        nixd
+        nil
         nixfmt
         pyright
         black
@@ -84,7 +84,7 @@
               "format_on_save" = "off";
             };
             "Nix" = {
-              "language_servers" = [ "nixd" ];
+              "language_servers" = [ "nil" ];
               "formatter" = {
                 "external" = {
                   "command" = "nixfmt";
@@ -97,24 +97,13 @@
             "show" = "always";
           };
           "lsp" = {
-            "nixd" = {
+            "nil" = {
               "binary" = {
-                "path" = "nixd";
-              };
-              "settings" = {
-                nixpkgs.expr = "import (builtins.getFlake \"${host.flakePath}\").inputs.nixpkgs {}";
-                options =
-                  if host.class == "nixos" then
-                    {
-                      nixos.expr = "(builtins.getFlake \"${host.flakePath}\").nixosConfigurations.${host.name}.options";
-                    }
-                  else
-                    {
-                      darwin.expr = "(builtins.getFlake \"${host.flakePath}\").darwinConfigurations.${host.name}.options";
-                    };
+                "path" = "nil";
               };
             };
           };
+
           "agent" = {
             "dock" = "right";
           };

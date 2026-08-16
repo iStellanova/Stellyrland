@@ -11,7 +11,7 @@
   };
 
   flake.modules.homeManager.nvf-ide =
-    { pkgs, host, ... }:
+    { pkgs, ... }:
     {
       imports = [ inputs.nvf.homeManagerModules.default ];
       programs.nvf = {
@@ -97,10 +97,10 @@
             enableTreesitter = true;
             enableFormat = true;
 
-            # nixd/nixfmt, not NVF's nil/alejandra defaults, to match Zed.
+            # nil/nixfmt, not NVF's alejandra default, to match Zed.
             nix = {
               enable = true;
-              lsp.servers = [ "nixd" ];
+              lsp.servers = [ "nil" ];
               format.type = [ "nixfmt" ];
             };
 
@@ -114,19 +114,6 @@
               enable = true;
               extensions.render-markdown-nvim.enable = true;
             };
-          };
-
-          lsp.servers.nixd.settings = {
-            nixpkgs.expr = "import (builtins.getFlake \"${host.flakePath}\").inputs.nixpkgs {}";
-            options =
-              if host.class == "nixos" then
-                {
-                  nixos.expr = "(builtins.getFlake \"${host.flakePath}\").nixosConfigurations.${host.name}.options";
-                }
-              else
-                {
-                  darwin.expr = "(builtins.getFlake \"${host.flakePath}\").darwinConfigurations.${host.name}.options";
-                };
           };
 
           # Connects nvim to the system `opencode --port` server (see
@@ -204,6 +191,7 @@
           # opencode.nvim shells out to `opencode --port`; keep it on PATH inside
           # nvim even though programs.opencode also installs it.
           extraPackages = [
+            pkgs.nil
             inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.opencode
           ];
         };
