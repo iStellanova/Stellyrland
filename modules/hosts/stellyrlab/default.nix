@@ -23,7 +23,8 @@
           consoleMode = "max";
         };
         loader.efi.canTouchEfiVariables = true;
-        kernelPackages = pkgs.linuxPackages_6_12;
+        # Temporary reset discriminator: use an older kernel family than 6.12.
+        kernelPackages = pkgs.linuxPackages_6_6;
         blacklistedKernelModules = [
           "i915"
           "nouveau"
@@ -31,6 +32,8 @@
           "nvidia_drm"
           "nvidia_modeset"
           "nvidia_uvm"
+          "i2c_nvidia_gpu"
+          "i2c_ccgx_ucsi"
         ];
         zfs = {
           devNodes = "/dev/mapper";
