@@ -71,6 +71,7 @@
       sops.defaultSopsFile = ../../../secrets/ItsRedFlame.yaml;
 
       hardware.enableRedistributableFirmware = true;
+      myModules.programs.obs.nvidia = true;
 
       # Broken TPM probe; without this, boot stalls twice for 90s.
       systemd.tpm2.enable = false;
