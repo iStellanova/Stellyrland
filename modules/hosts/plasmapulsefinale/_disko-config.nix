@@ -1,6 +1,4 @@
-# Disko layout for plasmapulsefinale's disk (Crucial BX500 480GB SATA SSD).
-# enableConfig = false: only used to format at install time —
-# _hardware-configuration.nix is the source of truth at runtime.
+# Install-time Disko layout; runtime mounts live in _hardware-configuration.nix.
 { inputs, ... }:
 {
   imports = [ inputs.disko.nixosModules.disko ];
@@ -48,7 +46,7 @@
         compatibility = "grub2";
       };
       rootFsOptions = {
-        # grub2 compatibility (above) excludes zstd_compress.
+        # GRUB2 compatibility requires lz4 here.
         compression = "lz4";
         atime = "off";
         xattr = "sa";
