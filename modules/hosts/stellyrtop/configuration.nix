@@ -37,6 +37,7 @@
 
       # Desktop Applications
       zen-browser
+      zed
 
       # Productivity
       finance
