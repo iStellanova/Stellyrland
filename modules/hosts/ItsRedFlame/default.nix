@@ -8,10 +8,8 @@
       ];
 
       networking.hostName = host.name;
-
       boot.loader.systemd-boot.enable = true;
       boot.loader.efi.canTouchEfiVariables = true;
-
       timecontrol.enable = true;
       timecontrol.schedule = {
         Monday = [
@@ -66,17 +64,15 @@
         ];
       };
 
-      # Avoids importing a ZFS pool that may already be in use elsewhere.
+      # Avoid ZFS pool import conflicts.
       boot.zfs.forceImportRoot = false;
 
-      # Own file/recipients — must never decrypt stellyrland's secrets.
+      # Use this host's SOPS file and recipients.
       sops.defaultSopsFile = ../../../secrets/ItsRedFlame.yaml;
 
       hardware.enableRedistributableFirmware = true;
 
-      # This board's tpm_crb probe fails (no working TPM), and systemd's
-      # tpm2.target is Wanted-by sysinit.target unconditionally — without
-      # this, boot stalls on the 90s device-unit timeout twice (initrd + root).
+      # Broken TPM probe; without this, boot stalls twice for 90s.
       systemd.tpm2.enable = false;
       boot.initrd.systemd.tpm2.enable = false;
 

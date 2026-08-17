@@ -5,10 +5,6 @@
     homeDir = "/home/RedFlame";
     flakePath = "/home/RedFlame/Projects/stellyrland";
     passwordSecret = "redflamepsswd";
-    # Currently unused — this host runs Plasma with manual GPU driver setup
-    # below, not hyprland's host.graphics-based selection. Kept for if this
-    # host ever switches window managers.
-    graphics = "nvidia";
 
   };
 
