@@ -35,6 +35,7 @@
         nvf-writing
         opencode
         yazi
+        zed
 
         # Desktop Applications
         zen-browser
