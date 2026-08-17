@@ -6,6 +6,7 @@
       cmdline
       mime
       xdg
+      zsh
       kitty
     ];
   };
