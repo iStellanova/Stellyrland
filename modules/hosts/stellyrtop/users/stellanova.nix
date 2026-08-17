@@ -7,8 +7,7 @@
     home-manager.users.stellanova = {
       zenBrowser.personalize = true;
 
-      # SSH alias for reaching stellyrland from this laptop over tailscale —
-      # only meaningful from here, not universal like the rest of git.nix.
+      # Host-specific Tailscale route; shared SSH defaults live in git.nix.
       programs.ssh.settings.stellyrland = {
         HostName = "stellyrland.tailb15b96.ts.net";
         User = "stellanova";
