@@ -18,6 +18,7 @@ in
       home.file.".p10k.zsh".text = import ./_p10k.nix { inherit lib; };
 
       programs.zsh = {
+        enable = true;
         autosuggestion.enable = true;
         syntaxHighlighting.enable = true;
         historySubstringSearch = {
