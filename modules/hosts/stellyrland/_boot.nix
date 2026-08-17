@@ -1,4 +1,10 @@
-{ config, inputs, lib, pkgs, ... }:
+{
+  config,
+  inputs,
+  lib,
+  pkgs,
+  ...
+}:
 {
   boot.tmp.useTmpfs = true;
   boot.tmp.tmpfsSize = "50%";
