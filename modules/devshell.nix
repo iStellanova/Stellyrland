@@ -12,7 +12,6 @@
           treefmt.build.wrapper
           packages.write-tack
           inputs.tack.packages.${pkgs.stdenv.hostPlatform.system}.tack
-          pkgs.git-crypt
         ];
       };
     };

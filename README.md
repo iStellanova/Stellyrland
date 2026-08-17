@@ -83,7 +83,6 @@ flowchart TD
     MK --> SL["stellyrland\nNixOS · x86_64-linux"]
     MK --> ST["stellyrtop\nmacOS · aarch64-darwin"]
     MK --> PPF["plasmapulsefinale\nNixOS · x86_64-linux"]
-    MK --> FT["famtop\nNixOS · aarch64-linux"]
     MK --> IRF["ItsRedFlame\nNixOS · x86_64-linux"]
 
     style TACK fill:#363a4f,color:#cad3f5,stroke:#5b6078
@@ -95,7 +94,6 @@ flowchart TD
     style SL fill:#1e2030,color:#8aadf4,stroke:#8aadf4
     style ST fill:#1e2030,color:#a6da95,stroke:#a6da95
     style PPF fill:#1e2030,color:#c6a0f6,stroke:#c6a0f6
-    style FT fill:#1e2030,color:#eed49f,stroke:#eed49f
     style IRF fill:#1e2030,color:#ed8796,stroke:#ed8796
 ```
 
@@ -112,7 +110,6 @@ flowchart TD
 ├── secrets/                  # sops-nix encrypted secrets
 │   ├── secrets.yaml
 │   ├── plasmapulsefinale.yaml
-│   ├── famtop.yaml
 │   └── ItsRedFlame.yaml
 └── modules/                  # Flake-parts modules auto-loaded by importTree
     ├── flake-config.nix      # Flake inputs, Tack/flake-file setup, supported systems
@@ -127,7 +124,6 @@ flowchart TD
     │   ├── stellyrland/      # NixOS workstation (x86_64-linux)
     │   ├── stellyrtop/       # macOS MacBook (aarch64-darwin)
     │   ├── plasmapulsefinale/ # NixOS desktop (x86_64-linux)
-    │   ├── famtop/           # NixOS family desktop, Apple Silicon (aarch64-linux)
     │   └── ItsRedFlame/      # NixOS gaming/AV box (x86_64-linux)
     ├── users/                # Shared user aspect definitions
     ├── base/                 # Core, Lix, Nix settings, SSH, Tailscale, SOPS, users
@@ -210,15 +206,6 @@ commits and audits from time to time.
 
 - Architecture: x86_64-linux
 - OS: NixOS
-
-### 💻 Famtop (Apple Silicon Family Desktop)
-
-- CPU: Apple M1
-- Architecture: aarch64-linux
-- Memory: 8 GB Unified
-- Storage: 256 GB
-- OS: NixOS
-- Hardware: Apple Macbook Air
 
 ### 🖥️ ItsRedFlame (Sibling Laptop)
 

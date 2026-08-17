@@ -8,10 +8,8 @@
   perSystem = {
     treefmt = {
       projectRootFile = "flake.nix";
-      # git-crypt encrypted; appears as ciphertext when the key isn't unlocked locally
       settings.global.excludes = [
         ".tack/*"
-        "modules/hosts/famtop/_identity.nix"
       ];
       programs = {
         nixfmt.enable = true;
