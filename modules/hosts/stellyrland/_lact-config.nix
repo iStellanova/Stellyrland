@@ -1,5 +1,4 @@
-# LACT fan curve/power tuning for this exact GPU die — not a generic AMD
-# aspect. gpuId and the tuned values below are specific to this card.
+# Exact-GPU LACT tuning; the ID and values are specific to this card.
 { pkgs, ... }:
 let
   gpuId = "1002:744C-1EAE:7901-0000:03:00.0";
