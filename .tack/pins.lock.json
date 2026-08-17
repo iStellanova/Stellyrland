@@ -91,9 +91,9 @@
     "type": "github",
     "owner": "numtide",
     "repo": "llm-agents.nix",
-    "rev": "a2282af8ad2a912cbd5356b34d6d874f0fd8e5e5",
-    "narHash": "sha256-tG6wEUVbMt+0cT0QEM9p4MddYyxb8yUmpOCEmfRr0vE=",
-    "lastModified": 1786926476
+    "rev": "5dccb49e725e998cd006a13b423b3f58bcc2122e",
+    "narHash": "sha256-iD+Isq32PGakGH6vOfBYGGutcYEgh6AbGatZ9C/rbvk=",
+    "lastModified": 1786954777
   },
   "my-assets": {
     "type": "github",
@@ -131,9 +131,9 @@
     "type": "github",
     "owner": "4evy",
     "repo": "nixcord",
-    "rev": "c2739f4f45543aad98ec0b0bb27975fb2ff55455",
-    "narHash": "sha256-Q2Ed3e0TvgP6vNp6j6Lw8ReObARjl3TQgMWr1uutOjs=",
-    "lastModified": 1786878900
+    "rev": "3f15cc298ceb3794adfcc69f97c04aae7796aa0d",
+    "narHash": "sha256-+cRbUo2O2Ltcssmz5f0/lhXScxkdYPOT1CVcS0cZ41Y=",
+    "lastModified": 1786941321
   },
   "nixos-apple-silicon": {
     "type": "github",
@@ -155,9 +155,9 @@
     "type": "github",
     "owner": "noctalia-dev",
     "repo": "noctalia",
-    "rev": "bf4da239d4737755ebaa5a4aa82ad2969b550e0c",
-    "narHash": "sha256-/2kj1DJx07pwmI9Fn1d50B/ylu5T/D8J3kdzlMnbOYk=",
-    "lastModified": 1786927690
+    "rev": "ced2221ee68d33aa8862fdf0cd45a899a3cb0b31",
+    "narHash": "sha256-QQfBDYvPPaD1uVHlyM71qridwXoFyhGLcR5ZWaYcdy0=",
+    "lastModified": 1786951251
   },
   "noctalia-greeter": {
     "type": "github",
@@ -171,9 +171,9 @@
     "type": "github",
     "owner": "nix-community",
     "repo": "NUR",
-    "rev": "88fbf8d7fc359dc199555f3e21056319e23a87f0",
-    "narHash": "sha256-EdsxUy58kG1vEKS8JsHzYfO9tfsWaYZJpzFIXF1edLk=",
-    "lastModified": 1786929656
+    "rev": "8a7e13b610645e57a6e8341105f63505b685a424",
+    "narHash": "sha256-lN4r/k2eg1M99VHAhDtC+Why1DfWxOGkFpPU9ghNiFY=",
+    "lastModified": 1786953994
   },
   "nvf": {
     "type": "github",
