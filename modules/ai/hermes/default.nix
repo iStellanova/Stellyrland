@@ -62,7 +62,15 @@ in
         "web"
         "browser"
       ];
-      hermesPackage = inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.hermes-agent;
+      # TODO: remove this override once llm-agents.nix packages an upstream
+      # Hermes release that includes registration_lifecycle in py-modules.
+      hermesPackage =
+        inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.hermes-agent.overrideAttrs
+          (old: {
+            postPatch = (old.postPatch or "") + ''
+              sed -i '/^  "run_agent",$/a\  "registration_lifecycle",' pyproject.toml
+            '';
+          });
       fetching = import ./_fetching.nix { inherit pkgs interactiveToolsets; };
     in
     {
