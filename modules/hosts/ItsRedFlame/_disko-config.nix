@@ -1,6 +1,4 @@
-# Disko layout for ItsRedFlame's disk (Samsung 860 EVO 500GB SATA SSD).
-# enableConfig = false: only used to format at install time —
-# _hardware-configuration.nix is the source of truth at runtime.
+# Install-time Disko layout; runtime mounts live in _hardware-configuration.nix.
 { inputs, ... }:
 {
   imports = [ inputs.disko.nixosModules.disko ];

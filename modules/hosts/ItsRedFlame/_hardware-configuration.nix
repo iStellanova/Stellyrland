@@ -1,7 +1,5 @@
-# Hardware configuration for ItsRedFlame (x86_64-linux, HP desktop, Ryzen 7 1700 + GTX 1660).
-# Kernel modules confirmed via `nixos-generate-config --show-hardware-config` on the live
-# installer; fileSystems/swapDevices are hand-written to match the disko layout instead,
-# since the pool didn't exist yet when that flag ran.
+# Hardware facts for ItsRedFlame; filesystems/swap match Disko because the pool
+# did not exist when this was generated.
 {
   config,
   lib,
