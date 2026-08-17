@@ -1,6 +1,5 @@
-# Disko layout for stellyrland's disks (root NVMe + extra NVMe).
-# enableConfig = false: only used to format at install time —
-# _hardware-configuration.nix is the source of truth at runtime.
+# Install-time layout for stellyrland's root and extra NVMe disks; runtime mounts
+# come from _hardware-configuration.nix.
 { inputs, ... }:
 {
   imports = [ inputs.disko.nixosModules.disko ];
@@ -112,7 +111,7 @@
             type = "zfs_fs";
             mountpoint = "/";
             options.mountpoint = "legacy";
-            postCreateHook = "zfs list -t snapshot -H -o name | grep -E '^zroot/local/root@blank$' || zfs snapshot zroot/local/root@blank";
+            postCreateHook = "zfs list -H -o name zroot/local/root@blank >/dev/null 2>&1 || zfs snapshot zroot/local/root@blank";
           };
           "local/nix" = {
             type = "zfs_fs";
@@ -127,7 +126,7 @@
             type = "zfs_fs";
             mountpoint = "/home";
             options.mountpoint = "legacy";
-            postCreateHook = "zfs list -t snapshot -H -o name | grep -E '^zroot/safe/home@blank$' || zfs snapshot zroot/safe/home@blank";
+            postCreateHook = "zfs list -H -o name zroot/safe/home@blank >/dev/null 2>&1 || zfs snapshot zroot/safe/home@blank";
           };
           "safe/persist" = {
             type = "zfs_fs";

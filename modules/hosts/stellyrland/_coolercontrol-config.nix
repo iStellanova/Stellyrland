@@ -1,6 +1,4 @@
-# CoolerControl device config for this exact machine — not a generic aspect.
-# Every device ID/UUID below is pulled from sensors output on this specific
-# motherboard/GPU/AIO pairing and won't match any other machine.
+# Exact hardware snapshot for this machine; IDs will not match another host.
 {
   host,
   pkgs,
@@ -15,10 +13,7 @@ let
       ''
     else
       "";
-  # LACT owns the discrete GPU's fan curve. CoolerControl never had a tuned curve of its
-  # own for it (the GPU's firmware handles fans by default), so this is permanently off
-  # rather than dynamically deferring to LACT's status.
-  gpuDisabled = "true";
+  # LACT owns discrete-GPU fans; CoolerControl stays disabled to avoid conflicts.
   coolerConfig = pkgs.writeText "coolercontrol-config.toml" ''
     # ==============================================================================
     # CoolerControl Configuration - Managed by NixOS
@@ -44,8 +39,6 @@ let
     d8a0d82688da79d4d5ae97535c0b13b6b64bd5a0353b53e2e9a7de8e5638b3c8 = "spd5118"
     961547fb3857172fc22c5f76f1acf7f103bf2512c68dec92287a81c9814fd2c6 = "spd5118"
     c6d76dc72d383065b8f9126461927f904ea2c08dd869ebec3489b245dfbd64de = "Lian Li Uni SL-Infinity"
-
-    [legacy690]
 
     # --- Device Settings ---
     [device-settings]
@@ -128,10 +121,10 @@ let
     # --- GPU Conflict Prevention (disabled here whenever LACT is set to manage the GPU) ---
     [settings.97910386cac9bfce54b2c224e4aaef42cd953440cb57f1ff5ff46ac183bf338e]
     name = "Navi 31 [Radeon RX 7900 XT/7900 XTX/7900 GRE/7900M]"
-    disable = ${gpuDisabled}
+    disable = true
 
     [settings.97910386cac9bfce54b2c224e4aaef42cd953440cb57f1ff5ff46ac183bf338e.channel_settings]
-    fan1 = { label = "Fan1", disabled = ${gpuDisabled} }
+    fan1 = { label = "Fan1", disabled = true }
 
     [settings.2af841828b301922fd91182ee0564e731459a8484a61fe4209d9d91e3315d184]
     name = "Granite Ridge [Radeon Graphics]"
@@ -185,7 +178,6 @@ let
 in
 {
   programs.coolercontrol.enable = true;
-
   environment.systemPackages = [
     pkgs.coolercontrol.coolercontrol-gui
     pkgs.liquidctl
