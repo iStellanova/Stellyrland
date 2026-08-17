@@ -40,6 +40,9 @@ let
     961547fb3857172fc22c5f76f1acf7f103bf2512c68dec92287a81c9814fd2c6 = "spd5118"
     c6d76dc72d383065b8f9126461927f904ea2c08dd869ebec3489b245dfbd64de = "Lian Li Uni SL-Infinity"
 
+    # CoolerControl 4.3.1 indexes this optional table during startup.
+    [legacy690]
+
     # --- Device Settings ---
     [device-settings]
 
