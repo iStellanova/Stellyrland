@@ -59,6 +59,7 @@
       media-editing
       obs
       media
+      lollypop
       soulseek
       music
       gsr
