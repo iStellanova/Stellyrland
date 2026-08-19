@@ -50,7 +50,7 @@
       cmdline
       maintenance
       lanzaboote
-      personal-secrets
+
       backup-service
       stellyrlab-host
       binary-cache-server

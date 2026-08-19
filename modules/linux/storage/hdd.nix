@@ -18,7 +18,7 @@
       ssh = "${pkgs.openssh}/bin/ssh";
       systemctl = "${pkgs.systemd}/bin/systemctl";
       flock = "${pkgs.util-linux}/bin/flock";
-      sshKey = config.sops.secrets.stellacode.path;
+      sshKey = config.security.nix-secrets.secrets.stellacode.path;
       hddPartlabel = "disk-hdd-luks";
       mapperName = "crypthdd";
       poolName = "zhdd";
@@ -38,7 +38,7 @@
           trap cleanup EXIT
           ! ${cryptsetup} status ${mapperName} >/dev/null 2>&1
           ! ${zpool} list ${poolName} >/dev/null 2>&1
-          ${timeout} --foreground 2m ${cryptsetup} open --key-file ${config.sops.secrets.hdd-keyfile.path} /dev/disk/by-partlabel/${hddPartlabel} ${mapperName}
+          ${timeout} --foreground 2m ${cryptsetup} open --key-file ${config.security.nix-secrets.secrets.hdd-keyfile.path} /dev/disk/by-partlabel/${hddPartlabel} ${mapperName}
           opened=true
           ${zpool} import -d /dev/mapper/${mapperName} ${poolName}
           imported=true
@@ -104,12 +104,27 @@
       );
 
       receiverModule = lib.optionalAttrs isReceiver {
+        security.nix-secrets.secrets.hdd-keyfile = {
+          recipients = [
+            "stellanova"
+            host.name
+          ];
+          owner = "root";
+          group = "root";
+          mode = "0400";
+          path = "/run/secrets/hdd-keyfile";
+        };
         services.udev.extraRules = ''
           SUBSYSTEM=="block", ENV{ID_PART_ENTRY_NAME}=="${hddPartlabel}", ENV{UDISKS_IGNORE}="1"
           SUBSYSTEM=="block", ENV{DM_NAME}=="${mapperName}", ENV{UDISKS_IGNORE}="1"
         '';
-        sops.secrets.backup-ssh-key = {
-          key = "stellacode";
+        security.nix-secrets.secrets.backup-ssh-key = {
+          name = "stellacode";
+          recipients = [
+            "stellanova"
+            host.name
+          ];
+          path = "/run/secrets/backup-ssh-key";
           owner = "root";
           group = "root";
           mode = "0400";
@@ -178,5 +193,17 @@
         ) (lib.filterAttrs (name: _: name != host.name) backup.enrolled);
       };
     in
-    lib.recursiveUpdate sourceModule receiverModule;
+    lib.recursiveUpdate sourceModule (
+      lib.recursiveUpdate receiverModule {
+        security.nix-secrets.secrets.stellacode = {
+          recipients = [
+            "stellanova"
+            host.name
+          ];
+          owner = host.username;
+          mode = "0600";
+          path = "/run/secrets/stellacode";
+        };
+      }
+    );
 }

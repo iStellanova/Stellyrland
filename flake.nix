@@ -57,6 +57,10 @@
       url = "github:nix-community/nix-index-database";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nix-secrets = {
+      url = "github:unnamed-systems/nix-secrets/dev";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     nixcord = {
       url = "github:4evy/nixcord";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -88,10 +92,7 @@
       url = "github:yayuuu/hyprland-scroll-overview";
       flake = false;
     };
-    sops-nix = {
-      url = "github:Mic92/sops-nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+
     treefmt-nix = {
       url = "github:numtide/treefmt-nix";
       inputs.nixpkgs.follows = "nixpkgs";

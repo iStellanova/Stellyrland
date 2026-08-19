@@ -60,22 +60,60 @@ in
   flake.modules.nixos.hermes =
     { config, host, ... }:
     {
-      sops.secrets.hermes-bridge-gpg-passphrase = {
+      security.nix-secrets.secrets.hermes-bridge-gpg-passphrase = {
+        recipients = [
+          "stellanova"
+          host.name
+        ];
         owner = host.username;
         mode = "0400";
         path = "/run/secrets/hermes-bridge-gpg-passphrase";
       };
 
-      sops.secrets.hermes-searxng-env = {
+      security.nix-secrets.secrets.hermes-searxng-env = {
+        recipients = [
+          "stellanova"
+          host.name
+        ];
         owner = "root";
         mode = "0400";
         path = "/run/secrets/hermes-searxng.env";
       };
 
+      security.nix-secrets.secrets.hermes-discord-env = {
+        recipients = [
+          "stellanova"
+          "stellyrlab"
+          "stellyrland"
+        ];
+        owner = host.username;
+        mode = "0400";
+        path = "/run/secrets/hermes-discord.env";
+      };
+
+      security.nix-secrets.secrets.stellxie-github-auth = {
+        recipients = [
+          "stellanova"
+          "stellyrlab"
+        ];
+        owner = host.username;
+        mode = "0600";
+        path = "/run/secrets/stellxie-github-auth";
+      };
+      security.nix-secrets.secrets.stellxie-github-signing = {
+        recipients = [
+          "stellanova"
+          "stellyrlab"
+        ];
+        owner = host.username;
+        mode = "0600";
+        path = "/run/secrets/stellxie-github-signing";
+      };
+
       services.searx = {
         enable = true;
         domain = "localhost";
-        environmentFile = config.sops.secrets.hermes-searxng-env.path;
+        environmentFile = config.security.nix-secrets.secrets.hermes-searxng-env.path;
         settings = {
           server = {
             bind_address = "127.0.0.1";
@@ -124,6 +162,13 @@ in
 
       home.sessionVariables.SEARXNG_URL = "http://127.0.0.1:8088";
       systemd.user.sessionVariables.SEARXNG_URL = "http://127.0.0.1:8088";
+
+      programs.ssh.settings."github-stellxie" = {
+        HostName = "github.com";
+        User = "git";
+        IdentityFile = "/run/secrets/stellxie-github-auth";
+        IdentitiesOnly = "yes";
+      };
 
       home.file = {
         ".hermes/SOUL.md" = {

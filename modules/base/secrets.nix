@@ -1,57 +1,94 @@
 { inputs, ... }:
 {
-  flake-file.inputs.sops-nix = {
-    url = "github:Mic92/sops-nix";
-    inputs.nixpkgs.follows = "nixpkgs";
+  flake-file.inputs = {
+    nix-secrets = {
+      url = "github:unnamed-systems/nix-secrets";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
   };
 
   flake.modules.nixos.secrets =
     {
       host,
       config,
-      lib,
       ...
     }:
     {
-      imports = [ inputs.sops-nix.nixosModules.sops ];
+      imports = [
+        inputs.nix-secrets.nixosModules.default
+      ];
 
       config = {
-        sops.age.sshKeyPaths = [
-          (
-            if host.persistence or false then
-              "/persist/etc/ssh/ssh_host_ed25519_key"
-            else
-              "/etc/ssh/ssh_host_ed25519_key"
-          )
-        ];
-
-        # Hosts with separate encrypted files override this default.
-        sops.defaultSopsFile = lib.mkDefault ../../secrets/secrets.yaml;
-        sops.defaultSopsFormat = "yaml";
-
-        # Needed before users are created so the hashed password is available.
-        # This is a per-host secret name, not a username-derived value.
-        sops.secrets.${host.passwordSecret} = {
-          neededForUsers = true;
+        security.nix-secrets = {
+          enable = true;
+          storage = ../../secrets;
+          identityPaths = [
+            (
+              if host.persistence or false then
+                "/persist/etc/ssh/ssh_host_ed25519_key"
+              else
+                "/etc/ssh/ssh_host_ed25519_key"
+            )
+          ];
+          recipientAliases = {
+            stellanova = "age1muxquz7vyrsva0me3q68mf9xak578hzejqm39vr3llfsftc0dcpqaxlaf7";
+            ItsRedFlame = "age1rzxcemflrpsfyxtnenc3ma678s4j72kfzfxu8vnlj6mz6mxqlassn4y9ev";
+            plasmapulsefinale = "age1ltjn45ay4nwrtx8k9f86ylk5zth98xz9t2gxwe6c2ws3wm44sses9hgc9t";
+            stellyrlab = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJCz+XUleiNbgSwcZHvxOXXTbihnTIRoDKoXr+2zCSgA stellyrstick-host";
+            stellyrland = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAPDq0bTLCKn1lKqYn+22wRYiEsNFoMvMlRh1Klm8edA";
+            stellyrtop = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAID23408QRe02peABnmkDcmpu2DVSwN3H+Jm7kcVenTDr topcoat.graver.7c@icloud.com";
+          };
+          secrets.github-token = {
+            path = "/run/secrets/github-token";
+            owner = host.username;
+            mode = "0400";
+            recipients = [
+              "stellanova"
+              "stellyrlab"
+              "stellyrland"
+              "stellyrtop"
+            ];
+          };
+          secrets.${host.passwordSecret} = {
+            neededForUsers = true;
+            recipients = [
+              "stellanova"
+              host.name
+            ];
+          };
         };
 
-        users.users.${host.username}.hashedPasswordFile = config.sops.secrets.${host.passwordSecret}.path;
+        users.users.${host.username}.hashedPasswordFile =
+          config.security.nix-secrets.secrets.${host.passwordSecret}.path;
       };
     };
 
-  flake.modules.darwin.secrets = { host, ... }: {
-    imports = [ inputs.sops-nix.darwinModules.sops ];
+  flake.modules.darwin.secrets =
+    {
+      host,
+      ...
+    }:
+    {
+      imports = [ inputs.nix-secrets.darwinModules.default ];
 
-    sops.age.sshKeyPaths = [ "${host.homeDir}/.ssh/stellacode" ];
-
-    sops.defaultSopsFile = ../../secrets/secrets.yaml;
-    sops.defaultSopsFormat = "yaml";
-
-    # nix-tools.nix checks this user-owned path when exporting GITHUB_TOKEN.
-    sops.secrets.github-token = {
-      path = "${host.homeDir}/.config/github-token";
-      owner = host.username;
-      mode = "0400";
+      security.nix-secrets = {
+        enable = true;
+        storage = ../../secrets;
+        identityPaths = [ "${host.homeDir}/.ssh/stellacode" ];
+        recipientAliases = {
+          stellanova = "age1muxquz7vyrsva0me3q68mf9xak578hzejqm39vr3llfsftc0dcpqaxlaf7";
+          stellyrtop = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAID23408QRe02peABnmkDcmpu2DVSwN3H+Jm7kcVenTDr topcoat.graver.7c@icloud.com";
+        };
+        secrets.github-token = {
+          path = "${host.homeDir}/.config/github-token";
+          owner = host.username;
+          mode = "0400";
+          recipients = [
+            "stellanova"
+            "stellyrtop"
+          ];
+        };
+      };
     };
-  };
 }

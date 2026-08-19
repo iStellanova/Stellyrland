@@ -15,12 +15,33 @@ in
       };
     };
 
-    nixos.stellanova = {
-      imports = [
-        user.nixos.stellanova
-        self.modules.nixos.accessor
-      ];
-    };
+    nixos.stellanova =
+      {
+        host,
+        lib,
+        ...
+      }:
+      {
+        security.nix-secrets.secrets.stellacode =
+          lib.mkIf
+            (builtins.elem host.name [
+              "stellyrlab"
+              "stellyrland"
+            ])
+            {
+              recipients = [
+                "stellanova"
+                host.name
+              ];
+              owner = host.username;
+              mode = "0600";
+              path = "/run/secrets/stellacode";
+            };
+        imports = [
+          user.nixos.stellanova
+          self.modules.nixos.accessor
+        ];
+      };
     darwin.stellanova = {
       imports = [
         user.darwin.stellanova

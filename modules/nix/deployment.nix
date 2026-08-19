@@ -16,7 +16,11 @@ in
       ...
     }:
     {
-      sops.secrets.stellacode = {
+      security.nix-secrets.secrets.stellacode = {
+        recipients = [
+          "stellanova"
+          host.name
+        ];
         owner = host.username;
         mode = "0600";
       };
@@ -33,7 +37,7 @@ in
             system = "x86_64-linux";
             protocol = "ssh-ng";
             sshUser = host.username;
-            sshKey = config.sops.secrets.stellacode.path;
+            sshKey = config.security.nix-secrets.secrets.stellacode.path;
             supportedFeatures = [ "big-parallel" ];
             maxJobs = 1;
             speedFactor = 10;

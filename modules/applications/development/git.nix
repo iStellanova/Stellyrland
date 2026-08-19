@@ -3,7 +3,6 @@
     {
       config,
       host,
-      lib,
       pkgs,
       ...
     }:
@@ -29,14 +28,6 @@
             HashKnownHosts = "yes";
             SendEnv = "LANG LC_*";
             IdentityFile = host.gitSshKey;
-          };
-        }
-        // lib.optionalAttrs (host.class == "nixos") {
-          "github-stellxie" = {
-            HostName = "github.com";
-            User = "git";
-            IdentityFile = "/run/secrets/stellxie-github-auth";
-            IdentitiesOnly = "yes";
           };
         };
       };
