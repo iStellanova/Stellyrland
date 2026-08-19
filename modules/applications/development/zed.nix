@@ -3,6 +3,16 @@
     homebrew.casks = [ "zed" ];
   };
 
+  flake.modules.nixos.zed =
+    { lib, host, ... }:
+    {
+      imports = lib.optional (host.persistence or false) {
+        preservation.preserveAt."/persist".users.${host.username}.directories = [
+          ".local/share/zed"
+        ];
+      };
+    };
+
   flake.modules.homeManager.zed =
     {
       host,
