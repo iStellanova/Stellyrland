@@ -104,10 +104,8 @@ flowchart TD
 ├── flake.nix                 # Flake entry point
 ├── flake.lock                # Input lockfile
 ├── docs/                     # Concepts, workflow notes, and troubleshooting
-├── secrets/                  # sops-nix encrypted secrets
-│   ├── secrets.yaml
-│   ├── plasmapulsefinale.yaml
-│   └── ItsRedFlame.yaml
+├── secrets/                  # nix-secrets encrypted secrets
+│   └── *.enc
 └── modules/                  # Flake-parts modules
     ├── flake-config.nix      # Flake-file declarations and supported systems
     ├── constants.nix         # Shared defaults merged into every host's `host.*`
@@ -122,7 +120,7 @@ flowchart TD
     │   ├── plasmapulsefinale/ # NixOS desktop (x86_64-linux)
     │   └── ItsRedFlame/      # NixOS gaming/AV box (x86_64-linux)
     ├── users/                # Shared user aspect definitions
-    ├── base/                 # Core, Lix, Nix settings, SSH, Tailscale, SOPS, users
+    ├── base/                 # Core, Lix, Nix settings, SSH, Tailscale, secrets, users
     ├── nix/                  # Nix, Home Manager, deployment, operational helpers, and flake options
     ├── linux/                # Linux boot, hardware, and storage configuration
     │   ├── boot/

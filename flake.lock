@@ -1034,6 +1034,27 @@
         "type": "github"
       }
     },
+    "nix-secrets": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1787424906,
+        "narHash": "sha256-+ygP+/5a0zPdkGAuVGUiiUAg12NY6E8tZMcjJHPArvo=",
+        "owner": "unnamed-systems",
+        "repo": "nix-secrets",
+        "rev": "13f36151f772f3e12217ce4f510ed90aff295042",
+        "type": "github"
+      },
+      "original": {
+        "owner": "unnamed-systems",
+        "ref": "dev",
+        "repo": "nix-secrets",
+        "type": "github"
+      }
+    },
     "nixcord": {
       "inputs": {
         "flake-parts": "flake-parts_4",
@@ -1358,6 +1379,7 @@
         "nix-flatpak": "nix-flatpak",
         "nix-homebrew": "nix-homebrew",
         "nix-index-database": "nix-index-database",
+        "nix-secrets": "nix-secrets",
         "nixcord": "nixcord",
         "nixpkgs": "nixpkgs_3",
         "noctalia": "noctalia",
@@ -1368,7 +1390,6 @@
         "preservation": "preservation",
         "proton-mcp": "proton-mcp",
         "scroll-overview": "scroll-overview",
-        "sops-nix": "sops-nix",
         "treefmt-nix": "treefmt-nix_3",
         "zen-browser": "zen-browser"
       }
@@ -1407,26 +1428,6 @@
       "original": {
         "owner": "yayuuu",
         "repo": "hyprland-scroll-overview",
-        "type": "github"
-      }
-    },
-    "sops-nix": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1786629091,
-        "narHash": "sha256-gkig4nPi1CWc4Z50GBsjE4ygSE7hMpl/TwID2an2Cck=",
-        "owner": "Mic92",
-        "repo": "sops-nix",
-        "rev": "a8627b21b9107c5711c96b84f32a9a4b3d45295f",
-        "type": "github"
-      },
-      "original": {
-        "owner": "Mic92",
-        "repo": "sops-nix",
         "type": "github"
       }
     },

@@ -88,7 +88,6 @@
       zed
 
       # Personal Secrets
-      personal-secrets
 
       # Host Specific Config
       stellyrland-host

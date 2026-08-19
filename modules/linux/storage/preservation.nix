@@ -54,7 +54,6 @@
             # Credentials
             ".ssh"
             ".gnupg"
-            ".config/sops"
 
             # Nix user state — profile dir must survive rollback so
             # home-manager-stellanova.service's setupVars() doesn't exit 1 at boot

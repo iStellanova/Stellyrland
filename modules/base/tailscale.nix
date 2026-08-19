@@ -22,10 +22,19 @@ in
             preservation.preserveAt."/persist".directories = [ "/var/lib/tailscale" ];
           };
 
-          sops.secrets.tailscale_auth_key = { };
+          security.nix-secrets.secrets.tailscale_auth_key = {
+            name = "tailscale_auth_key";
+            recipients = [
+              "stellanova"
+              "ItsRedFlame"
+              "plasmapulsefinale"
+              "stellyrlab"
+              "stellyrland"
+            ];
+          };
 
           services.tailscale = {
-            authKeyFile = config.sops.secrets.tailscale_auth_key.path;
+            authKeyFile = config.security.nix-secrets.secrets.tailscale_auth_key.path;
             interfaceName = "tailscale0";
             useRoutingFeatures = "client";
             extraUpFlags = [

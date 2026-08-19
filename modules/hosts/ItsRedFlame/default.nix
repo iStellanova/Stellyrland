@@ -67,9 +67,6 @@
       # Avoid ZFS pool import conflicts.
       boot.zfs.forceImportRoot = false;
 
-      # Use this host's SOPS file and recipients.
-      sops.defaultSopsFile = ../../../secrets/ItsRedFlame.yaml;
-
       hardware.enableRedistributableFirmware = true;
       myModules.programs.obs.nvidia = true;
 

@@ -9,9 +9,6 @@
 
       networking.hostName = host.name;
 
-      # Host-specific SOPS file; never decrypt stellyrland's secrets.
-      sops.defaultSopsFile = ../../../secrets/plasmapulsefinale.yaml;
-
       # Stock LTS is cached with ZFS; this CPU's CachyOS variant is not.
       boot.kernelPackages = pkgs.linuxPackages_6_12;
 
