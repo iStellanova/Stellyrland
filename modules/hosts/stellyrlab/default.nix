@@ -12,6 +12,8 @@
         networkmanager.enable = true;
       };
       nix.settings.trusted-users = [ host.username ];
+      nix.settings.max-jobs = 2;
+      nix.settings.cores = 4;
       users.users.${host.username}.linger = true;
       system.stateVersion = "26.05";
 
