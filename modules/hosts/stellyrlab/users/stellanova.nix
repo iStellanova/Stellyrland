@@ -12,7 +12,6 @@
         hermes
         nvf-ide
         deployment-distributor
-        zed
       ];
     };
   };

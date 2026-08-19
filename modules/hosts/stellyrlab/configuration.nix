@@ -42,6 +42,7 @@
       base
       cmdline
       maintenance
+      lanzaboote
       personal-secrets
       hdd
       stellyrlab-host

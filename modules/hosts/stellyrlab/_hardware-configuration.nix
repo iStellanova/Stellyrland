@@ -1,4 +1,4 @@
-# Hardware and runtime mounts for stellyrlab.
+# Hardware and runtime mounts for stellyrlab (Dell OptiPlex 7060).
 {
   config,
   lib,
@@ -13,13 +13,14 @@
   boot.initrd.availableKernelModules = [
     "xhci_pci"
     "nvme"
+    "ahci"
     "usbhid"
     "usb_storage"
     "sd_mod"
   ];
   boot.kernelModules = [ "kvm-intel" ];
 
-  networking.hostId = "588dbd9f";
+  networking.hostId = "978a4bd9";
 
   fileSystems."/" = {
     device = "zroot/local/root";
@@ -40,7 +41,7 @@
     fsType = "zfs";
   };
   fileSystems."/boot" = {
-    device = "/dev/disk/by-partlabel/AORUSBOOT";
+    device = "/dev/disk/by-partlabel/STELLYRBOOT";
     fsType = "vfat";
     options = [
       "fmask=0077"

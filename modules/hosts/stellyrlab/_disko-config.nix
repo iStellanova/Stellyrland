@@ -7,13 +7,13 @@
   disko.devices = {
     disk.main = {
       type = "disk";
-      device = "/dev/disk/by-id/nvme-SAMSUNG_MZVL4256HBJD-00BH1_S6B6NU2WB53875";
+      device = "/dev/disk/by-id/nvme-PM991a_NVMe_Samsung_256GB_______S660NX2T550990";
       content = {
         type = "gpt";
         partitions = {
           ESP = {
             priority = 1;
-            label = "AORUSBOOT";
+            label = "STELLYRBOOT";
             size = "1G";
             type = "EF00";
             content = {
@@ -39,7 +39,7 @@
             size = "100%";
             content = {
               type = "luks";
-              name = "cryptroot";
+              name = "stellyrlab-root";
               settings.allowDiscards = true;
               content = {
                 type = "zfs";
