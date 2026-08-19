@@ -1,8 +1,14 @@
 { inputs, ... }:
 {
-  flake-file.inputs.sops-nix = {
-    url = "github:Mic92/sops-nix";
-    inputs.nixpkgs.follows = "nixpkgs";
+  flake-file.inputs = {
+    nix-secrets = {
+      url = "github:unnamed-systems/nix-secrets/dev";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    sops-nix = {
+      url = "github:Mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   flake.modules.nixos.secrets =
@@ -39,19 +45,31 @@
       };
     };
 
-  flake.modules.darwin.secrets = { host, ... }: {
-    imports = [ inputs.sops-nix.darwinModules.sops ];
+  flake.modules.darwin.secrets =
+    {
+      host,
+      ...
+    }:
+    {
+      imports = [ inputs.nix-secrets.darwinModules.default ];
 
-    sops.age.sshKeyPaths = [ "${host.homeDir}/.ssh/stellacode" ];
-
-    sops.defaultSopsFile = ../../secrets/secrets.yaml;
-    sops.defaultSopsFormat = "yaml";
-
-    # nix-tools.nix checks this user-owned path when exporting GITHUB_TOKEN.
-    sops.secrets.github-token = {
-      path = "${host.homeDir}/.config/github-token";
-      owner = host.username;
-      mode = "0400";
+      security.nix-secrets = {
+        enable = true;
+        storage = ../../secrets;
+        identityPaths = [ "${host.homeDir}/.ssh/stellacode" ];
+        recipientAliases = {
+          stellanova = "age1muxquz7vyrsva0me3q68mf9xak578hzejqm39vr3llfsftc0dcpqaxlaf7";
+          stellyrtop = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAID23408QRe02peABnmkDcmpu2DVSwN3H+Jm7kcVenTDr topcoat.graver.7c@icloud.com";
+        };
+        secrets.github-token = {
+          path = "${host.homeDir}/.config/github-token";
+          owner = host.username;
+          mode = "0400";
+          recipients = [
+            "stellanova"
+            "stellyrtop"
+          ];
+        };
+      };
     };
-  };
 }
