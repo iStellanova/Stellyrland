@@ -77,6 +77,7 @@
       # Persistence companions for Home Manager applications
       opencode
       discord
+      zed
 
       # Personal Secrets
       personal-secrets
