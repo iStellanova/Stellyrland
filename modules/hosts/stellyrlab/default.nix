@@ -15,7 +15,6 @@
       users.users.${host.username}.linger = true;
       system.stateVersion = "26.05";
 
-      # i915 is unstable on this laptop.
       boot = {
         loader.systemd-boot = {
           enable = true;
@@ -23,33 +22,14 @@
           consoleMode = "max";
         };
         loader.efi.canTouchEfiVariables = true;
-        # Temporary reset discriminator: use an older kernel family than 6.12.
-        kernelPackages = pkgs.linuxPackages_6_6;
-        blacklistedKernelModules = [
-          "i915"
-          "nouveau"
-          "nvidia"
-          "nvidia_drm"
-          "nvidia_modeset"
-          "nvidia_uvm"
-          "i2c_nvidia_gpu"
-          "i2c_ccgx_ucsi"
-        ];
         zfs = {
           devNodes = "/dev/mapper";
           forceImportRoot = true;
         };
         initrd = {
           supportedFilesystems = [ "zfs" ];
-          systemd = {
-            enable = true;
-            tpm2.enable = true;
-            services.zfs-import-zroot = {
-              after = [ "systemd-cryptsetup@cryptroot.service" ];
-              requires = [ "systemd-cryptsetup@cryptroot.service" ];
-            };
-          };
-          luks.devices.cryptroot = {
+          systemd.enable = true;
+          luks.devices.stellyrlab-root = {
             device = "/dev/disk/by-partlabel/disk-main-root";
             allowDiscards = true;
             crypttabExtraOpts = [
