@@ -14,7 +14,6 @@
       # Base
       base
       cmdline
-      deployment-recipient
 
       # Desktop-Adjacent
       services-base

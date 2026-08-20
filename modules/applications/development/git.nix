@@ -25,7 +25,7 @@
             IdentityFile = host.gitSshKey;
             AddKeysToAgent = "yes";
           };
-          "* !github-stellxie !deploy-*" = {
+          "* !github-stellxie" = {
             HashKnownHosts = "yes";
             SendEnv = "LANG LC_*";
             IdentityFile = host.gitSshKey;
