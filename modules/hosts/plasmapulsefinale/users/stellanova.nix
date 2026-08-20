@@ -9,6 +9,7 @@
         home = "/home/stellanova";
         shell = pkgs.zsh;
         group = "stellanova";
+        extraGroups = [ "wheel" ];
       };
       users.groups.stellanova = { };
       programs.zsh.enable = true;
