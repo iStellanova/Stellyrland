@@ -20,8 +20,6 @@
       system-tools
       maintenance
       xdg
-
-      deployment-recipient
       zfs-snapshots-builtin
 
       # Desktop

@@ -18,7 +18,6 @@
         git
         hermes
         nvf-ide
-        deployment-distributor
       ];
     };
   };

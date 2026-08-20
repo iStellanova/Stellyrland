@@ -23,7 +23,6 @@
     imports = with self.modules.nixos; [
       # Base
       base
-      deployment-recipient
       cmdline
 
       # Desktop-Adjacent (session/GUI plumbing, not Hyprland-specific)

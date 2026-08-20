@@ -14,7 +14,7 @@
       # hdd-keyfile is declared in modules/system/personal-secrets.nix, not
       # here — this module requires personal-secrets to also be imported.
       keyFile = config.sops.secrets.hdd-keyfile.path;
-      sourceKey = config.sops.secrets.stellyrlab-deploy-key.path;
+      sourceKey = config.sops.secrets.stellacode.path;
       sshOptions = "--sshoption=StrictHostKeyChecking=yes --sshoption=UserKnownHostsFile=/etc/ssh/ssh_known_hosts";
 
       syncSource =
