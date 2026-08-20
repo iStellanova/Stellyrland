@@ -19,6 +19,18 @@
       ];
 
       networking.hostName = host.name;
+      networking.networkmanager.ensureProfiles.profiles.stellyrlab-direct = {
+        connection = {
+          id = "stellyrlab-direct";
+          type = "ethernet";
+          interface-name = "enp16s0";
+        };
+        ipv4 = {
+          method = "manual";
+          addresses = "172.31.255.2/30";
+        };
+        ipv6.method = "disabled";
+      };
 
       systemd.tmpfiles.rules = [
         "w /sys/bus/platform/drivers/amd_x3d_vcache/AMDI0101:00/amd_x3d_mode - - - - cache"
