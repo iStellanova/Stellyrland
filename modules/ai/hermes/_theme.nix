@@ -15,8 +15,6 @@
     ui_primary = "#cad3f5";
     ui_label = "#b8c0e0";
     banner_dim = "#a5adcb";
-    # The Ink TUI reserves its own startup card; matching its structural rules
-    # to the base surface keeps the working transcript visually quiet.
     banner_border = "#24273a";
     ui_border = "#24273a";
 
@@ -35,8 +33,6 @@
     session_label = "#8aadf4";
     session_border = "#24273a";
 
-    # The TUI uses these as line backgrounds; keep them dark enough that the
-    # brighter word colors remain readable in inline diffs.
     diff_added = "#2d4a3a";
     diff_removed = "#4d303b";
     diff_added_word = "#a6da95";
