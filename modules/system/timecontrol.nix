@@ -54,6 +54,46 @@
               day: dayWindows: lib.imap0 (index: window: { inherit day index window; }) dayWindows
             ) config.timecontrol.schedule
           );
+          timerNames = lib.concatMap (
+            { day, index, ... }:
+            [
+              "timecontrol-start-${lib.toLower day}-${toString index}.timer"
+              "timecontrol-stop-${lib.toLower day}-${toString index}.timer"
+            ]
+          ) windows;
+          timerCommands =
+            action:
+            lib.concatMapStringsSep "\n" (
+              name: "${pkgs.systemd}/bin/systemctl ${action} ${lib.escapeShellArg name}"
+            ) timerNames;
+          toggleCommand = pkgs.writeShellScriptBin "timecontrol" ''
+            set -eu
+
+            case "''${1:-}" in
+              status)
+                exec ${pkgs.systemd}/bin/systemctl list-timers --all 'timecontrol-*.timer'
+                ;;
+              on|off)
+                ;;
+              *)
+                printf 'usage: timecontrol {on|off|status}\n' >&2
+                exit 2
+                ;;
+            esac
+
+            if [ "$(${pkgs.coreutils}/bin/id -u)" -ne 0 ]; then
+              exec ${pkgs.systemd}/bin/run0 -- "$0" "$@"
+            fi
+
+            if [ "$1" = off ]; then
+              ${timerCommands "stop"}
+              exec ${pkgs.shadow}/bin/passwd -u ${lib.escapeShellArg config.timecontrol.user}
+            fi
+
+            ${timerCommands "stop"}
+            ${timerCommands "clean --what=state"}
+            ${timerCommands "start"}
+          '';
         in
         {
           assertions = [
@@ -70,6 +110,8 @@
               message = "timecontrol windows must start before they end; overnight windows are unsupported.";
             }
           ];
+
+          environment.systemPackages = [ toggleCommand ];
 
           systemd.services = lib.listToAttrs (
             lib.concatMap (
