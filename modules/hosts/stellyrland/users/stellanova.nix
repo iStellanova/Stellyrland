@@ -1,10 +1,17 @@
-{ self, ... }: {
+{ self, lib, ... }: {
   flake.modules.nixos.stellyrland = {
     imports = [
       self.modules.nixos.stellanova
     ];
 
     home-manager.users.stellanova = {
+      programs.ssh.settings.stellyrlab = {
+        HostName = lib.mkForce "172.31.255.1";
+        User = "stellanova";
+        IdentityFile = "/run/secrets/stellacode";
+        IdentitiesOnly = "yes";
+      };
+
       zenBrowser.personalize = true;
 
       # Installed desktop files; MIME types are defined in modules/system/mime.nix.

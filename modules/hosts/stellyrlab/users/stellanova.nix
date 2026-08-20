@@ -4,7 +4,7 @@
     imports = [ self.modules.nixos.stellanova ];
 
     home-manager.users.stellanova = {
-      programs.ssh.settings.stellyrland-direct = {
+      programs.ssh.settings.stellyrland = {
         HostName = "172.31.255.2";
         User = "stellanova";
         IdentityFile = "/run/secrets/stellacode";
