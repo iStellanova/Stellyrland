@@ -61,7 +61,6 @@
       media
       lollypop
       soulseek
-      music
       gsr
 
       # Desktop Applications
