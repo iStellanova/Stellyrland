@@ -35,7 +35,6 @@
         # AV / Media
         cava
         media
-        music
         background-sounds
 
         # Productivity

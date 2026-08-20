@@ -31,11 +31,6 @@
         mode = "0400";
       };
 
-      sops.secrets.lastfm-password = {
-        owner = host.username;
-        mode = "0400";
-      };
-
       # Backup HDD keyfile — root-only, used by backup-hdd service.
       sops.secrets.hdd-keyfile = {
         owner = "root";

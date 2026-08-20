@@ -45,7 +45,6 @@
         cava
         gsr
         media
-        music
         background-sounds
 
         # Productivity
