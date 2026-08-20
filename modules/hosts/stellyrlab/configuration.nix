@@ -46,6 +46,7 @@
       personal-secrets
       hdd
       stellyrlab-host
+      binary-cache-server
       deployment-distributor
     ];
   };
