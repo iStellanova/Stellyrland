@@ -20,6 +20,10 @@
           exit 77
         fi
 
+        if [ -r /run/secrets/github-token ]; then
+          export GITHUB_TOKEN="$(${pkgs.coreutils}/bin/cat /run/secrets/github-token)"
+        fi
+
         ${nix} run .#write-tack
 
         hosts_file=$(${pkgs.coreutils}/bin/mktemp)
