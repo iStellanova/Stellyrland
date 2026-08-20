@@ -17,6 +17,7 @@
         fastfetch
         git
         hermes
+        fleet-build
         nvf-ide
       ];
     };
