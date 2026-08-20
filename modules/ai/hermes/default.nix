@@ -2,6 +2,11 @@
 let
   theme = import ./_theme.nix;
   skills = import ./_skills.nix { inherit inputs; };
+  interactiveToolsets = [
+    "hermes-cli"
+    "web"
+    "browser"
+  ];
 
   baseHermesConfig = {
     _config_version = 33;
@@ -22,8 +27,14 @@ let
     display.skin = theme.name;
     display.show_reasoning = false;
 
-    # A single interactive process does not need WAL concurrency, and the
-    # rollback host stores home on ZFS where SQLite WAL is less robust.
+    web.search_backend = "searxng";
+    browser.engine = "chrome";
+
+    platform_toolsets = {
+      cli = interactiveToolsets;
+      discord = interactiveToolsets;
+    };
+
     database.journal_mode = "delete";
 
     security.allow_lazy_installs = false;
@@ -46,6 +57,30 @@ let
   '';
 in
 {
+  flake.modules.nixos.hermes =
+    { config, ... }:
+    {
+      sops.secrets.hermes-searxng-env = {
+        owner = "root";
+        mode = "0400";
+        path = "/run/secrets/hermes-searxng.env";
+      };
+
+      services.searx = {
+        enable = true;
+        domain = "localhost";
+        environmentFile = config.sops.secrets.hermes-searxng-env.path;
+        settings = {
+          server = {
+            bind_address = "127.0.0.1";
+            port = 8088;
+            secret_key = "$SEARXNG_SECRET_KEY";
+          };
+          search.formats = [ "json" ];
+        };
+      };
+    };
+
   flake-file.inputs = {
     llm-agents = {
       url = "github:numtide/llm-agents.nix";
@@ -57,19 +92,14 @@ in
   flake.modules.homeManager.hermes =
     { pkgs, ... }:
     let
-      interactiveToolsets = [
-        "hermes-cli"
-        "web"
-        "browser"
-      ];
       hermesPackage = inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.hermes-agent;
-      fetching = import ./_fetching.nix { inherit pkgs interactiveToolsets; };
+      fetching = import ./_fetching.nix { inherit inputs pkgs; };
     in
     {
       home.packages = [ hermesPackage ] ++ fetching.packages;
 
-      home.sessionVariables = fetching.sessionVariables;
-      systemd.user.sessionVariables = fetching.sessionVariables;
+      home.sessionVariables.SEARXNG_URL = "http://127.0.0.1:8088";
+      systemd.user.sessionVariables.SEARXNG_URL = "http://127.0.0.1:8088";
 
       home.file = {
         ".hermes/SOUL.md" = {
@@ -77,21 +107,7 @@ in
           force = true;
         };
         ".hermes/config.yaml" = {
-          text = builtins.toJSON (
-            (baseHermesConfig // fetching.hermesConfig // skills.hermesConfig)
-            // {
-              platform_toolsets = fetching.hermesConfig.platform_toolsets // {
-                discord = interactiveToolsets;
-              };
-              mcp_servers = fetching.hermesConfig.mcp_servers // {
-                nixos = {
-                  command = "${pkgs.mcp-nixos}/bin/mcp-nixos";
-                  supports_parallel_tool_calls = true;
-                  sampling.enabled = false;
-                };
-              };
-            }
-          );
+          text = builtins.toJSON (baseHermesConfig // fetching.hermesConfig // skills.hermesConfig);
           force = true;
         };
         ".hermes/skins/${theme.name}.yaml" = {
@@ -102,7 +118,6 @@ in
       // skills.files;
 
       systemd.user.services = {
-        hermes-searxng = fetching.searxngService;
         hermes-gateway = {
           Unit = {
             Description = "Stellxie Hermes Discord gateway";
@@ -120,7 +135,6 @@ in
         hermes-serve = {
           Unit.Description = "Stellxie Hermes remote backend";
           Service = {
-            # ponytail: SSH forwarding is the access boundary; add public auth only when needed.
             ExecStart = "${hermesPackage}/bin/hermes serve --host 127.0.0.1 --port 9119";
             Restart = "always";
             RestartSec = 5;

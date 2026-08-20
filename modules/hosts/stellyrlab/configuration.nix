@@ -55,6 +55,7 @@
       stellyrlab-host
       binary-cache-server
       deployment-distributor
+      hermes
     ];
   };
 }
