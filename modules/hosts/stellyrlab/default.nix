@@ -10,6 +10,18 @@
       networking = {
         hostName = host.name;
         networkmanager.enable = true;
+        networkmanager.ensureProfiles.profiles.stellyrland-direct = {
+          connection = {
+            id = "stellyrland-direct";
+            type = "ethernet";
+            interface-name = "eno2";
+          };
+          ipv4 = {
+            method = "manual";
+            addresses = "172.31.255.1/30";
+          };
+          ipv6.method = "disabled";
+        };
       };
       nix.settings.trusted-users = [ host.username ];
       nix.settings.max-jobs = 2;

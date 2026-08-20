@@ -10,6 +10,7 @@ let
     };
     stellyrland = {
       hostNames = [
+        "172.31.255.2"
         "stellyrland.local"
         "stellyrland.tailb15b96.ts.net"
       ];
