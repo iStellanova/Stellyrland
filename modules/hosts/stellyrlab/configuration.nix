@@ -9,11 +9,27 @@
     userEmail = "iStellanova@users.noreply.github.com";
     gitSshKey = "/run/secrets/stellacode";
 
-    backupHdd = {
-      sources = {
+    backup = {
+      datasets = {
+        home = "zroot/safe/home";
+      };
+      enrolled = {
+        stellyrlab = {
+          host = null;
+          user = "stellanova";
+          publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAID23408QRe02peABnmkDcmpu2DVSwN3H+Jm7kcVenTDr";
+          datasets = {
+            home = {
+              source = "zroot/safe/home";
+              target = "home";
+            };
+          };
+        };
         stellyrland = {
-          host = "stellyrland.tailb15b96.ts.net";
-          dirs = {
+          host = "172.31.255.2";
+          user = "stellanova";
+          publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAID23408QRe02peABnmkDcmpu2DVSwN3H+Jm7kcVenTDr";
+          datasets = {
             home = {
               source = "zroot/safe/home";
               target = "home";
@@ -21,15 +37,6 @@
             persist = {
               source = "zroot/safe/persist";
               target = "persist";
-            };
-          };
-        };
-        stellyrlab = {
-          host = null;
-          dirs = {
-            home = {
-              source = "zroot/safe/home";
-              target = "homelab-home";
             };
           };
         };
@@ -44,7 +51,7 @@
       maintenance
       lanzaboote
       personal-secrets
-      hdd
+      backup-service
       stellyrlab-host
       binary-cache-server
       deployment-distributor
