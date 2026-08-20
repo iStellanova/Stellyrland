@@ -1,152 +1,182 @@
 {
-  flake.modules.nixos.hdd =
+  flake.modules.nixos.backup-service =
     {
+      config,
       host,
       lib,
       pkgs,
-      config,
       ...
     }:
     let
+      inherit (host) backup;
+      isSource = backup ? datasets;
+      isReceiver = backup ? enrolled;
+      zfs = "${pkgs.zfs}/bin/zfs";
+      zpool = "${pkgs.zfs}/bin/zpool";
+      cryptsetup = "${pkgs.cryptsetup}/bin/cryptsetup";
+      timeout = "${pkgs.coreutils}/bin/timeout";
+      ssh = "${pkgs.openssh}/bin/ssh";
+      systemctl = "${pkgs.systemd}/bin/systemctl";
+      flock = "${pkgs.util-linux}/bin/flock";
+      sshKey = config.sops.secrets.stellacode.path;
       hddPartlabel = "disk-hdd-luks";
       mapperName = "crypthdd";
       poolName = "zhdd";
-      # hdd-keyfile is declared in modules/system/personal-secrets.nix, not
-      # here — this module requires personal-secrets to also be imported.
-      keyFile = config.sops.secrets.hdd-keyfile.path;
-      sourceKey = config.sops.secrets.stellacode.path;
-      sshOptions = "--sshoption=StrictHostKeyChecking=yes --sshoption=UserKnownHostsFile=/etc/ssh/ssh_known_hosts";
 
-      syncSource =
-        sourceName: source:
-        lib.concatStringsSep "\n" (
-          lib.mapAttrsToList (
-            _dirName: dir:
-            let
-              isRemote = source.host != null;
-              sourceDataset = if isRemote then "${host.username}@${source.host}:${dir.source}" else dir.source;
-              sshOptions' = lib.optionalString isRemote ''
-                --sshkey ${sourceKey} \\
-                ${sshOptions} \\
-              '';
-            in
-            ''
-              echo "Syncing ${sourceName}:${dir.source} → ${poolName}/${dir.target}..."
-              ${pkgs.sanoid}/bin/syncoid \\
-                --recursive \\
-                --no-privilege-elevation \\
-                --force-delete \\
-                ${sshOptions'}
-                ${sourceDataset} ${poolName}/${dir.target}
-            ''
-          ) source.dirs
-        );
+      receive =
+        sourceName:
+        pkgs.writeShellScript "backup-receive-${sourceName}" ''
+          set -euo pipefail
+          exec 9>/run/lock/backup-hdd.lock
+          ${flock} -n 9 || exit 75
+          opened=false; imported=false
+          cleanup() {
+            set +e
+            $imported && ${zpool} export ${poolName}
+            $opened && ${cryptsetup} close ${mapperName}
+          }
+          trap cleanup EXIT
+          ! ${cryptsetup} status ${mapperName} >/dev/null 2>&1
+          ! ${zpool} list ${poolName} >/dev/null 2>&1
+          ${timeout} --foreground 2m ${cryptsetup} open --key-file ${config.sops.secrets.hdd-keyfile.path} /dev/disk/by-partlabel/${hddPartlabel} ${mapperName}
+          opened=true
+          ${zpool} import -d /dev/mapper/${mapperName} ${poolName}
+          imported=true
+          ${zfs} create -p ${poolName}/${sourceName}
+          ${lib.concatStringsSep "\n" (
+            lib.mapAttrsToList (
+              dirName: _dir: "${systemctl} start --wait syncoid-${sourceName}-${dirName}.service"
+            ) backup.enrolled.${sourceName}.datasets
+          )}
+          ${zpool} export ${poolName}; imported=false
+          ${cryptsetup} close ${mapperName}; opened=false
+        '';
 
-      syncSources = lib.concatStringsSep "\n" (
-        lib.mapAttrsToList (sourceName: source: syncSource sourceName source) host.backupHdd.sources
+      request =
+        if isReceiver then
+          "${receive host.name}"
+        else
+          ''
+            ${ssh} -i ${sshKey} -o IdentitiesOnly=yes -o BatchMode=yes -o StrictHostKeyChecking=yes -o UserKnownHostsFile=/etc/ssh/ssh_known_hosts backup-${host.name}@${backup.receiver.address} backup-request
+          '';
+
+      sourceModule = lib.optionalAttrs isSource (
+        lib.recursiveUpdate
+          {
+            systemd.services."backup-${host.name}" = {
+              after = [
+                "network-online.target"
+                "zfs.target"
+              ];
+              wants = [ "network-online.target" ];
+              serviceConfig = {
+                Type = "oneshot";
+                ExecStart = request;
+              };
+            };
+            systemd.timers."backup-${host.name}" = {
+              wantedBy = [ "timers.target" ];
+              timerConfig = {
+                OnCalendar = "Sun *-*-* 12:00:00";
+                Persistent = true;
+              };
+            };
+          }
+          (
+            lib.optionalAttrs (backup ? receiver) {
+              programs.ssh.knownHosts.stellyrlab = {
+                hostNames = [ backup.receiver.address ];
+                publicKey = backup.receiver.publicKey;
+              };
+              systemd.services."backup-${host.name}-zfs-delegation" = {
+                wantedBy = [ "zfs.target" ];
+                after = [ "zfs.target" ];
+                serviceConfig = {
+                  Type = "oneshot";
+                  RemainAfterExit = true;
+                  ExecStart = lib.mapAttrsToList (
+                    _name: dataset: "${zfs} allow -u ${host.username} snapshot,send,destroy,hold,release ${dataset}"
+                  ) backup.datasets;
+                };
+              };
+            }
+          )
       );
 
-      backupScript = pkgs.writeShellScript "backup-hdd" ''
-        set -euo pipefail
-
-        echo "Starting ZFS syncoid backup to encrypted HDD..."
-
-        if [ ! -f "${keyFile}" ]; then
-          echo "Error: Keyfile ${keyFile} not found!"
-          exit 1
-        fi
-
-        mapperOpened=false
-        poolImported=false
-        cleanup() {
-          echo "Cleaning up..."
-          if $poolImported; then
-            ${pkgs.zfs}/bin/zpool export ${poolName} 2>/dev/null || true
-          fi
-          if $mapperOpened; then
-            ${pkgs.cryptsetup}/bin/cryptsetup close ${mapperName} 2>/dev/null || true
-          fi
-        }
-        trap cleanup EXIT
-
-        if [ ! -e "/dev/mapper/${mapperName}" ]; then
-          echo "Opening encrypted HDD..."
-          ${pkgs.cryptsetup}/bin/cryptsetup open \
-            --key-file ${keyFile} \
-            /dev/disk/by-partlabel/${hddPartlabel} \
-            ${mapperName}
-          mapperOpened=true
-        else
-          echo "Encrypted HDD already open."
-        fi
-
-        if ! ${pkgs.zfs}/bin/zpool list ${poolName} &>/dev/null; then
-          echo "Importing ZFS pool ${poolName}..."
-          ${pkgs.zfs}/bin/zpool import -d /dev/mapper/${mapperName} ${poolName}
-          poolImported=true
-        else
-          echo "ZFS pool ${poolName} already imported."
-        fi
-
-        ${syncSources}
-
-        echo "Backup complete."
-        echo "Done."
-      '';
+      receiverModule = lib.optionalAttrs isReceiver {
+        services.udev.extraRules = ''
+          SUBSYSTEM=="block", ENV{ID_PART_ENTRY_NAME}=="${hddPartlabel}", ENV{UDISKS_IGNORE}="1"
+          SUBSYSTEM=="block", ENV{DM_NAME}=="${mapperName}", ENV{UDISKS_IGNORE}="1"
+        '';
+        sops.secrets.backup-ssh-key = {
+          key = "stellacode";
+          owner = "root";
+          group = "root";
+          mode = "0400";
+        };
+        services.syncoid = {
+          enable = true;
+          interval = [ ];
+          user = "root";
+          sshKey = "/run/secrets/backup-ssh-key";
+          commonArgs = [
+            "--no-rollback"
+            "--sshoption=StrictHostKeyChecking=yes"
+            "--sshoption=UserKnownHostsFile=/etc/ssh/ssh_known_hosts"
+          ];
+          commands = lib.listToAttrs (
+            lib.concatMap (
+              sourceName:
+              let
+                source = backup.enrolled.${sourceName};
+              in
+              lib.mapAttrsToList (dirName: dir: {
+                name = "${sourceName}-${dirName}";
+                value = {
+                  source = if source.host == null then dir.source else "${source.user}@${source.host}:${dir.source}";
+                  target = "${poolName}/${sourceName}/${dir.target}";
+                  recursive = true;
+                };
+              }) source.datasets
+            ) (lib.attrNames backup.enrolled)
+          );
+        };
+        users.users = lib.mapAttrs' (
+          name: source:
+          lib.nameValuePair "backup-${name}" {
+            isSystemUser = true;
+            group = "backup-${name}";
+            shell = pkgs.bash;
+            openssh.authorizedKeys.keys = [
+              ''command="${pkgs.writeShellScript "backup-request-${name}" "exec ${systemctl} start --wait backup-receive-${name}.service"}",no-agent-forwarding,no-port-forwarding,no-pty,no-user-rc,no-X11-forwarding ${source.publicKey}''
+            ];
+          }
+        ) (lib.filterAttrs (name: _: name != host.name) backup.enrolled);
+        users.groups = lib.mapAttrs' (name: _: lib.nameValuePair "backup-${name}" { }) (
+          lib.filterAttrs (name: _: name != host.name) backup.enrolled
+        );
+        security.polkit.extraConfig = lib.concatStringsSep "\n" (
+          lib.mapAttrsToList (name: _: ''
+            polkit.addRule(function(action, subject) {
+              if (subject.user == "backup-${name}" &&
+                  action.id == "org.freedesktop.systemd1.manage-units" &&
+                  action.lookup("verb") == "start" &&
+                  action.lookup("unit") == "backup-receive-${name}.service") {
+                return polkit.Result.YES;
+              }
+            });
+          '') (lib.filterAttrs (name: _: name != host.name) backup.enrolled)
+        );
+        systemd.services = lib.mapAttrs' (
+          name: _:
+          lib.nameValuePair "backup-receive-${name}" {
+            serviceConfig = {
+              Type = "oneshot";
+              ExecStart = receive name;
+            };
+          }
+        ) (lib.filterAttrs (name: _: name != host.name) backup.enrolled);
+      };
     in
-    {
-      environment.systemPackages = [ pkgs.sanoid ]; # includes syncoid
-
-      # Prevent udisks/udiskie/file managers from showing or automounting the backup HDD.
-      services.udev.extraRules = ''
-        SUBSYSTEM=="block", ENV{ID_PART_ENTRY_NAME}=="${hddPartlabel}", ENV{UDISKS_IGNORE}="1"
-        SUBSYSTEM=="block", ENV{DM_NAME}=="${mapperName}", ENV{UDISKS_IGNORE}="1"
-      '';
-
-      # Unlock → import pool → syncoid. The trap cleans up resources opened by this run,
-      # even if syncoid fails.
-      systemd.services.backup-hdd = {
-        description = "Syncoid ZFS backup of home and persist to encrypted HDD";
-        after = [
-          "local-fs.target"
-          "zfs.target"
-          "network-online.target"
-        ];
-        wants = [ "network-online.target" ];
-        serviceConfig = {
-          Type = "oneshot";
-          ExecStart = "${backupScript}";
-          IOWeight = 20;
-          CPUWeight = 20;
-        };
-      };
-
-      # Weekly backup. Persistent = true catches up if the system was offline at schedule time.
-      systemd.timers.backup-hdd = {
-        wantedBy = [ "timers.target" ];
-        timerConfig = {
-          OnCalendar = "weekly";
-          Persistent = true;
-        };
-      };
-    };
-
-  # Source-side delegation for the homelab receiver. The deployment identity
-  # can send only the safe datasets; it cannot receive or access other pools.
-  flake.modules.nixos.hdd-source =
-    { host, pkgs, ... }:
-    {
-      systemd.services.backup-hdd-zfs-delegation = {
-        description = "Delegate safe ZFS replication to the homelab receiver";
-        after = [ "zfs.target" ];
-        wantedBy = [ "zfs.target" ];
-        serviceConfig = {
-          Type = "oneshot";
-          RemainAfterExit = true;
-          ExecStart = ''
-            ${pkgs.zfs}/bin/zfs allow -d -u ${host.username} snapshot,send,destroy,hold,release zroot/safe
-          '';
-        };
-      };
-    };
+    lib.recursiveUpdate sourceModule receiverModule;
 }
