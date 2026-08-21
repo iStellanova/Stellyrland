@@ -58,8 +58,14 @@ let
 in
 {
   flake.modules.nixos.hermes =
-    { config, ... }:
+    { config, host, ... }:
     {
+      sops.secrets.hermes-bridge-gpg-passphrase = {
+        owner = host.username;
+        mode = "0400";
+        path = "/run/secrets/hermes-bridge-gpg-passphrase";
+      };
+
       sops.secrets.hermes-searxng-env = {
         owner = "root";
         mode = "0400";
