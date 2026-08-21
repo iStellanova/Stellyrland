@@ -97,6 +97,10 @@ type = "fetch"
 url = "github:nix-community/preservation"
 follows = { nixpkgs = "nixpkgs" }
 
+[inputs.proton-mcp]
+url = "github:MrBenJ/proton-mcp"
+type = "fetch"
+
 [inputs.scroll-overview]
 url = "github:yayuuu/hyprland-scroll-overview"
 type = "fetch"
