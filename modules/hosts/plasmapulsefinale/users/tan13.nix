@@ -9,6 +9,7 @@
         basics
         fastfetch
         librewolf
+        media
       ];
     };
   };
