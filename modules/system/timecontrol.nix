@@ -87,7 +87,7 @@
 
             if [ "$1" = off ]; then
               ${timerCommands "stop"}
-              exec ${pkgs.shadow}/bin/passwd -u ${lib.escapeShellArg config.timecontrol.user}
+              exec ${pkgs.shadow}/bin/usermod --expiredate -1 ${lib.escapeShellArg config.timecontrol.user}
             fi
 
             ${timerCommands "stop"}
@@ -123,7 +123,7 @@
                     description = "Allow ${config.timecontrol.user} logins on ${day}";
                     serviceConfig = {
                       Type = "oneshot";
-                      ExecStart = "${pkgs.shadow}/bin/passwd -u ${lib.escapeShellArg config.timecontrol.user}";
+                      ExecStart = "${pkgs.shadow}/bin/usermod --expiredate -1 ${lib.escapeShellArg config.timecontrol.user}";
                     };
                   };
                 }
@@ -135,7 +135,7 @@
                       Type = "oneshot";
                       ExecStart = pkgs.writeShellScript "timecontrol-stop-${lib.toLower day}-${toString index}" ''
                         ${pkgs.systemd}/bin/loginctl terminate-user ${lib.escapeShellArg config.timecontrol.user} || true
-                        exec ${pkgs.shadow}/bin/passwd -l ${lib.escapeShellArg config.timecontrol.user}
+                        ${pkgs.shadow}/bin/usermod --expiredate 1 ${lib.escapeShellArg config.timecontrol.user}
                       '';
                     };
                   };
