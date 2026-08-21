@@ -1,5 +1,17 @@
 { inputs, pkgs }:
 let
+  bridgeGpgUnlock = pkgs.writeShellScript "hermes-bridge-gpg-unlock" ''
+    set -eu
+    ${pkgs.gnupg}/bin/gpgconf --kill gpg-agent || true
+    ${pkgs.gnupg}/bin/gpgconf --launch gpg-agent
+    keygrips=$(${pkgs.gnupg}/bin/gpg --with-keygrip --list-secret-keys --with-colons 'Hermes Proton Bridge' | ${pkgs.gawk}/bin/awk -F: '$1 == "grp" { print $10 }')
+    test -n "$keygrips"
+    while IFS= read -r keygrip; do
+      test -n "$keygrip" || continue
+      ${pkgs.gnupg}/libexec/gpg-preset-passphrase --preset "$keygrip" < /run/secrets/hermes-bridge-gpg-passphrase
+    done <<< "$keygrips"
+  '';
+
   # TODO(proton-mcp): drop Python 3.13 when upstream imapclient/Proton MCP supports the host Python version; rerun the real Bridge STARTTLS inbox read first.
   protonMcp = pkgs.python313Packages.buildPythonApplication {
     pname = "proton-mcp";
@@ -24,7 +36,7 @@ in
   ];
 
   files.".gnupg/gpg-agent.conf" = {
-    text = "pinentry-program ${pkgs.pinentry-curses}/bin/pinentry-curses\n";
+    text = "pinentry-program ${pkgs.pinentry-curses}/bin/pinentry-curses\nallow-preset-passphrase\n";
     force = true;
   };
 
@@ -37,6 +49,7 @@ in
       };
       Service = {
         Environment = [ "PASSWORD_STORE_DIR=%h/.password-store-bridge" ];
+        ExecStartPre = [ "${bridgeGpgUnlock}" ];
         ExecStart = "${pkgs.protonmail-bridge}/bin/protonmail-bridge --noninteractive";
         Restart = "on-failure";
         RestartSec = 5;
