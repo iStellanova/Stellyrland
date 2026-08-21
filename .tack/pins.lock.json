@@ -238,5 +238,13 @@
     "rev": "dc0baff0a6041483be3816cf2e12ae053b5e458a",
     "narHash": "sha256-rxqzRhFq8Gpem967K+jGkw4kfm1ZN9bsNzaujG4Z6wc=",
     "lastModified": 1787197732
+  },
+  "proton-mcp": {
+    "type": "github",
+    "owner": "MrBenJ",
+    "repo": "proton-mcp",
+    "rev": "c23e09a655ba94336f8fbe2860572a527b69dc72",
+    "narHash": "sha256-4+6WMWPd1s+mutZ9z/i538yY5BskG0gbcJmsL/oM36M=",
+    "lastModified": 1779241458
   }
 }

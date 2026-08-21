@@ -86,6 +86,10 @@ in
       url = "github:numtide/llm-agents.nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    proton-mcp = {
+      url = "github:MrBenJ/proton-mcp";
+      flake = false;
+    };
   }
   // skills.flakeInputs;
 
@@ -94,9 +98,23 @@ in
     let
       hermesPackage = inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.hermes-agent;
       fetching = import ./_fetching.nix { inherit inputs pkgs; };
+      email = import ./_email.nix { inherit inputs pkgs; };
+      mcpServers =
+        (baseHermesConfig.mcp_servers or { })
+        // (fetching.hermesConfig.mcp_servers or { })
+        // (skills.hermesConfig.mcp_servers or { })
+        // (email.hermesConfig.mcp_servers or { });
+      hermesConfig =
+        baseHermesConfig
+        // fetching.hermesConfig
+        // skills.hermesConfig
+        // email.hermesConfig
+        // {
+          mcp_servers = mcpServers;
+        };
     in
     {
-      home.packages = [ hermesPackage ] ++ fetching.packages;
+      home.packages = [ hermesPackage ] ++ fetching.packages ++ email.packages;
 
       home.sessionVariables.SEARXNG_URL = "http://127.0.0.1:8088";
       systemd.user.sessionVariables.SEARXNG_URL = "http://127.0.0.1:8088";
@@ -107,7 +125,7 @@ in
           force = true;
         };
         ".hermes/config.yaml" = {
-          text = builtins.toJSON (baseHermesConfig // fetching.hermesConfig // skills.hermesConfig);
+          text = builtins.toJSON hermesConfig;
           force = true;
         };
         ".hermes/skins/${theme.name}.yaml" = {
@@ -115,7 +133,8 @@ in
           force = true;
         };
       }
-      // skills.files;
+      // skills.files
+      // email.files;
 
       systemd.user.services = {
         hermes-gateway = {
@@ -141,6 +160,7 @@ in
           };
           Install.WantedBy = [ "default.target" ];
         };
-      };
+      }
+      // email.services;
     };
 }
