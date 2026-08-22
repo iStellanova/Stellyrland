@@ -6,9 +6,11 @@
   vesktop = {
     enable = true;
     # TODO: Remove this override and vesktop-dtls.patch once nixpkgs ships PR #1283.
-    package = lib.mkIf pkgs.stdenv.hostPlatform.isLinux (pkgs.vesktop.overrideAttrs (old: {
-      patches = (old.patches or [ ]) ++ [ ./vesktop-dtls.patch ];
-    }));
+    package = lib.mkIf pkgs.stdenv.hostPlatform.isLinux (
+      pkgs.vesktop.overrideAttrs (old: {
+        patches = (old.patches or [ ]) ++ [ ./vesktop-dtls.patch ];
+      })
+    );
     # Matches the previous pkgs.vesktop.override { withSystemVencord = false; }.
     useSystemVencord = false;
 

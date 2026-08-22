@@ -9,7 +9,6 @@
       programs.zsh.shellAliases = {
         clean = "nh clean all --keep 20 --optimise";
         cdn = "cd $FLAKE";
-        replace = "(cd $FLAKE && nix run .#write-tack)";
       };
 
       programs.zsh.initContent = ''

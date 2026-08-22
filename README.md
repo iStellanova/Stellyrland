@@ -61,10 +61,10 @@ that host.
 
 ```mermaid
 flowchart TD
-    TACK[".tack/\npins.toml + pins.lock.json\nresolved inputs"]
+    INPUTS["flake.nix + flake.lock\nlocked inputs"]
 
     subgraph FLAKE["flake.nix"]
-        IT["import ./.tack\nflake-parts + importTree ./modules"]
+        IT["generated root\nflake-parts + import-tree"]
     end
 
     subgraph MODS["modules/"]
@@ -74,8 +74,8 @@ flowchart TD
         MK["mkNixos / mkDarwin\nmodules/nix/lib.nix"]
     end
 
-    DECL -.-> TACK
-    TACK --> IT
+    DECL -.-> INPUTS
+    INPUTS --> IT
     IT --> AGG
     IT --> HOSTDATA
     AGG --> MK
@@ -85,7 +85,7 @@ flowchart TD
     MK --> PPF["plasmapulsefinale\nNixOS · x86_64-linux"]
     MK --> IRF["ItsRedFlame\nNixOS · x86_64-linux"]
 
-    style TACK fill:#363a4f,color:#cad3f5,stroke:#5b6078
+    style INPUTS fill:#363a4f,color:#cad3f5,stroke:#5b6078
     style IT fill:#363a4f,color:#cad3f5,stroke:#5b6078
     style DECL fill:#24273a,color:#f5a97f,stroke:#494d64
     style AGG fill:#24273a,color:#c6a0f6,stroke:#494d64
@@ -101,21 +101,17 @@ flowchart TD
 
 ```text
 .
-├── flake.nix                 # Thin entry point: imports Tack inputs + importTree ./modules
-├── .tack/                    # Tack input declarations and resolved pin lock
-│   ├── default.nix
-│   ├── pins.toml
-│   └── pins.lock.json
+├── flake.nix                 # Flake entry point
+├── flake.lock                # Input lockfile
 ├── docs/                     # Concepts, workflow notes, and troubleshooting
 ├── secrets/                  # sops-nix encrypted secrets
 │   ├── secrets.yaml
 │   ├── plasmapulsefinale.yaml
 │   └── ItsRedFlame.yaml
-└── modules/                  # Flake-parts modules auto-loaded by importTree
-    ├── flake-config.nix      # Flake inputs, Tack/flake-file setup, supported systems
+└── modules/                  # Flake-parts modules
+    ├── flake-config.nix      # Flake-file declarations and supported systems
     ├── constants.nix         # Shared defaults merged into every host's `host.*`
     ├── treefmt.nix           # Repo-wide formatter configuration
-    ├── devshell.nix          # Development shell and write-tack app
     ├── ai/                   # Declarative Stellxie/Hermes Agent configuration
     │   ├── default.nix       # Home Manager module, package, config, services
     │   └── _*.nix            # Explicitly imported helpers (theme, fetching, Discord)
@@ -143,14 +139,13 @@ flowchart TD
 
 ## ✨ Notable Configurations
 
-- **Local, Locked Inputs:** `flake-file` declarations live with the modules that
-  own them; Tack resolves and locks them in `.tack/pins.toml` and
-  `.tack/pins.lock.json`. Keeps things truly modular and self-sustaining.
-- **Zero-Boilerplate Imports:** The thin `flake.nix` recursively auto-imports
-  each non-underscore `.nix` file under `modules/` as a flake-parts module.
-  Underscore helpers remain explicit imports owned by their parent module.
-- **Multi-System Outputs:** Per-system formatter, development-shell, and check
-  outputs cover x86_64 Linux, aarch64 Linux, and aarch64 Darwin.
+- **Locked Inputs:** `flake-file` declarations live with the modules that
+  own them; `flake.nix` and `flake.lock` provide the standard Nix input graph.
+- **Zero-Boilerplate Imports:** flake-file's dendritic output uses
+  `import-tree` to load non-underscore `.nix` files under `modules/` as
+  flake-parts modules.
+- **Multi-System Outputs:** Per-system formatter and check outputs cover x86_64
+  Linux, aarch64 Linux, and aarch64 Darwin.
 - **BORE Scheduler:** CachyOS kernel with BORE scheduling. Optimized for the X3D
   CPU. It's smarter about which workloads get the extra cache vs extra clock.
 - **ZFS Preservation + Sanoid Snapshots:** Every boot rolls back to a blank

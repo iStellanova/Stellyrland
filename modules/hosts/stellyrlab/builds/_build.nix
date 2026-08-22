@@ -24,12 +24,12 @@ pkgs.writeShellScript "nix-fleet-build" ''
 
   run_dir=$(${pkgs.coreutils}/bin/mktemp -d)
   trap '${pkgs.coreutils}/bin/rm -rf "''${run_dir}"' EXIT
-  before_pins="$run_dir/before-pins.json"
-  ${git} show HEAD:.tack/pins.lock.json >"$before_pins"
-  ${nix} run .#write-tack
+  before_lock="$run_dir/before-lock.json"
+  ${git} show HEAD:flake.lock >"$before_lock"
+  ${nix} flake update
 
   hosts_file=$(${pkgs.coreutils}/bin/mktemp)
-  trap '${pkgs.coreutils}/bin/rm -f "''${hosts_file}" "''${run_dir}"/before-pins.json; ${pkgs.coreutils}/bin/rm -rf "''${run_dir}"' EXIT
+  trap '${pkgs.coreutils}/bin/rm -f "''${hosts_file}" "''${run_dir}"/before-lock.json; ${pkgs.coreutils}/bin/rm -rf "''${run_dir}"' EXIT
   if ! ${nix} eval --impure --raw --no-write-lock-file --expr '
       let
         flake = builtins.getFlake (toString ./.);
@@ -98,8 +98,8 @@ pkgs.writeShellScript "nix-fleet-build" ''
   done
 
   declare -A old_rev new_rev
-  while IFS=$'\t' read -r name rev; do old_rev["$name"]=$rev; done < <(${jq} -r 'to_entries[] | [.key, .value.rev] | @tsv' "$before_pins")
-  while IFS=$'\t' read -r name rev; do new_rev["$name"]=$rev; done < <(${jq} -r 'to_entries[] | [.key, .value.rev] | @tsv' .tack/pins.lock.json)
+  while IFS=$'\t' read -r name rev; do old_rev["$name"]=$rev; done < <(${jq} -r '. as $lock | $lock.nodes.root.inputs | to_entries[] | .key as $name | .value as $ref | ($ref | if type == "string" then . else .[0] end) as $node | [$name, ($lock.nodes[$node].locked.rev // $lock.nodes[$node].locked.lastModified // "")] | @tsv' "$before_lock")
+  while IFS=$'\t' read -r name rev; do new_rev["$name"]=$rev; done < <(${jq} -r '. as $lock | $lock.nodes.root.inputs | to_entries[] | .key as $name | .value as $ref | ($ref | if type == "string" then . else .[0] end) as $node | [$name, ($lock.nodes[$node].locked.rev // $lock.nodes[$node].locked.lastModified // "")] | @tsv' flake.lock)
   names=$(${pkgs.coreutils}/bin/mktemp)
   trap '${pkgs.coreutils}/bin/rm -f "''${hosts_file}" "''${names}"; ${pkgs.coreutils}/bin/rm -rf "''${run_dir}"' EXIT
   printf '%s\n' "''${!old_rev[@]}" "''${!new_rev[@]}" | ${pkgs.coreutils}/bin/sort -u >"$names"
@@ -133,7 +133,7 @@ pkgs.writeShellScript "nix-fleet-build" ''
   mapfile -t changed < <(${git} status --porcelain)
   for change in "''${changed[@]}"; do
     case "''${change:3}" in
-      .tack/*) ;;
+      flake.lock) ;;
       *)
         printf 'Unexpected working-tree change after fleet build: %s\n' "$change" >&2
         exit 1
@@ -142,7 +142,7 @@ pkgs.writeShellScript "nix-fleet-build" ''
   done
 
   if ((''${#changed[@]})); then
-    ${git} add .tack
+    ${git} add flake.lock
     ${git} diff --cached --check
     ${git} -c user.name='Stellxie[bot]' \
       -c user.email='313256644+Stellxie@users.noreply.github.com' \
@@ -151,8 +151,8 @@ pkgs.writeShellScript "nix-fleet-build" ''
       -c commit.gpgsign=true \
       commit -S \
       --author='stellanova <iStellanova@users.noreply.github.com>' \
-      -m 'chore(tack): update inputs' \
-      -m $'Refresh Tack pins and lock data.\n\nCo-authored-by: Stellxie[bot] <313256644+Stellxie@users.noreply.github.com>'
+      -m 'chore(flake): update inputs' \
+      -m $'Refresh flake inputs and lock data.\n\nCo-authored-by: Stellxie[bot] <313256644+Stellxie@users.noreply.github.com>'
   fi
 
   for name in "''${hosts[@]}"; do
