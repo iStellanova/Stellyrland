@@ -52,7 +52,7 @@
       systemd.user.services = {
         nix-fleet-build = {
           Unit = {
-            Description = "Refresh Tack and build the x86 NixOS fleet";
+            Description = "Update flake inputs and build the x86 NixOS fleet";
             After = [ "network-online.target" ];
             Wants = [ "network-online.target" ];
             OnFailure = [ "nix-fleet-build-repair.service" ];

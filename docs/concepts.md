@@ -7,7 +7,7 @@ I use the dendritic pattern, which condenses the "features" I use into specific 
 
 I chose this as it makes maintaining my systems much cleaner. I can enable aspects defined in my configurations on different machines as I please without having to write new host-specific configurations. I just tell it to enable my git aspect and it's there. Quite convenient, no matter the machine.
 
-flake.nix stays a thin entry point: a small `importTree` helper (inlined there, no flake input) recursively auto-imports every `.nix` file under `./modules` as a flake-parts module, skipping any path segment prefixed with `_`. flake-file then lets each module declare its own flake inputs in place, rather than listing them all in one monolithic flake.nix.
+The generated `flake.nix` contains the input manifest and `flake.lock` pins it. flake-file's dendritic output uses `import-tree` to load every non-underscore `.nix` file under `./modules` as a flake-parts module. flake-file keeps input declarations beside their consuming modules while generating the root manifest.
 
 ## Flakes
 I use nix flakes, which consist of inputs and outputs. This feature allows me to input various systems and libraries, such as nix packages, home-manager, and github controlled projects. It then outputs these libraries and configurations into a buildable system using the wider range of configurations listed dendritically. Using an input and output system allows me to version control and define what my configuration imports in order to get the result I want.

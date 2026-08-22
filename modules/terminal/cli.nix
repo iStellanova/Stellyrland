@@ -25,7 +25,6 @@ let
         preservation.preserveAt."/persist".users.${host.username} = {
           directories = [
             ".local/share/zoxide"
-            ".local/share/direnv"
           ];
           files = [
             {
@@ -100,11 +99,5 @@ in
         zstyle ':fzf-tab:*' fzf-preview 'bat --color=always --style=numbers $realpath'
         zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --color=always $realpath'
       '';
-
-      programs.direnv = {
-        enable = true;
-        nix-direnv.enable = true;
-        silent = true;
-      };
     };
 }

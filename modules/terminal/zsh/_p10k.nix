@@ -32,7 +32,6 @@ let
       "status"
       "command_execution_time"
       "background_jobs"
-      "direnv"
       "asdf"
       "virtualenv"
       "anaconda"
@@ -198,10 +197,6 @@ let
     POWERLEVEL9K_BACKGROUND_JOBS_FOREGROUND = 6;
     POWERLEVEL9K_BACKGROUND_JOBS_BACKGROUND = 0;
     POWERLEVEL9K_BACKGROUND_JOBS_VERBOSE = false;
-
-    # Direnv
-    POWERLEVEL9K_DIRENV_FOREGROUND = 3;
-    POWERLEVEL9K_DIRENV_BACKGROUND = 0;
 
     # Asdf
     POWERLEVEL9K_ASDF_FOREGROUND = 0;

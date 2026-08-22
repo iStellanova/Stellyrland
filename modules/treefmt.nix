@@ -8,9 +8,6 @@
   perSystem = {
     treefmt = {
       projectRootFile = "flake.nix";
-      settings.global.excludes = [
-        ".tack/*"
-      ];
       programs = {
         nixfmt.enable = true;
         deadnix.enable = true;

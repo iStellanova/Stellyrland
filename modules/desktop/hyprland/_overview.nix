@@ -1,8 +1,7 @@
 # Built via mkHyprlandPlugin against nixpkgs's pkgs.hyprland (not the plugin's own flake,
 # which pins its own independent, older Hyprland and breaks at runtime against ours).
-# Source tracks their `main` via `nix run .#write-tack` like any other input — no manual
-# hash bumping. Hyprland bumps rebuild this automatically too; the only real risk is their
-# `main` outrunning pkgs.hyprland's API (loud compile failure, not a hash problem).
+# Source follows the flake.lock; a newer upstream revision can fail loudly if it
+# outruns pkgs.hyprland's API.
 {
   inputs,
   lib,
