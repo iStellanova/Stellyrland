@@ -136,7 +136,7 @@
       systemd.user.timers.nix-fleet-build = {
         Unit.Description = "Run the daily Nix fleet build";
         Timer = {
-          OnCalendar = "*-*-* 15:00:00 America/Indianapolis";
+          OnCalendar = "*-*-* 05:00:00 America/Indianapolis";
           Persistent = true;
           Unit = "nix-fleet-build.service";
         };
