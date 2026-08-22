@@ -1,0 +1,251 @@
+From 9725df93ed5d2289af94d37e20e3bc0e6baf28fc Mon Sep 17 00:00:00 2001
+From: Zylanx <32674125+Zylanx@users.noreply.github.com>
+Date: Mon, 27 Apr 2026 15:17:18 +1000
+Subject: [PATCH 1/4] fix DTLS Connecting issues for users of tailscale or
+ similar VPNs
+
+---
+ src/main/mainWindow.ts | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/src/main/mainWindow.ts b/src/main/mainWindow.ts
+index 9acbe3d01..9a6bf6164 100644
+--- a/src/main/mainWindow.ts
++++ b/src/main/mainWindow.ts
+@@ -409,6 +409,9 @@ function createMainWindow() {
+
+     win.webContents.setUserAgent(BrowserUserAgent);
+
++    // Fixes voice/video calls hanging at DTLS Connecting when using VPNs like Tailscale
++    win.webContents.setWebRTCIPHandlingPolicy("default_public_and_private_interfaces");
++
+     // if the open-url event is fired (in index.ts) while starting up, darwinURL will be set. If not fall back to checking the process args (which Windows and Linux use for URI calling.)
+     // win.webContents.session.clearCache().then(() => {
+     loadUrl(darwinURL || process.argv.find(arg => arg.startsWith("discord://")));
+
+From 81f1c946f182821d377bf8a873855db5f262187e Mon Sep 17 00:00:00 2001
+From: 2meito <22meito@gmail.com>
+Date: Thu, 9 Jul 2026 20:58:30 -0400
+Subject: [PATCH 2/4] Add Vesktop setting for WebRTCIPHandlingPolicy
+
+---
+ src/main/index.ts                             | 12 +++++++
+ src/main/mainWindow.ts                        |  3 --
+ src/renderer/components/settings/Settings.tsx |  6 +++-
+ .../settings/WebRTCIPHandlingPolicyPicker.tsx | 32 +++++++++++++++++++
+ src/shared/settings.d.ts                      |  5 +++
+ 5 files changed, 54 insertions(+), 4 deletions(-)
+ create mode 100644 src/renderer/components/settings/WebRTCIPHandlingPolicyPicker.tsx
+
+diff --git a/src/main/index.ts b/src/main/index.ts
+index 2f4c399a4..0c81512a4 100644
+--- a/src/main/index.ts
++++ b/src/main/index.ts
+@@ -158,3 +158,15 @@ app.on("open-url", (_, url) => {
+ app.on("window-all-closed", () => {
+     if (process.platform !== "darwin") app.quit();
+ });
++
++// Sets the WebRTC IP handling policy for all current and future windows.
++// Switching to "default_public_and_private_interfaces" may fix calls stuck at "DTLS Connecting" when using VPNs, Tailscale, etc.
++// https://github.com/Vencord/Vesktop/issues/876
++app.on("web-contents-created", (_event, contents) => {
++    contents.setWebRTCIPHandlingPolicy(Settings.store.webRTCIPHandlingPolicy ?? "default");
++});
++Settings.addChangeListener("webRTCIPHandlingPolicy", () => {
++    for (const win of BrowserWindow.getAllWindows()) {
++        win.webContents.setWebRTCIPHandlingPolicy(Settings.store.webRTCIPHandlingPolicy ?? "default");
++    }
++});
+diff --git a/src/main/mainWindow.ts b/src/main/mainWindow.ts
+index 9a6bf6164..9acbe3d01 100644
+--- a/src/main/mainWindow.ts
++++ b/src/main/mainWindow.ts
+@@ -409,9 +409,6 @@ function createMainWindow() {
+
+     win.webContents.setUserAgent(BrowserUserAgent);
+
+-    // Fixes voice/video calls hanging at DTLS Connecting when using VPNs like Tailscale
+-    win.webContents.setWebRTCIPHandlingPolicy("default_public_and_private_interfaces");
+-
+     // if the open-url event is fired (in index.ts) while starting up, darwinURL will be set. If not fall back to checking the process args (which Windows and Linux use for URI calling.)
+     // win.webContents.session.clearCache().then(() => {
+     loadUrl(darwinURL || process.argv.find(arg => arg.startsWith("discord://")));
+diff --git a/src/renderer/components/settings/Settings.tsx b/src/renderer/components/settings/Settings.tsx
+index 82a58dba7..6ee5912cf 100644
+--- a/src/renderer/components/settings/Settings.tsx
++++ b/src/renderer/components/settings/Settings.tsx
+@@ -20,6 +20,7 @@ import { OutdatedVesktopWarning } from "./OutdatedVesktopWarning";
+ import { UserAssetsButton } from "./UserAssets";
+ import { VesktopSettingsSwitch } from "./VesktopSettingsSwitch";
+ import { WindowsTransparencyControls } from "./WindowsTransparencyControls";
++import { WebRTCIPHandlingPolicyPicker } from "renderer/components/settings/WebRTCIPHandlingPolicyPicker";
+
+ interface BooleanSetting {
+     key: keyof typeof Settings.store;
+@@ -146,8 +147,11 @@ const SettingsOptions: Record<string, Array<BooleanSetting | SettingsComponent>>
+             title: "Open Links in app (experimental)",
+             description: "Opens links in a new Vesktop window instead of your web browser",
+             defaultValue: false
+-        }
++        },
++
++        WebRTCIPHandlingPolicyPicker
+     ],
++
+     "Developer Options": [DeveloperOptionsButton]
+ };
+
+diff --git a/src/renderer/components/settings/WebRTCIPHandlingPolicyPicker.tsx b/src/renderer/components/settings/WebRTCIPHandlingPolicyPicker.tsx
+new file mode 100644
+index 000000000..f8ae4d7c0
+--- /dev/null
++++ b/src/renderer/components/settings/WebRTCIPHandlingPolicyPicker.tsx
+@@ -0,0 +1,32 @@
++/*
++ * Vesktop, a desktop app aiming to give you a snappier Discord Experience
++ * Copyright (c) 2023 Vendicated and Vencord contributors
++ * SPDX-License-Identifier: GPL-3.0-or-later
++ */
++
++import { Heading, Margins, Paragraph } from "@vencord/types/components";
++import { Select } from "@vencord/types/webpack/common";
++
++import { SettingsComponent } from "./Settings";
++
++export const WebRTCIPHandlingPolicyPicker: SettingsComponent = ({ settings }) => {
++    return (
++        <div>
++            <Heading tag="h5">WebRTC IP Handling Policy</Heading>
++            <Paragraph className={Margins.bottom8}>Specify the WebRTC IP handling policy.</Paragraph>
++            <Select
++                placeholder="Default"
++                options={[
++                    { label: "Default", value: "default", default: true },
++                    { label: "Default Public Interface Only", value: "default_public_interface_only" },
++                    { label: "Default Public And Private Interfaces", value: "default_public_and_private_interfaces" },
++                    { label: "Disable Non-Proxied UDP", value: "disable_non_proxied_udp" }
++                ]}
++                closeOnSelect={true}
++                select={v => (settings.webRTCIPHandlingPolicy = v)}
++                isSelected={v => v === settings.webRTCIPHandlingPolicy}
++                serialize={s => s}
++            />
++        </div>
++    );
++};
+diff --git a/src/shared/settings.d.ts b/src/shared/settings.d.ts
+index 5b8fd6fff..b127f6def 100644
+--- a/src/shared/settings.d.ts
++++ b/src/shared/settings.d.ts
+@@ -9,6 +9,11 @@ import type { Rectangle } from "electron";
+ export interface Settings {
+     discordBranch?: "stable" | "canary" | "ptb";
+     transparencyOption?: "none" | "mica" | "tabbed" | "acrylic";
++    webRTCIPHandlingPolicy?:
++        | "default"
++        | "default_public_interface_only"
++        | "default_public_and_private_interfaces"
++        | "disable_non_proxied_udp";
+     tray?: boolean;
+     minimizeToTray?: boolean;
+     autoStartMinimized?: boolean;
+
+From dff16950acbdc9f7d45b47fb2a9b8413c10c4b8f Mon Sep 17 00:00:00 2001
+From: V <vendicated@riseup.net>
+Date: Tue, 21 Jul 2026 03:05:03 +0200
+Subject: [PATCH 3/4] Add error boundary to WebRTC IP Handling Policy picker
+
+Wrap WebRTC IP Handling Policy picker in SimpleErrorBoundary and update help text.
+---
+ .../settings/WebRTCIPHandlingPolicyPicker.tsx | 44 ++++++++++++-------
+ 1 file changed, 27 insertions(+), 17 deletions(-)
+
+diff --git a/src/renderer/components/settings/WebRTCIPHandlingPolicyPicker.tsx b/src/renderer/components/settings/WebRTCIPHandlingPolicyPicker.tsx
+index f8ae4d7c0..533dde060 100644
+--- a/src/renderer/components/settings/WebRTCIPHandlingPolicyPicker.tsx
++++ b/src/renderer/components/settings/WebRTCIPHandlingPolicyPicker.tsx
+@@ -7,26 +7,36 @@
+ import { Heading, Margins, Paragraph } from "@vencord/types/components";
+ import { Select } from "@vencord/types/webpack/common";
+
++import { SimpleErrorBoundary } from "../SimpleErrorBoundary";
+ import { SettingsComponent } from "./Settings";
+
+ export const WebRTCIPHandlingPolicyPicker: SettingsComponent = ({ settings }) => {
+     return (
+-        <div>
+-            <Heading tag="h5">WebRTC IP Handling Policy</Heading>
+-            <Paragraph className={Margins.bottom8}>Specify the WebRTC IP handling policy.</Paragraph>
+-            <Select
+-                placeholder="Default"
+-                options={[
+-                    { label: "Default", value: "default", default: true },
+-                    { label: "Default Public Interface Only", value: "default_public_interface_only" },
+-                    { label: "Default Public And Private Interfaces", value: "default_public_and_private_interfaces" },
+-                    { label: "Disable Non-Proxied UDP", value: "disable_non_proxied_udp" }
+-                ]}
+-                closeOnSelect={true}
+-                select={v => (settings.webRTCIPHandlingPolicy = v)}
+-                isSelected={v => v === settings.webRTCIPHandlingPolicy}
+-                serialize={s => s}
+-            />
+-        </div>
++        <SimpleErrorBoundary>
++            <div>
++                <Heading tag="h5">WebRTC IP Handling Policy</Heading>
++                <Paragraph className={Margins.bottom8}>
++                    Changing this may help with voice connection issues on some networks, most notably VPNs like
++                    Tailscale.
++                </Paragraph>
++                <Select
++                    placeholder="Default"
++                    options={[
++                        { label: "Default", value: "default", default: true },
++                        { label: "Default Public Interface Only", value: "default_public_interface_only" },
++
++                        {
++                            label: "Default Public And Private Interfaces",
++                            value: "default_public_and_private_interfaces"
++                        },
++                        { label: "Disable Non-Proxied UDP", value: "disable_non_proxied_udp" }
++                    ]}
++                    closeOnSelect={true}
++                    select={v => (settings.webRTCIPHandlingPolicy = v)}
++                    isSelected={v => v === (settings.webRTCIPHandlingPolicy ?? "default")}
++                    serialize={s => s}
++                />
++            </div>
++        </SimpleErrorBoundary>
+     );
+ };
+
+From 9131451a74b141d7c98f95cca9a708a1dcc6497b Mon Sep 17 00:00:00 2001
+From: V <vendicated@riseup.net>
+Date: Tue, 21 Jul 2026 03:05:25 +0200
+Subject: [PATCH 4/4] Update Settings.tsx
+
+---
+ src/renderer/components/settings/Settings.tsx | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/renderer/components/settings/Settings.tsx b/src/renderer/components/settings/Settings.tsx
+index 6ee5912cf..e0d0b0d73 100644
+--- a/src/renderer/components/settings/Settings.tsx
++++ b/src/renderer/components/settings/Settings.tsx
+@@ -9,6 +9,7 @@ import "./settings.css";
+ import { classNameFactory } from "@vencord/types/api/Styles";
+ import { BaseText, Divider, ErrorBoundary } from "@vencord/types/components";
+ import { ComponentType } from "react";
++import { WebRTCIPHandlingPolicyPicker } from "renderer/components/settings/WebRTCIPHandlingPolicyPicker";
+ import { Settings, useSettings } from "renderer/settings";
+ import { isMac, isWindows } from "renderer/utils";
+
+@@ -20,7 +21,6 @@ import { OutdatedVesktopWarning } from "./OutdatedVesktopWarning";
+ import { UserAssetsButton } from "./UserAssets";
+ import { VesktopSettingsSwitch } from "./VesktopSettingsSwitch";
+ import { WindowsTransparencyControls } from "./WindowsTransparencyControls";
+-import { WebRTCIPHandlingPolicyPicker } from "renderer/components/settings/WebRTCIPHandlingPolicyPicker";
+
+ interface BooleanSetting {
+     key: keyof typeof Settings.store;

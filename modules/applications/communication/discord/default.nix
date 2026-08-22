@@ -13,7 +13,7 @@
         ./_music-rpc.nix
       ];
 
-      programs.nixcord = lib.mkIf pkgs.stdenv.hostPlatform.isLinux (import ./_config.nix);
+      programs.nixcord = lib.mkIf pkgs.stdenv.hostPlatform.isLinux (import ./_config.nix { inherit pkgs lib; });
     };
 
   flake.modules.nixos.discord =
@@ -25,11 +25,11 @@
     };
 
   flake.modules.darwin.discord =
-    { host, ... }:
+    { host, pkgs, lib, ... }:
     {
       imports = [ inputs.nixcord.darwinModules.default ];
 
-      programs.nixcord = (import ./_config.nix) // {
+      programs.nixcord = (import ./_config.nix { inherit pkgs lib; }) // {
         user = host.username;
       };
     };
