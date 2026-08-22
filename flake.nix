@@ -61,7 +61,6 @@
       url = "github:4evy/nixcord";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nixos-apple-silicon.url = "github:nix-community/nixos-apple-silicon?rev=3902c801519264191a7c3dfec8dd1f9faeb38fd5";
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     noctalia.url = "github:noctalia-dev/noctalia/cachix";
     noctalia-greeter = {
