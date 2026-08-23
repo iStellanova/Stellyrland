@@ -21,6 +21,8 @@
           host
           pkgs
           lib
+          nix
+          git
           stateDir
           ;
       };
