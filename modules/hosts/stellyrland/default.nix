@@ -71,10 +71,6 @@
         rulesProvider = pkgs.ananicy-rules-cachyos;
       };
 
-      services.scx = {
-        enable = true;
-        # LAVD favors latency-sensitive threads on the X3D CCD.
-        scheduler = "scx_lavd";
-      };
+      # TODO(stellyrland): Revisit sched_ext/LAVD after upstream fixes; it currently causes 30–40s runnable-task stalls.
     };
 }
