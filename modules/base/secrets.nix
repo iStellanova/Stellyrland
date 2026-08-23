@@ -2,7 +2,7 @@
 {
   flake-file.inputs = {
     nix-secrets = {
-      url = "github:unnamed-systems/nix-secrets/dev";
+      url = "github:unnamed-systems/nix-secrets";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     sops-nix = {
@@ -19,9 +19,30 @@
       ...
     }:
     {
-      imports = [ inputs.sops-nix.nixosModules.sops ];
+      imports = [
+        inputs.nix-secrets.nixosModules.default
+        inputs.sops-nix.nixosModules.sops
+      ];
 
       config = {
+        security.nix-secrets = {
+          enable = true;
+          storage = ../../secrets;
+          identityPaths = [
+            (
+              if host.persistence or false then
+                "/persist/etc/ssh/ssh_host_ed25519_key"
+              else
+                "/etc/ssh/ssh_host_ed25519_key"
+            )
+          ];
+          recipientAliases.stellanova = "age1muxquz7vyrsva0me3q68mf9xak578hzejqm39vr3llfsftc0dcpqaxlaf7";
+          secrets.github-token = {
+            path = "/run/secrets/github-token";
+            recipients = [ "stellanova" ];
+          };
+        };
+
         sops.age.sshKeyPaths = [
           (
             if host.persistence or false then
@@ -31,12 +52,8 @@
           )
         ];
 
-        # Hosts with separate encrypted files override this default.
         sops.defaultSopsFile = lib.mkDefault ../../secrets/secrets.yaml;
         sops.defaultSopsFormat = "yaml";
-
-        # Needed before users are created so the hashed password is available.
-        # This is a per-host secret name, not a username-derived value.
         sops.secrets.${host.passwordSecret} = {
           neededForUsers = true;
         };

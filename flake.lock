@@ -1034,6 +1034,27 @@
         "type": "github"
       }
     },
+    "nix-secrets": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1787424906,
+        "narHash": "sha256-+ygP+/5a0zPdkGAuVGUiiUAg12NY6E8tZMcjJHPArvo=",
+        "owner": "unnamed-systems",
+        "repo": "nix-secrets",
+        "rev": "13f36151f772f3e12217ce4f510ed90aff295042",
+        "type": "github"
+      },
+      "original": {
+        "owner": "unnamed-systems",
+        "ref": "dev",
+        "repo": "nix-secrets",
+        "type": "github"
+      }
+    },
     "nixcord": {
       "inputs": {
         "flake-parts": "flake-parts_4",
@@ -1358,6 +1379,7 @@
         "nix-flatpak": "nix-flatpak",
         "nix-homebrew": "nix-homebrew",
         "nix-index-database": "nix-index-database",
+        "nix-secrets": "nix-secrets",
         "nixcord": "nixcord",
         "nixpkgs": "nixpkgs_3",
         "noctalia": "noctalia",
