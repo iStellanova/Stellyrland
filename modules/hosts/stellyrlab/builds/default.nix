@@ -13,26 +13,26 @@
       git = "${pkgs.git}/bin/git";
       curl = "${pkgs.curl}/bin/curl";
       jq = "${pkgs.jq}/bin/jq";
-      hermes = inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.hermes-agent;
       stateDir = "${host.homeDir}/.local/state/nix-fleet-build";
-      discordChannel = "1540710403892453477";
-      notify = import ./_notify.nix {
+      hermes = inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.hermes-agent;
+      notify = import ./_notify.nix { inherit pkgs curl jq; };
+      buildFleet = import ./_build.nix {
         inherit
+          host
           pkgs
-          curl
-          jq
-          discordChannel
+          lib
+          stateDir
           ;
       };
-      buildFleet = import ./_build.nix {
+      reportFleet = import ./_report.nix {
         inherit
           host
           pkgs
           lib
           nix
           nixStore
-          git
           jq
+          git
           stateDir
           notify
           ;
@@ -47,58 +47,64 @@
           notify
           ;
       };
+      commonEnvironment = [
+        "HOME=${host.homeDir}"
+        "PATH=${
+          lib.makeBinPath [
+            pkgs.git
+            pkgs.nix
+            pkgs.nix-eval-jobs
+            pkgs.openssh
+            pkgs.coreutils
+            pkgs.curl
+            pkgs.jq
+          ]
+        }"
+      ];
     in
     {
-      systemd.user.services = {
-        nix-fleet-build = {
-          Unit = {
-            Description = "Update flake inputs and build the x86 NixOS fleet";
-            After = [ "network-online.target" ];
-            Wants = [ "network-online.target" ];
-            OnFailure = [ "nix-fleet-build-repair.service" ];
-          };
-          Service = {
-            Type = "oneshot";
-            WorkingDirectory = host.flakePath;
-            ExecStart = buildFleet;
-            TimeoutStartSec = "infinity";
-            SuccessExitStatus = [ 77 ];
-            Environment = [
-              "HOME=${host.homeDir}"
-              "PATH=${
-                lib.makeBinPath [
-                  pkgs.git
-                  pkgs.nix
-                  pkgs.openssh
-                  pkgs.coreutils
-                  pkgs.curl
-                  pkgs.jq
-                ]
-              }"
-            ];
-          };
+      systemd.user.services.nix-fleet-build = {
+        Unit = {
+          Description = "Build the x86 NixOS fleet";
+          After = [ "network-online.target" ];
+          Wants = [ "network-online.target" ];
+          OnSuccess = [ "nix-fleet-build-report.service" ];
+          OnFailure = [ "nix-fleet-build-repair.service" ];
         };
-        nix-fleet-build-repair = {
-          Unit.Description = "Repair a failed scheduled Nix fleet build";
-          Service = {
-            Type = "oneshot";
-            WorkingDirectory = host.flakePath;
-            ExecStart = repairFleet;
-            TimeoutStartSec = "infinity";
-            Environment = [
-              "HOME=${host.homeDir}"
-              "PATH=${
-                lib.makeBinPath [
-                  pkgs.git
-                  pkgs.nix
-                  pkgs.openssh
-                  pkgs.coreutils
-                  pkgs.curl
-                  pkgs.jq
-                ]
-              }"
-            ];
-          };
+        Service = {
+          Type = "oneshot";
+          WorkingDirectory = host.flakePath;
+          ExecStart = buildFleet;
+          TimeoutStartSec = "infinity";
+          Environment = commonEnvironment;
+        };
+      };
+
+      systemd.user.services.nix-fleet-build-report = {
+        Unit = {
+          Description = "Report a successful x86 NixOS fleet build";
+          After = [ "nix-fleet-build.service" ];
+        };
+        Service = {
+          Type = "oneshot";
+          WorkingDirectory = host.flakePath;
+          ExecStart = reportFleet;
+          TimeoutStartSec = "infinity";
+          Environment = commonEnvironment;
+        };
+      };
+
+      systemd.user.services.nix-fleet-build-repair = {
+        Unit = {
+          Description = "Repair and report a failed x86 NixOS fleet build";
+          After = [ "nix-fleet-build.service" ];
+        };
+        Service = {
+          Type = "oneshot";
+          WorkingDirectory = host.flakePath;
+          ExecStart = repairFleet;
+          TimeoutStartSec = "infinity";
+          Environment = commonEnvironment;
         };
       };
 
