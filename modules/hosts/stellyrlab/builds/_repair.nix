@@ -10,7 +10,6 @@ pkgs.writeShellScript "nix-fleet-build-repair" ''
       checkout=${lib.escapeShellArg host.flakePath}
       state_dir=${lib.escapeShellArg stateDir}
       ${pkgs.coreutils}/bin/mkdir -p "$state_dir"
-      flake="$checkout"
       log="$state_dir/repair.log"
 
       build_log=${lib.escapeShellArg "${stateDir}/build.log"}
@@ -25,13 +24,11 @@ pkgs.writeShellScript "nix-fleet-build-repair" ''
     ''${build_excerpt}
     </untrusted-build-log>"
 
-      set +e
-      cd "$flake"
-      ${hermes}/bin/hermes chat --quiet --yolo --in "$flake" --source tool \
+      cd "$checkout"
+      repair_status=0
+      ${hermes}/bin/hermes chat --quiet --yolo --in "$checkout" --source tool \
         --max-turns 40 \
-        --query "$query" >"$log" 2>&1
-      repair_status=$?
-      set -e
+        --query "$query" >"$log" 2>&1 || repair_status=$?
       ${pkgs.coreutils}/bin/touch "$state_dir/retry"
       exit "$repair_status"
 ''

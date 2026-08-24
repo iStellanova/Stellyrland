@@ -18,11 +18,9 @@ pkgs.writeShellScript "nix-fleet-build" ''
   checkout=${lib.escapeShellArg host.flakePath}
   run_dir=$(${pkgs.coreutils}/bin/mktemp -d)
   source_dir=
-  persistent_source=0
-  success=0
   cleanup() {
     cd /
-    if [ "$persistent_source" = 0 ] && [ -n "$source_dir" ]; then
+    if [ -n "$source_dir" ] && [ "$source_dir" != "$checkout" ]; then
       ${git} -C "$checkout" worktree remove --force "$source_dir" >/dev/null 2>&1 || true
     fi
     ${pkgs.coreutils}/bin/rm -rf "$run_dir"
@@ -31,7 +29,6 @@ pkgs.writeShellScript "nix-fleet-build" ''
 
   if [ -e "$state_dir/retry" ]; then
     source_dir="$checkout"
-    persistent_source=1
     ${pkgs.coreutils}/bin/rm -f "$state_dir/retry"
   else
     if [ "$(${git} -C "$checkout" branch --show-current)" != main ] || [ -n "$(${git} -C "$checkout" status --porcelain)" ]; then
@@ -41,8 +38,6 @@ pkgs.writeShellScript "nix-fleet-build" ''
     source_dir="$run_dir/source"
     ${git} -C "$checkout" worktree add --detach "$source_dir" HEAD >/dev/null
   fi
-
-  ${pkgs.coreutils}/bin/mkdir -p "$state_dir"
 
   if [ -e "$state_dir/lock.json" ]; then
     ${pkgs.coreutils}/bin/cp "$state_dir/lock.json" "$run_dir/previous-lock.json"
@@ -81,5 +76,4 @@ pkgs.writeShellScript "nix-fleet-build" ''
   else
     ${pkgs.coreutils}/bin/rm -f "$state_dir/previous-lock.json"
   fi
-  success=1
 ''
