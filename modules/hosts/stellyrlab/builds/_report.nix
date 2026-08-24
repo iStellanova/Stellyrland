@@ -64,5 +64,10 @@ pkgs.writeShellScript "nix-fleet-build-report" ''
     fi
   } >"$report"
 
+  if [ -n "$(${git} -C ${lib.escapeShellArg host.flakePath} status --porcelain)" ]; then
+    ${git} -C ${lib.escapeShellArg host.flakePath} add -A
+    ${git} -C ${lib.escapeShellArg host.flakePath} commit -m 'chore(build): update fleet inputs and repairs'
+  fi
+
   ${notify} "$report"
 ''
