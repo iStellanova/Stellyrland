@@ -31,14 +31,7 @@
         }
         {
           match = {
-            class = "^(zenity)$";
-          };
-          float = true;
-          center = true;
-        }
-        {
-          match = {
-            class = "^(org.pulseaudio.pavucontrol)$";
+            class = "^(zenity|org.pulseaudio.pavucontrol)$";
           };
           float = true;
           center = true;
@@ -53,14 +46,7 @@
         }
         {
           match = {
-            title = "^(Open File)$";
-          };
-          float = true;
-          center = true;
-        }
-        {
-          match = {
-            title = "^(Open Folder)$";
+            title = "^(Open File|Open Folder)$";
           };
           float = true;
           center = true;
@@ -141,13 +127,7 @@
         }
         {
           match = {
-            class = "^(steam)$";
-          };
-          opacity = "1.0 override 1.0 override";
-        }
-        {
-          match = {
-            class = "^(steam_app_.*)$";
+            class = "^(steam|steam_app_.*)$";
           };
           opacity = "1.0 override 1.0 override";
         }
@@ -163,6 +143,13 @@
         {
           match = {
             content = "game";
+            fullscreen = true;
+          };
+          confine_pointer = true;
+        }
+        {
+          match = {
+            class = "^(steam_app_.*)$";
             fullscreen = true;
           };
           confine_pointer = true;
