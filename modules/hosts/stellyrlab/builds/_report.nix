@@ -43,9 +43,6 @@ pkgs.writeShellScript "nix-fleet-build-report" ''
       declare -A old_rev new_rev
       while IFS=$'\t' read -r name rev; do old_rev["$name"]=$rev; done < <(${jq} -r '. as $lock | $lock.nodes.root.inputs | to_entries[] | .key as $name | .value as $ref | ($ref | if type == "string" then . else .[0] end) as $node | [$name, ($lock.nodes[$node].locked.rev // $lock.nodes[$node].locked.lastModified // "")] | @tsv' "$state_dir/previous-lock.json")
       while IFS=$'\t' read -r name rev; do new_rev["$name"]=$rev; done < <(${jq} -r '. as $lock | $lock.nodes.root.inputs | to_entries[] | .key as $name | .value as $ref | ($ref | if type == "string" then . else .[0] end) as $node | [$name, ($lock.nodes[$node].locked.rev // $lock.nodes[$node].locked.lastModified // "")] | @tsv' "$state_dir/lock.json")
-      names=$(${pkgs.coreutils}/bin/mktemp)
-      trap '${pkgs.coreutils}/bin/rm -f "''${report}" "''${names}"' EXIT
-      printf '%s\n' "''${!old_rev[@]}" "''${!new_rev[@]}" | ${pkgs.coreutils}/bin/sort -u >"$names"
       changed=0
       while IFS= read -r name; do
         old=''${old_rev[$name]-}
@@ -60,7 +57,7 @@ pkgs.writeShellScript "nix-fleet-build-report" ''
           printf '  • Updated: %s\n    old: %s\n    new: %s\n' "$name" "$old" "$new"
           changed=1
         fi
-      done <"$names"
+      done < <(printf '%s\n' "''${!old_rev[@]}" "''${!new_rev[@]}" | ${pkgs.coreutils}/bin/sort -u)
       [ "$changed" = 1 ] || printf '%s\n' '  • No input changes'
     else
       printf '%s\n' '  • Baseline unavailable (first successful run)'

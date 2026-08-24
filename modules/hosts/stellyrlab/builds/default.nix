@@ -101,7 +101,7 @@
 
       systemd.user.services.nix-fleet-build-repair = {
         Unit = {
-          Description = "Repair and report a failed x86 NixOS fleet build";
+          Description = "Repair a failed x86 NixOS fleet build";
           After = [ "nix-fleet-build.service" ];
           OnSuccess = [ "nix-fleet-build-retry.service" ];
           OnFailure = [ "nix-fleet-build-retry.service" ];
