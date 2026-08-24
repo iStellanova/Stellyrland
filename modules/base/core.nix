@@ -11,7 +11,6 @@
       i18n.defaultLocale = "en_US.UTF-8";
 
       security.sudo.enable = false;
-      security.sudo-rs.enable = false;
       security.run0 = {
         enable = true;
         sudo-shim.enable = true;
