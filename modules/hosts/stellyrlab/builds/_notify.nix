@@ -14,6 +14,7 @@ pkgs.writeShellScript "nix-fleet-build-notify" ''
     ${curl} --fail-with-body -sS -X POST \
       -H "Authorization: Bot $DISCORD_BOT_TOKEN" \
       -H 'Content-Type: application/json' \
+      --retry 5 --retry-all-errors --retry-delay 10 --retry-max-time 120 \
       --data "$(${jq} -nc --arg content "$content" '{content:$content}')" \
       "https://discord.com/api/v10/channels/$channel/messages" >/dev/null
   }

@@ -11,6 +11,8 @@
       nix = "${pkgs.nix}/bin/nix";
       nixStore = "${pkgs.nix}/bin/nix-store";
       git = "${pkgs.git}/bin/git";
+      flock = "${pkgs.util-linux}/bin/flock";
+      systemctl = "${pkgs.systemd}/bin/systemctl";
       curl = "${pkgs.curl}/bin/curl";
       jq = "${pkgs.jq}/bin/jq";
       stateDir = "${host.homeDir}/.local/state/nix-fleet-build";
@@ -23,6 +25,7 @@
           lib
           nix
           git
+          flock
           stateDir
           ;
       };
@@ -45,8 +48,7 @@
           pkgs
           lib
           hermes
-          git
-          notify
+          stateDir
           ;
       };
       commonEnvironment = [
@@ -56,6 +58,7 @@
             pkgs.git
             pkgs.nix
             pkgs.nix-eval-jobs
+            pkgs.util-linux
             pkgs.openssh
             pkgs.coreutils
             pkgs.curl
@@ -77,7 +80,7 @@
           Type = "oneshot";
           WorkingDirectory = host.flakePath;
           ExecStart = buildFleet;
-          TimeoutStartSec = "infinity";
+          TimeoutStartSec = "2h";
           Environment = commonEnvironment;
         };
       };
@@ -91,7 +94,7 @@
           Type = "oneshot";
           WorkingDirectory = host.flakePath;
           ExecStart = reportFleet;
-          TimeoutStartSec = "infinity";
+          TimeoutStartSec = "5min";
           Environment = commonEnvironment;
         };
       };
@@ -100,12 +103,27 @@
         Unit = {
           Description = "Repair and report a failed x86 NixOS fleet build";
           After = [ "nix-fleet-build.service" ];
+          OnSuccess = [ "nix-fleet-build-retry.service" ];
+          OnFailure = [ "nix-fleet-build-retry.service" ];
         };
         Service = {
           Type = "oneshot";
           WorkingDirectory = host.flakePath;
           ExecStart = repairFleet;
-          TimeoutStartSec = "infinity";
+          TimeoutStartSec = "20min";
+          Environment = commonEnvironment;
+        };
+      };
+
+      systemd.user.services.nix-fleet-build-retry = {
+        Unit = {
+          Description = "Retry the x86 NixOS fleet build after repair";
+          After = [ "nix-fleet-build-repair.service" ];
+        };
+        Service = {
+          Type = "oneshot";
+          ExecStart = "${systemctl} --user start --no-block nix-fleet-build.service";
+          TimeoutStartSec = "1min";
           Environment = commonEnvironment;
         };
       };
