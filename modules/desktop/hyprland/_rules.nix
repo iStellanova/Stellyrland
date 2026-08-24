@@ -160,6 +160,13 @@
           };
           fullscreen = true;
         }
+        {
+          match = {
+            content = "game";
+            fullscreen = true;
+          };
+          confine_pointer = true;
+        }
 
         (
           {
