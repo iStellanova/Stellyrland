@@ -72,7 +72,7 @@ in
         enableZshIntegration = true;
         icons = "auto";
         extraOptions = [
-          "-lh"
+          "-lha"
           "--group-directories-first"
           "--header"
           "--short-nix"
