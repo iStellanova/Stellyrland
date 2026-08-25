@@ -118,11 +118,10 @@
             "dock" = "right";
           };
           "agent_servers" = {
-            "claude-acp" = {
-              "type" = "registry";
-            };
-            "mcp-nixos" = {
-              "type" = "registry";
+            "hermes-agent" = {
+              "type" = "custom";
+              "command" = "hermes";
+              "args" = [ "acp" ];
             };
           };
         };
