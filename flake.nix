@@ -58,7 +58,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nix-secrets = {
-      url = "github:unnamed-systems/nix-secrets/dev";
+      url = "github:unnamed-systems/nix-secrets";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nixcord = {
@@ -91,7 +91,6 @@
       url = "github:yayuuu/hyprland-scroll-overview";
       flake = false;
     };
-
     treefmt-nix = {
       url = "github:numtide/treefmt-nix";
       inputs.nixpkgs.follows = "nixpkgs";
