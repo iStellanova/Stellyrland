@@ -97,10 +97,10 @@
             enableTreesitter = true;
             enableFormat = true;
 
-            # nil/nixfmt, not NVF's alejandra default, to match Zed.
+            # nixd/nixfmt, not NVF's alejandra default, to match Zed.
             nix = {
               enable = true;
-              lsp.servers = [ "nil" ];
+              lsp.servers = [ "nixd" ];
               format.type = [ "nixfmt" ];
             };
 
@@ -113,6 +113,13 @@
             markdown = {
               enable = true;
               extensions.render-markdown-nvim.enable = true;
+            };
+          };
+
+          lsp.servers.nixd = {
+            settings.nixd = {
+              nixpkgs.expr = "import (builtins.getFlake (toString ./.)).inputs.nixpkgs.outPath { }";
+              options.nixos.expr = "(builtins.getFlake (toString ./.)).nixosConfigurations.stellyrlab.options";
             };
           };
 
@@ -191,7 +198,7 @@
           # opencode.nvim shells out to `opencode --port`; keep it on PATH inside
           # nvim even though programs.opencode also installs it.
           extraPackages = [
-            pkgs.nil
+            pkgs.nixd
             inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.opencode
           ];
         };

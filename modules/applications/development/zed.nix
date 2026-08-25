@@ -23,7 +23,7 @@
     {
       home.packages = with pkgs; [
         mcp-nixos
-        nil
+        nixd
         nixfmt
         pyright
         black
@@ -94,7 +94,7 @@
               "format_on_save" = "off";
             };
             "Nix" = {
-              "language_servers" = [ "nil" ];
+              "language_servers" = [ "nixd" ];
               "formatter" = {
                 "external" = {
                   "command" = "nixfmt";
@@ -107,9 +107,21 @@
             "show" = "always";
           };
           "lsp" = {
-            "nil" = {
+            "nixd" = {
               "binary" = {
-                "path" = "nil";
+                "path" = "nixd";
+              };
+              "settings" = {
+                "nixd" = {
+                  "nixpkgs" = {
+                    "expr" = "import (builtins.getFlake (toString ./.)).inputs.nixpkgs.outPath { }";
+                  };
+                  "options" = {
+                    "nixos" = {
+                      "expr" = "(builtins.getFlake (toString ./.)).nixosConfigurations.stellyrlab.options";
+                    };
+                  };
+                };
               };
             };
           };
