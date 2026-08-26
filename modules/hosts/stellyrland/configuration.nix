@@ -39,6 +39,7 @@
       pipewire
       pipewire-lowlatency
       noctalia-greeter
+      hyprland
       openrgb
       limine
       stellanova

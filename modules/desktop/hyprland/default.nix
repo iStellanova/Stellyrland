@@ -55,10 +55,45 @@
       };
     };
 
+  flake.modules.finix.hyprland =
+    {
+      inputs,
+      lib,
+      pkgs,
+      host,
+      modules,
+      ...
+    }:
+    {
+      imports = [
+        modules.hyprland
+        ./_options.nix
+        inputs.self.modules.finix.preservation
+      ];
+
+      programs.hyprland.enable = true;
+      hardware.graphics.enable32Bit = true;
+      environment.systemPackages = with pkgs; [
+        wl-clipboard
+        udiskie
+        linux-wallpaperengine
+      ];
+
+      xdg.portal = {
+        enable = true;
+        portals = [ pkgs.xdg-desktop-portal-gtk ];
+      };
+
+      preservation.preserveAt."/persist".users.${host.username}.directories = [
+        ".local/share/hyprland"
+      ];
+    };
+
   flake.modules.homeManager.hyprland =
     {
       lib,
       osConfig,
+      host,
       pkgs,
       ...
     }:
@@ -83,7 +118,7 @@
         enable = true;
         configType = "lua";
         xwayland.enable = true;
-        systemd.enable = true;
+        systemd.enable = host.class == "nixos";
         portalPackage = null;
 
         settings.monitor = osConfig.desktop.hyprland.monitors;
