@@ -28,9 +28,11 @@
       imports = with self.modules.homeManager; [
         basics
         fastfetch
+        cursor
 
         # Hyprland Desktop
         easyeffects
+        umbriel
         noctalia
         openrgb
         hyprland
