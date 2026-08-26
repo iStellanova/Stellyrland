@@ -2,6 +2,13 @@
 {
   flake-file.inputs.nix-flatpak.url = "github:gmodena/nix-flatpak";
 
+  flake.modules.finix.flatpak =
+    { inputs, ... }:
+    {
+      imports = [ inputs.finix.nixosModules.flatpak ];
+      services.flatpak.enable = true;
+    };
+
   flake.modules.nixos.flatpak =
     {
       lib,

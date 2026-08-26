@@ -1,4 +1,14 @@
 {
+  flake.modules.finix.obs = { pkgs, ... }: {
+    boot.kernelModules = [ "v4l2loopback" ];
+    environment.systemPackages = with pkgs; [
+      obs-studio
+      gpu-screen-recorder-gtk
+      obs-studio-plugins.obs-pipewire-audio-capture
+      obs-studio-plugins.obs-vaapi
+    ];
+  };
+
   flake.modules.nixos.obs =
     {
       config,

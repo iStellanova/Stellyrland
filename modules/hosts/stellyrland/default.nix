@@ -10,6 +10,7 @@
         ./_storage.nix
         ./_lact-config.nix
         ./_coolercontrol-config.nix
+        ./_desktop.nix
       ]
       ++ (with modules; [
         getty
@@ -48,7 +49,10 @@
       };
 
       boot = {
-        kernelModules = [ "kvm-amd" ];
+        kernelModules = [
+          "kvm-amd"
+          "zram"
+        ];
         initrd.supportedFilesystems = {
           luks.enable = true;
           zfs.enable = true;
@@ -125,6 +129,40 @@
         }
       ];
 
+      environment.systemPackages = with pkgs; [
+        usbutils
+        git
+        curl
+        wget
+      ];
+      hardware.firmware = [ pkgs.linux-firmware ];
+      hardware.cpu.amd.updateMicrocode = true;
+
+      finit.tmpfiles.rules = [
+        "w /sys/bus/platform/drivers/amd_x3d_vcache/AMDI0101:00/amd_x3d_mode - - - - cache"
+      ];
+
+      environment.etc."ananicy.d".source = "${pkgs.ananicy-rules-cachyos}/etc/ananicy.d";
+      finit.services.irqbalance = {
+        description = "IRQ balancing daemon";
+        command = "${pkgs.irqbalance}/bin/irqbalance --foreground";
+      };
+      finit.services.ananicy-cpp = {
+        description = "Ananicy process manager";
+        command = "${pkgs.ananicy-cpp}/bin/ananicy-cpp start";
+      };
+      finit.tasks.zram = {
+        description = "Configure compressed RAM swap";
+        runlevels = "S";
+        command = pkgs.writeShellScript "zram-setup" ''
+          ${pkgs.kmod}/bin/modprobe zram
+          size=$(( $(awk '/MemTotal:/ { print $2 }' /proc/meminfo) * 1024 ))
+          ${pkgs.util-linux}/bin/zramctl --find --size "$size" /dev/zram0
+          ${pkgs.util-linux}/bin/mkswap -L zram0 /dev/zram0
+          ${pkgs.util-linux}/bin/swapon --priority 100 /dev/zram0
+        '';
+      };
+
       services = {
         cron.enable = true;
         fstrim.enable = true;
@@ -150,10 +188,5 @@
         };
       };
 
-      environment.systemPackages = with pkgs; [
-        git
-        curl
-        wget
-      ];
     };
 }

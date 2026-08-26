@@ -56,6 +56,8 @@
       lollypop
       soulseek
       media-editing
+      obs
+      roblox
       zen-browser
       email
       psswdmgr

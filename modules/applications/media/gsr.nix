@@ -64,7 +64,25 @@
         replay.time 30
       '';
 
-      systemd.user.services.gsr-replay = {
+      wayland.windowManager.hyprland.settings.exec-once = lib.mkIf (host.class == "finix") [
+        (builtins.concatStringsSep " " [
+          "${pkgs.coreutils}/bin/mkdir -p ${host.homeDir}/Videos/Replays && ${pkgs.gpu-screen-recorder}/bin/gpu-screen-recorder"
+          "-w ${primary}"
+          "-r 120"
+          "-c mp4"
+          "-k ${if host.features.hdr then "av1_hdr" else "av1"}"
+          "-q very_high"
+          "-ac opus"
+          "-a default_output|default_input"
+          "-cr full"
+          "-f 60"
+          "-cursor yes"
+          "-o ${host.homeDir}/Videos/Replays"
+          "-ro ${host.homeDir}/Videos/Replays"
+        ])
+      ];
+
+      systemd.user.services.gsr-replay = lib.mkIf (host.class == "nixos") {
         Unit = {
           Description = "GPU Screen Recorder – continuous replay buffer";
           After = [ "graphical-session.target" ];

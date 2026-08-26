@@ -20,14 +20,15 @@
     };
 
   flake.modules.finix.gamescope =
-    { inputs, host, pkgs, ... }:
+    { inputs, config, pkgs, ... }:
     {
+      options.desktop.gaming.hdr.enable = lib.mkEnableOption "HDR support for gamescope and DXVK";
       imports = [ inputs.finix-community-modules.nixosModules.gamescope ];
-      programs.gamescope = {
+      config.programs.gamescope = {
         enable = true;
         args = [ "--rt" "--fullscreen" "--expose-wayland" ]
-          ++ lib.optionals (host.features.hdr or false) [ "--hdr-enabled" ];
-        env = lib.optionalAttrs (host.features.hdr or false) { DXVK_HDR = "1"; };
+          ++ lib.optionals config.desktop.gaming.hdr.enable [ "--hdr-enabled" ];
+        env = lib.optionalAttrs config.desktop.gaming.hdr.enable { DXVK_HDR = "1"; };
       };
     };
 }
