@@ -55,6 +55,7 @@
       lollypop
       soulseek
       media-editing
+      zen-browser
       stellanova
       stellyrland-host
     ];

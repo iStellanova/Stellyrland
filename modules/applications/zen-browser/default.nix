@@ -29,6 +29,14 @@
       };
     };
 
+  flake.modules.finix.zen-browser =
+    { host, ... }:
+    {
+      preservation.preserveAt."/persist".users.${host.username}.directories = [
+        ".config/zen"
+      ];
+    };
+
   flake.modules.homeManager.zen-browser =
     {
       config,
