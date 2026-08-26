@@ -57,6 +57,14 @@ let
   '';
 in
 {
-  services.lact.enable = true;
+  environment.systemPackages = [
+    pkgs.lact
+  ];
   environment.etc."lact/config.yaml".source = lactConfig;
+  finit.services.lactd = {
+    description = "LACT GPU control daemon";
+    command = "${pkgs.lact}/bin/lactd";
+    runlevels = "2345";
+    restart = 5;
+  };
 }
