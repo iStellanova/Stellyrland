@@ -1,4 +1,20 @@
-_: {
+{ inputs, ... }:
+{
+  flake.modules.finix.noctalia =
+    { host, ... }:
+    {
+      imports = [ inputs.self.modules.finix.preservation ];
+      preservation.preserveAt."/persist" = {
+        directories = [ "/var/lib/noctalia-greeter" ];
+        users.${host.username}.files = [
+          ".local/state/noctalia/screen_time.json"
+          ".local/state/noctalia/usage_counts.json"
+          ".local/state/noctalia/recently_used.json"
+          ".local/state/noctalia/notification_history.json"
+        ];
+      };
+    };
+
   flake.modules.nixos.noctalia =
     {
       lib,
@@ -77,11 +93,11 @@ _: {
                   fi
       '';
 
-      systemd.user.services.noctalia.Service.RestartSec = "3s";
+      systemd.user.services.noctalia.Service.RestartSec = lib.mkIf (host.class == "nixos") "3s";
 
       programs.noctalia = {
         enable = true;
-        systemd.enable = true;
+        systemd.enable = host.class == "nixos";
 
         settings = {
           shell = {
@@ -91,7 +107,7 @@ _: {
             settings_show_advanced = true;
             setup_wizard_enabled = false;
             polkit_agent = true;
-            launch_apps_as_systemd_services = true;
+            launch_apps_as_systemd_services = host.class == "nixos";
             screen_time_enabled = true;
             launcher.providers.session.global = true;
             panel = {
