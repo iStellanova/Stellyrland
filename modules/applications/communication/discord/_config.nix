@@ -9,7 +9,8 @@ _: {
 
     settings = {
       discordBranch = "stable";
-      minimizeToTray = true;
+      minimizeToTray = false;
+      webRTCIPHandlingPolicy = "default_public_and_private_interfaces";
       arRPC = true;
       splashColor = "rgb(202, 211, 245)";
       splashBackground = "rgb(24, 25, 38)";
