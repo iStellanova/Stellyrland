@@ -42,6 +42,38 @@
       };
     };
 
+  flake.modules.finix.steam =
+    {
+      inputs,
+      lib,
+      host,
+      pkgs,
+      ...
+    }:
+    {
+      imports = [
+        inputs.finix-community-modules.nixosModules.steam
+        inputs.finix.nixosModules.gamemode
+      ] ++ lib.optional (host.persistence or false) {
+        preservation.preserveAt."/persist".users.${host.username}.directories = [
+          ".local/share/Steam"
+          ".steam"
+        ];
+      };
+
+      boot.kernelModules = [ "ntsync" ];
+      boot.kernel.sysctl."vm.max_map_count" = 2147483642;
+      programs.gamemode.enable = true;
+      programs.steam = {
+        enable = true;
+        extraPackages = [ pkgs.gamescope-wsi ];
+        extraCompatPackages = [
+          pkgs.proton-ge-bin
+          inputs.chaotic.packages.${pkgs.stdenv.hostPlatform.system}.proton-cachyos
+        ];
+      };
+    };
+
   flake.modules.darwin.steam = {
     homebrew.casks = [ "steam" ];
   };

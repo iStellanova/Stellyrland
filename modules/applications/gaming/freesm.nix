@@ -5,6 +5,14 @@
     inputs.nixpkgs.follows = "nixpkgs";
   };
 
+  flake.modules.finix.freesm =
+    { inputs, pkgs, ... }:
+    {
+      environment.systemPackages = [
+        inputs.freesmlauncher.packages.${pkgs.stdenv.hostPlatform.system}.default
+      ];
+    };
+
   flake.modules.nixos.freesm =
     { pkgs, ... }:
     {

@@ -46,6 +46,9 @@
       zed
       opencode
       nautilus
+      steam
+      gamescope
+      game-launchers
       stellanova
       stellyrland-host
     ];

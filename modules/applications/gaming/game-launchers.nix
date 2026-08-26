@@ -29,5 +29,17 @@ in
       };
     };
 
+  flake.modules.finix.game-launchers =
+    { host, pkgs, ... }:
+    {
+      environment.systemPackages = with pkgs; [ prismlauncher r2modman ];
+      preservation.preserveAt."/persist".users.${host.username}.directories = [
+        ".local/share/Paradox Interactive"
+        ".local/share/PrismLauncher"
+        ".local/share/r2modman"
+        ".config/r2modman"
+      ];
+    };
+
   flake.modules.darwin.game-launchers = osShared;
 }

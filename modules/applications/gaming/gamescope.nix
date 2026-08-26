@@ -18,4 +18,16 @@
         };
       };
     };
+
+  flake.modules.finix.gamescope =
+    { inputs, host, pkgs, ... }:
+    {
+      imports = [ inputs.finix-community-modules.nixosModules.gamescope ];
+      programs.gamescope = {
+        enable = true;
+        args = [ "--rt" "--fullscreen" "--expose-wayland" ]
+          ++ lib.optionals (host.features.hdr or false) [ "--hdr-enabled" ];
+        env = lib.optionalAttrs (host.features.hdr or false) { DXVK_HDR = "1"; };
+      };
+    };
 }
