@@ -30,6 +30,15 @@
       };
     };
 
+  flake.modules.finix.opencode =
+    { host, ... }:
+    {
+      preservation.preserveAt."/persist".users.${host.username}.directories = [
+        ".config/opencode"
+        ".local/share/opencode"
+      ];
+    };
+
   flake.modules.nixos.opencode =
     { lib, host, ... }:
     {

@@ -13,6 +13,18 @@
       };
     };
 
+  flake.modules.finix.zed =
+    { host, ... }:
+    {
+      imports = [
+        {
+          preservation.preserveAt."/persist".users.${host.username}.directories = [
+            ".local/share/zed"
+          ];
+        }
+      ];
+    };
+
   flake.modules.homeManager.zed =
     {
       host,

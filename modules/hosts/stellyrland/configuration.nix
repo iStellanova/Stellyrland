@@ -43,6 +43,8 @@
       noctalia
       openrgb
       limine
+      zed
+      opencode
       stellanova
       stellyrland-host
     ];
