@@ -180,16 +180,19 @@ let
   '';
 in
 {
-  programs.coolercontrol.enable = true;
-  environment.systemPackages = [
-    pkgs.coolercontrol.coolercontrol-gui
+  environment.systemPackages = with pkgs.coolercontrol; [
+    coolercontrol-gui
+    coolercontrold
     pkgs.liquidctl
   ];
-
-  # preStart copies the config rather than environment.etc — coolercontrold needs a mutable file.
-  systemd.services.coolercontrold.preStart = ''
-    mkdir -p /etc/coolercontrol
-    cp -f ${coolerConfig} /etc/coolercontrol/config.toml
-    chmod 644 /etc/coolercontrol/config.toml
-  '';
+  environment.etc."coolercontrol/config.toml".source = coolerConfig;
+  finit.tmpfiles.rules = [
+    "d /etc/coolercontrol 0755 root root -"
+  ];
+  finit.services.coolercontrold = {
+    description = "CoolerControl daemon";
+    command = "${pkgs.coolercontrol.coolercontrold}/bin/coolercontrold";
+    runlevels = "2345";
+    restart = 5;
+  };
 }

@@ -6,6 +6,7 @@
     {
       imports = [
         ./_boot.nix
+        ./_coolercontrol-config.nix
       ] ++ (with modules; [
         getty
         polkit
