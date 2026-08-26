@@ -59,6 +59,7 @@
     {
       lib,
       osConfig,
+      pkgs,
       ...
     }:
     {
@@ -67,13 +68,17 @@
         ./_autostart.nix
         ./_binds.nix
         ./_config.nix
-        ./_cursor.nix
         ./_env.nix
         ./_overview.nix
         ./_rules.nix
       ];
 
       _module.args.lua = lib.generators.mkLuaInline;
+      home.pointerCursor.hyprcursor = {
+        enable = true;
+        size = 16;
+      };
+      home.packages = [ pkgs.hyprcursor ];
       wayland.windowManager.hyprland = {
         enable = true;
         configType = "lua";
