@@ -5,6 +5,7 @@
     fsType = "zfs";
     options = [
       "nofail"
+      "X-mount.mkdir"
       "x-gvfs-show"
       "x-gvfs-name=Extra Disk"
     ];

@@ -24,6 +24,7 @@
       { host, inputs, pkgs, ... }:
       {
         imports = [ self.modules.finix.home-manager ];
+        environment.systemPackages = [ pkgs.zsh ];
         users.users."${username}".shell = pkgs.zsh;
         home-manager.users."${username}" = {
           _module.args = {

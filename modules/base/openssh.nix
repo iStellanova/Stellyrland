@@ -12,6 +12,7 @@
 
   flake.modules.finix.openssh = { modules, ... }: {
     imports = [ modules.openssh ];
+    finit.tasks.ssh-keygen.conditions = [ "task/tmpfiles-setup/success" ];
     services.openssh = {
       enable = true;
       settings = {

@@ -83,6 +83,7 @@ in
     "audit=0"
   ];
   boot.initrd.path = [
+    pkgs.bashNonInteractive
     pkgs.clevis
     pkgs.tpm2-tss
   ];
@@ -96,6 +97,7 @@ in
       unlock() {
         name="$1"
         device="$2"
+        export DM_DISABLE_UDEV=1
         if ! ${clevis} luks unlock -d "$device" -n "$name"; then
           ${cryptsetup} open --allow-discards "$device" "$name"
         fi
@@ -104,6 +106,16 @@ in
       unlock cryptextra /dev/disk/by-partlabel/disk-extra-luks
     '';
   };
+  boot.zfs.importPools = lib.mkAfter [ "zextra" ];
+  boot.initrd.finit.tasks.zpool-import-zroot.conditions = [
+    "run/udevadm:5/success"
+    "task/luks/success"
+  ];
+  boot.initrd.finit.tasks.zpool-import-zextra.conditions = [
+    "run/udevadm:5/success"
+    "task/luks/success"
+  ];
+
   boot.initrd.finit.tasks.rollback = {
     conditions = [ "task/zpool-import-zroot/success" ];
     tty = "@console";
