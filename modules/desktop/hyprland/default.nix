@@ -58,7 +58,6 @@
   flake.modules.finix.hyprland =
     {
       inputs,
-      lib,
       pkgs,
       host,
       modules,

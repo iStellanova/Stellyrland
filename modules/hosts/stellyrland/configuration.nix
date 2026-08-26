@@ -44,7 +44,6 @@
       openrgb
       limine
       stellanova
-      stellyrland-user
       stellyrland-host
     ];
   };
