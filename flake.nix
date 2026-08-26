@@ -21,6 +21,8 @@
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    finix.url = "git+https://github.com/finix-community/finix.git?ref=main";
+    finix-community-modules.url = "git+https://github.com/finix-community/community-modules.git?ref=main";
     flake-file.url = "github:vic/flake-file";
     flake-parts = {
       url = "github:hercules-ci/flake-parts";

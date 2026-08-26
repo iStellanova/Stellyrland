@@ -22,6 +22,10 @@ in
     ];
   };
 
+  flake.modules.finix.home-manager = {
+    imports = [ inputs.finix-community-modules.nixosModules.home-manager ];
+  };
+
   flake.modules.darwin.home-manager = {
     imports = [
       inputs.home-manager.darwinModules.home-manager

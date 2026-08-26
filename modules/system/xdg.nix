@@ -6,6 +6,13 @@
     ];
   };
 
+  flake.modules.finix.xdg = { pkgs, ... }: {
+    environment.systemPackages = with pkgs; [
+      xdg-user-dirs
+      xdg-utils
+    ];
+  };
+
   flake.modules.homeManager.xdg =
     {
       config,

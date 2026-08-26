@@ -1,4 +1,8 @@
 { self, lib, ... }: {
+  flake.modules.finix.stellyrland-user = {
+    home-manager.users.stellanova.imports = [ self.modules.homeManager.catppuccin ];
+  };
+
   flake.modules.nixos.stellyrland = {
     imports = [
       self.modules.nixos.stellanova

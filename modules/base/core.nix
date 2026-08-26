@@ -36,6 +36,14 @@
       };
     };
 
+  flake.modules.finix.core = { modules, ... }: {
+    imports = [ modules.sysklogd ];
+
+    time.timeZone = "America/Indianapolis";
+    i18n.defaultLocale = "en_US.UTF-8";
+    services.sysklogd.enable = true;
+  };
+
   flake.modules.homeManager.core = {
     home.sessionPath = [ "$HOME/.local/state/nix/profiles/scratch/bin" ];
     home.stateVersion = "25.11";

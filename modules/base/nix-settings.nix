@@ -52,6 +52,13 @@ in
     ];
   };
 
+  flake.modules.finix.nix-settings = {
+    services.nix-daemon = {
+      enable = true;
+      settings = commonNixSettings;
+    };
+  };
+
   flake.modules.darwin.nix-settings = {
     imports = [
       osShared

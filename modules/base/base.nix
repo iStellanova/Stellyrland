@@ -13,6 +13,19 @@
     ];
   };
 
+  flake.modules.finix.base = {
+    imports = with inputs.self.modules.finix; [
+      core
+      lix
+      nix-settings
+      openssh
+      tailnet
+      secrets
+      users
+      avahi
+    ];
+  };
+
   flake.modules.darwin.base = {
     imports = with inputs.self.modules.darwin; [
       lix

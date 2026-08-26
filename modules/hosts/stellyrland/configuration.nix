@@ -1,6 +1,7 @@
 { self, ... }: {
   flake.hosts.stellyrland = {
-    class = "nixos";
+    class = "finix";
+    uid = 1000;
     username = "stellanova";
     homeDir = "/home/stellanova";
     persistence = true;
@@ -21,76 +22,23 @@
       };
     };
     graphics = "amd";
-    monitorPriority = [
-      "DP-2"
-      "DP-3"
-    ];
+    monitorPriority = [ "DP-2" "DP-3" ];
     features.hdr = true;
   };
 
-  flake.modules.nixos.stellyrland = {
-    system.stateVersion = "25.11";
-    imports = with self.modules.nixos; [
-      # Base
+  flake.modules.finix.stellyrland = {
+    imports = with self.modules.finix; [
       base
       cmdline
-
-      # Desktop-Adjacent (session/GUI plumbing, not Hyprland-specific)
       services-base
-      system-tools
-      maintenance
-      xdg
-
-      # Hyprland Desktop
-      easyeffects
       fonts
-      hyprland
-      umbriel
-      noctalia-greeter
-      noctalia
+      xdg
       pipewire
       pipewire-lowlatency
-      catppuccin
-      openrgb
-
-      # Boot & Hardware & Storage
-      lanzaboote
-      binfmt
-      backup-service
-      preservation
-
-      # Gaming
-      game-launchers
-      gamescope
-      steam
-      vr
-
-      # Media
-      media-editing
-      obs
-      media
-      lollypop
-      soulseek
-      gsr
-
-      # Desktop Applications
-      nautilus
-      zen-browser
-      roblox
-
-      # Productivity
-      email
-      protonvpn
-      psswdmgr
-
-      # Persistence companions for Home Manager applications
-      opencode
-      discord
-      zed
-
-      # Personal Secrets
-
-      # Host Specific Config
+      noctalia-greeter
+      limine
+      stellanova
+      stellyrland-user
       stellyrland-host
     ];
   };

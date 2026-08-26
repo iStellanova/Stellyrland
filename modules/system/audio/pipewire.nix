@@ -1,3 +1,4 @@
+{ inputs, ... }:
 {
   flake.modules.nixos.pipewire =
     {
@@ -6,28 +7,20 @@
       ...
     }:
     {
-
       security.rtkit.enable = true;
-
       services.pipewire = {
         enable = true;
         pulse.enable = true;
         alsa.enable = true;
         alsa.support32Bit = true;
-        wireplumber = {
-          extraConfig = {
-            "10-ignore-vols" = {
-              "monitor.alsa.rules" = [
-                {
-                  matches = [ { "media.class" = "Audio/Source"; } ];
-                  actions = {
-                    update-props = {
-                      "node.ignore-session-volume" = true;
-                    };
-                  };
-                }
-              ];
-            };
+        wireplumber.extraConfig = {
+          "10-ignore-vols" = {
+            "monitor.alsa.rules" = [
+              {
+                matches = [ { "media.class" = "Audio/Source"; } ];
+                actions.update-props."node.ignore-session-volume" = true;
+              }
+            ];
           };
         };
       };
@@ -37,6 +30,33 @@
           ".local/state/wireplumber"
         ];
       };
-
     };
+
+  flake.modules.finix.pipewire = { inputs, modules, ... }:
+    {
+      imports = [
+        inputs.finix-community-modules.nixosModules.pipewire
+        modules.rtkit
+      ];
+
+    services.rtkit.enable = true;
+    programs.pipewire = {
+      enable = true;
+      alsa.enable = true;
+      alsa.support32Bit = true;
+      wireplumber = {
+        enable = true;
+        extraConfig = {
+          "10-ignore-vols" = {
+            "monitor.alsa.rules" = [
+              {
+                matches = [ { "media.class" = "Audio/Source"; } ];
+                actions.update-props."node.ignore-session-volume" = true;
+              }
+            ];
+          };
+        };
+      };
+    };
+  };
 }

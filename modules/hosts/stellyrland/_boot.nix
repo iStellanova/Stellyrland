@@ -1,30 +1,36 @@
 {
-  config,
   inputs,
   lib,
   pkgs,
   ...
 }:
+let
+  cachyPkgs = pkgs.extend inputs.cachyos-kernel.overlays.pinned;
+  kernelPackages = cachyPkgs.cachyosKernels.linuxPackages-cachyos-bore-lto-x86_64-v4;
+  zfsPackage = kernelPackages.zfs_cachyos;
+  clevis = "${pkgs.clevis}/bin/clevis";
+  cryptsetup = "${pkgs.cryptsetup}/bin/cryptsetup";
+in
 {
-  boot.tmp.useTmpfs = true;
-  boot.tmp.tmpfsSize = "50%";
+  boot.kernelPackages = kernelPackages;
 
   boot.initrd.compressor = "zstd";
-  boot.initrd.compressorArgs = [
-    "-19"
-    "-T0"
-  ];
-
-  boot.initrd.supportedFilesystems = [ "zfs" ];
-  boot.zfs.forceImportRoot = true;
-  boot.initrd.systemd.enable = true;
-  boot.initrd.systemd.emergencyAccess = false;
-
-  boot.initrd.systemd.services."systemd-udevd".serviceConfig = {
-    TimeoutStartSec = "30s";
-    TimeoutStopSec = "30s";
+  boot.initrd.compressorArgs = [ "-19" "-T0" ];
+  boot.initrd.supportedFilesystems = {
+    luks.enable = true;
+    zfs = {
+      enable = true;
+      packages = [ zfsPackage ];
+    };
   };
-
+  boot.supportedFilesystems = {
+    luks.enable = true;
+    vfat.enable = true;
+    zfs = {
+      enable = true;
+      packages = [ zfsPackage ];
+    };
+  };
   boot.initrd.kernelModules = [
     "xhci_pci"
     "usbhid"
@@ -36,9 +42,7 @@
     "cryptd"
     "dm_crypt"
   ];
-
-  boot.initrd.includeDefaultModules = lib.mkForce false;
-  boot.initrd.availableKernelModules = lib.mkForce [
+  boot.initrd.availableKernelModules = [
     "nvme"
     "xhci_pci"
     "ahci"
@@ -51,50 +55,11 @@
     "xts"
     "cryptd"
   ];
-
-  boot.initrd.luks.devices."cryptroot" = {
-    device = "/dev/disk/by-partlabel/disk-main-root";
-    allowDiscards = true;
-    crypttabExtraOpts = [
-      "tpm2-device=auto"
-      "tpm2-pcrs=0+2+7"
-    ];
+  fileSystems."/tmp" = {
+    device = "tmpfs";
+    fsType = "tmpfs";
+    options = [ "size=50%" ];
   };
-
-  boot.initrd.luks.devices."cryptextra" = {
-    device = "/dev/disk/by-partlabel/disk-extra-luks";
-    allowDiscards = true;
-    crypttabExtraOpts = [
-      "tpm2-device=auto"
-      "tpm2-pcrs=0+2+7"
-    ];
-  };
-
-  boot.initrd.systemd.services.rollback = {
-    description = "Rollback ZFS root and home to blank snapshots";
-    wantedBy = [ "initrd.target" ];
-    after = [ "zfs-import-zroot.service" ];
-    before = [ "sysroot.mount" ];
-    unitConfig.DefaultDependencies = "no";
-    serviceConfig.Type = "oneshot";
-    script = ''
-      if zfs list zroot/local/root@blank > /dev/null 2>&1; then
-        zfs rollback -r zroot/local/root@blank
-      else
-        echo "stellyrland: zroot/local/root@blank not found, skipping root rollback"
-      fi
-
-      if zfs list zroot/safe/home@blank > /dev/null 2>&1; then
-        zfs rollback -r zroot/safe/home@blank
-      else
-        echo "stellyrland: zroot/safe/home@blank not found, skipping home rollback"
-      fi
-    '';
-  };
-
-  nixpkgs.overlays = [ inputs.cachyos-kernel.overlays.pinned ];
-  boot.kernelPackages = pkgs.cachyosKernels.linuxPackages-cachyos-bore-lto-x86_64-v4;
-  boot.zfs.package = config.boot.kernelPackages.zfs_cachyos;
 
   boot.kernelParams = [
     "acpi_enforce_resources=lax"
@@ -114,4 +79,34 @@
     "threadirqs"
     "audit=0"
   ];
+  boot.initrd.path = [
+    pkgs.clevis
+    pkgs.tpm2-tss
+  ];
+  boot.initrd.finit.tasks.luks = lib.mkForce {
+    conditions = [
+      "task/wait-dev-dev-disk-by-partlabel-disk-main-root/success"
+      "task/wait-dev-dev-disk-by-partlabel-disk-extra-luks/success"
+    ];
+    tty = "@console";
+    script = ''
+      unlock() {
+        name="$1"
+        device="$2"
+        if ! ${clevis} luks unlock -d "$device" -n "$name"; then
+          ${cryptsetup} open --allow-discards "$device" "$name"
+        fi
+      }
+      unlock cryptroot /dev/disk/by-partlabel/disk-main-root
+      unlock cryptextra /dev/disk/by-partlabel/disk-extra-luks
+    '';
+  };
+  boot.initrd.finit.tasks.rollback = {
+    conditions = [ "task/zpool-import-zroot/success" ];
+    tty = "@console";
+    script = ''
+      zfs list zroot/local/root@blank >/dev/null 2>&1 && zfs rollback -r zroot/local/root@blank || true
+      zfs list zroot/safe/home@blank >/dev/null 2>&1 && zfs rollback -r zroot/safe/home@blank || true
+    '';
+  };
 }

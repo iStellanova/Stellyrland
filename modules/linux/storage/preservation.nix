@@ -76,4 +76,63 @@
       };
     };
   };
+
+  flake.modules.finix.preservation = { host, inputs, ... }: {
+    imports = [ inputs.finix-community-modules.nixosModules.preservation ];
+
+    finit.tmpfiles.rules = [ "d /home/${host.username} 0700 ${host.username} users -" ];
+
+    preservation = {
+      enable = true;
+      preserveAt."/persist" = {
+        directories = [
+          "/var/lib/sshd"
+          "/var/log"
+        ];
+        files = [
+          "/etc/adjtime"
+          "/etc/machine-id"
+          {
+            file = "/etc/ssh/ssh_host_ed25519_key";
+            how = "symlink";
+            configureParent = true;
+          }
+          {
+            file = "/etc/ssh/ssh_host_ed25519_key.pub";
+            how = "symlink";
+            configureParent = true;
+          }
+          {
+            file = "/etc/ssh/ssh_host_rsa_key";
+            how = "symlink";
+            configureParent = true;
+          }
+          {
+            file = "/etc/ssh/ssh_host_rsa_key.pub";
+            how = "symlink";
+            configureParent = true;
+          }
+        ];
+        users.${host.username}.directories = [
+          "Projects"
+          "Documents"
+          "Pictures"
+          "Music"
+          "Videos"
+          ".ssh"
+          ".gnupg"
+          {
+            directory = ".local/state/nix/profiles";
+            mode = "0755";
+          }
+          ".local/state/nix"
+          {
+            directory = ".local/state/home-manager/gcroots";
+            mode = "0755";
+          }
+          ".local/state/home-manager"
+        ];
+      };
+    };
+  };
 }

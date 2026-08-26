@@ -43,6 +43,7 @@ in
   };
 
   flake.modules.nixos.cli = cliNixos;
+  flake.modules.finix.cli = cliNixos;
   flake.modules.darwin.cli = cliOs;
 
   flake.modules.homeManager.cli =

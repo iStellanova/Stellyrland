@@ -6,6 +6,11 @@ in
   flake.modules = user // {
     homeManager = user.homeManager // {
       stellanova = {
+        home = {
+          username = "stellanova";
+          homeDirectory = "/home/stellanova";
+          stateVersion = "25.11";
+        };
         programs.ssh.settings.stellyrlab = {
           HostName = "stellyrlab.tailb15b96.ts.net";
           User = "stellanova";

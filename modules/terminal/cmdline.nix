@@ -8,6 +8,13 @@
     ];
   };
 
+  flake.modules.finix.cmdline = {
+    imports = with inputs.self.modules.finix; [
+      zsh
+      cli
+    ];
+  };
+
   flake.modules.darwin.cmdline = {
     imports = with inputs.self.modules.darwin; [
       zsh

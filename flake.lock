@@ -206,6 +206,38 @@
         "type": "github"
       }
     },
+    "finix": {
+      "locked": {
+        "lastModified": 1787524290,
+        "narHash": "sha256-mU5vhbdK8uBO1Cgc7pxUo5OadG2mb+TbU1mFhylEZz4=",
+        "ref": "main",
+        "rev": "78fd549fa5410ad1e5683efbba2d0f1728c12f3d",
+        "revCount": 717,
+        "type": "git",
+        "url": "https://github.com/finix-community/finix.git"
+      },
+      "original": {
+        "ref": "main",
+        "type": "git",
+        "url": "https://github.com/finix-community/finix.git"
+      }
+    },
+    "finix-community-modules": {
+      "locked": {
+        "lastModified": 1787694080,
+        "narHash": "sha256-5xJYZmz8bz7SPHseUdGGlJUPPDUZUmXpBb21jAlbjDw=",
+        "ref": "main",
+        "rev": "6062166edac360360a29e2dd85ce7d80ab2aefc4",
+        "revCount": 92,
+        "type": "git",
+        "url": "https://github.com/finix-community/community-modules.git"
+      },
+      "original": {
+        "ref": "main",
+        "type": "git",
+        "url": "https://github.com/finix-community/community-modules.git"
+      }
+    },
     "flake-compat": {
       "flake": false,
       "locked": {
@@ -1334,6 +1366,8 @@
         "chaotic": "chaotic",
         "darwin": "darwin",
         "disko": "disko",
+        "finix": "finix",
+        "finix-community-modules": "finix-community-modules",
         "flake-file": "flake-file",
         "flake-parts": "flake-parts_2",
         "freesmlauncher": "freesmlauncher",

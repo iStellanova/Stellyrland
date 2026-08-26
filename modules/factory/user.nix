@@ -20,6 +20,16 @@
         };
       };
 
+    finix."${username}" =
+      { pkgs, ... }:
+      {
+        imports = [ self.modules.finix.home-manager ];
+        users.users."${username}".shell = pkgs.zsh;
+        home-manager.users."${username}" = {
+          imports = [ self.modules.homeManager."${username}" ];
+        };
+      };
+
     darwin."${username}" =
       { pkgs, ... }:
       {
@@ -45,6 +55,7 @@
       {
         home.username = "${username}";
         home.homeDirectory = host.homeDir;
+        home.stateVersion = "25.11";
         programs.zsh.enable = true;
       };
   };

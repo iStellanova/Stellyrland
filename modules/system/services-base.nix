@@ -20,4 +20,24 @@
         ];
       };
     };
+
+  flake.modules.finix.services-base = { modules, host, ... }: {
+    imports = with modules; [
+      udisks2
+      gvfs
+      polkit
+      networkmanager
+    ];
+
+    services = {
+      udisks2.enable = true;
+      gvfs.enable = true;
+      polkit.enable = true;
+      networkmanager.enable = true;
+    };
+    users.users.${host.username}.extraGroups = [
+      "video"
+      "render"
+    ];
+  };
 }

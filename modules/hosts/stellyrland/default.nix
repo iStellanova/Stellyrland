@@ -1,76 +1,132 @@
 {
   flake-file.inputs.cachyos-kernel.url = "github:xddxdd/nix-cachyos-kernel/release";
 
-  flake.modules.nixos.stellyrland-host =
-    {
-      host,
-      pkgs,
-      ...
-    }:
+  flake.modules.finix.stellyrland-host =
+    { modules, pkgs, ... }:
     {
       imports = [
-        ./_hardware-configuration.nix
-        ./_disko-config.nix
-        ./_lact-config.nix
-        ./_coolercontrol-config.nix
         ./_boot.nix
-        ./_storage.nix
-        ./_desktop.nix
-      ];
+      ] ++ (with modules; [
+        getty
+        polkit
+        cron
+        nix-daemon
+        networkmanager
+        openssh
+        zfs
+        fstrim
+      ]);
 
-      networking.hostName = host.name;
-      networking.networkmanager.ensureProfiles.profiles.stellyrlab-direct = {
-        connection = {
-          id = "stellyrlab-direct";
-          type = "ethernet";
-          interface-name = "enp16s0";
+      finit.runlevel = 3;
+
+      networking = {
+        hostName = "stellyrland";
+        hostId = "63d11f1d";
+      };
+      boot = {
+        kernelModules = [ "kvm-amd" ];
+        initrd.supportedFilesystems = {
+          luks.enable = true;
+          zfs.enable = true;
         };
-        ipv4 = {
-          method = "manual";
-          addresses = "172.31.255.2/30";
+        supportedFilesystems = {
+          luks.enable = true;
+          vfat.enable = true;
+          zfs.enable = true;
         };
-        ipv6.method = "disabled";
-      };
-
-      systemd.tmpfiles.rules = [
-        "w /sys/bus/platform/drivers/amd_x3d_vcache/AMDI0101:00/amd_x3d_mode - - - - cache"
-      ];
-
-      hardware.amdgpu.initrd.enable = false;
-      hardware.enableRedistributableFirmware = true;
-      hardware.cpu.amd.updateMicrocode = true;
-      environment.systemPackages = [ pkgs.usbutils ];
-      hardware.graphics = {
-        enable = true;
-        extraPackages = with pkgs; [
-          rocmPackages.clr.icd
-          rocmPackages.clr
-        ];
-      };
-
-      zramSwap = {
-        enable = true;
-        algorithm = "zstd";
-        swapDevices = 1;
-        priority = 100;
-        memoryPercent = 100;
-      };
-
-      services.irqbalance.enable = true;
-
-      services.ananicy = {
-        enable = true;
-        # Remove when an ananicy-cpp release includes these standard headers.
-        package = pkgs.ananicy-cpp.overrideAttrs (old: {
-          postPatch = (old.postPatch or "") + ''
-            sed -i '1i#include <cstdint>' src/platform/linux/backtrace.cpp
-            sed -i '1i#include <cstring>' src/utility/argument_parsing/argument.cpp
-            sed -i '1i#include <cstring>' src/platform/linux/singleton_process.cpp
+        initrd.finit.tasks.rollback = {
+          conditions = [ "task/zpool-import-zroot/success" ];
+          tty = "@console";
+          script = ''
+            zfs list zroot/local/root@blank >/dev/null 2>&1 && zfs rollback -r zroot/local/root@blank || true
+            zfs list zroot/safe/home@blank >/dev/null 2>&1 && zfs rollback -r zroot/safe/home@blank || true
           '';
-        });
-        rulesProvider = pkgs.ananicy-rules-cachyos;
+        };
+        initrd.finit.tasks.mount-root.conditions = [ "task/rollback/success" ];
       };
 
-      # TODO(stellyrland): Revisit sched_ext/LAVD after upstream fixes; it currently causes 30–40s runnable-task stalls.
+      fileSystems = {
+        cryptroot = {
+          device = "/dev/disk/by-partlabel/disk-main-root";
+          fsType = "luks";
+          options = [ "--allow-discards" ];
+        };
+        cryptextra = {
+          device = "/dev/disk/by-partlabel/disk-extra-luks";
+          fsType = "luks";
+          options = [ "--allow-discards" ];
+        };
+        "/" = {
+          device = "zroot/local/root";
+          fsType = "zfs";
+          neededForBoot = true;
+        };
+        "/nix" = {
+          device = "zroot/local/nix";
+          fsType = "zfs";
+          neededForBoot = true;
+        };
+        "/persist" = {
+          device = "zroot/safe/persist";
+          fsType = "zfs";
+          neededForBoot = true;
+        };
+        "/home" = {
+          device = "zroot/safe/home";
+          fsType = "zfs";
+        };
+        "/ExtraDisk" = {
+          device = "zextra/data";
+          fsType = "zfs";
+          options = [
+            "nofail"
+            "x-gvfs-show"
+            "x-gvfs-name=Extra Disk"
+          ];
+        };
+        "/boot" = {
+          device = "/dev/disk/by-label/STELLYRBOOT";
+          fsType = "vfat";
+          options = [ "fmask=0022" "dmask=0022" ];
+        };
+      };
+
+      swapDevices = [
+        {
+          device = "/dev/disk/by-partlabel/disk-main-swap";
+          randomEncryption.enable = true;
+        }
+      ];
+
+      services = {
+        cron.enable = true;
+        fstrim.enable = true;
+        networkmanager.enable = true;
+        nix-daemon.enable = true;
+        openssh = {
+          enable = true;
+          settings = {
+            PasswordAuthentication = false;
+            KbdInteractiveAuthentication = false;
+            PermitRootLogin = "no";
+          };
+        };
+        polkit.enable = true;
+        udev.enable = true;
+        zfs.autoScrub = {
+          enable = true;
+          interval = "monthly";
+          pools = [
+            "zroot"
+            "zextra"
+          ];
+        };
+      };
+
+      environment.systemPackages = with pkgs; [
+        git
+        curl
+        wget
+      ];
     };
 }

@@ -17,6 +17,10 @@ in
     fonts.packages = fontPkgs pkgs;
   };
 
+  flake.modules.finix.fonts = { pkgs, ... }: {
+    fonts.packages = fontPkgs pkgs;
+  };
+
   flake.modules.darwin.fonts = { pkgs, ... }: {
     fonts.packages = fontPkgs pkgs;
     homebrew.casks = [ "font-sf-pro" ];

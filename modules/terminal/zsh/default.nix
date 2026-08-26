@@ -5,6 +5,7 @@ let
 in
 {
   flake.modules.nixos.zsh = zshOsPkg;
+  flake.modules.finix.zsh = zshOsPkg;
   flake.modules.darwin.zsh = zshOsPkg;
 
   flake.modules.homeManager.zsh =
