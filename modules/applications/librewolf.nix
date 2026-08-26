@@ -1,4 +1,10 @@
 {
+  flake.modules.finix.librewolf =
+    { host, ... }:
+    {
+      preservation.preserveAt."/persist".users.${host.username}.directories = [ ".librewolf" ];
+    };
+
   flake.modules.nixos.librewolf =
     {
       lib,

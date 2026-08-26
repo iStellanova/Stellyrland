@@ -56,6 +56,11 @@
       soulseek
       media-editing
       zen-browser
+      email
+      psswdmgr
+      system-tools
+      maintenance
+      protonvpn
       stellanova
       stellyrland-host
     ];

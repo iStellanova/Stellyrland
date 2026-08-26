@@ -1,4 +1,11 @@
 {
+  flake.modules.finix.email =
+    { host, pkgs, ... }:
+    {
+      environment.systemPackages = [ pkgs.protonmail-desktop ];
+      preservation.preserveAt."/persist".users.${host.username}.directories = [ ".config/Proton Mail" ];
+    };
+
   flake.modules.nixos.email =
     {
       lib,

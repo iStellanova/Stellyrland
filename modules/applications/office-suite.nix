@@ -1,4 +1,8 @@
 {
+  flake.modules.finix.office-suite = { pkgs, ... }: {
+    environment.systemPackages = [ pkgs.freeoffice ];
+  };
+
   flake.modules.nixos.office-suite = { pkgs, ... }: {
     environment.systemPackages = [ pkgs.freeoffice ];
   };

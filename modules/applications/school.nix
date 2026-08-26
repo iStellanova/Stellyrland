@@ -8,6 +8,7 @@ let
 
 in
 {
+  flake.modules.finix.school = osShared;
   flake.modules.nixos.school = osShared;
   flake.modules.darwin.school = osShared;
 }

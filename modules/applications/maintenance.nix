@@ -1,4 +1,8 @@
 {
+  flake.modules.finix.maintenance = { pkgs, ... }: {
+    environment.systemPackages = [ pkgs.nix-tree ];
+  };
+
   flake.modules.nixos.maintenance = { pkgs, ... }: {
     environment.systemPackages = [ pkgs.nix-tree ];
   };

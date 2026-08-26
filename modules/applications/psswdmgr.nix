@@ -4,6 +4,13 @@ let
   };
 in
 {
+  flake.modules.finix.psswdmgr =
+    { host, ... }:
+    {
+      imports = [ osShared ];
+      preservation.preserveAt."/persist".users.${host.username}.directories = [ ".config/Proton Pass" ];
+    };
+
   flake.modules.nixos.psswdmgr =
     { lib, host, ... }:
     {
