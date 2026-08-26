@@ -4,6 +4,7 @@ let
     experimental-features = [
       "nix-command"
       "flakes"
+      "flake-self-attrs"
       "pipe-operator"
     ];
     log-lines = 25;
