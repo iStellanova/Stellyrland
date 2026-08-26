@@ -22,7 +22,10 @@
       };
     };
     graphics = "amd";
-    monitorPriority = [ "DP-2" "DP-3" ];
+    monitorPriority = [
+      "DP-2"
+      "DP-3"
+    ];
     features.hdr = true;
   };
 
@@ -36,6 +39,7 @@
       pipewire
       pipewire-lowlatency
       noctalia-greeter
+      openrgb
       limine
       stellanova
       stellyrland-user

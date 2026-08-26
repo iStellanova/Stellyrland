@@ -80,7 +80,12 @@
         nixEvalCommand = "${pkgs.nix}/bin/nix --extra-experimental-features 'nix-command flakes' eval --raw";
         generatorBuildCommand = "${pkgs.nix}/bin/nix-store --realise {{input}}";
         identityPaths = [
-          (if host.persistence or false then "/persist/etc/ssh/ssh_host_ed25519_key" else "/etc/ssh/ssh_host_ed25519_key")
+          (
+            if host.persistence or false then
+              "/persist/etc/ssh/ssh_host_ed25519_key"
+            else
+              "/etc/ssh/ssh_host_ed25519_key"
+          )
         ];
         recipientAliases = {
           stellanova = "age1muxquz7vyrsva0me3q68mf9xak578hzejqm39vr3llfsftc0dcpqaxlaf7";
@@ -94,11 +99,19 @@
           path = "/run/secrets/github-token";
           owner = host.username;
           mode = "0400";
-          recipients = [ "stellanova" "stellyrlab" "stellyrland" "stellyrtop" ];
+          recipients = [
+            "stellanova"
+            "stellyrlab"
+            "stellyrland"
+            "stellyrtop"
+          ];
         };
         secrets.${host.passwordSecret} = {
           neededForUsers = true;
-          recipients = [ "stellanova" host.name ];
+          recipients = [
+            "stellanova"
+            host.name
+          ];
         };
       };
 

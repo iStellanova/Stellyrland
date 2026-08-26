@@ -1,6 +1,5 @@
 # Manually maintained hardware configuration for stellyrland (x86_64-linux).
-_:
-{
+_: {
   boot.kernelModules = [ "kvm-amd" ];
 
   # Required by ZFS to prevent pool import conflicts between machines.

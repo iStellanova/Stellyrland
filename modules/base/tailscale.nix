@@ -78,7 +78,13 @@ in
 
       security.nix-secrets.secrets.tailscale_auth_key = {
         name = "tailscale_auth_key";
-        recipients = [ "stellanova" "ItsRedFlame" "plasmapulsefinale" "stellyrlab" "stellyrland" ];
+        recipients = [
+          "stellanova"
+          "ItsRedFlame"
+          "plasmapulsefinale"
+          "stellyrlab"
+          "stellyrland"
+        ];
       };
 
       services.tailscale = {
@@ -86,7 +92,11 @@ in
         authKeyFile = config.security.nix-secrets.secrets.tailscale_auth_key.path;
         interfaceName = "tailscale0";
         routingSysctls = "client";
-        extraUpFlags = [ "--accept-dns=true" "--accept-routes=false" "--ssh=false" ];
+        extraUpFlags = [
+          "--accept-dns=true"
+          "--accept-routes=false"
+          "--ssh=false"
+        ];
       };
 
       boot.kernel.sysctl = {

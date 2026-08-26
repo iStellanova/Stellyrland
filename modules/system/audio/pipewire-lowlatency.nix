@@ -42,7 +42,10 @@
         "context.modules" = [
           {
             name = "libpipewire-module-rt";
-            flags = [ "ifexists" "nofail" ];
+            flags = [
+              "ifexists"
+              "nofail"
+            ];
             args = {
               "nice.level" = -15;
               "rt.prio" = 88;

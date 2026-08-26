@@ -15,7 +15,10 @@ in
   boot.kernelPackages = kernelPackages;
 
   boot.initrd.compressor = "zstd";
-  boot.initrd.compressorArgs = [ "-19" "-T0" ];
+  boot.initrd.compressorArgs = [
+    "-19"
+    "-T0"
+  ];
   boot.initrd.supportedFilesystems = {
     luks.enable = true;
     zfs = {

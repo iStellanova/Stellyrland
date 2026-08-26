@@ -9,7 +9,8 @@
         ./_hardware-configuration.nix
         ./_storage.nix
         ./_coolercontrol-config.nix
-      ] ++ (with modules; [
+      ]
+      ++ (with modules; [
         getty
         polkit
         cron
@@ -90,7 +91,10 @@
         "/boot" = {
           device = "/dev/disk/by-label/STELLYRBOOT";
           fsType = "vfat";
-          options = [ "fmask=0022" "dmask=0022" ];
+          options = [
+            "fmask=0022"
+            "dmask=0022"
+          ];
         };
       };
 

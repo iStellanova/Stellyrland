@@ -65,6 +65,6 @@ in
   config.flake.lib = {
     mkNixos = mkSystem "nixos" inputs.nixpkgs.lib.nixosSystem;
     mkDarwin = mkSystem "darwin" inputs.darwin.lib.darwinSystem;
-    mkFinix = mkFinix;
+    inherit mkFinix;
   };
 }
