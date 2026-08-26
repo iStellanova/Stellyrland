@@ -1,4 +1,8 @@
 {
+  flake.modules.finix.media = { pkgs, ... }: {
+    environment.systemPackages = with pkgs; [ ffmpegthumbnailer imv pavucontrol ];
+  };
+
   flake.modules.nixos.media = { pkgs, ... }: {
     environment.systemPackages = with pkgs; [
       ffmpegthumbnailer

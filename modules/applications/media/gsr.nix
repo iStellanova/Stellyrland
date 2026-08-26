@@ -1,4 +1,11 @@
 {
+  flake.modules.finix.gsr = { pkgs, ... }: {
+    environment.systemPackages = with pkgs; [
+      gpu-screen-recorder
+      gpu-screen-recorder-gtk
+    ];
+  };
+
   flake.modules.nixos.gsr = { pkgs, ... }: {
     programs.gpu-screen-recorder.enable = true;
     environment.systemPackages = [ pkgs.gpu-screen-recorder-gtk ];

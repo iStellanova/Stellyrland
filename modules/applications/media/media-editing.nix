@@ -1,4 +1,8 @@
 {
+  flake.modules.finix.media-editing = { pkgs, ... }: {
+    environment.systemPackages = [ pkgs.losslesscut-bin ];
+  };
+
   flake.modules.nixos.media-editing = { pkgs, ... }: {
     environment.systemPackages = with pkgs; [
       losslesscut-bin

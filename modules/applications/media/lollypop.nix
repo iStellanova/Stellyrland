@@ -1,4 +1,8 @@
 {
+  flake.modules.finix.lollypop = { pkgs, ... }: {
+    environment.systemPackages = [ pkgs.lollypop ];
+  };
+
   flake.modules.nixos.lollypop =
     {
       lib,

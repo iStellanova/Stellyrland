@@ -49,6 +49,12 @@
       steam
       gamescope
       game-launchers
+      media
+      gsr
+      audacity
+      lollypop
+      soulseek
+      media-editing
       stellanova
       stellyrland-host
     ];
