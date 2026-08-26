@@ -1,7 +1,5 @@
 { self, lib, ... }: {
-  flake.modules.nixos.stellyrland = {
-    imports = [ self.modules.nixos.stellanova ];
-
+  flake.modules.finix.stellyrland-host = {
     home-manager.users.stellanova = {
       programs.ssh.settings.stellyrlab = {
         HostName = lib.mkForce "172.31.255.1";

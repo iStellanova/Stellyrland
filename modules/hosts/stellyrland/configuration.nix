@@ -40,6 +40,7 @@
       pipewire-lowlatency
       noctalia-greeter
       hyprland
+      umbriel
       noctalia
       openrgb
       limine

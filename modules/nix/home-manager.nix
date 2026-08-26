@@ -23,7 +23,7 @@ in
   };
 
   flake.modules.finix.home-manager = {
-    imports = [ inputs.finix-community-modules.nixosModules.home-manager ];
+    imports = [ ./_finix-home-manager.nix ];
   };
 
   flake.modules.darwin.home-manager = {

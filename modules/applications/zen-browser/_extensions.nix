@@ -1,6 +1,5 @@
 {
   inputs,
-  osConfig,
   pkgs,
   config,
   lib,
@@ -10,7 +9,7 @@
   config = lib.mkIf config.zenBrowser.personalize {
     programs.zen-browser.profiles.default.extensions.packages =
       let
-        rycee = osConfig._module.args.inputs.nur.legacyPackages.${pkgs.stdenv.hostPlatform.system}.repos.rycee.firefox-addons;
+        rycee = inputs.nur.legacyPackages.${pkgs.stdenv.hostPlatform.system}.repos.rycee.firefox-addons;
       in
       [
         rycee.ublock-origin

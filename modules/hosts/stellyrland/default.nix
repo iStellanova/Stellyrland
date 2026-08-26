@@ -8,6 +8,7 @@
         ./_boot.nix
         ./_hardware-configuration.nix
         ./_storage.nix
+        ./_lact-config.nix
         ./_coolercontrol-config.nix
       ]
       ++ (with modules; [
@@ -27,6 +28,25 @@
         hostName = "stellyrland";
         hostId = "63d11f1d";
       };
+
+      environment.etc."NetworkManager/system-connections/stellyrlab-direct.nmconnection" = {
+        mode = "0600";
+        text = ''
+          [connection]
+          id=stellyrlab-direct
+          type=ethernet
+          interface-name=enp16s0
+          autoconnect=true
+
+          [ipv4]
+          method=manual
+          address1=172.31.255.2/30
+
+          [ipv6]
+          method=disabled
+        '';
+      };
+
       boot = {
         kernelModules = [ "kvm-amd" ];
         initrd.supportedFilesystems = {

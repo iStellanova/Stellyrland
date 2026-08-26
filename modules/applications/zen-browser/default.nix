@@ -40,7 +40,6 @@
   flake.modules.homeManager.zen-browser =
     {
       config,
-      osConfig,
       pkgs,
       lib,
       ...
@@ -58,7 +57,7 @@
 
       # Imports stay unconditional; child files gate themselves to avoid an import/config cycle.
       imports = [
-        osConfig._module.args.inputs.zen-browser.homeModules.default
+        inputs.zen-browser.homeModules.default
         ./_extensions.nix
         ./_spaces.nix
         ./universal/_essentials.nix

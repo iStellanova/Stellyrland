@@ -60,14 +60,37 @@
       };
     };
 
+  flake.modules.finix.umbriel =
+    {
+      inputs,
+      pkgs,
+      ...
+    }:
+    {
+      imports = [ ./_options.nix ];
+      hardware.graphics.enable32Bit = true;
+      environment.systemPackages = with pkgs; [
+        wl-clipboard
+        udiskie
+        linux-wallpaperengine
+      ];
+      xdg.portal = {
+        enable = true;
+        portals = [
+          pkgs.xdg-desktop-portal-gtk
+          inputs.xdg-desktop-portal-umbriel.packages.${pkgs.stdenv.hostPlatform.system}.default
+        ];
+      };
+    };
+
   flake.modules.homeManager.umbriel =
     {
-      osConfig,
+      inputs,
       ...
     }:
     {
       imports = [
-        osConfig._module.args.inputs.umbriel.homeModules.default
+        inputs.umbriel.homeModules.default
         ./_config.nix
         ./_env.nix
         ./_autostart.nix

@@ -11,9 +11,9 @@
   };
 
   flake.modules.homeManager.nvf-ide =
-    { osConfig, pkgs, ... }:
+    { pkgs, ... }:
     {
-      imports = [ osConfig._module.args.inputs.nvf.homeManagerModules.default ];
+      imports = [ inputs.nvf.homeManagerModules.default ];
       programs.nvf = {
         enable = true;
         settings.vim = {
