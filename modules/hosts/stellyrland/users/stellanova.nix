@@ -1,8 +1,6 @@
 { self, lib, ... }: {
   flake.modules.nixos.stellyrland = {
-    imports = [
-      self.modules.nixos.stellanova
-    ];
+    imports = [ self.modules.nixos.stellanova ];
 
     home-manager.users.stellanova = {
       programs.ssh.settings.stellyrlab = {
@@ -13,8 +11,6 @@
       };
 
       zenBrowser.personalize = true;
-
-      # Installed desktop files; MIME types are defined in modules/system/mime.nix.
       mimeDefaultApps = {
         browser = [ "zen-beta.desktop" ];
         pdfViewer = [ "org.gnome.Evince.desktop" ];
@@ -29,37 +25,25 @@
         basics
         fastfetch
         cursor
-
-        # Hyprland Desktop
         easyeffects
         umbriel
         noctalia
         openrgb
         hyprland
         catppuccin
-
-        # Dev / CLI Tools
         git
         nvf-ide
         nvf-writing
         opencode
         yazi
         zed
-
-        # Desktop Applications
         zen-browser
         nautilus
-
-        # AV / Media
         cava
         gsr
         media
         background-sounds
-
-        # Productivity
         cloud-storage
-
-        # Communication
         discord
       ];
     };

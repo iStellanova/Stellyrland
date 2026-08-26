@@ -6,10 +6,10 @@
   };
 
   flake.modules.homeManager.discord =
-    { pkgs, lib, ... }:
+    { osConfig, pkgs, lib, ... }:
     {
       imports = [
-        inputs.nixcord.homeModules.nixcord
+        osConfig._module.args.inputs.nixcord.homeModules.nixcord
         ./_music-rpc.nix
       ];
 

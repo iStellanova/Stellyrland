@@ -21,12 +21,14 @@
       };
 
     finix."${username}" =
-      { host, pkgs, ... }:
+      { host, inputs, pkgs, ... }:
       {
         imports = [ self.modules.finix.home-manager ];
         users.users."${username}".shell = pkgs.zsh;
         home-manager.users."${username}" = {
-          _module.args.host = host;
+          _module.args = {
+            inherit host inputs;
+          };
           imports = [ self.modules.homeManager."${username}" ];
         };
       };

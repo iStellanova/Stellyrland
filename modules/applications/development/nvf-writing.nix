@@ -10,9 +10,9 @@
   # and renaming it to `wvim` (mnw.appName also moves ~/.config/wvim) keeps the
   # two fully independent.
   flake.modules.homeManager.nvf-writing =
-    { pkgs, ... }:
+    { osConfig, pkgs, ... }:
     let
-      wvim = inputs.nvf.lib.neovimConfiguration {
+      wvim = osConfig._module.args.inputs.nvf.lib.neovimConfiguration {
         inherit pkgs;
         modules = [
           {

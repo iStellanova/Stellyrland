@@ -6,7 +6,7 @@
   };
 
   flake.modules.homeManager.opencode =
-    { pkgs, ... }:
+    { osConfig, pkgs, ... }:
     {
       programs.mcp = {
         enable = true;
@@ -18,7 +18,7 @@
         enable = true;
         enableMcpIntegration = true;
         # The nixpkgs and upstream packages fail on NixOS; use llm-agents.
-        package = inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.opencode;
+        package = osConfig._module.args.inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.opencode;
 
         settings.plugin = [
           "opencode-claude-auth@latest"

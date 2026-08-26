@@ -62,12 +62,12 @@
 
   flake.modules.homeManager.umbriel =
     {
-      inputs,
+      osConfig,
       ...
     }:
     {
       imports = [
-        inputs.umbriel.homeModules.default
+        osConfig._module.args.inputs.umbriel.homeModules.default
         ./_config.nix
         ./_env.nix
         ./_autostart.nix
