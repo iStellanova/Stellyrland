@@ -45,6 +45,7 @@
       limine
       zed
       opencode
+      nautilus
       stellanova
       stellyrland-host
     ];

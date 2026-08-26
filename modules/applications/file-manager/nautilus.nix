@@ -54,6 +54,39 @@
       ];
     };
 
+  flake.modules.finix.nautilus =
+    {
+      lib,
+      pkgs,
+      ...
+    }:
+    {
+      environment.systemPackages = with pkgs; [
+        nautilus
+        file-roller
+        sushi
+        evince
+        gst_all_1.gstreamer
+        gst_all_1.gst-plugins-base
+        gst_all_1.gst-plugins-good
+        gst_all_1.gst-plugins-bad
+        gst_all_1.gst-plugins-ugly
+        gst_all_1.gst-libav
+      ];
+
+      environment.variables.GST_PLUGIN_SYSTEM_PATH_1_0 =
+        lib.makeSearchPathOutput "lib" "lib/gstreamer-1.0" (
+          with pkgs.gst_all_1; [
+            gstreamer
+            gst-plugins-base
+            gst-plugins-good
+            gst-plugins-bad
+            gst-plugins-ugly
+            gst-libav
+          ]
+        );
+    };
+
   flake.modules.homeManager.nautilus =
     {
       host,
