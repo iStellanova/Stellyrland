@@ -1,4 +1,4 @@
-{ host, ... }:
+{ host, pkgs, ... }:
 {
   fileSystems."/ExtraDisk" = {
     device = "zextra/data";
@@ -10,25 +10,26 @@
     ];
   };
 
-  systemd.tmpfiles.rules = [
+  finit.tmpfiles.rules = [
     "d /ExtraDisk 0755 ${host.username} users -"
   ];
 
-  services.sanoid = {
+  services.zfs.autoSnapshot = {
     enable = true;
-    datasets = {
-      "zroot/safe/home".useTemplate = [ "default" ];
-      "zroot/safe/persist".useTemplate = [ "default" ];
-    };
-    templates.default = {
-      hourly = 0;
-      daily = 7;
-      weekly = 0;
-      monthly = 0;
-      yearly = 0;
-      autosnap = true;
-      autoprune = true;
-    };
+    frequent = 0;
+    hourly = 0;
+    daily = 7;
+    weekly = 0;
+    monthly = 0;
+  };
+
+  finit.tasks.zfs-auto-snapshot-enable = {
+    description = "enable ZFS auto-snapshots for protected datasets";
+    runlevels = "S";
+    command = pkgs.writeShellScript "zfs-auto-snapshot-enable" ''
+      ${pkgs.zfs}/bin/zfs set com.sun:auto-snapshot=true zroot/safe/home
+      ${pkgs.zfs}/bin/zfs set com.sun:auto-snapshot=true zroot/safe/persist
+    '';
   };
 
   services.zfs.autoScrub = {
