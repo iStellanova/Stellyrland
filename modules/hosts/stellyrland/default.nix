@@ -6,6 +6,7 @@
     {
       imports = [
         ./_boot.nix
+        ./_hardware-configuration.nix
         ./_coolercontrol-config.nix
       ] ++ (with modules; [
         getty

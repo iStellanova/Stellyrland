@@ -1,12 +1,6 @@
 # Manually maintained hardware configuration for stellyrland (x86_64-linux).
+_:
 {
-  lib,
-  modulesPath,
-  ...
-}:
-{
-  imports = [ (modulesPath + "/installer/scan/not-detected.nix") ];
-
   boot.kernelModules = [ "kvm-amd" ];
 
   # Required by ZFS to prevent pool import conflicts between machines.
@@ -51,6 +45,4 @@
       randomEncryption.enable = true;
     }
   ];
-
-  nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
 }
