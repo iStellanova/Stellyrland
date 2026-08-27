@@ -1,6 +1,11 @@
 {
   flake.modules.nixos.stellyrlab-host =
-    { host, pkgs, ... }:
+    {
+      config,
+      host,
+      pkgs,
+      ...
+    }:
     {
       imports = [
         ./_hardware-configuration.nix
@@ -30,6 +35,8 @@
       system.stateVersion = "26.05";
 
       boot = {
+        kernelPackages = pkgs.cachyosKernels.linuxPackages-cachyos-bore-lto-x86_64-v3;
+        zfs.package = config.boot.kernelPackages.zfs_cachyos;
         loader.systemd-boot = {
           enable = true;
           configurationLimit = 15;
