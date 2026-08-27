@@ -35,13 +35,13 @@
       base
       cmdline
 
-      # Desktop-Adjacent (session/GUI plumbing, not Hyprland-specific)
+      # Desktop-Adjacent
       services-base
       system-tools
       maintenance
       xdg
 
-      # Hyprland Desktop
+      # Desktop
       easyeffects
       fonts
       hyprland
@@ -54,6 +54,7 @@
       openrgb
 
       # Boot & Hardware & Storage
+      cachyos-kernel
       lanzaboote
       binfmt
       backup-service
@@ -87,8 +88,6 @@
       opencode
       discord
       zed
-
-      # Personal Secrets
 
       # Host Specific Config
       stellyrland-host

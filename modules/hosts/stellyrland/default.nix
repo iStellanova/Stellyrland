@@ -1,6 +1,4 @@
 {
-  flake-file.inputs.cachyos-kernel.url = "github:xddxdd/nix-cachyos-kernel/release";
-
   flake.modules.nixos.stellyrland-host =
     {
       host,
