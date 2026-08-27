@@ -33,7 +33,6 @@
         motoc
         wivrnUsbConnect
         xrizer
-        opencomposite
       ];
 
       imports = lib.optional (host.persistence or false) {
