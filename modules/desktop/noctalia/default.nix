@@ -118,6 +118,7 @@
                 "cava"
                 "hyprland"
                 "kitty"
+                "umbriel"
               ];
               community_ids = [
                 "yazi"
