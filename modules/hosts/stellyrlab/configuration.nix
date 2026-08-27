@@ -49,6 +49,7 @@
       base
       cmdline
       maintenance
+      cachyos-kernel
       lanzaboote
 
       backup-service
