@@ -63,6 +63,7 @@
       environment.systemPackages = with pkgs; [
         lm_sensors
         smartmontools
+        wakeonlan
       ];
 
       # Selective snapshots support local rollback and HDD replication.

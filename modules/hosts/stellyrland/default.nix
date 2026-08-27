@@ -19,6 +19,7 @@
       ];
 
       networking.hostName = host.name;
+      networking.interfaces.enp16s0.wakeOnLan.enable = true;
       networking.networkmanager.ensureProfiles.profiles.stellyrlab-direct = {
         connection = {
           id = "stellyrlab-direct";
