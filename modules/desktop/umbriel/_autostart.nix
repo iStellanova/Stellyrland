@@ -1,6 +1,6 @@
 { lib, osConfig, ... }:
 let
-  wallpaper = osConfig.desktop.hyprland.wallpaperEngine;
+  wallpaper = osConfig.desktop.umbriel.wallpaperEngine;
   wallpaperArgs = lib.concatMapStringsSep " " (m: "--screen-root ${m}") wallpaper.screenRoots;
   wallpaperCommand = "sleep 3 && linux-wallpaperengine --assets-dir ${wallpaper.steamLibrary}/steamapps/common/wallpaper_engine/assets ${wallpaperArgs} --layer background --fps 60 --silent ${wallpaper.steamLibrary}/steamapps/workshop/content/431960/${wallpaper.workshopId}/";
 in
