@@ -17,13 +17,11 @@ let
     substituters = [
       "https://cache.nixos.org"
       "https://nix-community.cachix.org"
-      "https://attic.xuyh0120.win/lantian"
       "http://stellyrlab.tailb15b96.ts.net:5000"
     ];
     trusted-public-keys = [
       "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
       "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
-      "lantian:EeAUQ+W+6r7EtwnmYjeVwx5kOGEBpjlBfPlzGlTNvHc="
       "stellyrlab.tailb15b96.ts.net-1:p751jKc3axZCQSp/zt02bGAs0r66tmpuv6OUh/ynj+I="
     ];
   };
