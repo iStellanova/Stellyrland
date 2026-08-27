@@ -8,11 +8,13 @@
   flake.modules.nixos.catppuccin = { ... }: {
     imports = [ inputs.catppuccin.nixosModules.catppuccin ];
 
-    catppuccin.enable = true;
-    catppuccin.autoEnable = true;
-    catppuccin.flavor = "macchiato";
-    catppuccin.accent = "sapphire";
-    catppuccin.tty.enable = false;
+    catppuccin = {
+      enable = true;
+      autoEnable = true;
+      flavor = "macchiato";
+      accent = "sapphire";
+      tty.enable = false;
+    };
   };
 
   flake.modules.homeManager.catppuccin =
@@ -32,31 +34,36 @@
 
       config = lib.mkMerge [
         {
-          catppuccin.enable = true;
-          catppuccin.autoEnable = false;
-          catppuccin.flavor = "macchiato";
-          catppuccin.accent = "sapphire";
-
-          catppuccin.bat.enable = true;
+          catppuccin = {
+            enable = true;
+            autoEnable = false;
+            flavor = "macchiato";
+            accent = "sapphire";
+            bat.enable = true;
+          };
         }
         (lib.mkIf pkgs.stdenv.hostPlatform.isDarwin {
           # Noctalia owns these on Linux; catppuccin manages them on Darwin instead.
-          catppuccin.kitty.enable = true;
-          catppuccin.eza.enable = true;
-          catppuccin.fzf.enable = true;
-          catppuccin.btop.enable = true;
-          catppuccin.yazi.enable = true;
-          catppuccin.zsh-syntax-highlighting.enable = true;
-          catppuccin.cava.enable = true;
+          catppuccin = {
+            kitty.enable = true;
+            eza.enable = true;
+            fzf.enable = true;
+            btop.enable = true;
+            yazi.enable = true;
+            zsh-syntax-highlighting.enable = true;
+            cava.enable = true;
+          };
         })
         (lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
-          catppuccin.kvantum.enable = true;
+          catppuccin = {
+            kvantum.enable = true;
 
-          # Apps handled by Noctalia — keep disabled here to avoid conflicts.
-          catppuccin.btop.enable = false;
-          catppuccin.kitty.enable = false;
-          catppuccin.yazi.enable = false;
-          catppuccin.zsh-syntax-highlighting.enable = false;
+            # Apps handled by Noctalia — keep disabled here to avoid conflicts.
+            btop.enable = false;
+            kitty.enable = false;
+            yazi.enable = false;
+            zsh-syntax-highlighting.enable = false;
+          };
 
           gtk = {
             enable = true;
@@ -94,8 +101,6 @@
               cursor-size = 16;
             };
           };
-
-          # home.pointerCursor itself is owned by hyprland's _cursor.nix now.
 
           home.packages = with pkgs; [
             kdePackages.qtstyleplugin-kvantum

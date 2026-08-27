@@ -58,46 +58,50 @@ in
       # ignored when EZA_CONFIG_DIR is unset: https://github.com/eza-community/eza/blob/main/src/options/theme.rs
       home.sessionVariables.EZA_CONFIG_DIR = "${config.home.homeDirectory}/.config/eza";
 
-      programs.fzf.enable = true;
-      programs.zoxide.enable = true;
-      programs.jq.enable = true;
-      programs.ripgrep.enable = true;
-      programs.bat.enable = true;
-      programs.fd.enable = true;
-      programs.nix-index.enable = true;
-      programs.nix-index-database.comma.enable = true;
+      programs = {
+        fzf.enable = true;
+        zoxide.enable = true;
+        jq.enable = true;
+        ripgrep.enable = true;
+        bat.enable = true;
+        fd.enable = true;
+        nix-index.enable = true;
+        nix-index-database.comma.enable = true;
 
-      programs.eza = {
-        enable = true;
-        enableZshIntegration = true;
-        icons = "auto";
-        extraOptions = [
-          "-lha"
-          "--group-directories-first"
-          "--header"
-          "--short-nix"
-        ];
-      };
+        eza = {
+          enable = true;
+          enableZshIntegration = true;
+          icons = "auto";
+          extraOptions = [
+            "-lha"
+            "--group-directories-first"
+            "--header"
+            "--short-nix"
+          ];
+        };
 
-      programs.tealdeer = {
-        enable = true;
-        settings = {
-          updates = {
-            auto_update = true;
+        tealdeer = {
+          enable = true;
+          settings = {
+            updates = {
+              auto_update = true;
+            };
           };
         };
-      };
 
-      programs.zsh.shellAliases = {
-        cat = "bat";
-        grep = "rg";
-        man = "tldr";
-      };
+        zsh = {
+          shellAliases = {
+            cat = "bat";
+            grep = "rg";
+            man = "tldr";
+          };
 
-      programs.zsh.initContent = lib.mkAfter ''
-        zstyle ':fzf-tab:*' fzf-command fzf
-        zstyle ':fzf-tab:*' fzf-preview 'bat --color=always --style=numbers $realpath'
-        zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --color=always $realpath'
-      '';
+          initContent = lib.mkAfter ''
+            zstyle ':fzf-tab:*' fzf-command fzf
+            zstyle ':fzf-tab:*' fzf-preview 'bat --color=always --style=numbers $realpath'
+            zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --color=always $realpath'
+          '';
+        };
+      };
     };
 }
