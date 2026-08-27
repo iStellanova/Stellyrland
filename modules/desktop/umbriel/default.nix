@@ -68,6 +68,7 @@
     {
       imports = [
         inputs.umbriel.homeModules.default
+        ./_animations.nix
         ./_config.nix
         ./_env.nix
         ./_autostart.nix
