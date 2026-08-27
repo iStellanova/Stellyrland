@@ -2,12 +2,12 @@
   programs.umbriel.settings.animation = {
     enabled = true;
     duration_ms = 250;
-    curve = "bezier: 0.05,0.7,0.1,1";
+    curve = "easeout";
 
     windows_in = {
       enabled = true;
       duration_ms = 250;
-      curve = "bezier: 0.05,0.9,0.1,1";
+      curve = "easeout";
       style = "popin";
       scale = 0.6;
     };
@@ -15,39 +15,33 @@
     windows_out = {
       enabled = true;
       duration_ms = 250;
-      curve = "bezier: 0.3,0,0.8,0.15";
+      curve = "easeout";
       style = "fade";
     };
 
     windows_move = {
       enabled = true;
       duration_ms = 250;
-      curve = "bezier: 0.05,0.7,0.1,1";
+      curve = "snappy";
     };
 
     workspaces = {
       enabled = true;
-      duration_ms = 200;
-      curve = "bezier: 0.16,1,0.3,1";
+      duration_ms = 250;
+      curve = "snappy";
     };
 
     scratchpad = {
       enabled = true;
       duration_ms = 250;
-      curve = "bezier: 0.05,0.7,0.1,1";
+      curve = "easeout";
       dim = 0.2;
-    };
-
-    fade = {
-      enabled = true;
-      duration_ms = 250;
-      curve = "bezier: 0.05,0.7,0.1,1";
     };
 
     border = {
       enabled = true;
       duration_ms = 250;
-      curve = "bezier: 0.26,0.26,0.15,1";
+      curve = "easeout";
     };
   };
 }

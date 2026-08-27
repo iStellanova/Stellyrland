@@ -18,7 +18,7 @@
       programs.noctalia-greeter = {
         enable = true;
         settings = {
-          session.default = "hyprland";
+          session.default = "umbriel";
           user.default = host.username;
           idle.timeout = 300;
           output = {
