@@ -25,8 +25,14 @@ in
         mode = "0600";
       };
 
-      programs.ssh.knownHosts.stellyrland = {
-        inherit (target) hostNames publicKey;
+      programs.ssh = {
+        extraConfig = ''
+          Host ${builtins.head target.hostNames}
+            ConnectTimeout 60
+        '';
+        knownHosts.stellyrland = {
+          inherit (target) hostNames publicKey;
+        };
       };
 
       nix = {
