@@ -39,10 +39,13 @@ in
       };
     in
     {
-      environment.systemPackages = with pkgs; [
-        prismlauncher
-        r2modman
-      ] ++ lib.optional (pkgs.stdenv.hostPlatform.system == "x86_64-linux") rpcBridge;
+      environment.systemPackages =
+        with pkgs;
+        [
+          prismlauncher
+          r2modman
+        ]
+        ++ lib.optional (pkgs.stdenv.hostPlatform.system == "x86_64-linux") rpcBridge;
 
       imports = lib.optional (host.persistence or false) {
         preservation.preserveAt."/persist".users.${host.username}.directories = [
