@@ -12,8 +12,8 @@
       corner_radius = 12;
       border_focused = "#8aadf4cc";
       border_unfocused = "#c0c6dc33";
-      animation_ms = 250;
       blur = {
+        optimized = false;
         passes = 3;
         radius = 12;
         noise = 0.0;
