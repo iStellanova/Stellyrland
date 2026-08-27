@@ -14,31 +14,33 @@
     "d /ExtraDisk 0755 ${host.username} users -"
   ];
 
-  services.sanoid = {
-    enable = true;
-    datasets = {
-      "zroot/safe/home".useTemplate = [ "default" ];
-      "zroot/safe/persist".useTemplate = [ "default" ];
+  services = {
+    sanoid = {
+      enable = true;
+      datasets = {
+        "zroot/safe/home".useTemplate = [ "default" ];
+        "zroot/safe/persist".useTemplate = [ "default" ];
+      };
+      templates.default = {
+        hourly = 0;
+        daily = 7;
+        weekly = 0;
+        monthly = 0;
+        yearly = 0;
+        autosnap = true;
+        autoprune = true;
+      };
     };
-    templates.default = {
-      hourly = 0;
-      daily = 7;
-      weekly = 0;
-      monthly = 0;
-      yearly = 0;
-      autosnap = true;
-      autoprune = true;
+
+    zfs.autoScrub = {
+      enable = true;
+      interval = "monthly";
+      pools = [
+        "zroot"
+        "zextra"
+      ];
     };
-  };
 
-  services.zfs.autoScrub = {
-    enable = true;
-    interval = "monthly";
-    pools = [
-      "zroot"
-      "zextra"
-    ];
+    fstrim.enable = true;
   };
-
-  services.fstrim.enable = true;
 }
