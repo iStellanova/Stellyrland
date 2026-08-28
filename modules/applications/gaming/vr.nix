@@ -7,10 +7,15 @@
       ...
     }:
     let
-      # Run after each USB reconnect, then select the saved localhost server in WiVRn.
+      # Reconnect the Quest over USB using the explicit IPv4 endpoint.
       wivrnUsbConnect = pkgs.writeShellScriptBin "wivrn-usb-connect" ''
         set -euo pipefail
         ${pkgs.android-tools}/bin/adb reverse tcp:9757 tcp:9757
+        ${pkgs.android-tools}/bin/adb shell am force-stop org.meumeu.wivrn
+        ${pkgs.android-tools}/bin/adb shell am start \
+          -a android.intent.action.VIEW \
+          -d "wivrn+tcp://127.0.0.1:9757" \
+          org.meumeu.wivrn
       '';
     in
     {
@@ -18,7 +23,6 @@
       services.wivrn = {
         enable = true;
         autoStart = true;
-        steam.enable = true;
         steam.importOXRRuntimes = true;
 
         config.enable = true;
@@ -40,7 +44,6 @@
           ".config/openvr"
           ".config/wivrn"
           ".config/motoc"
-          ".config/openxr"
           ".android"
         ];
       };
