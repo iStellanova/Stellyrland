@@ -4,9 +4,7 @@
     general = {
       show_cheatsheet = false;
     };
-
     workspaces.back_and_forth = true;
-
     appearance = {
       border_width = 2;
       corner_radius = 12;
