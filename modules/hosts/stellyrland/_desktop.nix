@@ -63,7 +63,7 @@
             541
           ];
           scale = 1;
-          hdr = "auto";
+          hdr = "on";
           sdr_white = 203;
           workspaces = 7;
         };
