@@ -34,12 +34,14 @@
       scrolling = {
         default_width_fraction = 0.5;
         center_underfull_strip = false;
+        expand_single_column = true;
       };
     };
 
     input = {
       keyboard = {
         layout = "us";
+        numlock_toggle = true;
       };
       mouse = {
         accel_profile = "flat";
