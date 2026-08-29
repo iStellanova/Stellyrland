@@ -238,7 +238,13 @@
               show_value = true;
             };
             volume.show_label = false;
-            workspaces.show_labels = false;
+            workspaces = {
+              show_labels = false;
+              focused_color = "primary";
+              occupied_color = "secondary";
+              empty_color = "tertiary";
+              urgent_color = "error";
+            };
           };
 
         };
