@@ -37,6 +37,8 @@ in
     "Mod+Ctrl+Up" = "window-focus-up";
     "Mod+Ctrl+Down" = "window-focus-down";
     "Mod+Shift+S" = "window-move-to-scratchpad";
+    "Mod+Shift+Space" = "scratchpad-toggle";
+    "Mod+Shift+W" = "window-restore-from-scratchpad";
     "Mod+Alt+R" =
       "spawn:systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP DISPLAY && systemctl --user restart noctalia";
     "Mod+Shift+Tab" = "spawn:noctalia msg panel-toggle wallpaper";
