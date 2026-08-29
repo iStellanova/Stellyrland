@@ -43,13 +43,6 @@
       monitorPriority = host.monitorPriority or [ ];
       primary = if monitorPriority == [ ] then "" else lib.elemAt monitorPriority 0;
       secondary = if lib.length monitorPriority < 2 then "" else lib.elemAt monitorPriority 1;
-      monitorSections =
-        lib.optionalString (
-          primary != ""
-        ) "[wallpaper.monitors.${primary}]\npath = \"${defaultWallpaper}\"\n\n"
-        + lib.optionalString (
-          secondary != ""
-        ) "[wallpaper.monitors.${secondary}]\npath = \"${defaultWallpaper}\"\n\n";
     in
     {
       imports = [
@@ -62,21 +55,6 @@
         "Pictures/wallpapers/wallpaper.png".source = "${host.dataPath}/wallpapers/wallpaper.png";
       };
 
-      home.activation.noctaliaWallpaper = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-                  state="$HOME/.local/state/noctalia/settings.toml"
-                  if [ ! -f "$state" ]; then
-                    mkdir -p "$(dirname "$state")"
-                    cat > "$state" <<EOF
-        [wallpaper.default]
-        path = "${defaultWallpaper}"
-
-        [wallpaper.last]
-        path = "${defaultWallpaper}"
-
-        ${monitorSections}EOF
-                  fi
-      '';
-
       systemd.user.services.noctalia.Service.RestartSec = "3s";
 
       programs.noctalia = {
@@ -88,7 +66,6 @@
             font_family = "JetBrainsMono Nerd Font";
             avatar_path = lib.optionalString (host.dataPath != null) "${host.dataPath}/icons/avatar.png";
             password_style = "random";
-            settings_show_advanced = true;
             setup_wizard_enabled = false;
             polkit_agent = true;
             launch_apps_as_systemd_services = true;
@@ -101,14 +78,11 @@
             };
             screen_corners.enabled = true;
             screenshot = {
-              save_to_file = true;
               directory = "${host.homeDir}/Pictures/Screenshots";
-              copy_to_clipboard = true;
             };
           };
 
           theme = {
-            mode = "dark";
             builtin = "Catppuccin";
             community_palette = "Catppuccin Macchiato Lavender";
             source = "community";
@@ -223,7 +197,6 @@
             };
 
             media = {
-              capsule = false;
               title_scroll = "on_hover";
             };
 

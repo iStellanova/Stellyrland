@@ -1,9 +1,5 @@
 {
   programs.umbriel.settings.animation = {
-    enabled = true;
-    duration_ms = 250;
-    curve = "easeout";
-
     windows_in = {
       enabled = true;
       duration_ms = 250;
@@ -20,8 +16,6 @@
     };
 
     windows_move = {
-      enabled = true;
-      duration_ms = 250;
       curve = "snappy";
     };
 
