@@ -1,11 +1,8 @@
 {
   flake-file.inputs.umbriel = {
+    # TODO(umbriel): drop this input once nixpkgs provides a Home Manager module.
     # Umbriel's package requires its patched SceneFX submodule.
     url = "git+https://github.com/noctalia-dev/umbriel?submodules=1";
-    inputs.nixpkgs.follows = "nixpkgs";
-  };
-  flake-file.inputs.xdg-desktop-portal-umbriel = {
-    url = "github:noctalia-dev/xdg-desktop-portal-umbriel";
     inputs.nixpkgs.follows = "nixpkgs";
   };
 
@@ -30,8 +27,7 @@
 
       programs.umbriel = {
         enable = true;
-        portalPackage =
-          inputs.xdg-desktop-portal-umbriel.packages.${pkgs.stdenv.hostPlatform.system}.default;
+        portalPackage = pkgs.xdg-desktop-portal-umbriel;
       };
 
       hardware.graphics.enable32Bit = true;

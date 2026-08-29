@@ -1171,26 +1171,6 @@
         "type": "github"
       }
     },
-    "noctalia-greeter": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1787856212,
-        "narHash": "sha256-MMhia1PBaQoQ4iv5f09bGOT00Ni41z8awxXBl97T404=",
-        "owner": "noctalia-dev",
-        "repo": "noctalia-greeter",
-        "rev": "eefd43230b34ffbaa9267fede4d8aef1a784294a",
-        "type": "github"
-      },
-      "original": {
-        "owner": "noctalia-dev",
-        "repo": "noctalia-greeter",
-        "type": "github"
-      }
-    },
     "nur": {
       "inputs": {
         "flake-parts": "flake-parts_5",
@@ -1349,7 +1329,6 @@
         "nix-secrets": "nix-secrets",
         "nixcord": "nixcord",
         "nixpkgs": "nixpkgs_3",
-        "noctalia-greeter": "noctalia-greeter",
         "nur": "nur",
         "nvf": "nvf",
         "ponytail": "ponytail",
@@ -1358,7 +1337,6 @@
         "scroll-overview": "scroll-overview",
         "treefmt-nix": "treefmt-nix_3",
         "umbriel": "umbriel",
-        "xdg-desktop-portal-umbriel": "xdg-desktop-portal-umbriel_2",
         "zen-browser": "zen-browser"
       }
     },
@@ -1518,26 +1496,6 @@
       "inputs": {
         "nixpkgs": [
           "umbriel",
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1787930530,
-        "narHash": "sha256-tDvkYDYCbQhi2BG5wtpNjUHa7iUrTmctC87ukbNJ0y4=",
-        "owner": "noctalia-dev",
-        "repo": "xdg-desktop-portal-umbriel",
-        "rev": "4edf049e4f9982bd7c3d6c92e25379308fdaa8df",
-        "type": "github"
-      },
-      "original": {
-        "owner": "noctalia-dev",
-        "repo": "xdg-desktop-portal-umbriel",
-        "type": "github"
-      }
-    },
-    "xdg-desktop-portal-umbriel_2": {
-      "inputs": {
-        "nixpkgs": [
           "nixpkgs"
         ]
       },
