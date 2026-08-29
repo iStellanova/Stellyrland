@@ -18,6 +18,7 @@ in
       (lib.optionalAttrs (outputs != { }) { default_output = primary; })
       {
         blur = true;
+        opacity = 0.8;
       }
       (floatRule "(zenity|xdg-desktop-portal|qalculate-gtk|org\\.pulseaudio\\.pavucontrol)")
       (floatRule "(org\\.gnome\\.Sushi|sushi|org\\.gnome\\.NautilusPreviewer)")
@@ -47,12 +48,12 @@ in
       }
       ((appRule "(org\\.gnome\\.Sushi|sushi|org\\.gnome\\.NautilusPreviewer)") // { opacity = 1.0; })
       ((appRule "(xdg-desktop-portal-gtk)") // { opacity = 1.0; })
+      ((appRule "(kitty)") // { opacity = 1.0; })
       ((appRule "(org\\.gnome\\.Nautilus)") // { opacity = 0.85; })
       ((appRule "(nvim)") // { opacity = 0.3; })
       ((appRule "(zen-.*)") // { opacity = 1.0; })
       ((appRule "(vesktop)") // { opacity = 1.0; })
       ((appRule "(steam|steam_app_.*)") // { opacity = 1.0; })
-      ((appRule "(.*YouTube Music.*)") // { opacity = 0.6; })
       {
         match.title = "^notificationtoasts_.+_desktop$";
         default_focused = false;
