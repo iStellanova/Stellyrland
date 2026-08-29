@@ -45,6 +45,14 @@ in
         default_floating = true;
         opacity = 1.0;
       }
+      ((appRule "(org\\.gnome\\.Sushi|sushi|org\\.gnome\\.NautilusPreviewer)") // { opacity = 1.0; })
+      ((appRule "(xdg-desktop-portal-gtk)") // { opacity = 1.0; })
+      ((appRule "(org\\.gnome\\.Nautilus)") // { opacity = 0.85; })
+      ((appRule "(nvim)") // { opacity = 0.3; })
+      ((appRule "(zen-.*)") // { opacity = 1.0; })
+      ((appRule "(vesktop)") // { opacity = 1.0; })
+      ((appRule "(steam|steam_app_.*)") // { opacity = 1.0; })
+      ((appRule "(.*YouTube Music.*)") // { opacity = 0.6; })
       {
         match.title = "^notificationtoasts_.+_desktop$";
         default_focused = false;
