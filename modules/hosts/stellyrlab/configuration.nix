@@ -28,6 +28,7 @@
         stellyrland = {
           host = "172.31.255.2";
           user = "stellanova";
+          hostKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAPDq0bTLCKn1lKqYn+22wRYiEsNFoMvMlRh1Klm8edA";
           publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAID23408QRe02peABnmkDcmpu2DVSwN3H+Jm7kcVenTDr";
           datasets = {
             home = {

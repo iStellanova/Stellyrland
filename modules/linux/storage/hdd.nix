@@ -118,24 +118,24 @@
           SUBSYSTEM=="block", ENV{ID_PART_ENTRY_NAME}=="${hddPartlabel}", ENV{UDISKS_IGNORE}="1"
           SUBSYSTEM=="block", ENV{DM_NAME}=="${mapperName}", ENV{UDISKS_IGNORE}="1"
         '';
-        security.nix-secrets.secrets.backup-ssh-key = {
-          name = "stellacode";
-          recipients = [
-            "stellanova"
-            host.name
-          ];
-          path = "/run/secrets/backup-ssh-key";
-          owner = "root";
-          group = "root";
-          mode = "0400";
-        };
+        programs.ssh.knownHosts = lib.mapAttrs' (
+          name: source:
+          lib.nameValuePair name {
+            hostNames = [ source.host ];
+            publicKey = source.hostKey;
+          }
+        ) (lib.filterAttrs (_: source: source.host != null) backup.enrolled);
         services.syncoid = {
           enable = true;
           interval = [ ];
           user = "root";
-          sshKey = "/run/secrets/backup-ssh-key";
+          sshKey = "%d/backup-ssh-key";
+          service = {
+            serviceConfig.LoadCredential = [
+              "backup-ssh-key:${config.security.nix-secrets.secrets.stellacode.path}"
+            ];
+          };
           commonArgs = [
-            "--no-rollback"
             "--sshoption=StrictHostKeyChecking=yes"
             "--sshoption=UserKnownHostsFile=/etc/ssh/ssh_known_hosts"
           ];
@@ -193,17 +193,5 @@
         ) (lib.filterAttrs (name: _: name != host.name) backup.enrolled);
       };
     in
-    lib.recursiveUpdate sourceModule (
-      lib.recursiveUpdate receiverModule {
-        security.nix-secrets.secrets.stellacode = {
-          recipients = [
-            "stellanova"
-            host.name
-          ];
-          owner = host.username;
-          mode = "0600";
-          path = "/run/secrets/stellacode";
-        };
-      }
-    );
+    lib.recursiveUpdate sourceModule receiverModule;
 }
