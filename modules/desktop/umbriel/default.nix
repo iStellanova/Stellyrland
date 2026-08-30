@@ -71,7 +71,6 @@
         ./_binds.nix
         ./_rules.nix
       ];
-
       programs.umbriel.enable = true;
     };
 }
