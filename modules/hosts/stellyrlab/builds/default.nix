@@ -48,6 +48,7 @@
           pkgs
           lib
           hermes
+          systemctl
           stateDir
           ;
       };
@@ -57,9 +58,7 @@
           lib.makeBinPath [
             pkgs.git
             pkgs.nix
-            pkgs.nix-eval-jobs
             pkgs.util-linux
-            pkgs.openssh
             pkgs.coreutils
             pkgs.curl
             pkgs.jq
@@ -103,8 +102,6 @@
         Unit = {
           Description = "Repair a failed x86 NixOS fleet build";
           After = [ "nix-fleet-build.service" ];
-          OnSuccess = [ "nix-fleet-build-retry.service" ];
-          OnFailure = [ "nix-fleet-build-retry.service" ];
         };
         Service = {
           Type = "oneshot";

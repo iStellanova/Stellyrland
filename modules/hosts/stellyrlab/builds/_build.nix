@@ -20,7 +20,10 @@ pkgs.writeShellScript "nix-fleet-build" ''
 
   if [ -e "$state_dir/retry" ]; then
     ${pkgs.coreutils}/bin/rm -f "$state_dir/retry"
+    attempt=$(${pkgs.coreutils}/bin/cat "$state_dir/attempt" 2>/dev/null || printf '1')
+    attempt=$((attempt + 1))
   else
+    attempt=1
     if [ "$(${git} -C "$checkout" branch --show-current)" != main ] || [ -n "$(${git} -C "$checkout" status --porcelain)" ]; then
       printf '%s\n' 'Skipped fleet build: checkout must be clean on main.' >&2
       exit 1
@@ -30,14 +33,22 @@ pkgs.writeShellScript "nix-fleet-build" ''
     else
       ${pkgs.coreutils}/bin/rm -f "$state_dir/previous-lock.json"
     fi
+
+    if [ -r /run/secrets/github-token ]; then
+      export GITHUB_TOKEN="$(${pkgs.coreutils}/bin/cat /run/secrets/github-token)"
+    fi
+    cd "$checkout"
+    ${nix} flake update
+    ${pkgs.coreutils}/bin/cp flake.lock "$state_dir/lock.json"
   fi
 
-  if [ -r /run/secrets/github-token ]; then
-    export GITHUB_TOKEN="$(${pkgs.coreutils}/bin/cat /run/secrets/github-token)"
+  printf '%s\n' "$attempt" >"$state_dir/attempt"
+  if [ "$attempt" -gt 7 ]; then
+    printf 'Fleet build stopped after 7 attempts.\n' >&2
+    exit 1
   fi
+
   cd "$checkout"
-  ${nix} flake update
-  ${pkgs.coreutils}/bin/cp flake.lock "$state_dir/lock.json"
 
   build_log="$state_dir/build.log"
   : >"$build_log"

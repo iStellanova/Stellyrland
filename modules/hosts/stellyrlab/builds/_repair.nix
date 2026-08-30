@@ -2,6 +2,7 @@
   pkgs,
   lib,
   hermes,
+  systemctl,
   stateDir,
   host,
 }:
@@ -29,6 +30,12 @@ pkgs.writeShellScript "nix-fleet-build-repair" ''
       ${hermes}/bin/hermes chat --quiet --yolo --in "$checkout" --source tool \
         --max-turns 40 \
         --query "$query" >"$log" 2>&1 || repair_status=$?
-      ${pkgs.coreutils}/bin/touch "$state_dir/retry"
+      attempt=$(${pkgs.coreutils}/bin/cat "$state_dir/attempt" 2>/dev/null || printf '1')
+      if [ "$attempt" -lt 7 ]; then
+        ${pkgs.coreutils}/bin/touch "$state_dir/retry"
+        ${systemctl} --user start --no-block nix-fleet-build-retry.service
+      else
+        printf '%s\n' 'Maximum fleet build attempts reached; not retrying.' >>"$log"
+      fi
       exit "$repair_status"
 ''
