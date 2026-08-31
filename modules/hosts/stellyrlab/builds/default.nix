@@ -52,6 +52,12 @@
           stateDir
           ;
       };
+      startFleet = pkgs.writeShellScript "nix-fleet-build-start" ''
+        set -euo pipefail
+        state_dir=${lib.escapeShellArg stateDir}
+        ${pkgs.coreutils}/bin/rm -f "$state_dir/retry" "$state_dir/attempt"
+        exec ${systemctl} --user start --no-block nix-fleet-build.service
+      '';
       commonEnvironment = [
         "HOME=${host.homeDir}"
         "PATH=${
@@ -80,6 +86,20 @@
           WorkingDirectory = host.flakePath;
           ExecStart = buildFleet;
           TimeoutStartSec = "2h";
+          Environment = commonEnvironment;
+        };
+      };
+
+      systemd.user.services.nix-fleet-build-start = {
+        Unit = {
+          Description = "Start a fresh x86 NixOS fleet build";
+          After = [ "network-online.target" ];
+          Wants = [ "network-online.target" ];
+        };
+        Service = {
+          Type = "oneshot";
+          ExecStart = startFleet;
+          TimeoutStartSec = "1min";
           Environment = commonEnvironment;
         };
       };
@@ -130,7 +150,7 @@
         Timer = {
           OnCalendar = "*-*-* 05:00:00 America/Indianapolis";
           Persistent = true;
-          Unit = "nix-fleet-build.service";
+          Unit = "nix-fleet-build-start.service";
         };
         Install.WantedBy = [ "timers.target" ];
       };
