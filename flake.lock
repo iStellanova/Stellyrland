@@ -1041,17 +1041,17 @@
         ]
       },
       "locked": {
-        "lastModified": 1787656452,
-        "narHash": "sha256-Kt17+jQKAiPDBH3R1blAnwoIpzNwZp/L68h34WUgE04=",
+        "lastModified": 1787565732,
+        "narHash": "sha256-nFaNqYorw9vqwBJ3QLzUB0a714MqHDe9ZwJEIgmWww4=",
         "owner": "unnamed-systems",
         "repo": "nix-secrets",
-        "rev": "5b5f244a699bbc90c071a06410d5a7c6f7fc1a6c",
+        "rev": "1dd99578a1e87f78a6512a80985748c8d90f74d2",
         "type": "github"
       },
       "original": {
         "owner": "unnamed-systems",
         "repo": "nix-secrets",
-        "rev": "5b5f244a699bbc90c071a06410d5a7c6f7fc1a6c",
+        "rev": "1dd99578a1e87f78a6512a80985748c8d90f74d2",
         "type": "github"
       }
     },
