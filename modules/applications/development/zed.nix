@@ -28,6 +28,8 @@
         pyright
         black
         bash-language-server
+        clang-tools
+        gcc
         shfmt
         lua-language-server
         stylua
@@ -90,6 +92,12 @@
             "dark" = "Catppuccin Macchiato (Blur)";
           };
           "languages" = {
+            "C" = {
+              "language_servers" = [ "clangd" ];
+            };
+            "C++" = {
+              "language_servers" = [ "clangd" ];
+            };
             "YAML" = {
               "format_on_save" = "off";
             };
@@ -107,6 +115,14 @@
             "show" = "always";
           };
           "lsp" = {
+            "clangd" = {
+              "binary" = {
+                "path" = "clangd";
+                "arguments" = [
+                  "--query-driver=${pkgs.gcc}/bin/gcc,${pkgs.gcc}/bin/g++"
+                ];
+              };
+            };
             "nixd" = {
               "binary" = {
                 "path" = "nixd";
