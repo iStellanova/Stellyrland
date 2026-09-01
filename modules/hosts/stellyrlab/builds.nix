@@ -10,7 +10,7 @@
     let
       hermes = inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.hermes-agent;
       fleetBuild = pkgs.writeShellScript "nix-fleet-build" ''
-        set -uo pipefail
+        set -u
         checkout=${lib.escapeShellArg host.flakePath}
         build_log="$checkout/.git/nix-fleet-build.log"
         repair_log="$checkout/.git/nix-fleet-repair.log"
@@ -65,7 +65,6 @@
         };
         Service = {
           Type = "oneshot";
-          WorkingDirectory = host.flakePath;
           ExecStart = fleetBuild;
           TimeoutStartSec = "infinity";
           Environment = commonEnvironment;
@@ -77,7 +76,6 @@
         Timer = {
           OnCalendar = "*-*-* 05:00:00 America/Indianapolis";
           Persistent = true;
-          Unit = "nix-fleet-build.service";
         };
         Install.WantedBy = [ "timers.target" ];
       };
