@@ -37,6 +37,12 @@
         fd
       ];
 
+      home.file.".config/clangd/config.yaml".text = ''
+        CompileFlags:
+          Compiler: gcc
+        ${lib.optionalString pkgs.stdenv.hostPlatform.isLinux "  Add:\n    - \"-isystem\"\n    - \"${pkgs.glibc.dev}/include\"\n"}
+      '';
+
       programs.zed-editor = {
         enable = true;
         package = lib.mkIf (host.class == "darwin") null;
