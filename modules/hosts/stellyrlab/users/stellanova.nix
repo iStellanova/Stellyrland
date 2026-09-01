@@ -10,6 +10,7 @@
         fastfetch
         git
         hermes
+        zed
         fleet-build
         nvf-ide
       ];

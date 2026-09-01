@@ -117,7 +117,7 @@
           "lsp" = {
             "clangd" = {
               "binary" = {
-                "path" = "clangd";
+                "path" = "${pkgs.clang-tools}/bin/clangd";
                 "arguments" = [
                   "--query-driver=${pkgs.gcc}/bin/gcc,${pkgs.gcc}/bin/g++"
                 ];
