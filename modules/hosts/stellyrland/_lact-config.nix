@@ -29,7 +29,7 @@ let
     power_profile_mode_index = 0;
   };
   configData = {
-    version = 6;
+    version = 7;
     daemon = {
       log_level = "info";
       admin_group = "wheel";
