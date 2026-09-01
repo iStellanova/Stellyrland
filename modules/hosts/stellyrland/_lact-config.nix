@@ -49,6 +49,7 @@ let
     current_profile = "default";
     auto_switch_profiles = false;
   };
+  # TODO: Revisit when nixpkgs emits numeric YAML map keys unquoted or LACT accepts quoted integer keys.
   yamlFile = (pkgs.formats.yaml { }).generate "lact-config.yaml" configData;
   # pkgs.formats.yaml quotes numeric map keys (e.g. the fan curve's "45":); LACT's
   # parser requires them unquoted, so strip the quotes back out post-generation.
