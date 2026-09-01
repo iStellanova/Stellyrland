@@ -6,7 +6,6 @@ let
 in
 {
   programs.umbriel.settings.general.autostart = [
-    "systemctl --user start noctalia.service"
     "wpctl set-volume @DEFAULT_AUDIO_SOURCE@ 1.0"
     "udiskie -a -s --file-manager nautilus"
     "sleep 3 && protonvpn-app --start-minimized"
