@@ -13,7 +13,7 @@ let
 
     model = {
       provider = "openai-codex";
-      default = "gpt-5.6-luna";
+      default = "gpt-5.6-luna-900k";
     };
 
     fallback_providers = [
