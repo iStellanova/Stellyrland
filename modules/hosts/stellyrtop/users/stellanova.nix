@@ -31,6 +31,7 @@
 
         # Desktop Applications
         zen-browser
+        hermes-desktop
 
         # AV / Media
         cava
