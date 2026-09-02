@@ -3,7 +3,7 @@
   flake-file.inputs = {
     nix-secrets = {
       # TODO: switch off dev branch once nix-secrets fixes Darwin FsType imports.
-      url = "github:unnamed-systems/nix-secrets/dev";
+      url = "github:unnamed-systems/nix-secrets/1dd99578a1e87f78a6512a80985748c8d90f74d2";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
