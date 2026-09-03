@@ -7,8 +7,6 @@
     workspaces.back_and_forth = true;
     appearance = {
       corner_radius = 12;
-      border_focused = "#8aadf4cc";
-      border_unfocused = "#c0c6dc33";
       blur = {
         optimized = false;
         radius = 12;
@@ -19,7 +17,6 @@
       shadow = {
         offset_x = 0;
         offset_y = 0;
-        color = "#363a4fff";
       };
     };
 

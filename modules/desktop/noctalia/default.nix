@@ -102,7 +102,7 @@
           };
 
           wallpaper = {
-            enabled = true;
+            enabled = false;
             directory = wallpaperDir;
             default.path = defaultWallpaper;
             last.path = defaultWallpaper;
@@ -132,7 +132,7 @@
             monitor = lib.optionalAttrs (primary != "") { "${primary}".enabled = true; };
             position = "top";
             background_opacity = 0.5;
-            shadow = false;
+            shadow = true;
             center = [ "media" ];
             end = [
               "tray"
