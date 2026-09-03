@@ -5,6 +5,7 @@
     homeDir = "/home/RedFlame";
     flakePath = "/home/RedFlame/Projects/stellyrland";
     passwordSecret = "redflamepsswd";
+    graphics = "nvidia";
 
   };
 
@@ -38,6 +39,7 @@
       blender
       psswdmgr
       protonvpn
+      umbriel
 
       # Gaming
       steam
