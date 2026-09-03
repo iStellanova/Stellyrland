@@ -158,7 +158,12 @@ in
         };
     in
     {
-      home.packages = [ hermesPackage pkgs.python3 ] ++ fetching.packages ++ email.packages;
+      home.packages = [
+        hermesPackage
+        pkgs.python3
+      ]
+      ++ fetching.packages
+      ++ email.packages;
 
       home.sessionVariables.SEARXNG_URL = "http://127.0.0.1:8088";
       systemd.user.sessionVariables.SEARXNG_URL = "http://127.0.0.1:8088";

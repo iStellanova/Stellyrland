@@ -52,7 +52,6 @@
       maintenance
       cachyos-kernel
       lanzaboote
-
       backup-service
       stellyrlab-host
       binary-cache-server
