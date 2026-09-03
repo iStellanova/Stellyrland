@@ -5,6 +5,16 @@
     inputs.nixpkgs.follows = "nixpkgs";
   };
 
+  flake.modules.nixos.hermes-desktop =
+    { lib, host, ... }:
+    {
+      imports = lib.optional (host.persistence or false) {
+        preservation.preserveAt."/persist".users.${host.username}.directories = [
+          ".hermes"
+        ];
+      };
+    };
+
   flake.modules.homeManager.hermes-desktop =
     { pkgs, ... }:
     {
