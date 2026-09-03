@@ -2,6 +2,12 @@ _: {
   flake.modules.nixos.hermes =
     { config, host, ... }:
     {
+      nix.settings = {
+        substituters = [ "https://hermes-agent.cachix.org" ];
+        trusted-public-keys = [
+          "hermes-agent.cachix.org-1:jN3pjR50Mxi4SESKC/FIMNM6/LCosvPk2VUwzVvebzU="
+        ];
+      };
       security.nix-secrets.secrets = {
         hermes-searxng-env = {
           recipients = [
@@ -60,7 +66,6 @@ _: {
   flake-file.inputs = {
     hermes-agent = {
       url = "github:NousResearch/hermes-agent";
-      inputs.nixpkgs.follows = "nixpkgs";
     };
     llm-agents = {
       url = "github:numtide/llm-agents.nix";
@@ -79,34 +84,6 @@ _: {
       ...
     }:
     let
-      # TODO(hermes-agent#102358): remove when upstream PR #102418 lands in a release.
-      hermesStateModules = pkgs.python312Packages.buildPythonPackage {
-        pname = "hermes-state-modules";
-        version = "0.21.0";
-        format = "other";
-        src = inputs.hermes-agent;
-        dontBuild = true;
-        dontCheck = true;
-        installPhase = ''
-          install -Dm644 "$src/hermes_state_holders.py" "$out/lib/python3.12/site-packages/hermes_state_holders.py"
-          install -Dm644 "$src/hermes_state_registry.py" "$out/lib/python3.12/site-packages/hermes_state_registry.py"
-        '';
-      };
-      # TODO(hermes-agent#102358): remove when upstream discovers Linux/Nix-store libopus.
-      hermesPackage =
-        inputs.hermes-agent.packages.${pkgs.stdenv.hostPlatform.system}.default.overrideAttrs
-          (old: {
-            postInstall = (old.postInstall or "") + ''
-              cp -rL "$out/share/hermes-agent/plugins" "$out/share/hermes-agent/plugins-patched"
-              substituteInPlace "$out/share/hermes-agent/plugins-patched/platforms/discord/adapter.py" \
-                --replace-fail \
-                  'if sys.platform == "darwin":' \
-                  'if sys.platform == "linux": opus_candidates.append("${pkgs.libopus}/lib/libopus.so.0")
-                if sys.platform == "darwin":'
-              rm "$out/share/hermes-agent/plugins"
-              mv "$out/share/hermes-agent/plugins-patched" "$out/share/hermes-agent/plugins"
-            '';
-          });
       theme = import ./_theme.nix;
     in
     {
@@ -114,7 +91,6 @@ _: {
       programs.hermes-agent.enable = true;
       services.hermes-agent = {
         enable = true;
-        package = hermesPackage;
         gateway.enable = true;
         backend = {
           mode = "serve";
@@ -159,15 +135,11 @@ _: {
           };
         };
         environmentFiles = [ "/run/secrets/hermes-discord.env" ];
-        environment.LD_LIBRARY_PATH = "${pkgs.libopus}/lib";
         extraPackages = [
           pkgs.gh
           inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.agent-browser
           pkgs.chromium
-          pkgs.ffmpeg
-          pkgs.libopus
         ];
-        extraPythonPackages = [ hermesStateModules ];
         extraDependencyGroups = [ "messaging" ];
         extraPlugins = [
           (pkgs.runCommand "ponytail" { } ''
