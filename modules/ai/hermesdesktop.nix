@@ -1,7 +1,6 @@
-{ inputs, ... }:
-{
-  flake-file.inputs.llm-agents = {
-    url = "github:numtide/llm-agents.nix";
+_: {
+  flake-file.inputs.hermes-agent = {
+    url = "github:NousResearch/hermes-agent";
     inputs.nixpkgs.follows = "nixpkgs";
   };
 
@@ -16,10 +15,9 @@
     };
 
   flake.modules.homeManager.hermes-desktop =
-    { pkgs, ... }:
+    { inputs, ... }:
     {
-      home.packages = [
-        inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.hermes-desktop
-      ];
+      imports = [ inputs.hermes-agent.homeManagerModules.default ];
+      programs.hermes-agent.desktop.enable = true;
     };
 }
