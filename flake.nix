@@ -30,6 +30,10 @@
       url = "github:FreesmTeam/FreesmLauncher";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    hermes-agent = {
+      url = "github:NousResearch/hermes-agent";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     home-manager = {
       url = "github:nix-community/home-manager/master";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -79,10 +83,6 @@
       flake = false;
     };
     preservation.url = "github:nix-community/preservation";
-    proton-mcp = {
-      url = "github:MrBenJ/proton-mcp";
-      flake = false;
-    };
     scroll-overview = {
       url = "github:yayuuu/hyprland-scroll-overview";
       flake = false;
