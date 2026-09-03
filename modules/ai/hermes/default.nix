@@ -146,6 +146,10 @@ _: {
           };
           database.journal_mode = "wal";
           agent.verify_on_stop = true;
+          checkpoints = {
+            enabled = true;
+            max_snapshots = 20;
+          };
           security.allow_lazy_installs = false;
           plugins.enabled = [ "ponytail" ];
           mcp_servers.nixos = {
