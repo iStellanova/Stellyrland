@@ -35,6 +35,7 @@
       background-sounds
 
       # Desktop Applications
+      hermes-desktop
       zen-browser
       zed
 
