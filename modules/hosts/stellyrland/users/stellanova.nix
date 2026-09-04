@@ -40,7 +40,6 @@
 
         # Dev / CLI Tools
         git
-        hermes-desktop
         nvf-ide
         nvf-writing
         yazi
