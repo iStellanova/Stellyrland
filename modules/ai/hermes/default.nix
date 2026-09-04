@@ -88,12 +88,6 @@ _: {
           provider = "openai-codex";
           default = "gpt-5.6-luna-900k";
         };
-        fallback_providers = [
-          {
-            provider = "opencode-zen";
-            model = "deepseek-v4-flash-free";
-          }
-        ];
         display = {
           interface = "tui";
           skin = theme.name;
