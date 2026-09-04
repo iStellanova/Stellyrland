@@ -29,7 +29,7 @@ _: {
       ...
     }:
     let
-      hermesPackage = inputs.hermes-agent.packages.${pkgs.stdenv.hostPlatform.system}.default;
+      hermesPackage = inputs.hermes-agent.packages.${pkgs.stdenv.hostPlatform.system}.minimal;
       hermesPackageWithDesktop =
         if pkgs.stdenv.hostPlatform.isDarwin then
           let
