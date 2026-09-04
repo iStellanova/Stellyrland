@@ -3,9 +3,9 @@ _: {
     { config, host, ... }:
     {
       nix.settings = {
-        substituters = [ "https://hermes-agent.cachix.org" ];
-        trusted-public-keys = [
-          "hermes-agent.cachix.org-1:jN3pjR50Mxi4SESKC/FIMNM6/LCosvPk2VUwzVvebzU="
+        extra-substituters = [ "https://cache.numtide.com" ];
+        extra-trusted-public-keys = [
+          "nixs3.numtide.com-1:DTx8wZduET09hRmMtKdQDxNNthLQETkc/yaX7M4qK0g="
         ];
       };
       security.nix-secrets.secrets = {
@@ -64,12 +64,8 @@ _: {
     };
 
   flake-file.inputs = {
-    hermes-agent = {
-      url = "github:NousResearch/hermes-agent";
-    };
     llm-agents = {
       url = "github:numtide/llm-agents.nix";
-      inputs.nixpkgs.follows = "nixpkgs";
     };
     ponytail = {
       url = "github:DietrichGebert/ponytail";
@@ -84,120 +80,111 @@ _: {
       ...
     }:
     let
-      # TODO(hermes-agent#102358): remove when upstream PR #102418 lands in a release.
-      hermesStateModules = pkgs.python312Packages.buildPythonPackage {
-        pname = "hermes-state-modules";
-        version = "0.21.0";
-        format = "other";
-        src = inputs.hermes-agent;
-        dontBuild = true;
-        dontCheck = true;
-        installPhase = ''
-          install -Dm644 "$src/hermes_state_holders.py" "$out/lib/python3.12/site-packages/hermes_state_holders.py"
-          install -Dm644 "$src/hermes_state_registry.py" "$out/lib/python3.12/site-packages/hermes_state_registry.py"
-        '';
-      };
-      # TODO(hermes-agent#102358): remove when upstream discovers Linux/Nix-store libopus.
-      hermesPackage =
-        inputs.hermes-agent.packages.${pkgs.stdenv.hostPlatform.system}.default.overrideAttrs
-          (old: {
-            postInstall = (old.postInstall or "") + ''
-              cp -rL "$out/share/hermes-agent/plugins" "$out/share/hermes-agent/plugins-patched"
-              substituteInPlace "$out/share/hermes-agent/plugins-patched/platforms/discord/adapter.py" --replace-fail 'if sys.platform == "darwin":' 'if sys.platform == "linux": opus_candidates.append("${pkgs.libopus}/lib/libopus.so.0")${"\n"}                              if sys.platform == "darwin":'
-              rm "$out/share/hermes-agent/plugins"
-              mv "$out/share/hermes-agent/plugins-patched" "$out/share/hermes-agent/plugins"
-            '';
-          });
+      hermesPackage = inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.hermes-agent;
       theme = import ./_theme.nix;
+      hermesConfig = {
+        _config_version = 39;
+        model = {
+          provider = "openai-codex";
+          default = "gpt-5.6-luna-900k";
+        };
+        fallback_providers = [
+          {
+            provider = "opencode-zen";
+            model = "deepseek-v4-flash-free";
+          }
+        ];
+        display = {
+          interface = "tui";
+          skin = theme.name;
+          show_reasoning = false;
+        };
+        web.search_backend = "searxng";
+        browser.engine = "chrome";
+        platform_toolsets = {
+          cli = [ "hermes-cli" ];
+          discord = [ "hermes-cli" ];
+        };
+        database.journal_mode = "wal";
+        agent.verify_on_stop = true;
+        checkpoints = {
+          enabled = true;
+          max_snapshots = 20;
+        };
+        security.allow_lazy_installs = false;
+        plugins.enabled = [ "ponytail" ];
+        mcp_servers.nixos = {
+          command = "${pkgs.mcp-nixos}/bin/mcp-nixos";
+          supports_parallel_tool_calls = true;
+          sampling.enabled = false;
+        };
+      };
+      hermesPackages = [
+        hermesPackage
+        pkgs.gh
+        inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.agent-browser
+        pkgs.chromium
+        pkgs.ffmpeg
+        pkgs.libopus
+      ];
     in
     {
-      imports = [ inputs.hermes-agent.homeManagerModules.default ];
-      programs.hermes-agent.enable = true;
-      services.hermes-agent = {
-        enable = true;
-        package = hermesPackage;
-        gateway.enable = true;
-        backend = {
-          mode = "serve";
-          host = "127.0.0.1";
-          port = 9119;
-        };
-        settings = {
-          _config_version = 39;
-          model = {
-            provider = "openai-codex";
-            default = "gpt-5.6-luna-900k";
-          };
-          fallback_providers = [
-            {
-              provider = "opencode-zen";
-              model = "deepseek-v4-flash-free";
-            }
-          ];
-          display = {
-            interface = "tui";
-            skin = theme.name;
-            show_reasoning = false;
-          };
-          web.search_backend = "searxng";
-          browser.engine = "chrome";
-          platform_toolsets = {
-            cli = [ "hermes-cli" ];
-            discord = [ "hermes-cli" ];
-          };
-          database.journal_mode = "wal";
-          agent.verify_on_stop = true;
-          checkpoints = {
-            enabled = true;
-            max_snapshots = 20;
-          };
-          security.allow_lazy_installs = false;
-          plugins.enabled = [ "ponytail" ];
-          mcp_servers.nixos = {
-            command = "${pkgs.mcp-nixos}/bin/mcp-nixos";
-            supports_parallel_tool_calls = true;
-            sampling.enabled = false;
-          };
-        };
-        environmentFiles = [ "/run/secrets/hermes-discord.env" ];
-        environment.LD_LIBRARY_PATH = "${pkgs.libopus}/lib";
-        extraPackages = [
-          pkgs.python3
-          pkgs.gh
-          inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.agent-browser
-          pkgs.chromium
-          pkgs.ffmpeg
-          pkgs.libopus
-        ];
-        extraPythonPackages = [ hermesStateModules ];
-        extraDependencyGroups = [ "messaging" ];
-        extraPlugins = [
-          (pkgs.runCommand "ponytail" { } ''
-            cp -r ${inputs.ponytail} "$out"
-          '')
-        ];
-        hermesHomeFiles = {
-          "SOUL.md" = ''
-            You are Stellxie, an intelligent personal assistant. You are quick,
-            curious, direct, and attentive to detail. Help with conversation,
-            research, writing, software work, and practical tasks while keeping the
-            user's goals and preferences consistent across sessions.
+      home.packages = hermesPackages;
+      home.sessionVariables = {
+        SEARXNG_URL = "http://127.0.0.1:8088";
+        LD_LIBRARY_PATH = "${pkgs.libopus}/lib";
+      };
+      systemd.user.sessionVariables = {
+        SEARXNG_URL = "http://127.0.0.1:8088";
+      };
+      home.file = {
+        ".hermes/config.yaml".text = builtins.toJSON hermesConfig;
+        ".hermes/SOUL.md".text = ''
+          You are Stellxie, an intelligent personal assistant. You are quick,
+          curious, direct, and attentive to detail. Help with conversation,
+          research, writing, software work, and practical tasks while keeping the
+          user's goals and preferences consistent across sessions.
 
-            Communicate clearly, admit uncertainty, and prefer a concise answer unless
-            more detail is useful. Treat tools and model providers as replaceable
-            capabilities: your identity, memory, and relationship with the user belong
-            to the Hermes framework, not to whichever model is currently active.
+          Communicate clearly, admit uncertainty, and prefer a concise answer unless
+          more detail is useful. Treat tools and model providers as replaceable
+          capabilities: your identity, memory, and relationship with the user belong
+          to the Hermes framework, not to whichever model is currently active.
 
-            You live on stellyrlab. For requested work on stellyrland, use its declared
-            SSH alias and the canonical checkout at /home/stellanova/Projects/stellyrland.
-            Inspect its Git status before editing and run validation there.
-          '';
-          "skins/${theme.name}.yaml" = builtins.toJSON theme;
+          You live on stellyrlab.
+        '';
+        ".hermes/skins/${theme.name}.yaml".text = builtins.toJSON theme;
+        ".hermes/plugins/ponytail" = {
+          source = inputs.ponytail;
+          recursive = true;
         };
       };
-
-      home.sessionVariables.SEARXNG_URL = "http://127.0.0.1:8088";
-      systemd.user.sessionVariables.SEARXNG_URL = "http://127.0.0.1:8088";
+      systemd.user.services = {
+        hermes-gateway = {
+          Unit = {
+            Description = "Stellxie Hermes Discord gateway";
+            After = [ "network-online.target" ];
+            Wants = [ "network-online.target" ];
+          };
+          Service = {
+            EnvironmentFile = "/run/secrets/hermes-discord.env";
+            Environment = "LD_LIBRARY_PATH=${pkgs.libopus}/lib";
+            ExecStart = "${hermesPackage}/bin/hermes gateway run";
+            Restart = "always";
+            RestartSec = 5;
+          };
+          Install.WantedBy = [ "default.target" ];
+        };
+        hermes-serve = {
+          Unit.Description = "Stellxie Hermes remote backend";
+          Service = {
+            Environment = "LD_LIBRARY_PATH=${pkgs.libopus}/lib";
+            ExecStart = "${hermesPackage}/bin/hermes serve --host 127.0.0.1 --port 9119";
+            Restart = "always";
+            RestartSec = 5;
+          };
+          Install.WantedBy = [ "default.target" ];
+        };
+      };
       programs.ssh.settings."github-stellxie" = {
         HostName = "github.com";
         User = "git";
