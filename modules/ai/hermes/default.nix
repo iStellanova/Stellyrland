@@ -126,6 +126,7 @@ _: {
         pkgs.chromium
         pkgs.ffmpeg
         pkgs.libopus
+        pkgs.python3
       ];
     in
     {
