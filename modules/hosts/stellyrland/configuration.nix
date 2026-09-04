@@ -86,7 +86,6 @@
 
       # Persistence companions for Home Manager applications
       hermes-desktop
-      opencode
       discord
       zed
 

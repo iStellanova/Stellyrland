@@ -64,7 +64,6 @@
 
           statusline.lualine = {
             enable = true;
-            activeSection.z = [ "require('opencode').statusline" ];
           };
           tabline.nvimBufferline.enable = true;
           git.enable = true;
@@ -123,12 +122,6 @@
             };
           };
 
-          # Connects nvim to the system `opencode --port` server (see
-          # opencode/default.nix), sharing context so the auth plugins apply here too.
-          extraPlugins.opencode-nvim = {
-            package = pkgs.vimPlugins.opencode-nvim;
-          };
-
           luaConfigRC.filetree-keymaps = ''
             vim.keymap.set("n", "<leader>e", "<cmd>Neotree toggle<cr>", { desc = "Toggle file explorer" })
 
@@ -141,40 +134,6 @@
             })
           '';
 
-          luaConfigRC.opencode = ''
-            -- opencode.nvim discovers a running `opencode --port` server, else
-            -- starts one via server.start; host it in toggleterm for <leader>ot.
-            local opencode_term
-
-            local function get_opencode_term()
-              if not opencode_term then
-                opencode_term = require("toggleterm.terminal").Terminal:new({
-                  cmd = "opencode --port",
-                  direction = "vertical",
-                })
-              end
-              return opencode_term
-            end
-
-            vim.g.opencode_opts = {
-              server = {
-                start = function()
-                  get_opencode_term():open()
-                end,
-              },
-            }
-
-            vim.keymap.set({ "n", "x" }, "<leader>oa", function()
-              require("opencode").ask("@this: ")
-            end, { desc = "Ask opencode" })
-            vim.keymap.set({ "n", "x" }, "<leader>os", function()
-              require("opencode").select()
-            end, { desc = "Opencode actions" })
-            vim.keymap.set({ "n", "t" }, "<leader>ot", function()
-              get_opencode_term():toggle()
-            end, { desc = "Toggle opencode" })
-          '';
-
           luaConfigRC.autoread-checktime = ''
             vim.api.nvim_create_autocmd({ "FocusGained", "BufEnter", "CursorHold", "CursorHoldI" }, {
               command = "checktime",
@@ -182,7 +141,7 @@
           '';
 
           # Terminal-mode maps exit terminal-insert first so <C-hjkl> also works
-          # for leaving opencode's embedded terminal.
+          # for navigating terminal panes.
           luaConfigRC.window-nav-keymaps = ''
             vim.keymap.set("n", "<C-h>", "<C-w>h", { desc = "Window left" })
             vim.keymap.set("n", "<C-l>", "<C-w>l", { desc = "Window right" })
@@ -195,12 +154,7 @@
             vim.keymap.set("t", "<C-k>", [[<C-\><C-n><C-w>k]], { desc = "Window up" })
           '';
 
-          # opencode.nvim shells out to `opencode --port`; keep it on PATH inside
-          # nvim even though programs.opencode also installs it.
-          extraPackages = [
-            pkgs.nixd
-            inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.opencode
-          ];
+          extraPackages = [ pkgs.nixd ];
         };
       };
     };

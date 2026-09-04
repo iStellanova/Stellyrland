@@ -43,7 +43,6 @@
         hermes-desktop
         nvf-ide
         nvf-writing
-        opencode
         yazi
         zed
 
