@@ -162,6 +162,7 @@ _: {
         environmentFiles = [ "/run/secrets/hermes-discord.env" ];
         environment.LD_LIBRARY_PATH = "${pkgs.libopus}/lib";
         extraPackages = [
+          pkgs.python3
           pkgs.gh
           inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.agent-browser
           pkgs.chromium
