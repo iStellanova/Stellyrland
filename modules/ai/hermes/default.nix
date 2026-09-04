@@ -95,6 +95,7 @@ _: {
         };
         web.search_backend = "searxng";
         browser.engine = "chrome";
+        cron.allow_agent_scheduling = true;
         platform_toolsets = {
           cli = [ "hermes-cli" ];
           discord = [ "hermes-cli" ];
