@@ -4,8 +4,17 @@ _: {
   };
 
   flake.modules.nixos.hermes-desktop =
-    { lib, host, ... }:
     {
+      inputs,
+      lib,
+      host,
+      pkgs,
+      ...
+    }:
+    {
+      environment.systemPackages = [
+        inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.hermes-desktop
+      ];
       nix.settings = {
         extra-substituters = [ "https://cache.numtide.com" ];
         extra-trusted-public-keys = [
@@ -20,15 +29,7 @@ _: {
       };
     };
 
-  flake.modules.homeManager.hermes-desktop =
-    {
-      inputs,
-      pkgs,
-      ...
-    }:
-    {
-      home.packages = [
-        inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.hermes-desktop
-      ];
-    };
+  flake.modules.darwin.hermes-desktop = {
+    homebrew.casks = [ "hermes-desktop" ];
+  };
 }
