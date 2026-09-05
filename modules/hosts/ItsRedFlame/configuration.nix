@@ -39,7 +39,6 @@
       blender
       psswdmgr
       protonvpn
-      umbriel
 
       # Gaming
       steam

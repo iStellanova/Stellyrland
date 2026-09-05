@@ -34,7 +34,7 @@
           ];
           recipientAliases = {
             stellanova = "age1muxquz7vyrsva0me3q68mf9xak578hzejqm39vr3llfsftc0dcpqaxlaf7";
-            ItsRedFlame = "age1rzxcemflrpsfyxtnenc3ma678s4j72kfzfxu8vnlj6mz6mxqlassn4y9ev";
+            ItsRedFlame = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJgWFxH/qllaNX5axfrDfplGpn/URESTGNX/t4TGgJ6q";
             plasmapulsefinale = "age1ltjn45ay4nwrtx8k9f86ylk5zth98xz9t2gxwe6c2ws3wm44sses9hgc9t";
             stellyrlab = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJCz+XUleiNbgSwcZHvxOXXTbihnTIRoDKoXr+2zCSgA stellyrstick-host";
             stellyrland = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAPDq0bTLCKn1lKqYn+22wRYiEsNFoMvMlRh1Klm8edA";
