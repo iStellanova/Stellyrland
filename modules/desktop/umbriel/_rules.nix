@@ -36,7 +36,6 @@ in
         900
       ])
       ((appRule "(steam_app_.*|gamescope)") // { default_fullscreen = true; })
-      ((appRule "(steam_app_.*)") // { default_workspace = 4; })
       {
         match.title = "^(File Operation Progress|Open File|Open Folder|Confirm File Replacing|Copying files|Moving files)$";
         default_floating = true;
