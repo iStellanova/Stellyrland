@@ -1,7 +1,5 @@
 { pkgs, lib, ... }:
 lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
-  home.packages = [ pkgs.mprisence ];
-
   systemd.user.services.mprisence = {
     Unit = {
       Description = "Discord Rich Presence for MPRIS media players";
