@@ -1051,7 +1051,7 @@
       },
       "original": {
         "owner": "unnamed-systems",
-        "ref": "dev",
+        "ref": "master",
         "repo": "nix-secrets",
         "type": "github"
       }

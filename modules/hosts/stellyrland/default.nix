@@ -78,6 +78,5 @@
         };
       };
 
-      # TODO(stellyrland): Revisit sched_ext/LAVD after upstream fixes; it currently causes 30–40s runnable-task stalls.
     };
 }

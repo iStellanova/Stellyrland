@@ -58,7 +58,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nix-secrets = {
-      url = "github:unnamed-systems/nix-secrets/dev";
+      url = "github:unnamed-systems/nix-secrets/master";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nixcord = {
