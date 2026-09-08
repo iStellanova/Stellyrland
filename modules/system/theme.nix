@@ -96,6 +96,7 @@
             "org/gnome/desktop/interface" = {
               color-scheme = "prefer-dark";
               accent-color = "blue";
+              clock-format = "12h";
               icon-theme = "Colloid-Catppuccin-Dark";
               cursor-theme = "Bibata-Modern-Ice";
               cursor-size = 16;

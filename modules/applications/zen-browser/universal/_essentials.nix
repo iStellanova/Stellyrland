@@ -18,7 +18,7 @@
         id = "12b92aa7-8088-4f0e-b4bc-24fa24be2c12";
         url = "https://gemini.google.com/app";
         workspace = "7b8386f6-6cf7-4816-98a2-2ebbc85f20e5";
-        container = 1; # Personal
+        container = 1;
         isEssential = true;
         position = 11;
       };
@@ -27,7 +27,7 @@
         id = "1ebb2277-bf57-43cc-83b5-19e5c48b00bd";
         url = "https://github.com/istellanova/stellyrland";
         workspace = "7b8386f6-6cf7-4816-98a2-2ebbc85f20e5";
-        container = 1; # Personal
+        container = 1;
         isEssential = true;
         position = 12;
       };

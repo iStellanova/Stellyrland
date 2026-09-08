@@ -82,7 +82,7 @@
             esac
 
             if [ "$(${pkgs.coreutils}/bin/id -u)" -ne 0 ]; then
-              exec ${pkgs.systemd}/bin/run0 -- "$0" "$@"
+              exec /run/wrappers/bin/sudo -- "$0" "$@"
             fi
 
             if [ "$1" = off ]; then
