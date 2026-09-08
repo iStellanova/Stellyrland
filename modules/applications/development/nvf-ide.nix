@@ -6,7 +6,7 @@
   };
 
   flake.modules.homeManager.nvf-ide =
-    { pkgs, ... }:
+    { host, ... }:
     {
       imports = [ inputs.nvf.homeManagerModules.default ];
       programs.nvf = {
@@ -62,7 +62,6 @@
           };
           tabline.nvimBufferline.enable = true;
           git.enable = true;
-          git.gitsigns.enable = true;
           comments.comment-nvim.enable = true;
           autopairs.nvim-autopairs.enable = true;
           utility.motion.flash-nvim.enable = true;
@@ -113,7 +112,7 @@
           lsp.servers.nixd = {
             settings.nixd = {
               nixpkgs.expr = "import (builtins.getFlake (toString ./.)).inputs.nixpkgs.outPath { }";
-              options.nixos.expr = "(builtins.getFlake (toString ./.)).nixosConfigurations.stellyrlab.options";
+              options.nixos.expr = "(builtins.getFlake (toString ./.)).nixosConfigurations.${host.name}.options";
             };
           };
 
@@ -148,8 +147,6 @@
             vim.keymap.set("t", "<C-j>", [[<C-\><C-n><C-w>j]], { desc = "Window down" })
             vim.keymap.set("t", "<C-k>", [[<C-\><C-n><C-w>k]], { desc = "Window up" })
           '';
-
-          extraPackages = [ pkgs.nixd ];
         };
       };
     };
