@@ -107,9 +107,6 @@
             "C++" = {
               "language_servers" = [ "clangd" ];
             };
-            "YAML" = {
-              "format_on_save" = "off";
-            };
             "Nix" = {
               "language_servers" = [ "nixd" ];
               "formatter" = {

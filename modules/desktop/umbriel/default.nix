@@ -38,13 +38,14 @@
         linux-wallpaperengine
       ];
 
-      services.xserver.videoDrivers =
+      services.xserver.videoDrivers = lib.mkDefault (
         if host.graphics == "amd" then
           [ "amdgpu" ]
         else if host.graphics == "nvidia" then
           [ "nvidia" ]
         else
-          [ ];
+          [ ]
+      );
 
       xdg.portal = {
         enable = true;

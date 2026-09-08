@@ -1,30 +1,15 @@
 {
   flake.modules.nixos.core =
-    {
-      config,
-      lib,
-      pkgs,
-      ...
-    }:
+    _:
     {
       time.timeZone = "America/Indianapolis";
       i18n.defaultLocale = "en_US.UTF-8";
 
       security.sudo.enable = false;
-      security.run0 = {
+      security.sudo-rs = {
         enable = true;
-        sudo-shim.enable = true;
-        persistentAuth.enable = true;
+        execWheelOnly = true;
       };
-
-      # Disable the background.
-      environment.systemPackages = [
-        (lib.hiPrio (
-          pkgs.writeShellScriptBin "run0" ''
-            exec ${lib.getExe' config.systemd.package "run0"} --background= "$@"
-          ''
-        ))
-      ];
 
       documentation.nixos.enable = false;
       programs.ssh.startAgent = true;
