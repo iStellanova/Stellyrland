@@ -66,6 +66,7 @@ _: {
   flake-file.inputs = {
     llm-agents = {
       url = "github:numtide/llm-agents.nix";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     ponytail = {
       url = "github:DietrichGebert/ponytail";

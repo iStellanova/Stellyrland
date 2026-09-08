@@ -5,11 +5,6 @@
     inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  flake-file.inputs.llm-agents = {
-    url = "github:numtide/llm-agents.nix";
-    inputs.nixpkgs.follows = "nixpkgs";
-  };
-
   flake.modules.homeManager.nvf-ide =
     { pkgs, ... }:
     {
