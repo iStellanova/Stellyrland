@@ -5,10 +5,8 @@
     inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  # neovimConfiguration, not programs.nvf: that option is a singleton and would
-  # merge with nvf-ide's config on the same host. Building the package directly
-  # and renaming it to `wvim` (mnw.appName also moves ~/.config/wvim) keeps the
-  # two fully independent.
+  # programs.nvf is a singleton. Build wvim directly to isolate it from nvf-ide,
+  # including its ~/.config/wvim state.
   flake.modules.homeManager.nvf-writing =
     { pkgs, ... }:
     let
@@ -30,13 +28,13 @@
                 wrap = true;
                 linebreak = true;
                 textwidth = 0;
-                undofile = true;
                 statusline = "%f %y%=%{wordcount().words} words  %l:%c";
               };
 
+              undoFile.enable = true;
+
               utility.oil-nvim.enable = true;
 
-              # Defaults already land on <leader>ff / <leader>fg.
               telescope.enable = true;
 
               # zen-mode.nvim and twilight.nvim have no first-class nvf module,
@@ -54,11 +52,8 @@
                 vim-pandoc-syntax.package = vim-pandoc-syntax;
               };
 
-              # ripgrep/fd: used by telescope and the chapter picker below.
-              extraPackages = with pkgs; [
-                ripgrep
-                fd
-              ];
+              # Telescope embeds fd; the chapter picker below shells out to rg.
+              extraPackages = [ pkgs.ripgrep ];
 
               luaConfigRC.writing-extras = ''
                 -- Disables vim-pandoc's folding (collapses every section on open). Bracket

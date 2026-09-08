@@ -20,7 +20,7 @@
             transparent = true;
           };
 
-          # Treesitter folding, unfolded by default.
+          # Tree-sitter folding; start unfolded.
           options = {
             foldmethod = "expr";
             foldexpr = "v:lua.vim.treesitter.foldexpr()";
