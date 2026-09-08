@@ -20,6 +20,9 @@
       lib,
       ...
     }:
+    let
+      nixosHost = if host.class == "darwin" then "stellyrlab" else host.name;
+    in
     {
       home.packages = with pkgs; [
         mcp-nixos
@@ -140,7 +143,7 @@
                   };
                   "options" = {
                     "nixos" = {
-                      "expr" = "(builtins.getFlake (toString ./.)).nixosConfigurations.stellyrlab.options";
+                      "expr" = "(builtins.getFlake (toString ./.)).nixosConfigurations.${nixosHost}.options";
                     };
                   };
                 };
