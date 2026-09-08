@@ -9,8 +9,6 @@
 
   flake.modules.darwin.media-editing = { pkgs, ... }: {
     environment.systemPackages = [ pkgs.losslesscut-bin ];
-    homebrew.casks = [
-      "gimp"
-    ];
+    homebrew.casks = [ "gimp" ];
   };
 }
