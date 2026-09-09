@@ -11,6 +11,10 @@
         mode = "0400";
       };
 
+      nix.settings.secret-key-files = [
+        config.security.nix-secrets.secrets.harmonia-signing-key.path
+      ];
+
       services.harmonia.cache = {
         enable = true;
         signKeyPaths = [ config.security.nix-secrets.secrets.harmonia-signing-key.path ];
