@@ -70,7 +70,7 @@
       media-editing
       obs
       media
-      lollypop
+      feishin
       soulseek
       gsr
 

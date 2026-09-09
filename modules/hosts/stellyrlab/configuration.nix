@@ -56,6 +56,7 @@
       stellyrlab-host
       binary-cache-server
       hermes
+      navidrome
     ];
   };
 }
