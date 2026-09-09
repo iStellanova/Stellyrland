@@ -1,5 +1,5 @@
 {
-  flake.modules.nixos.lollypop =
+  flake.modules.nixos.feishin =
     {
       lib,
       host,
@@ -7,11 +7,11 @@
       ...
     }:
     {
-      environment.systemPackages = [ pkgs.lollypop ];
+      environment.systemPackages = [ pkgs.feishin ];
 
       imports = lib.optional (host.persistence or false) {
         preservation.preserveAt."/persist".users.${host.username}.directories = [
-          ".local/share/lollypop"
+          ".config/feishin"
         ];
       };
     };
