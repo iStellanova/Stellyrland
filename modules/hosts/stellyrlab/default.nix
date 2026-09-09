@@ -31,7 +31,6 @@
         };
       };
       nix.settings = {
-        trusted-users = [ host.username ];
         max-jobs = 2;
         cores = 4;
       };

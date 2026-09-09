@@ -19,7 +19,6 @@
 
       networking.firewall.interfaces = {
         tailscale0.allowedTCPPorts = [ 5000 ];
-        eno2.allowedTCPPorts = [ 5000 ];
       };
     };
 }
