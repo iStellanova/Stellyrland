@@ -1,5 +1,6 @@
 let
-  osShared = { pkgs, ... }:
+  osShared =
+    { pkgs, ... }:
     let
       pycharm =
         if pkgs.stdenv.hostPlatform.isDarwin then
