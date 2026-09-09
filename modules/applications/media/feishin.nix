@@ -15,4 +15,8 @@
         ];
       };
     };
+
+  flake.modules.darwin.feishin = { pkgs, ... }: {
+    environment.systemPackages = [ pkgs.feishin ];
+  };
 }
