@@ -12,9 +12,9 @@ _: {
       ...
     }:
     {
-      environment.systemPackages = [
-        inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.hermes-desktop
-      ];
+      # Build Hermes Desktop against this host's configured nixpkgs.
+      nixpkgs.overlays = [ inputs.llm-agents.overlays.shared-nixpkgs ];
+      environment.systemPackages = [ pkgs.llm-agents.hermes-desktop ];
       nix.settings = {
         extra-substituters = [ "https://cache.numtide.com" ];
         extra-trusted-public-keys = [
