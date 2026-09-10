@@ -63,7 +63,10 @@
     };
     nixcord = {
       url = "github:4evy/nixcord";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs = {
+        nixcord-nixpkgs.follows = "nixpkgs";
+        nixpkgs.follows = "nixpkgs";
+      };
     };
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     nur = {
