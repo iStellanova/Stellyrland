@@ -27,7 +27,11 @@ let
   };
   osShared = {
     nix.nixPath = [ ];
-    nixpkgs.config.allowUnfree = true;
+    nixpkgs.config = {
+      allowUnfree = true;
+      # TODO(nixcord): remove when Vesktop no longer requires EOL Electron 41.
+      permittedInsecurePackages = [ "electron-41.10.6" ];
+    };
     nix.extraOptions = ''
       !include /etc/nix/access-tokens.conf
     '';
