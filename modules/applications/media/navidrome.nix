@@ -1,6 +1,17 @@
 {
-  flake.modules.nixos.navidrome = {
+  flake.modules.nixos.navidrome = { config, host, ... }: {
+    security.nix-secrets.secrets.navidrome-lastfm-env = {
+      recipients = [
+        "stellanova"
+        host.name
+      ];
+      owner = "root";
+      mode = "0400";
+      path = "/run/secrets/navidrome-lastfm.env";
+    };
+
     services.navidrome = {
+      environmentFile = config.security.nix-secrets.secrets.navidrome-lastfm-env.path;
       enable = true;
       openFirewall = false;
       settings = {
