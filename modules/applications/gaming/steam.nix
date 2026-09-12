@@ -1,7 +1,8 @@
 { inputs, ... }: {
-  flake-file.inputs.chaotic = {
-    url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
-    inputs.nixpkgs.follows = "nixpkgs";
+  pins.chaotic = {
+    url = "https://github.com/chaotic-cx/nyx";
+    ref = "nyxpkgs-unstable";
+    follows.nixpkgs = "nixpkgs";
   };
 
   # For Steam game HDR:

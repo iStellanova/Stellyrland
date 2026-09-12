@@ -1,8 +1,8 @@
 { inputs, ... }:
 {
-  flake-file.inputs.nvf = {
-    url = "github:notashelf/nvf";
-    inputs.nixpkgs.follows = "nixpkgs";
+  pins.nvf = {
+    url = "https://github.com/notashelf/nvf";
+    follows.nixpkgs = "nixpkgs";
   };
 
   # programs.nvf is a singleton. Build wvim directly to isolate it from nvf-ide,

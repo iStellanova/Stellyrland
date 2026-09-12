@@ -1,6 +1,6 @@
 { inputs, ... }:
 {
-  flake-file.inputs.preservation.url = "github:nix-community/preservation";
+  pins.preservation.url = "https://github.com/nix-community/preservation";
 
   flake.modules.nixos.preservation = { host, ... }: {
     imports = [ inputs.preservation.nixosModules.preservation ];

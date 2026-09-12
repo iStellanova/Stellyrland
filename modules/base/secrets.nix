@@ -1,9 +1,10 @@
 { inputs, ... }:
 {
-  flake-file.inputs = {
+  pins = {
     nix-secrets = {
-      url = "github:unnamed-systems/nix-secrets/master";
-      inputs.nixpkgs.follows = "nixpkgs";
+      url = "https://github.com/unnamed-systems/nix-secrets";
+      ref = "master";
+      follows.nixpkgs = "nixpkgs";
     };
 
   };
