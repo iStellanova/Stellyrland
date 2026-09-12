@@ -1,6 +1,7 @@
 _: {
-  flake-file.inputs.llm-agents = {
-    url = "github:numtide/llm-agents.nix";
+  pins.llm-agents = {
+    url = "https://github.com/numtide/llm-agents.nix";
+    follows.nixpkgs = "nixpkgs";
   };
 
   flake.modules.nixos.hermes-desktop =

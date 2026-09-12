@@ -1,12 +1,12 @@
 {
-  flake-file.inputs.hyprsplit = {
-    url = "github:shezdy/hyprsplit";
-    inputs.nixpkgs.follows = "nixpkgs";
+  pins.hyprsplit = {
+    url = "https://github.com/shezdy/hyprsplit";
+    follows.nixpkgs = "nixpkgs";
   };
   # Source only, no flake eval — their flake.nix pins its own independent Hyprland and
   # would conflict with pkgs.hyprland. We build it ourselves in _overview.nix instead.
-  flake-file.inputs.scroll-overview = {
-    url = "github:yayuuu/hyprland-scroll-overview";
+  pins.scroll-overview = {
+    url = "https://github.com/yayuuu/hyprland-scroll-overview";
     flake = false;
   };
 

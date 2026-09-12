@@ -1,6 +1,6 @@
 { inputs, ... }:
 {
-  flake-file.inputs.nix-homebrew.url = "github:zhaofengli/nix-homebrew";
+  pins.nix-homebrew.url = "https://github.com/zhaofengli/nix-homebrew";
 
   flake.modules.darwin.homebrew =
     { host, ... }:
