@@ -1,15 +1,15 @@
 { inputs, ... }:
 {
-  flake-file.inputs.zen-browser = {
-    url = "github:0xc000022070/zen-browser-flake";
-    inputs.nixpkgs.follows = "nixpkgs";
-    inputs.home-manager.follows = "home-manager";
+  pins.zen-browser = {
+    url = "https://github.com/0xc000022070/zen-browser-flake";
+    follows.nixpkgs = "nixpkgs";
+    follows.home-manager = "home-manager";
   };
 
   # rycee's Firefox-addon derivations, for _extensions.nix.
-  flake-file.inputs.nur = {
-    url = "github:nix-community/NUR";
-    inputs.nixpkgs.follows = "nixpkgs";
+  pins.nur = {
+    url = "https://github.com/nix-community/NUR";
+    follows.nixpkgs = "nixpkgs";
   };
 
   flake.modules.darwin.zen-browser =

@@ -1,8 +1,8 @@
 { inputs, ... }:
 {
-  flake-file.inputs.catppuccin = {
-    url = "github:catppuccin/nix";
-    inputs.nixpkgs.follows = "nixpkgs";
+  pins.catppuccin = {
+    url = "https://github.com/catppuccin/nix";
+    follows.nixpkgs = "nixpkgs";
   };
 
   flake.modules.nixos.catppuccin = { ... }: {
