@@ -9,6 +9,7 @@
     }:
     let
       hermes = inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.hermes-agent;
+      pnix = inputs.pnix.packages.${pkgs.stdenv.hostPlatform.system}.default;
       fleetBuild = pkgs.writeShellScript "nix-fleet-build" ''
         set -euo pipefail
         checkout=${lib.escapeShellArg host.flakePath}
@@ -31,7 +32,7 @@
           exit 1
         fi
 
-        ${pkgs.nix}/bin/nix flake update
+        ${pnix}/bin/pnix update --root modules
 
         attempt=1
         while [ "$attempt" -le "$max_attempts" ]; do
@@ -68,6 +69,7 @@
             pkgs.openssh
             pkgs.nix
             pkgs.coreutils
+            pnix
           ]
         }"
       ];

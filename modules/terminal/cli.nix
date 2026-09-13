@@ -6,6 +6,7 @@ let
       unzip
       zip
       kitty.terminfo
+      inputs.pnix.packages.${pkgs.stdenv.hostPlatform.system}.default
     ];
   cliOs = { pkgs, ... }: {
     environment.systemPackages = cliPkgs pkgs;
