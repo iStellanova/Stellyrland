@@ -3,7 +3,6 @@
   flake-file.inputs.nixcord = {
     url = "github:4evy/nixcord";
     inputs.nixpkgs.follows = "nixpkgs";
-    inputs.nixcord-nixpkgs.follows = "nixpkgs";
   };
 
   flake.modules.homeManager.discord =
