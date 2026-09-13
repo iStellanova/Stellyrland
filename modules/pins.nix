@@ -9,6 +9,7 @@
       follows.nixpkgs-lib = "nixpkgs";
     };
     import-tree.url = "https://github.com/vic/import-tree";
+    pnix.url = "https://github.com/bunny-systems/pnix";
     home-manager = {
       url = "https://github.com/nix-community/home-manager";
       ref = "master";
