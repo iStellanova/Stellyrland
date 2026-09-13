@@ -31,6 +31,8 @@
           exit 1
         fi
 
+        ${pkgs.nix}/bin/nix flake update
+
         attempt=1
         while [ "$attempt" -le "$max_attempts" ]; do
           if ${pkgs.nix-fast-build}/bin/nix-fast-build \

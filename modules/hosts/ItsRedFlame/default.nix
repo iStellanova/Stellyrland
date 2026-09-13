@@ -10,59 +10,6 @@
       networking.hostName = host.name;
       boot.loader.systemd-boot.enable = true;
       boot.loader.efi.canTouchEfiVariables = true;
-      timecontrol.enable = true;
-      timecontrol.schedule = {
-        Monday = [
-          {
-            start = "16:00";
-            end = "18:00";
-          }
-        ];
-        Tuesday = [
-          {
-            start = "16:00";
-            end = "18:00";
-          }
-        ];
-        Wednesday = [
-          {
-            start = "16:00";
-            end = "18:00";
-          }
-        ];
-        Thursday = [
-          {
-            start = "16:00";
-            end = "18:00";
-          }
-        ];
-        Friday = [
-          {
-            start = "16:00";
-            end = "18:00";
-          }
-        ];
-        Saturday = [
-          {
-            start = "10:00";
-            end = "12:00";
-          }
-          {
-            start = "16:00";
-            end = "18:00";
-          }
-        ];
-        Sunday = [
-          {
-            start = "10:00";
-            end = "12:00";
-          }
-          {
-            start = "16:00";
-            end = "18:00";
-          }
-        ];
-      };
 
       # Avoid ZFS pool import conflicts.
       boot.zfs.forceImportRoot = false;
