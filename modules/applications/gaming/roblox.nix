@@ -1,6 +1,6 @@
 { inputs, ... }:
 {
-  flake-file.inputs.nix-flatpak.url = "github:gmodena/nix-flatpak";
+  pins.nix-flatpak.url = "https://github.com/gmodena/nix-flatpak";
 
   flake.modules.nixos.roblox =
     { lib, host, ... }:

@@ -63,13 +63,13 @@ _: {
       };
     };
 
-  flake-file.inputs = {
+  pins = {
     llm-agents = {
-      url = "github:numtide/llm-agents.nix";
-      inputs.nixpkgs.follows = "nixpkgs";
+      url = "https://github.com/numtide/llm-agents.nix";
+      follows.nixpkgs = "nixpkgs";
     };
     ponytail = {
-      url = "github:DietrichGebert/ponytail";
+      url = "https://github.com/DietrichGebert/ponytail";
       flake = false;
     };
   };

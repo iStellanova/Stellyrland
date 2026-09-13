@@ -1,8 +1,8 @@
 { inputs, ... }:
 {
-  flake-file.inputs.freesmlauncher = {
-    url = "github:FreesmTeam/FreesmLauncher";
-    inputs.nixpkgs.follows = "nixpkgs";
+  pins.freesmlauncher = {
+    url = "https://github.com/FreesmTeam/FreesmLauncher";
+    follows.nixpkgs = "nixpkgs";
   };
 
   flake.modules.nixos.freesm =
