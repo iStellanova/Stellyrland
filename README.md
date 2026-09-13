@@ -61,89 +61,74 @@ that host.
 
 ```mermaid
 flowchart TD
-    INPUTS["flake.nix + flake.lock\nlocked inputs"]
+    PNIX["pnix inputs + resolver"] --> FLAKE["flake.nix"]
+    FLAKE --> MODULES["modules/"]
+    MODULES --> PARTS["flake-parts"]
+    PARTS --> BUILD["system builders"]
 
-    subgraph FLAKE["flake.nix"]
-        IT["generated root\nflake-parts + import-tree"]
-    end
+    BUILD --> STELLYRLAND["stellyrland"]
+    BUILD --> STELLYRLAB["stellyrlab"]
+    BUILD --> STELLYRTOP["stellyrtop"]
+    BUILD --> PLASMA["plasmapulsefinale"]
+    BUILD --> REDFLAME["ItsRedFlame"]
 
-    subgraph MODS["modules/"]
-        DECL["flake-file input declarations\nkept beside their consumers"]
-        AGG["flake.modules.*.*\nreusable NixOS / Darwin / Home Manager aspects"]
-        HOSTDATA["flake.hosts.*\nper-host data and aspect composition"]
-        MK["mkNixos / mkDarwin\nmodules/nix/lib.nix"]
-    end
-
-    DECL -.-> INPUTS
-    INPUTS --> IT
-    IT --> AGG
-    IT --> HOSTDATA
-    AGG --> MK
-    HOSTDATA --> MK
-    MK --> SL["stellyrland\nNixOS · x86_64-linux"]
-    MK --> ST["stellyrtop\nmacOS · aarch64-darwin"]
-    MK --> PPF["plasmapulsefinale\nNixOS · x86_64-linux"]
-    MK --> IRF["ItsRedFlame\nNixOS · x86_64-linux"]
-
-    style INPUTS fill:#363a4f,color:#cad3f5,stroke:#5b6078
-    style IT fill:#363a4f,color:#cad3f5,stroke:#5b6078
-    style DECL fill:#24273a,color:#f5a97f,stroke:#494d64
-    style AGG fill:#24273a,color:#c6a0f6,stroke:#494d64
-    style HOSTDATA fill:#24273a,color:#8aadf4,stroke:#494d64
-    style MK fill:#24273a,color:#7dc4e4,stroke:#494d64
-    style SL fill:#1e2030,color:#8aadf4,stroke:#8aadf4
-    style ST fill:#1e2030,color:#a6da95,stroke:#a6da95
-    style PPF fill:#1e2030,color:#c6a0f6,stroke:#c6a0f6
-    style IRF fill:#1e2030,color:#ed8796,stroke:#ed8796
+    style PNIX fill:#363a4f,color:#cad3f5,stroke:#5b6078
+    style FLAKE fill:#363a4f,color:#cad3f5,stroke:#5b6078
+    style MODULES fill:#24273a,color:#f5a97f,stroke:#494d64
+    style PARTS fill:#24273a,color:#c6a0f6,stroke:#494d64
+    style BUILD fill:#24273a,color:#7dc4e4,stroke:#494d64
+    style STELLYRLAND fill:#1e2030,color:#8aadf4,stroke:#8aadf4
+    style STELLYRLAB fill:#1e2030,color:#8aadf4,stroke:#8aadf4
+    style STELLYRTOP fill:#1e2030,color:#a6da95,stroke:#a6da95
+    style PLASMA fill:#1e2030,color:#c6a0f6,stroke:#c6a0f6
+    style REDFLAME fill:#1e2030,color:#ed8796,stroke:#ed8796
 ```
 
 ## 📂 Project Structure
 
 ```text
 .
-├── flake.nix                 # Flake entry point
-├── flake.lock                # Input lockfile
+├── flake.nix                 # Flake entry point and local module tree loader
+├── .pnix/                    # Resolver and locked input definitions
+│   └── pins.lock.json        # Resolved input pins
 ├── docs/                     # Concepts, workflow notes, and troubleshooting
 ├── secrets/                  # nix-secrets encrypted secrets
 │   └── *.enc
 └── modules/                  # Flake-parts modules
-    ├── flake-config.nix      # Flake-file declarations and supported systems
+    ├── pins.nix              # Input declarations owned by this configuration
+    ├── flake-config.nix      # Flake outputs and supported systems
     ├── constants.nix         # Shared defaults merged into every host's `host.*`
     ├── treefmt.nix           # Repo-wide formatter configuration
     ├── ai/                   # Declarative Stellxie/Hermes Agent configuration
-    │   ├── default.nix       # Home Manager module, package, config, services
-    │   └── _*.nix            # Explicitly imported helpers (theme, fetching, Discord)
+    ├── desktop/              # Desktop environments, compositors, and themes
     ├── factory/              # factory.user: per-user NixOS/Darwin/Home Manager wiring
     ├── hosts/                # Host declarations and host-specific aspect composition
     │   ├── stellyrland/      # NixOS workstation (x86_64-linux)
     │   ├── stellyrtop/       # macOS MacBook (aarch64-darwin)
+    │   ├── stellyrlab/       # NixOS server (x86_64-linux)
     │   ├── plasmapulsefinale/ # NixOS desktop (x86_64-linux)
     │   └── ItsRedFlame/      # NixOS gaming/AV box (x86_64-linux)
     ├── users/                # Shared user aspect definitions
     ├── base/                 # Core, Lix, Nix settings, SSH, Tailscale, secrets, users
-    ├── nix/                  # Nix, Home Manager, deployment, operational helpers, and flake options
+    ├── nix/                  # Nix, Home Manager, deployment, and operational helpers
     ├── linux/                # Linux boot, hardware, and storage configuration
-    │   ├── boot/
-    │   ├── hardware/
-    │   └── storage/
     ├── applications/         # User-facing applications, grouped by domain
     │   ├── communication/
     │   ├── development/
+    │   ├── file-manager/
     │   ├── gaming/
     │   └── media/
     ├── system/               # Darwin, Homebrew, MIME, XDG, service, and secret definitions
-    └── openrgb/              # Peripheral RGB control
+    └── terminal/              # Shell, CLI, Kitty, and terminal utilities
 ```
 
 ## ✨ Notable Configurations
 
-- **Locked Inputs:** `flake-file` declarations live with the modules that
-  own them; `flake.nix` and `flake.lock` provide the standard Nix input graph.
-- **Zero-Boilerplate Imports:** flake-file's dendritic output uses
-  `import-tree` to load non-underscore `.nix` files under `modules/` as
-  flake-parts modules.
+- **Decentralized Inputs:** pnix allows me to declare inputs in module files, eliminating a monolithic flake.nix.
+- **Zero-Boilerplate Imports:** `flake.nix` locally loads non-underscore `.nix`
+  files under `modules/` as flake-parts modules.
 - **Multi-System Outputs:** Per-system formatter and check outputs cover x86_64
-  Linux, aarch64 Linux, and aarch64 Darwin.
+  Linux and aarch64 Darwin.
 - **BORE Scheduler:** CachyOS kernel with BORE scheduling. Optimized for the X3D
   CPU. It's smarter about which workloads get the extra cache vs extra clock.
 - **ZFS Preservation + Sanoid Snapshots:** Every boot rolls back to a blank
