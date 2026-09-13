@@ -29,7 +29,7 @@ let
     nix.nixPath = [ ];
     nixpkgs.config = {
       allowUnfree = true;
-      # TODO(nixcord): remove when Vesktop no longer requires EOL Electron 41.
+      # TODO(hermes-desktop): remove when Hermes Desktop no longer requires EOL Electron 41.
       permittedInsecurePackages = [ "electron-41.10.6" ];
     };
     nix.extraOptions = ''
