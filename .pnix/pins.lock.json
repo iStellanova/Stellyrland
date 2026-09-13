@@ -369,13 +369,13 @@
       "owner": "bunny-systems",
       "repo": "pnix",
       "url": "https://github.com/bunny-systems/pnix",
-      "rev": "45ca7327fc5a107fe8e0343623f1a2fcc72a7d9b",
+      "rev": "1adcde4bfd2cb3af05d9c7d0bbf2d871421e1b70",
       "ref": "HEAD",
-      "hash": "sha256-s5un2lnT2W1udWUvh8fgXy4VCCw6fkuvnQa3bWHWvpM=",
+      "hash": "sha256-IzaA6ti9KGi+ZAd2Xr76ji3TGkf4K2Q8VfnIRLkv/Tg=",
       "fetch": {
         "kind": "tarball",
-        "url": "https://github.com/bunny-systems/pnix/archive/45ca7327fc5a107fe8e0343623f1a2fcc72a7d9b.tar.gz",
-        "hash": "sha256-s5un2lnT2W1udWUvh8fgXy4VCCw6fkuvnQa3bWHWvpM="
+        "url": "https://github.com/bunny-systems/pnix/archive/1adcde4bfd2cb3af05d9c7d0bbf2d871421e1b70.tar.gz",
+        "hash": "sha256-IzaA6ti9KGi+ZAd2Xr76ji3TGkf4K2Q8VfnIRLkv/Tg="
       }
     },
     "ponytail": {
