@@ -67,7 +67,9 @@
     {
       services.easyeffects = {
         enable = true;
-        preset = "sm7b-voice";
+        preset = {
+          input = "sm7b-voice";
+        };
 
         # SM7B (via inline booster + Scarlett Solo Gen 4) voice chain.
         extraPresets.sm7b-voice.input = {
