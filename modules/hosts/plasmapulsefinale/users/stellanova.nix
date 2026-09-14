@@ -1,6 +1,6 @@
 { self, ... }:
 {
-  modules.nixos.plasmapulsefinale = { pkgs, ... }: {
+  modules.nixos.plasmapulsefinale.stellanova = { pkgs, ... }: {
     imports = [ self.modules.nixos.stellanova ];
     users.users.stellanova.shell = pkgs.zsh;
   };

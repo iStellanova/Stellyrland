@@ -1,6 +1,6 @@
 { self, ... }:
 {
-  modules.nixos.ItsRedFlame =
+  modules.nixos.ItsRedFlame.stellanova =
     {
       config,
       host,

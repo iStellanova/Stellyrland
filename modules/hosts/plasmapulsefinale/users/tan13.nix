@@ -1,5 +1,5 @@
 { self, ... }: {
-  modules.nixos.plasmapulsefinale = {
+  modules.nixos.plasmapulsefinale.tan13 = {
     imports = [
       (self.factory.user "tan13").nixos.tan13
     ];

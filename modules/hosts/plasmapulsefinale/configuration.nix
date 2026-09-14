@@ -8,7 +8,7 @@
 
   };
 
-  modules.nixos.plasmapulsefinale = {
+  modules.nixos.plasmapulsefinale.host = {
     system.stateVersion = "25.11";
     imports = with self.modules.nixos; [
       # Base
@@ -38,6 +38,8 @@
 
       # Host Specific Config
       plasmapulsefinale-host
+      self.modules.nixos.plasmapulsefinale.tan13
+      self.modules.nixos.plasmapulsefinale.stellanova
     ];
   };
 }

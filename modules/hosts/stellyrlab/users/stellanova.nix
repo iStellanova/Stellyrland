@@ -1,6 +1,6 @@
 { self, ... }:
 {
-  modules.nixos.stellyrlab = {
+  modules.nixos.stellyrlab.stellanova = {
     imports = [
       (self.factory.user "stellanova").nixos.stellanova
       self.modules.nixos.stellanova
