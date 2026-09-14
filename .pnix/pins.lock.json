@@ -99,17 +99,17 @@
       "owner": "FreesmTeam",
       "repo": "FreesmLauncher",
       "url": "https://github.com/FreesmTeam/FreesmLauncher",
-      "rev": "c9222c33ba25a7f4c9fbb680e8f6448162d261e2",
+      "rev": "844593f28bcee5b71c14517f08e9b94eabf02256",
       "ref": "HEAD",
-      "hash": "sha256-hInxsvd42CZCFPXXbF8e6jxf1tOk5ZtR1jL1iXoqM2Y=",
-      "lastModified": 1788793413,
+      "hash": "sha256-BD4sqPRAUle3ymEnNrERVjPkN+Hqu7HpF4vhv9MSbHA=",
+      "lastModified": 1789370433,
       "follows": {
         "nixpkgs": "nixpkgs"
       },
       "fetch": {
         "kind": "tarball",
-        "url": "https://github.com/FreesmTeam/FreesmLauncher/archive/c9222c33ba25a7f4c9fbb680e8f6448162d261e2.tar.gz",
-        "hash": "sha256-hInxsvd42CZCFPXXbF8e6jxf1tOk5ZtR1jL1iXoqM2Y="
+        "url": "https://github.com/FreesmTeam/FreesmLauncher/archive/844593f28bcee5b71c14517f08e9b94eabf02256.tar.gz",
+        "hash": "sha256-BD4sqPRAUle3ymEnNrERVjPkN+Hqu7HpF4vhv9MSbHA="
       }
     },
     "home-manager": {
@@ -118,17 +118,17 @@
       "owner": "nix-community",
       "repo": "home-manager",
       "url": "https://github.com/nix-community/home-manager",
-      "rev": "87b3c74df02a2b2e691a24f3c82774f48a70c1bd",
+      "rev": "cfcda3f99334c8459fa4cd46cce87502e0b48f0a",
       "ref": "master",
-      "hash": "sha256-1Js4AJiWLV7U1SF3ok0J2tKbBEJYE5YpElGU+7fMbfo=",
-      "lastModified": 1789320570,
+      "hash": "sha256-E9hlcRNSRQ1vb+UicOusX/ucroGlBAz/pYhCBorLOn4=",
+      "lastModified": 1789352311,
       "follows": {
         "nixpkgs": "nixpkgs"
       },
       "fetch": {
         "kind": "tarball",
-        "url": "https://github.com/nix-community/home-manager/archive/87b3c74df02a2b2e691a24f3c82774f48a70c1bd.tar.gz",
-        "hash": "sha256-1Js4AJiWLV7U1SF3ok0J2tKbBEJYE5YpElGU+7fMbfo="
+        "url": "https://github.com/nix-community/home-manager/archive/cfcda3f99334c8459fa4cd46cce87502e0b48f0a.tar.gz",
+        "hash": "sha256-E9hlcRNSRQ1vb+UicOusX/ucroGlBAz/pYhCBorLOn4="
       }
     },
     "hyprsplit": {
@@ -175,17 +175,17 @@
       "owner": "numtide",
       "repo": "llm-agents.nix",
       "url": "https://github.com/numtide/llm-agents.nix",
-      "rev": "88dad2f272332d948dd37809b746fc2fb7bcef44",
+      "rev": "e5fba4b49a76262fab3632a64ef466698caa317c",
       "ref": "HEAD",
-      "hash": "sha256-lwAtCnDVRv4osdPoPFgyU07YrqtzjL2UhU6EYj6HHwY=",
-      "lastModified": 1789334945,
+      "hash": "sha256-/RwZVHYMHOhG9e6SCcA6gwX7dUGAFKIx6yzpkZcHZos=",
+      "lastModified": 1789367948,
       "follows": {
         "nixpkgs": "nixpkgs"
       },
       "fetch": {
         "kind": "tarball",
-        "url": "https://github.com/numtide/llm-agents.nix/archive/88dad2f272332d948dd37809b746fc2fb7bcef44.tar.gz",
-        "hash": "sha256-lwAtCnDVRv4osdPoPFgyU07YrqtzjL2UhU6EYj6HHwY="
+        "url": "https://github.com/numtide/llm-agents.nix/archive/e5fba4b49a76262fab3632a64ef466698caa317c.tar.gz",
+        "hash": "sha256-/RwZVHYMHOhG9e6SCcA6gwX7dUGAFKIx6yzpkZcHZos="
       }
     },
     "my-assets": {
@@ -194,15 +194,15 @@
       "owner": "iStellanova",
       "repo": "Stellyrland",
       "url": "https://github.com/iStellanova/Stellyrland",
-      "rev": "27192c0c563163bf35886c9b5d9b82d4a5fe0bd2",
+      "rev": "7124ef3ee151604162033e6c7acef334381cad65",
       "ref": "assets",
-      "hash": "sha256-ONynuhZyCa7DocWZ1GmupuRZApb1khPJaBAjzCaVUZI=",
-      "lastModified": 1785969848,
+      "hash": "sha256-H4jscs6zqSpn5e1/hIkmPxxYW+sGzbC7yqCiV2DQsZw=",
+      "lastModified": 1789371789,
       "flake": false,
       "fetch": {
         "kind": "tarball",
-        "url": "https://github.com/iStellanova/Stellyrland/archive/27192c0c563163bf35886c9b5d9b82d4a5fe0bd2.tar.gz",
-        "hash": "sha256-ONynuhZyCa7DocWZ1GmupuRZApb1khPJaBAjzCaVUZI="
+        "url": "https://github.com/iStellanova/Stellyrland/archive/7124ef3ee151604162033e6c7acef334381cad65.tar.gz",
+        "hash": "sha256-H4jscs6zqSpn5e1/hIkmPxxYW+sGzbC7yqCiV2DQsZw="
       }
     },
     "nix-flatpak": {
@@ -281,17 +281,17 @@
       "owner": "4evy",
       "repo": "nixcord",
       "url": "https://github.com/4evy/nixcord",
-      "rev": "ddf1cc35c235a2e7103c942eafacdcb96b65d2d0",
+      "rev": "56efb34bedac3f55c4b37ff5b980dfa40b78e37c",
       "ref": "HEAD",
-      "hash": "sha256-6bMO4bJzMqoyDM/vMx7ZECdjvj3V1DR1JlYYVUArT3k=",
-      "lastModified": 1789288898,
+      "hash": "sha256-TFiDKl4jW6hnH7/Ptxh4IcB9PdEq00yTyRt5hviunTY=",
+      "lastModified": 1789354461,
       "follows": {
         "nixpkgs": "nixpkgs"
       },
       "fetch": {
         "kind": "tarball",
-        "url": "https://github.com/4evy/nixcord/archive/ddf1cc35c235a2e7103c942eafacdcb96b65d2d0.tar.gz",
-        "hash": "sha256-6bMO4bJzMqoyDM/vMx7ZECdjvj3V1DR1JlYYVUArT3k="
+        "url": "https://github.com/4evy/nixcord/archive/56efb34bedac3f55c4b37ff5b980dfa40b78e37c.tar.gz",
+        "hash": "sha256-TFiDKl4jW6hnH7/Ptxh4IcB9PdEq00yTyRt5hviunTY="
       }
     },
     "nixpkgs": {
@@ -316,17 +316,17 @@
       "owner": "nix-community",
       "repo": "NUR",
       "url": "https://github.com/nix-community/NUR",
-      "rev": "4d3daa3cbfd5b94cc53920035847caf7ac514060",
+      "rev": "c8b17741cdaecd38a9c910b388c9805e77b35822",
       "ref": "HEAD",
-      "hash": "sha256-z6vfB7iyVYG0PlaPq5jfUpkVqpqZTNmnFe5PEVIESbw=",
-      "lastModified": 1789336842,
+      "hash": "sha256-TyeAgjbn+mkqGXWOoUr648dfY0N8TuC2SPCJWAM7o6A=",
+      "lastModified": 1789376137,
       "follows": {
         "nixpkgs": "nixpkgs"
       },
       "fetch": {
         "kind": "tarball",
-        "url": "https://github.com/nix-community/NUR/archive/4d3daa3cbfd5b94cc53920035847caf7ac514060.tar.gz",
-        "hash": "sha256-z6vfB7iyVYG0PlaPq5jfUpkVqpqZTNmnFe5PEVIESbw="
+        "url": "https://github.com/nix-community/NUR/archive/c8b17741cdaecd38a9c910b388c9805e77b35822.tar.gz",
+        "hash": "sha256-TyeAgjbn+mkqGXWOoUr648dfY0N8TuC2SPCJWAM7o6A="
       }
     },
     "nvf": {
@@ -436,7 +436,7 @@
     "umbriel": {
       "type": "git",
       "url": "https://github.com/noctalia-dev/umbriel",
-      "rev": "5678f161f3e5e42c72ce818402b4c2960db31bc2",
+      "rev": "11c0c99b85c5aa579224cf0d2302f4f7356ac5c4",
       "ref": "HEAD",
       "submodules": true,
       "follows": {
@@ -445,7 +445,7 @@
       "fetch": {
         "kind": "git",
         "url": "https://github.com/noctalia-dev/umbriel",
-        "rev": "5678f161f3e5e42c72ce818402b4c2960db31bc2",
+        "rev": "11c0c99b85c5aa579224cf0d2302f4f7356ac5c4",
         "ref": "HEAD",
         "submodules": true
       }
