@@ -36,12 +36,11 @@
         fastfetch
         cursor
 
-        # Hyprland Desktop
+        # Umbriel Desktop
         easyeffects
         umbriel
         noctalia
         openrgb
-        hyprland
         catppuccin
 
         # Dev / CLI Tools

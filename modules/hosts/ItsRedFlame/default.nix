@@ -21,8 +21,7 @@
       systemd.tpm2.enable = false;
       boot.initrd.systemd.tpm2.enable = false;
 
-      # GTX 1660 (Turing) — proprietary driver. Runs Plasma/KWin rather than
-      # Hyprland: Aquamarine hit an unfixable dual-monitor crash on this GPU.
+      # GTX 1660 (Turing) — proprietary driver.
       services.xserver.videoDrivers = [ "nvidia" ];
       hardware.graphics.enable = true;
       hardware.nvidia = {
