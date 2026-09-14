@@ -10,10 +10,8 @@ in
       openssh.authorizedKeys.keys = sshKeys;
       isNormalUser = true;
       home = "/home/stellanova";
-      group = "stellanova";
       extraGroups = lib.mkDefault [ "wheel" ];
     };
-    users.groups.stellanova = { };
   };
 
   modules.darwin.stellanova = {
