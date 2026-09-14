@@ -36,7 +36,7 @@
 
         attempt=1
         while [ "$attempt" -le "$max_attempts" ]; do
-          if ${pkgs.nix-fast-build}/bin/nix-fast-build \
+          if NIX_CONFIG="extra-experimental-features = pipe-operators" ${pkgs.nix-fast-build}/bin/nix-fast-build \
             --flake "$checkout#nixosConfigurations" \
             --systems x86_64-linux \
             --no-link \
