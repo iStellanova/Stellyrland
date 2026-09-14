@@ -9,7 +9,7 @@
       ...
     }:
     {
-      imports = [ self.modules.nixos.accessor ];
+      imports = [ self.modules.nixos.stellanova ];
       security.nix-secrets.secrets.redflamepsswd.name = "ItsRedFlame/redflamepsswd";
       security.nix-secrets.secrets.stellapsswd = {
         neededForUsers = true;
@@ -23,15 +23,7 @@
         "video"
         "render"
       ];
-      users.users.stellanova = {
-        isNormalUser = true;
-        home = "/home/stellanova";
-        shell = pkgs.zsh;
-        group = "stellanova";
-        extraGroups = [ "wheel" ];
-        hashedPasswordFile = config.security.nix-secrets.secrets.stellapsswd.path;
-      };
-      users.groups.stellanova = { };
-      programs.zsh.enable = true;
+      users.users.stellanova.hashedPasswordFile = config.security.nix-secrets.secrets.stellapsswd.path;
+      users.users.stellanova.shell = pkgs.zsh;
     };
 }

@@ -1,52 +1,22 @@
-{ self, ... }:
+{ ... }:
 let
-  user = self.factory.user "stellanova";
+  sshKeys = [
+    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAID23408QRe02peABnmkDcmpu2DVSwN3H+Jm7kcVenTDr stellanova"
+  ];
 in
 {
-  modules = user // {
-    homeManager = user.homeManager // {
-      stellanova = {
-        programs.ssh.settings.stellyrlab = {
-          HostName = "stellyrlab.tailb15b96.ts.net";
-          User = "stellanova";
-          IdentityFile = "/run/secrets/stellacode";
-          IdentitiesOnly = "yes";
-        };
-      };
+  modules.nixos.stellanova = { lib, ... }: {
+    users.users.stellanova = {
+      openssh.authorizedKeys.keys = sshKeys;
+      isNormalUser = true;
+      home = "/home/stellanova";
+      group = "stellanova";
+      extraGroups = lib.mkDefault [ "wheel" ];
     };
+    users.groups.stellanova = { };
+  };
 
-    nixos.stellanova =
-      {
-        host,
-        lib,
-        ...
-      }:
-      {
-        security.nix-secrets.secrets.stellacode =
-          lib.mkIf
-            (builtins.elem host.name [
-              "stellyrlab"
-              "stellyrland"
-            ])
-            {
-              recipients = [
-                "stellanova"
-                host.name
-              ];
-              owner = host.username;
-              mode = "0600";
-              path = "/run/secrets/stellacode";
-            };
-        imports = [
-          user.nixos.stellanova
-          self.modules.nixos.accessor
-        ];
-      };
-    darwin.stellanova = {
-      imports = [
-        user.darwin.stellanova
-        self.modules.darwin.accessor
-      ];
-    };
+  modules.darwin.stellanova = {
+    users.users.stellanova.openssh.authorizedKeys.keys = sshKeys;
   };
 }

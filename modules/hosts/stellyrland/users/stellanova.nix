@@ -1,9 +1,18 @@
 { self, lib, ... }: {
   modules.nixos.stellyrland = {
     imports = [
+      (self.factory.user "stellanova").nixos.stellanova
       self.modules.nixos.stellanova
     ];
-
+    security.nix-secrets.secrets.stellacode = {
+      recipients = [
+        "stellanova"
+        "stellyrland"
+      ];
+      owner = "stellanova";
+      mode = "0600";
+      path = "/run/secrets/stellacode";
+    };
     home-manager.users.stellanova = {
       programs.ssh.settings.stellyrlab = {
         HostName = lib.mkForce "172.31.255.1";
@@ -11,9 +20,7 @@
         IdentityFile = "/run/secrets/stellacode";
         IdentitiesOnly = "yes";
       };
-
       zenBrowser.personalize = true;
-
       # Installed desktop files; MIME types are defined in modules/system/mime.nix.
       mimeDefaultApps = {
         browser = [ "zen-beta.desktop" ];
@@ -24,7 +31,6 @@
         videoPlayer = [ "mpv.desktop" ];
         discord = [ "vesktop.desktop" ];
       };
-
       imports = with self.modules.homeManager; [
         basics
         fastfetch
