@@ -1,5 +1,5 @@
 {
-  flake.modules.nixos.stellyrlab-host =
+  modules.nixos.stellyrlab-host =
     {
       config,
       host,

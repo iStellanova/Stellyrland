@@ -1,5 +1,5 @@
 {
-  flake.modules.nixos.navidrome = { config, host, ... }: {
+  modules.nixos.navidrome = { config, host, ... }: {
     security.nix-secrets.secrets.navidrome-lastfm-env = {
       recipients = [
         "stellanova"

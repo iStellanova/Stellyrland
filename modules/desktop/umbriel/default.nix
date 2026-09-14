@@ -8,7 +8,7 @@
     follows.nixpkgs = "nixpkgs";
   };
 
-  flake.modules.nixos.umbriel =
+  modules.nixos.umbriel =
     {
       inputs,
       host,
@@ -60,7 +60,7 @@
       };
     };
 
-  flake.modules.homeManager.umbriel =
+  modules.homeManager.umbriel =
     {
       inputs,
       ...

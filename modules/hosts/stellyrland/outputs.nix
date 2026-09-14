@@ -1,3 +1,3 @@
 { self, ... }: {
-  flake.nixosConfigurations = self.lib.mkNixos "x86_64-linux" "stellyrland";
+  nixosConfigurations = self.lib.mkNixos "x86_64-linux" "stellyrland";
 }

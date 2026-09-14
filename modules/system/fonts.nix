@@ -13,11 +13,11 @@ let
     ];
 in
 {
-  flake.modules.nixos.fonts = { pkgs, ... }: {
+  modules.nixos.fonts = { pkgs, ... }: {
     fonts.packages = fontPkgs pkgs;
   };
 
-  flake.modules.darwin.fonts = { pkgs, ... }: {
+  modules.darwin.fonts = { pkgs, ... }: {
     fonts.packages = fontPkgs pkgs;
     homebrew.casks = [ "font-sf-pro" ];
   };

@@ -1,5 +1,5 @@
 {
-  flake.modules.nixos.backup-service =
+  modules.nixos.backup-service =
     {
       config,
       host,

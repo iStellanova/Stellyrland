@@ -1,5 +1,5 @@
 {
-  flake.modules.nixos.librewolf =
+  modules.nixos.librewolf =
     {
       lib,
       host,
@@ -11,7 +11,7 @@
       };
     };
 
-  flake.modules.homeManager.librewolf = {
+  modules.homeManager.librewolf = {
     programs.librewolf = {
       enable = true;
       settings = {

@@ -1,9 +1,9 @@
 {
-  flake.modules.darwin.zed = {
+  modules.darwin.zed = {
     homebrew.casks = [ "zed" ];
   };
 
-  flake.modules.nixos.zed =
+  modules.nixos.zed =
     { lib, host, ... }:
     {
       imports = lib.optional (host.persistence or false) {
@@ -13,7 +13,7 @@
       };
     };
 
-  flake.modules.homeManager.zed =
+  modules.homeManager.zed =
     {
       host,
       pkgs,

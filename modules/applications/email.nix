@@ -1,5 +1,5 @@
 {
-  flake.modules.nixos.email =
+  modules.nixos.email =
     {
       lib,
       host,
@@ -13,7 +13,7 @@
       };
     };
 
-  flake.modules.darwin.email = {
+  modules.darwin.email = {
     homebrew.casks = [ "proton-mail" ];
   };
 }

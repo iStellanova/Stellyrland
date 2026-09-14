@@ -4,7 +4,7 @@ _: {
     follows.nixpkgs = "nixpkgs";
   };
 
-  flake.modules.nixos.hermes-desktop =
+  modules.nixos.hermes-desktop =
     {
       inputs,
       lib,
@@ -30,7 +30,7 @@ _: {
       };
     };
 
-  flake.modules.darwin.hermes-desktop = {
+  modules.darwin.hermes-desktop = {
     homebrew.casks = [ "hermes-desktop" ];
   };
 }

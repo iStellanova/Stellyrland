@@ -1,5 +1,5 @@
 { self, lib, ... }: {
-  flake.modules.nixos.stellyrland = {
+  modules.nixos.stellyrland = {
     imports = [
       self.modules.nixos.stellanova
     ];

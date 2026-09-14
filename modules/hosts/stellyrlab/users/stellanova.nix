@@ -1,6 +1,6 @@
 { self, ... }:
 {
-  flake.modules.nixos.stellyrlab = {
+  modules.nixos.stellyrlab = {
     imports = [ self.modules.nixos.stellanova ];
 
     home-manager.users.stellanova = {

@@ -38,7 +38,7 @@ let
   };
 in
 {
-  flake.modules.nixos.nix-settings = {
+  modules.nixos.nix-settings = {
     imports = [
       osShared
       {
@@ -54,7 +54,7 @@ in
     ];
   };
 
-  flake.modules.darwin.nix-settings = {
+  modules.darwin.nix-settings = {
     imports = [
       osShared
       {

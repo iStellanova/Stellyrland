@@ -1,5 +1,5 @@
 {
-  flake.modules.homeManager.fastfetch =
+  modules.homeManager.fastfetch =
     {
       host,
       lib,

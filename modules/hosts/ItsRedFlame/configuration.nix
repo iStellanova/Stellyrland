@@ -1,5 +1,5 @@
 { self, ... }: {
-  flake.hosts.ItsRedFlame = {
+  hosts.ItsRedFlame = {
     class = "nixos";
     username = "RedFlame";
     homeDir = "/home/RedFlame";
@@ -9,7 +9,7 @@
 
   };
 
-  flake.modules.nixos.ItsRedFlame = {
+  modules.nixos.ItsRedFlame = {
     system.stateVersion = "25.11";
     imports = with self.modules.nixos; [
       # Base

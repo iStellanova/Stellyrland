@@ -9,7 +9,7 @@
 
   };
 
-  flake.modules.nixos.secrets =
+  modules.nixos.secrets =
     {
       host,
       config,
@@ -65,7 +65,7 @@
       };
     };
 
-  flake.modules.darwin.secrets =
+  modules.darwin.secrets =
     {
       host,
       ...

@@ -1,5 +1,5 @@
 {
-  flake.modules.nixos.core = _: {
+  modules.nixos.core = _: {
     time.timeZone = "America/Indianapolis";
     i18n.defaultLocale = "en_US.UTF-8";
 
@@ -19,7 +19,7 @@
     };
   };
 
-  flake.modules.homeManager.core = {
+  modules.homeManager.core = {
     home.sessionPath = [ "$HOME/.local/state/nix/profiles/scratch/bin" ];
     home.stateVersion = "25.11";
   };

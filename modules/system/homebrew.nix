@@ -2,7 +2,7 @@
 {
   pins.nix-homebrew.url = "https://github.com/zhaofengli/nix-homebrew";
 
-  flake.modules.darwin.homebrew =
+  modules.darwin.homebrew =
     { host, ... }:
     {
       imports = [ inputs.nix-homebrew.darwinModules.nix-homebrew ];

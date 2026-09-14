@@ -1,5 +1,5 @@
 {
-  flake.modules.nixos.feishin =
+  modules.nixos.feishin =
     {
       lib,
       host,
@@ -16,7 +16,7 @@
       };
     };
 
-  flake.modules.darwin.feishin = { pkgs, ... }: {
+  modules.darwin.feishin = { pkgs, ... }: {
     environment.systemPackages = [ pkgs.feishin ];
   };
 }

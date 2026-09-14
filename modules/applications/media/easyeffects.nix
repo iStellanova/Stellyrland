@@ -1,10 +1,10 @@
 {
-  flake.modules.nixos.easyeffects = {
+  modules.nixos.easyeffects = {
     # Required for the easyeffects service to work correctly.
     programs.dconf.enable = true;
   };
 
-  flake.modules.homeManager.easyeffects =
+  modules.homeManager.easyeffects =
     let
       equalizerBands = {
         band0 = {

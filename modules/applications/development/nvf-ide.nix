@@ -5,7 +5,7 @@
     follows.nixpkgs = "nixpkgs";
   };
 
-  flake.modules.homeManager.nvf-ide =
+  modules.homeManager.nvf-ide =
     { host, ... }:
     {
       imports = [ inputs.nvf.homeManagerModules.default ];

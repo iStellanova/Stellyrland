@@ -5,7 +5,7 @@
     follows.nixpkgs = "nixpkgs";
   };
 
-  flake.modules.nixos.catppuccin = { ... }: {
+  modules.nixos.catppuccin = { ... }: {
     imports = [ inputs.catppuccin.nixosModules.catppuccin ];
 
     catppuccin = {
@@ -17,7 +17,7 @@
     };
   };
 
-  flake.modules.homeManager.catppuccin =
+  modules.homeManager.catppuccin =
     {
       pkgs,
       lib,

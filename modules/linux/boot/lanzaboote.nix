@@ -5,7 +5,7 @@
     follows.nixpkgs = "nixpkgs";
   };
 
-  flake.modules.nixos.lanzaboote =
+  modules.nixos.lanzaboote =
     {
       lib,
       host,

@@ -1,5 +1,5 @@
 {
-  flake.modules.nixos.services-base =
+  modules.nixos.services-base =
     { lib, host, ... }:
     {
       services.udisks2.enable = true;

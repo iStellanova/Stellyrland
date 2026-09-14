@@ -1,5 +1,5 @@
 { self, ... }: {
-  flake.hosts.plasmapulsefinale = {
+  hosts.plasmapulsefinale = {
     class = "nixos";
     username = "tan13";
     homeDir = "/home/tan13";
@@ -8,7 +8,7 @@
 
   };
 
-  flake.modules.nixos.plasmapulsefinale = {
+  modules.nixos.plasmapulsefinale = {
     system.stateVersion = "25.11";
     imports = with self.modules.nixos; [
       # Base

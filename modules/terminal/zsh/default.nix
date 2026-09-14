@@ -4,10 +4,10 @@ let
   };
 in
 {
-  flake.modules.nixos.zsh = zshOsPkg;
-  flake.modules.darwin.zsh = zshOsPkg;
+  modules.nixos.zsh = zshOsPkg;
+  modules.darwin.zsh = zshOsPkg;
 
-  flake.modules.homeManager.zsh =
+  modules.homeManager.zsh =
     {
       pkgs,
       lib,

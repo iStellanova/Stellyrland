@@ -1,5 +1,5 @@
 {
-  flake.modules.nixos.pipewire =
+  modules.nixos.pipewire =
     {
       lib,
       host,

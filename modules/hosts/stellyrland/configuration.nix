@@ -1,5 +1,5 @@
 { self, ... }: {
-  flake.hosts.stellyrland = {
+  hosts.stellyrland = {
     class = "nixos";
     username = "stellanova";
     homeDir = "/home/stellanova";
@@ -28,7 +28,7 @@
     features.hdr = true;
   };
 
-  flake.modules.nixos.stellyrland = {
+  modules.nixos.stellyrland = {
     system.stateVersion = "25.11";
     imports = with self.modules.nixos; [
       # Base

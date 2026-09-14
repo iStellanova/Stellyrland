@@ -15,12 +15,12 @@ let
     };
 in
 {
-  flake.modules.nixos.ide-suite = { pkgs, ... }: {
+  modules.nixos.ide-suite = { pkgs, ... }: {
     imports = [ osShared ];
     environment.systemPackages = [ pkgs.jetbrains.idea ];
   };
 
-  flake.modules.darwin.ide-suite = {
+  modules.darwin.ide-suite = {
     imports = [
       osShared
       {

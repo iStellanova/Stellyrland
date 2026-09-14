@@ -1,5 +1,5 @@
 _: {
-  flake.modules.nixos.hermes =
+  modules.nixos.hermes =
     { config, host, ... }:
     {
       nix.settings = {
@@ -74,7 +74,7 @@ _: {
     };
   };
 
-  flake.modules.homeManager.hermes =
+  modules.homeManager.hermes =
     {
       inputs,
       pkgs,

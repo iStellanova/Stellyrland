@@ -10,7 +10,7 @@
     flake = false;
   };
 
-  flake.modules.nixos.hyprland =
+  modules.nixos.hyprland =
     {
       lib,
       pkgs,
@@ -55,7 +55,7 @@
       };
     };
 
-  flake.modules.homeManager.hyprland =
+  modules.homeManager.hyprland =
     {
       lib,
       osConfig,

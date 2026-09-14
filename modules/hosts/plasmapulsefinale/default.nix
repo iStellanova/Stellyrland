@@ -1,5 +1,5 @@
 {
-  flake.modules.nixos.plasmapulsefinale-host =
+  modules.nixos.plasmapulsefinale-host =
     { host, pkgs, ... }:
     {
       imports = [

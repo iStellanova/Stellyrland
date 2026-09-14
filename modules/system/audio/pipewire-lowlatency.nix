@@ -1,5 +1,5 @@
 {
-  flake.modules.nixos.pipewire-lowlatency = {
+  modules.nixos.pipewire-lowlatency = {
     services.pipewire.extraConfig = {
       pipewire."99-lowlatency" = {
         "context.properties"."default.clock.min-quantum" = 512;

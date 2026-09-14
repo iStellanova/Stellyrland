@@ -1,6 +1,6 @@
 { self, ... }:
 {
-  flake.modules.nixos.ItsRedFlame =
+  modules.nixos.ItsRedFlame =
     {
       config,
       host,

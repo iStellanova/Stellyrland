@@ -6,7 +6,7 @@ let
   };
 in
 {
-  flake.modules.nixos.game-launchers =
+  modules.nixos.game-launchers =
     {
       lib,
       host,
@@ -58,5 +58,5 @@ in
       };
     };
 
-  flake.modules.darwin.game-launchers = osShared;
+  modules.darwin.game-launchers = osShared;
 }

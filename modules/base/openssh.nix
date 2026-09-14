@@ -1,5 +1,5 @@
 {
-  flake.modules.nixos.openssh = {
+  modules.nixos.openssh = {
     services.openssh = {
       enable = true;
       settings = {
@@ -10,7 +10,7 @@
     };
   };
 
-  flake.modules.darwin.openssh = {
+  modules.darwin.openssh = {
     services.openssh.enable = true;
     # nix-darwin lacks NixOS's structured `settings` option; use raw sshd_config text.
     services.openssh.extraConfig = ''
