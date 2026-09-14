@@ -29,7 +29,7 @@
     features.hdr = true;
   };
 
-  modules.nixos.stellyrland = {
+  modules.nixos.stellyrland.host = {
     system.stateVersion = "25.11";
     imports = with self.modules.nixos; [
       # Base
@@ -92,6 +92,7 @@
 
       # Host Specific Config
       stellyrland-host
+      self.modules.nixos.stellyrland.stellanova
     ];
   };
 }

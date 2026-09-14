@@ -9,7 +9,7 @@
 
   };
 
-  modules.nixos.ItsRedFlame = {
+  modules.nixos.ItsRedFlame.host = {
     system.stateVersion = "25.11";
     imports = with self.modules.nixos; [
       # Base
@@ -48,6 +48,8 @@
 
       # Host Specific Config
       ItsRedFlame-host
+      self.modules.nixos.ItsRedFlame.RedFlame
+      self.modules.nixos.ItsRedFlame.stellanova
     ];
   };
 }

@@ -14,7 +14,7 @@ let
         };
       };
       modules = [
-        self.modules.${class}.${name}
+        self.modules.${class}.${name}.host
         { nixpkgs.hostPlatform = lib.mkDefault system; }
       ];
     };

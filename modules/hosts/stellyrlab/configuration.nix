@@ -45,7 +45,7 @@
     };
   };
 
-  modules.nixos.stellyrlab = {
+  modules.nixos.stellyrlab.host = {
     imports = with self.modules.nixos; [
       base
       cmdline
@@ -57,6 +57,7 @@
       binary-cache-server
       hermes
       navidrome
+      self.modules.nixos.stellyrlab.stellanova
     ];
   };
 }

@@ -1,5 +1,5 @@
 { self, ... }: {
-  modules.nixos.ItsRedFlame = {
+  modules.nixos.ItsRedFlame.RedFlame = {
     imports = [
       (self.factory.user "RedFlame").nixos.RedFlame
     ];

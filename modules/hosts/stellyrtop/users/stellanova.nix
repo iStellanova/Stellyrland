@@ -1,5 +1,5 @@
 { self, ... }: {
-  modules.darwin.stellyrtop = {
+  modules.darwin.stellyrtop.stellanova = {
     imports = [
       (self.factory.user "stellanova").darwin.stellanova
       self.modules.darwin.stellanova

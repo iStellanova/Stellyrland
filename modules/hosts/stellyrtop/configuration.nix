@@ -9,7 +9,7 @@
     gitSshKey = "~/.ssh/stellacode";
   };
 
-  modules.darwin.stellyrtop = {
+  modules.darwin.stellyrtop.host = {
     imports = with self.modules.darwin; [
       # Base
       base
@@ -55,6 +55,7 @@
 
       # Host Specific Config
       stellyrtop-host
+      self.modules.darwin.stellyrtop.stellanova
     ];
   };
 }
