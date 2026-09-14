@@ -1,7 +1,7 @@
 { self, ... }: {
   modules.nixos.plasmapulsefinale = {
     imports = [
-      self.modules.nixos.tan13
+      (self.factory.user "tan13").nixos.tan13
     ];
 
     home-manager.users.tan13 = {

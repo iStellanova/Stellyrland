@@ -1,10 +1,11 @@
-{ self, ... }: {
+{ inputs, self, ... }: {
   hosts.stellyrland = {
     class = "nixos";
     username = "stellanova";
     homeDir = "/home/stellanova";
     persistence = true;
     flakePath = "/home/stellanova/Projects/stellyrland";
+    dataPath = inputs.my-assets;
     passwordSecret = "stellapsswd";
     gitName = "stellanova";
     userEmail = "iStellanova@users.noreply.github.com";

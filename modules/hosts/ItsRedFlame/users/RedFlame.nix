@@ -1,7 +1,7 @@
 { self, ... }: {
   modules.nixos.ItsRedFlame = {
     imports = [
-      self.modules.nixos.RedFlame
+      (self.factory.user "RedFlame").nixos.RedFlame
     ];
 
     home-manager.users.RedFlame = {
