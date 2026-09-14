@@ -52,9 +52,9 @@ that host.
 
 <p align="center"><strong>DOCUMENTATION</strong></p>
 <p align="center">
-  <a href="./docs/concepts.md">CONCEPTS</a> &nbsp;&bull;&nbsp;
-  <a href="./docs/">GENERAL</a> &nbsp;&bull;&nbsp;
-  <a href="./docs/troubleshooting/">DEBUG</a>
+  <a href="https://github.com/iStellanova/Stellyrland/blob/assets/docs/concepts.md">CONCEPTS</a> &nbsp;&bull;&nbsp;
+  <a href="https://github.com/iStellanova/Stellyrland/tree/assets/docs">GENERAL</a> &nbsp;&bull;&nbsp;
+  <a href="https://github.com/iStellanova/Stellyrland/tree/assets/docs/troubleshooting">DEBUG</a>
 </p>
 
 ## 🏗️ Architecture
@@ -91,7 +91,6 @@ flowchart TD
 ├── flake.nix                 # Flake entry point and local module tree loader
 ├── .pnix/                    # Resolver and locked input definitions
 │   └── pins.lock.json        # Resolved input pins
-├── docs/                     # Concepts, workflow notes, and troubleshooting
 ├── secrets/                  # nix-secrets encrypted secrets
 │   └── *.enc
 └── modules/                  # Flake-parts modules
@@ -154,7 +153,7 @@ flowchart TD
 
 AI is utilized in the development of this system, largely for learning, review,
 and debugging. I'm still actively learning Nix! More elaboration on my AI morals
-[here](./docs/ai.md).
+[here](https://github.com/iStellanova/Stellyrland/blob/assets/docs/ai.md).
 
 ## 🐇 Personal AI
 
