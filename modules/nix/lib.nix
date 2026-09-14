@@ -9,7 +9,9 @@ let
     ${name} = systemFn {
       specialArgs = {
         inherit inputs;
-        host = self.hosts.${name} // { inherit name; };
+        host = self.hosts.${name} // {
+          inherit name;
+        };
       };
       modules = [
         self.modules.${class}.${name}
