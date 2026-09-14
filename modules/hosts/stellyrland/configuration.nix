@@ -45,7 +45,6 @@
       # Desktop
       easyeffects
       fonts
-      hyprland
       umbriel
       noctalia-greeter
       noctalia

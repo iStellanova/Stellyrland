@@ -131,25 +131,6 @@
         "hash": "sha256-E9hlcRNSRQ1vb+UicOusX/ucroGlBAz/pYhCBorLOn4="
       }
     },
-    "hyprsplit": {
-      "type": "github",
-      "host": "github.com",
-      "owner": "shezdy",
-      "repo": "hyprsplit",
-      "url": "https://github.com/shezdy/hyprsplit",
-      "rev": "6b00b677d8905fb38779c91e12d6294e0e586a44",
-      "ref": "HEAD",
-      "hash": "sha256-PaoUtmk+qIP/ESdxkxnY7mUMpMHjix88qu22R5GLQqE=",
-      "lastModified": 1781205112,
-      "follows": {
-        "nixpkgs": "nixpkgs"
-      },
-      "fetch": {
-        "kind": "tarball",
-        "url": "https://github.com/shezdy/hyprsplit/archive/6b00b677d8905fb38779c91e12d6294e0e586a44.tar.gz",
-        "hash": "sha256-PaoUtmk+qIP/ESdxkxnY7mUMpMHjix88qu22R5GLQqE="
-      }
-    },
     "lanzaboote": {
       "type": "github",
       "host": "github.com",
@@ -395,23 +376,6 @@
         "kind": "tarball",
         "url": "https://github.com/nix-community/preservation/archive/93416f4614ad2dfed5b0dcf12f27e57d27a5ab11.tar.gz",
         "hash": "sha256-mMI9IanU+Xw+pVogD2oT0I2kTmvz2Un/Apc5+CwUpEY="
-      }
-    },
-    "scroll-overview": {
-      "type": "github",
-      "host": "github.com",
-      "owner": "yayuuu",
-      "repo": "hyprland-scroll-overview",
-      "url": "https://github.com/yayuuu/hyprland-scroll-overview",
-      "rev": "5e96ae20ec73c320248bcf3ff68b330bc1ed4152",
-      "ref": "HEAD",
-      "hash": "sha256-clDeTM5itsJPvqpbEkbWUmuPROsz2+YUnTpqsjQDMqU=",
-      "lastModified": 1788745613,
-      "flake": false,
-      "fetch": {
-        "kind": "tarball",
-        "url": "https://github.com/yayuuu/hyprland-scroll-overview/archive/5e96ae20ec73c320248bcf3ff68b330bc1ed4152.tar.gz",
-        "hash": "sha256-clDeTM5itsJPvqpbEkbWUmuPROsz2+YUnTpqsjQDMqU="
       }
     },
     "treefmt-nix": {

@@ -90,7 +90,6 @@
               builtin_ids = [
                 "btop"
                 "cava"
-                "hyprland"
                 "kitty"
                 "umbriel"
               ];

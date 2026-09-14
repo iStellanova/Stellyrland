@@ -85,7 +85,7 @@
             };
           };
 
-          # platformTheme omitted — Hyprland env (gtk3) owns QT_QPA_PLATFORMTHEME.
+          # platformTheme omitted — Umbriel owns QT_QPA_PLATFORMTHEME.
           # style.name = "kvantum" satisfies catppuccin.kvantum's assertStyle guard.
           qt = {
             enable = true;
