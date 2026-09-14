@@ -34,13 +34,10 @@
           let
             merged = lib.recursiveUpdate old new;
           in
-          merged
-          // {
-            flake = (merged.flake or { }) // {
-              modules = mergeModules (old.flake.modules or { }) (new.flake.modules or { });
-            };
+          merged // {
+            modules = mergeModules (old.modules or { }) (new.modules or { });
           }
         ) { };
     in
-    (importTree ./modules).flake;
+    builtins.removeAttrs (importTree ./modules) [ "pins" ];
 }

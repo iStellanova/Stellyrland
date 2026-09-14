@@ -1,5 +1,5 @@
 {
-  flake.modules.nixos.soulseek =
+  modules.nixos.soulseek =
     { lib, host, pkgs, ... }:
     {
       environment.systemPackages = [ pkgs.nicotine-plus ];
@@ -12,7 +12,7 @@
       };
     };
 
-  flake.modules.darwin.soulseek = { pkgs, ... }: {
+  modules.darwin.soulseek = { pkgs, ... }: {
     environment.systemPackages = [ pkgs.nicotine-plus ];
   };
 }

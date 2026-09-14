@@ -3,7 +3,7 @@ let
   user = self.factory.user "stellanova";
 in
 {
-  flake.modules = user // {
+  modules = user // {
     homeManager = user.homeManager // {
       stellanova = {
         programs.ssh.settings.stellyrlab = {

@@ -1,6 +1,6 @@
 {
 
-  flake.modules.homeManager.nix-tools =
+  modules.homeManager.nix-tools =
     {
       host,
       ...

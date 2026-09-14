@@ -1,10 +1,10 @@
 { self, ... }:
 {
-  flake.modules.nixos.accessor = {
+  modules.nixos.accessor = {
     users.users.stellanova.openssh.authorizedKeys.keys = self.constants.sshKeys;
   };
 
-  flake.modules.darwin.accessor = {
+  modules.darwin.accessor = {
     users.users.stellanova.openssh.authorizedKeys.keys = self.constants.sshKeys;
   };
 }

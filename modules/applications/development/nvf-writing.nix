@@ -7,7 +7,7 @@
 
   # programs.nvf is a singleton. Build wvim directly to isolate it from nvf-ide,
   # including its ~/.config/wvim state.
-  flake.modules.homeManager.nvf-writing =
+  modules.homeManager.nvf-writing =
     { pkgs, ... }:
     let
       wvim = inputs.nvf.lib.neovimConfiguration {

@@ -1,5 +1,5 @@
 {
-  flake.modules.nixos.protonvpn =
+  modules.nixos.protonvpn =
     {
       lib,
       host,
@@ -13,7 +13,7 @@
       };
     };
 
-  flake.modules.darwin.protonvpn = {
+  modules.darwin.protonvpn = {
     homebrew.casks = [ "protonvpn" ];
   };
 }

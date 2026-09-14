@@ -1,5 +1,5 @@
 { self, ... }: {
-  flake.factory.user = username: {
+  factory.user = username: {
     nixos."${username}" =
       {
         pkgs,

@@ -2,7 +2,7 @@
 {
   pins.preservation.url = "https://github.com/nix-community/preservation";
 
-  flake.modules.nixos.preservation = { host, ... }: {
+  modules.nixos.preservation = { host, ... }: {
     imports = [ inputs.preservation.nixosModules.preservation ];
 
     systemd.tmpfiles.rules = [

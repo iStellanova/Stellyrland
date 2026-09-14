@@ -1,5 +1,5 @@
 {
-  flake.modules.nixos.nautilus =
+  modules.nixos.nautilus =
     {
       pkgs,
       lib,
@@ -51,7 +51,7 @@
       ];
     };
 
-  flake.modules.homeManager.nautilus =
+  modules.homeManager.nautilus =
     {
       host,
       pkgs,

@@ -1,5 +1,5 @@
 _: {
-  flake.modules.nixos.noctalia-greeter =
+  modules.nixos.noctalia-greeter =
     {
       host,
       lib,

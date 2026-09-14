@@ -2,7 +2,7 @@
 {
   pins.nix-flatpak.url = "https://github.com/gmodena/nix-flatpak";
 
-  flake.modules.nixos.roblox =
+  modules.nixos.roblox =
     { lib, host, ... }:
     {
       imports = [

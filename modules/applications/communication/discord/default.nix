@@ -5,7 +5,7 @@
     follows.nixpkgs = "nixpkgs";
   };
 
-  flake.modules.homeManager.discord =
+  modules.homeManager.discord =
     { pkgs, lib, ... }:
     {
       imports = [
@@ -18,7 +18,7 @@
       );
     };
 
-  flake.modules.nixos.discord =
+  modules.nixos.discord =
     { lib, host, ... }:
     {
       imports = lib.optional (host.persistence or false) {
@@ -26,7 +26,7 @@
       };
     };
 
-  flake.modules.darwin.discord =
+  modules.darwin.discord =
     {
       host,
       pkgs,

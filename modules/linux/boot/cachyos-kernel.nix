@@ -5,7 +5,7 @@
     ref = "release";
   };
 
-  flake.modules.nixos.cachyos-kernel = {
+  modules.nixos.cachyos-kernel = {
     nixpkgs.overlays = [ inputs.cachyos-kernel.overlays.pinned ];
     nix.settings.substituters = [ "https://attic.xuyh0120.win/lantian" ];
     nix.settings.trusted-public-keys = [

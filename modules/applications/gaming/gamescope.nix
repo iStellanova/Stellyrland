@@ -1,6 +1,6 @@
 { lib, ... }:
 {
-  flake.modules.nixos.gamescope =
+  modules.nixos.gamescope =
     { config, ... }:
     {
       options.desktop.gaming.hdr.enable = lib.mkEnableOption "HDR support for gamescope and DXVK";

@@ -1,9 +1,9 @@
 {
-  flake.modules.nixos.office-suite = { pkgs, ... }: {
+  modules.nixos.office-suite = { pkgs, ... }: {
     environment.systemPackages = [ pkgs.freeoffice ];
   };
 
-  flake.modules.darwin.office-suite = {
+  modules.darwin.office-suite = {
     homebrew.casks = [
       "microsoft-excel"
       "microsoft-onenote"

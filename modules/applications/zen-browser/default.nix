@@ -12,7 +12,7 @@
     follows.nixpkgs = "nixpkgs";
   };
 
-  flake.modules.darwin.zen-browser =
+  modules.darwin.zen-browser =
     { pkgs, ... }:
     {
       # Register system-wide; Home Manager app-linking is unreliable on macOS.
@@ -21,7 +21,7 @@
       ];
     };
 
-  flake.modules.nixos.zen-browser =
+  modules.nixos.zen-browser =
     { lib, host, ... }:
     {
       imports = lib.optional (host.persistence or false) {
@@ -29,7 +29,7 @@
       };
     };
 
-  flake.modules.homeManager.zen-browser =
+  modules.homeManager.zen-browser =
     {
       config,
       pkgs,

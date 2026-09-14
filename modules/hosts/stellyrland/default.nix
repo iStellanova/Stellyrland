@@ -1,5 +1,5 @@
 {
-  flake.modules.nixos.stellyrland-host =
+  modules.nixos.stellyrland-host =
     {
       host,
       pkgs,

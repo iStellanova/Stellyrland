@@ -1,5 +1,5 @@
 {
-  flake.modules.homeManager.yazi =
+  modules.homeManager.yazi =
     {
       host,
       pkgs,

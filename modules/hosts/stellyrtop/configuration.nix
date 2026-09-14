@@ -1,5 +1,5 @@
 { self, ... }: {
-  flake.hosts.stellyrtop = {
+  hosts.stellyrtop = {
     class = "darwin";
     username = "stellanova";
     homeDir = "/Users/stellanova";
@@ -9,7 +9,7 @@
     gitSshKey = "~/.ssh/stellacode";
   };
 
-  flake.modules.darwin.stellyrtop = {
+  modules.darwin.stellyrtop = {
     imports = with self.modules.darwin; [
       # Base
       base

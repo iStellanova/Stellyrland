@@ -5,9 +5,9 @@ let
   };
 in
 {
-  flake.modules.darwin.tailnet = osShared;
+  modules.darwin.tailnet = osShared;
 
-  flake.modules.nixos.tailnet = {
+  modules.nixos.tailnet = {
     imports = [
       osShared
       (

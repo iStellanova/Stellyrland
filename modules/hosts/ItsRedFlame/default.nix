@@ -1,5 +1,5 @@
 {
-  flake.modules.nixos.ItsRedFlame-host =
+  modules.nixos.ItsRedFlame-host =
     { host, config, ... }:
     {
       imports = [

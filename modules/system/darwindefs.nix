@@ -1,6 +1,6 @@
 { lib, ... }:
 {
-  flake.modules.darwin.darwindefs =
+  modules.darwin.darwindefs =
     {
       host,
       config,

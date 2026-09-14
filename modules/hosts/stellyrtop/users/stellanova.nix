@@ -1,5 +1,5 @@
 { self, ... }: {
-  flake.modules.darwin.stellyrtop = {
+  modules.darwin.stellyrtop = {
     imports = [
       self.modules.darwin.stellanova
     ];

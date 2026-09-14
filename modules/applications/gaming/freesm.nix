@@ -5,7 +5,7 @@
     follows.nixpkgs = "nixpkgs";
   };
 
-  flake.modules.nixos.freesm =
+  modules.nixos.freesm =
     { pkgs, ... }:
     {
       nix.settings.substituters = [ "https://freesmlauncher.cachix.org" ];

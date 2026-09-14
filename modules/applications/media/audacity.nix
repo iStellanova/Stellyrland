@@ -1,9 +1,9 @@
 {
-  flake.modules.nixos.audacity = { pkgs, ... }: {
+  modules.nixos.audacity = { pkgs, ... }: {
     environment.systemPackages = [ pkgs.audacity ];
   };
 
-  flake.modules.darwin.audacity = {
+  modules.darwin.audacity = {
     homebrew.casks = [ "audacity" ];
   };
 }

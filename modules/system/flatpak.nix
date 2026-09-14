@@ -2,7 +2,7 @@
 {
   pins.nix-flatpak.url = "https://github.com/gmodena/nix-flatpak";
 
-  flake.modules.nixos.flatpak =
+  modules.nixos.flatpak =
     {
       lib,
       host,

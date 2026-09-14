@@ -1,10 +1,10 @@
 {
-  flake.modules.nixos.gsr = { pkgs, ... }: {
+  modules.nixos.gsr = { pkgs, ... }: {
     programs.gpu-screen-recorder.enable = true;
     environment.systemPackages = [ pkgs.gpu-screen-recorder-gtk ];
   };
 
-  flake.modules.homeManager.gsr =
+  modules.homeManager.gsr =
     {
       host,
       lib,

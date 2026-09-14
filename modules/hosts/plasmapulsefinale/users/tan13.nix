@@ -1,5 +1,5 @@
 { self, ... }: {
-  flake.modules.nixos.plasmapulsefinale = {
+  modules.nixos.plasmapulsefinale = {
     imports = [
       self.modules.nixos.tan13
     ];

@@ -1,6 +1,6 @@
 { self, ... }:
 {
-  flake.modules.nixos.plasmapulsefinale =
+  modules.nixos.plasmapulsefinale =
     { pkgs, ... }:
     {
       imports = [ self.modules.nixos.accessor ];

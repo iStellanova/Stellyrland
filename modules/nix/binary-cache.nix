@@ -1,5 +1,5 @@
 {
-  flake.modules.nixos.binary-cache-server =
+  modules.nixos.binary-cache-server =
     { config, host, ... }:
     {
       security.nix-secrets.secrets.harmonia-signing-key = {

@@ -1,6 +1,6 @@
 { inputs, ... }:
 {
-  flake.modules.homeManager.fleet-build =
+  modules.homeManager.fleet-build =
     {
       host,
       lib,

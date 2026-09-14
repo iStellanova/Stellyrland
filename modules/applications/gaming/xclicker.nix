@@ -1,5 +1,5 @@
 {
-  flake.modules.nixos.xclicker = { pkgs, ... }: {
+  modules.nixos.xclicker = { pkgs, ... }: {
     environment.systemPackages = [ pkgs.xclicker ];
   };
 }

@@ -1,5 +1,5 @@
 {
-  flake.modules.homeManager.btop = {
+  modules.homeManager.btop = {
     programs.btop = {
       enable = true;
       settings = {

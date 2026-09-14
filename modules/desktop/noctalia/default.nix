@@ -1,5 +1,5 @@
 {
-  flake.modules.nixos.noctalia =
+  modules.nixos.noctalia =
     {
       lib,
       host,
@@ -31,7 +31,7 @@
       };
     };
 
-  flake.modules.homeManager.noctalia =
+  modules.homeManager.noctalia =
     {
       host,
       lib,

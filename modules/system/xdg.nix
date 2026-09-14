@@ -1,12 +1,12 @@
 {
-  flake.modules.nixos.xdg = { pkgs, ... }: {
+  modules.nixos.xdg = { pkgs, ... }: {
     environment.systemPackages = with pkgs; [
       xdg-user-dirs
       xdg-utils
     ];
   };
 
-  flake.modules.homeManager.xdg =
+  modules.homeManager.xdg =
     {
       config,
       pkgs,

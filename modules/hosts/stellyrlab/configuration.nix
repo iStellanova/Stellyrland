@@ -1,5 +1,5 @@
 { self, ... }: {
-  flake.hosts.stellyrlab = {
+  hosts.stellyrlab = {
     class = "nixos";
     username = "stellanova";
     homeDir = "/home/stellanova";
@@ -45,7 +45,7 @@
     };
   };
 
-  flake.modules.nixos.stellyrlab = {
+  modules.nixos.stellyrlab = {
     imports = with self.modules.nixos; [
       base
       cmdline

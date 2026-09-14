@@ -1,5 +1,5 @@
 { self, ... }: {
-  flake.modules.nixos.ItsRedFlame = {
+  modules.nixos.ItsRedFlame = {
     imports = [
       self.modules.nixos.RedFlame
     ];

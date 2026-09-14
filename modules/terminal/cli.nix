@@ -43,10 +43,10 @@ in
     follows.nixpkgs = "nixpkgs";
   };
 
-  flake.modules.nixos.cli = cliNixos;
-  flake.modules.darwin.cli = cliOs;
+  modules.nixos.cli = cliNixos;
+  modules.darwin.cli = cliOs;
 
-  flake.modules.homeManager.cli =
+  modules.homeManager.cli =
     {
       config,
       lib,

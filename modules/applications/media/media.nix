@@ -1,5 +1,5 @@
 {
-  flake.modules.nixos.media = { pkgs, ... }: {
+  modules.nixos.media = { pkgs, ... }: {
     environment.systemPackages = with pkgs; [
       ffmpegthumbnailer
       imv
@@ -7,14 +7,14 @@
     ];
   };
 
-  flake.modules.darwin.media = {
+  modules.darwin.media = {
     homebrew.casks = [
       "background-music"
       "vlc"
     ];
   };
 
-  flake.modules.homeManager.media =
+  modules.homeManager.media =
     {
       pkgs,
       ...

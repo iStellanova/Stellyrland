@@ -1,5 +1,5 @@
 {
-  flake.modules.nixos.obs =
+  modules.nixos.obs =
     {
       config,
       lib,
@@ -75,7 +75,7 @@
       };
     };
 
-  flake.modules.darwin.obs = {
+  modules.darwin.obs = {
     homebrew.casks = [ "obs" ];
   };
 }

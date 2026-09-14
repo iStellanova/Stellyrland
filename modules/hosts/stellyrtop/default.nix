@@ -1,5 +1,5 @@
 {
-  flake.modules.darwin.stellyrtop-host =
+  modules.darwin.stellyrtop-host =
     { host, ... }:
     {
       system.stateVersion = 5;

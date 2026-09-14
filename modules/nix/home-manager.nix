@@ -15,14 +15,14 @@ let
     };
 in
 {
-  flake.modules.nixos.home-manager = {
+  modules.nixos.home-manager = {
     imports = [
       inputs.home-manager.nixosModules.home-manager
       home-manager-config
     ];
   };
 
-  flake.modules.darwin.home-manager = {
+  modules.darwin.home-manager = {
     imports = [
       inputs.home-manager.darwinModules.home-manager
       home-manager-config

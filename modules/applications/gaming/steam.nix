@@ -8,7 +8,7 @@
   # For Steam game HDR:
   # PROTON_ENABLE_WAYLAND=1 PROTON_USE_NTSYNC=1 RADV_PERFTEST=gpl %command%
   # Use CachyOS's Proton.
-  flake.modules.nixos.steam =
+  modules.nixos.steam =
     {
       lib,
       pkgs,
@@ -43,7 +43,7 @@
       };
     };
 
-  flake.modules.darwin.steam = {
+  modules.darwin.steam = {
     homebrew.casks = [ "steam" ];
   };
 }
