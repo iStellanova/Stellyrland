@@ -1,6 +1,11 @@
 {
   modules.nixos.soulseek =
-    { lib, host, pkgs, ... }:
+    {
+      lib,
+      host,
+      pkgs,
+      ...
+    }:
     {
       environment.systemPackages = [ pkgs.nicotine-plus ];
 
