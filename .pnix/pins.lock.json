@@ -93,25 +93,6 @@
         "hash": "sha256-RxWs5ND31KzTG7wvMM+PMfUjyNpmIEr999lqNARaM5o="
       }
     },
-    "flake-parts": {
-      "type": "github",
-      "host": "github.com",
-      "owner": "hercules-ci",
-      "repo": "flake-parts",
-      "url": "https://github.com/hercules-ci/flake-parts",
-      "rev": "31729ca8cbdb4fa927b34e5f4353e6a83f39e993",
-      "ref": "HEAD",
-      "hash": "sha256-glZLQlzIn1fXH6PazR2iUmTo7kzzyYSshrWhLS9TqCU=",
-      "lastModified": 1788450739,
-      "follows": {
-        "nixpkgs-lib": "nixpkgs"
-      },
-      "fetch": {
-        "kind": "tarball",
-        "url": "https://github.com/hercules-ci/flake-parts/archive/31729ca8cbdb4fa927b34e5f4353e6a83f39e993.tar.gz",
-        "hash": "sha256-glZLQlzIn1fXH6PazR2iUmTo7kzzyYSshrWhLS9TqCU="
-      }
-    },
     "freesmlauncher": {
       "type": "github",
       "host": "github.com",
