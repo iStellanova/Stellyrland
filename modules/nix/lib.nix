@@ -9,10 +9,10 @@ let
     ${name} = systemFn {
       specialArgs = {
         inherit inputs;
-        host = (self.constants or { }) // self.hosts.${name} // { inherit name; };
+        host = self.constants // self.hosts.${name} // { inherit name; };
       };
       modules = [
-        inputs.self.modules.${class}.${name}
+        self.modules.${class}.${name}
         { nixpkgs.hostPlatform = lib.mkDefault system; }
       ];
     };

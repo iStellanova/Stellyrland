@@ -1,4 +1,9 @@
-{ inputs, lib, self, ... }:
+{
+  inputs,
+  lib,
+  self,
+  ...
+}:
 let
   systems = [
     "x86_64-linux"

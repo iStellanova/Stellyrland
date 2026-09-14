@@ -1,28 +1,25 @@
 {
   description = "Stellyrland System Configurations.";
-
-  outputs = { self }:
+  outputs =
+    { self }:
     let
-      inputs = (import ./.pnix { }) // { inherit self; };
+      inputs = (import ./.pnix { }) // {
+        inherit self;
+      };
       lib = inputs.nixpkgs.lib;
-      mergeModules = old: new:
-        lib.foldl' (
-          result: class:
-          result
-          // {
-            ${class} = lib.foldl' (
-              classResult: name:
-              classResult
-              // {
-                ${name} =
-                  if builtins.hasAttr name classResult then
-                    { imports = [ classResult.${name} new.${class}.${name} ]; }
-                  else
-                    new.${class}.${name};
-              }
-            ) (old.${class} or { }) (builtins.attrNames new.${class});
-          }
-        ) old (builtins.attrNames new);
+      mergeModules =
+        old: new:
+        lib.zipAttrsWith
+          (
+            _: classes:
+            lib.zipAttrsWith (
+              _: leaves: if builtins.length leaves == 1 then builtins.head leaves else { imports = leaves; }
+            ) classes
+          )
+          [
+            old
+            new
+          ];
       importTree =
         path:
         path
@@ -31,10 +28,8 @@
         |> map (file: lib.toFunction (import file) { inherit inputs self lib; })
         |> lib.foldl' (
           old: new:
-          let
-            merged = lib.recursiveUpdate old new;
-          in
-          merged // {
+          (lib.recursiveUpdate old new)
+          // {
             modules = mergeModules (old.modules or { }) (new.modules or { });
           }
         ) { };
