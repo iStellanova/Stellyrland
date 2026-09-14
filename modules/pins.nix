@@ -4,10 +4,6 @@
       url = "https://github.com/nixos/nixpkgs";
       ref = "nixos-unstable";
     };
-    flake-parts = {
-      url = "https://github.com/hercules-ci/flake-parts";
-      follows.nixpkgs-lib = "nixpkgs";
-    };
     pnix.url = "https://github.com/bunny-systems/pnix";
     home-manager = {
       url = "https://github.com/nix-community/home-manager";
