@@ -48,8 +48,10 @@
       lockModifier = "off"
       moveCrossesMonitorAtEdge = true
       moveMouseToFocusedWindow = false
+      raiseOnMouseFocus = true
 
       [gaps]
+      fullscreenUsesOuterGaps = false
       size = 6.0
 
       [gaps.outer]
@@ -65,6 +67,7 @@
       ipcEnabled = true
       preventSleepEnabled = false
       spacesTrackingEnabled = true
+      hyperKeyModifiers = "Control+Option+Shift+Command"
       systemHyperTrigger = "None"
       updateChecksEnabled = true
 
