@@ -16,7 +16,9 @@
       };
     };
 
-  modules.darwin.feishin = { pkgs, ... }: {
-    environment.systemPackages = [ pkgs.feishin ];
+  modules.darwin.feishin = {
+    homebrew.taps = [ "kgarner7/feishin" ];
+    homebrew.casks = [ "kgarner7/feishin/feishin" ];
+    nix-homebrew.trust.casks = [ "kgarner7/feishin/feishin" ];
   };
 }
