@@ -51,7 +51,7 @@ let
     );
 
   fetchUrl =
-    _entry: src:
+    entry: src:
     let
       m = builtins.match "([^#]+)#(.+)" src;
       url = if m == null then src else builtins.head m;
