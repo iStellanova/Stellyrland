@@ -29,8 +29,6 @@ let
     nix.nixPath = [ ];
     nixpkgs.config = {
       allowUnfree = true;
-      # TODO(hermes-desktop): remove when Hermes Desktop no longer requires EOL Electron 41.
-      permittedInsecurePackages = [ "electron-41.10.6" ];
     };
     nix.extraOptions = ''
       !include /etc/nix/access-tokens.conf
