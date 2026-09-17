@@ -24,7 +24,6 @@
         fastfetch
 
         # Desktop
-        omniwm
         catppuccin
 
         # Dev / CLI Tools
