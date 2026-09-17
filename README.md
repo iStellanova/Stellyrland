@@ -16,9 +16,7 @@
 ---
 
 This is my personal configuration for my systems, managed by the nix language
-and the lix package manager. I stick to the dendritic pattern, making use of
-flake-parts. Documentation will explain all concepts I use here. I use this to
-tinker, deploy, and manage my computers from home and remote. :)
+and the lix package manager. I stick to the dendritic pattern. Documentation will explain all concepts I use here. I use this to tinker, deploy, and manage my computers from home and remote. :)
 
 My personal workstation is **Stellyrland**, most topics here will revolve around
 that host.
@@ -88,37 +86,35 @@ flowchart TD
 
 ```text
 .
-├── flake.nix                 # Flake entry point and local module tree loader
 ├── .pnix/                    # Resolver and locked input definitions
-│   └── pins.lock.json        # Resolved input pins
-├── secrets/                  # nix-secrets encrypted secrets
-│   └── *.enc
-└── modules/                  # Flake-parts modules
-    ├── pins.nix              # Input declarations owned by this configuration
-    ├── flake-config.nix      # Flake outputs and supported systems
-    ├── constants.nix         # Shared defaults merged into every host's `host.*`
-    ├── treefmt.nix           # Repo-wide formatter configuration
-    ├── ai/                   # Declarative Stellxie/Hermes Agent configuration
-    ├── desktop/              # Desktop environments, compositors, and themes
-    ├── factory/              # factory.user: per-user NixOS/Darwin/Home Manager wiring
-    ├── hosts/                # Host declarations and host-specific aspect composition
-    │   ├── stellyrland/      # NixOS workstation (x86_64-linux)
-    │   ├── stellyrtop/       # macOS MacBook (aarch64-darwin)
-    │   ├── stellyrlab/       # NixOS server (x86_64-linux)
-    │   ├── plasmapulsefinale/ # NixOS desktop (x86_64-linux)
-    │   └── ItsRedFlame/      # NixOS gaming/AV box (x86_64-linux)
-    ├── users/                # Shared user aspect definitions
-    ├── base/                 # Core, Lix, Nix settings, SSH, Tailscale, secrets, users
-    ├── nix/                  # Nix, Home Manager, deployment, and operational helpers
-    ├── linux/                # Linux boot, hardware, and storage configuration
-    ├── applications/         # User-facing applications, grouped by domain
-    │   ├── communication/
-    │   ├── development/
-    │   ├── file-manager/
-    │   ├── gaming/
-    │   └── media/
-    ├── system/               # Darwin, Homebrew, MIME, XDG, service, and secret definitions
-    └── terminal/              # Shell, CLI, Kitty, and terminal utilities
+├── flake.nix                 # Flake entry point and module tree loader
+├── secrets/                  # Encrypted nix-secrets inputs
+├── modules/                  # Feature modules
+│   ├── ai/                   # Hermes and personal AI configuration
+│   ├── applications/         # User-facing applications, grouped by domain
+│   │   ├── communication/
+│   │   ├── development/
+│   │   ├── file-manager/
+│   │   ├── gaming/
+│   │   └── media/
+│   ├── base/                 # Core system services and shared settings
+│   ├── desktop/              # Desktop environments, compositors, and themes
+│   ├── factory/              # Per-user NixOS/Darwin/Home Manager wiring
+│   ├── hosts/                # Host declarations and host-specific configuration
+│   │   ├── ItsRedFlame/
+│   │   ├── plasmapulsefinale/
+│   │   ├── stellyrlab/
+│   │   ├── stellyrland/
+│   │   └── stellyrtop/
+│   ├── linux/                # Linux boot and storage configuration
+│   ├── nix/                  # Nix, Home Manager, caches, and helpers
+│   ├── pins.nix              # Input declarations owned by this configuration
+│   ├── system/               # System services, desktop integration, and theming
+│   ├── terminal/             # Shell, CLI, Kitty, and terminal utilities
+│   ├── treefmt.nix           # Repo-wide formatter configuration
+│   └── users/                # Shared user aspect definitions
+├── LICENSE
+└── README.md
 ```
 
 ## ✨ Notable Configurations
@@ -151,8 +147,7 @@ flowchart TD
 
 ## ⚠️ AI Disclaimer
 
-AI is utilized in the development of this system, largely for learning, review,
-and debugging. I'm still actively learning Nix! More elaboration on my AI morals
+AI code is utilized in the development of this system, largely for learning, review, and debugging. I'm still actively learning Nix! More elaboration on my AI morals
 [here](https://github.com/iStellanova/Stellyrland/blob/assets/docs/ai.md).
 
 ## 🐇 Personal AI
@@ -169,6 +164,14 @@ commits and audits from time to time.
 - Architecture: x86_64-linux
 - Memory: 64 GB DDR5
 - Storage: 4.5 TB
+- OS: NixOS
+
+### 🖥️ Stellyrlab (Homelab)
+
+- CPU: Intel Core i7 8700K
+- Architecture: x86_64-linux
+- Memory: 16 GB DDR4
+- Storage: 256 GB
 - OS: NixOS
 
 ### 💻 Stellyrtop (Personal MacBook)
@@ -191,9 +194,7 @@ commits and audits from time to time.
 
 ## 📜 Credits & Inspiration
 
-- **[Vic](https://github.com/vic):** for Flake-File.
 - **Vimjoyer:** For inspiring my adoption of the dendritic pattern.
 - **[Hand7s](https://github.com/s0me1newithhand7s):** For inspiring many
   features I adopted.
-- **[Doc-Steve](https://github.com/Doc-Steve/dendritic-design-with-flake-parts):**
-  For the repo this configuration references architecturally.
+- **Bunny Systems:** For resources like pnix. :stupid_cat:
