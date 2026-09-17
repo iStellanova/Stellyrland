@@ -1,9 +1,3 @@
-.claude/
 .DS_Store
-.past-context/
 result
-.antigravitycli/
-.dev/
-test.nix
-.mcp.json
-.hermes/
+.hermes
