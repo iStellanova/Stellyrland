@@ -81,6 +81,7 @@
       trackpadScrollStyle = "snap"
 
       [mouseWarp]
+      constrainToArrangement = false
       enabled = true
       margin = 1
 

@@ -60,8 +60,8 @@ in
     "Mod+WheelDown" = "window-focus-right";
     "Mod+Shift+WheelUp" = "column-move-left";
     "Mod+Shift+WheelDown" = "column-move-right";
-    "Mod+Alt+Right" = "window-modify-width:0.05";
-    "Mod+Alt+Left" = "window-modify-width:-0.05";
+    "Mod+Alt+Right" = "window-modify-primary-extent:0.05";
+    "Mod+Alt+Left" = "window-modify-primary-extent:-0.05";
     "Mod+MouseMiddle" = "overview-toggle";
     "Mod" = "spawn:noctalia msg panel-toggle launcher";
   }

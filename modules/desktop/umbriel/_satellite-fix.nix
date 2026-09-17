@@ -1,4 +1,8 @@
-{ pkgs, ... }:
+{
+  inputs,
+  pkgs,
+  ...
+}:
 {
   nixpkgs.overlays = [
     (final: prev: {
@@ -15,7 +19,8 @@
     })
   ];
 
-  # The upstream module defaults to its flake package, which uses its own nixpkgs.
-  # Use the host package so the overlay above supplies the patched satellite.
-  programs.umbriel.package = pkgs.umbriel;
+  # Keep the compositor and Home Manager schema on the same pinned revision.
+  programs.umbriel.package = inputs.umbriel.packages.${pkgs.stdenv.hostPlatform.system}.default.override {
+    xwayland-satellite = pkgs.xwayland-satellite;
+  };
 }
