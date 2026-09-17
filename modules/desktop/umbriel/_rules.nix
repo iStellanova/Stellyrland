@@ -9,7 +9,12 @@ let
   xwayland = pattern: "^(\\[Xwayland\\] )?${pattern}$";
   appRule = pattern: { match.app_id = xwayland pattern; };
   floatRule = pattern: (appRule pattern) // { default_floating = true; };
-  sizedFloatRule = pattern: size: (floatRule pattern) // { default_size = size; };
+  sizedFloatRule = pattern: size: (floatRule pattern) // {
+    default_floating_size_px = {
+      width = lib.elemAt size 0;
+      height = lib.elemAt size 1;
+    };
+  };
 in
 {
   programs.umbriel.settings = {
@@ -64,6 +69,10 @@ in
             y = 0;
             anchor = "bottom_right";
           };
+        }
+        {
+          match.is_alone = true;
+          default_scrolling_extent = 1.0;
         }
       ];
 
