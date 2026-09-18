@@ -10,7 +10,7 @@
     {
       programs.kitty = {
         enable = true;
-        package = null;
+        package = lib.mkIf (host.class == "darwin") null;
         font = {
           name = "JetBrains Mono Nerd Font Propo";
           size = 14;
