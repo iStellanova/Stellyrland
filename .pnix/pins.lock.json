@@ -402,7 +402,6 @@
       "url": "https://github.com/noctalia-dev/umbriel",
       "rev": "61c580b1f0af82f78747b9bdce6a71789d9bf423",
       "ref": "HEAD",
-      "submodules": true,
       "follows": {
         "nixpkgs": "nixpkgs"
       },
@@ -410,8 +409,7 @@
         "kind": "git",
         "url": "https://github.com/noctalia-dev/umbriel",
         "rev": "61c580b1f0af82f78747b9bdce6a71789d9bf423",
-        "ref": "HEAD",
-        "submodules": true
+        "ref": "HEAD"
       }
     },
     "zen-browser": {
