@@ -1,10 +1,8 @@
 {
   pins.umbriel = {
     # TODO(umbriel): drop this input once nixpkgs provides a Home Manager module.
-    # Umbriel's package requires its patched SceneFX submodule.
     type = "git";
     url = "https://github.com/noctalia-dev/umbriel";
-    submodules = true;
     follows.nixpkgs = "nixpkgs";
   };
 
