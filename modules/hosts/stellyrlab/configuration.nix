@@ -9,40 +9,6 @@
     userEmail = "iStellanova@users.noreply.github.com";
     gitSshKey = "/run/secrets/stellacode";
 
-    backup = {
-      datasets = {
-        home = "zroot/safe/home";
-      };
-      enrolled = {
-        stellyrlab = {
-          host = null;
-          user = "stellanova";
-          publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAID23408QRe02peABnmkDcmpu2DVSwN3H+Jm7kcVenTDr";
-          datasets = {
-            home = {
-              source = "zroot/safe/home";
-              target = "home";
-            };
-          };
-        };
-        stellyrland = {
-          host = "172.31.255.2";
-          user = "stellanova";
-          hostKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAPDq0bTLCKn1lKqYn+22wRYiEsNFoMvMlRh1Klm8edA";
-          publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAID23408QRe02peABnmkDcmpu2DVSwN3H+Jm7kcVenTDr";
-          datasets = {
-            home = {
-              source = "zroot/safe/home";
-              target = "home";
-            };
-            persist = {
-              source = "zroot/safe/persist";
-              target = "persist";
-            };
-          };
-        };
-      };
-    };
   };
 
   modules.nixos.stellyrlab.host = {
@@ -52,7 +18,6 @@
       maintenance
       cachyos-kernel
       lanzaboote
-      backup-service
       stellyrlab-host
       binary-cache-server
       hermes

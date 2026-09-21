@@ -11,16 +11,6 @@
     userEmail = "iStellanova@users.noreply.github.com";
     gitSshKey = "/run/secrets/stellacode";
 
-    backup = {
-      receiver = {
-        address = "172.31.255.1";
-        publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJCz+XUleiNbgSwcZHvxOXXTbihnTIRoDKoXr+2zCSgA";
-      };
-      datasets = {
-        home = "zroot/safe/home";
-        persist = "zroot/safe/persist";
-      };
-    };
     graphics = "amd";
     monitorPriority = [
       "DP-2"
@@ -57,7 +47,6 @@
       cachyos-kernel
       lanzaboote
       binfmt
-      backup-service
       preservation
 
       # Gaming
