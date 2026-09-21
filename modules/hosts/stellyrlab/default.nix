@@ -43,6 +43,7 @@
           package = config.boot.kernelPackages.zfs_cachyos;
           devNodes = "/dev/mapper";
           forceImportRoot = true;
+          extraPools = [ "zhdd" ];
         };
         loader = {
           systemd-boot = {
@@ -64,6 +65,15 @@
             ];
           };
         };
+      };
+
+      environment.etc."crypttab".text = ''
+        crypthdd UUID=5946e137-83a4-4f10-be11-3951c157466f - tpm2-device=auto,tpm2-pcrs=7,nofail,x-systemd.device-timeout=90s
+      '';
+
+      systemd.services."zfs-import-zhdd" = {
+        after = [ "systemd-cryptsetup@crypthdd.service" ];
+        requires = [ "systemd-cryptsetup@crypthdd.service" ];
       };
 
       services = {
