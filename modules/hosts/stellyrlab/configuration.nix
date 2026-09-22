@@ -19,6 +19,8 @@
       cachyos-kernel
       lanzaboote
       stellyrlab-host
+      backup-host
+      backup-sender
       binary-cache-server
       hermes
       navidrome

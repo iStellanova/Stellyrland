@@ -76,6 +76,16 @@
         requires = [ "systemd-cryptsetup@crypthdd.service" ];
       };
 
+      backup.sender = {
+        enable = true;
+        paths = [
+          "/srv/music"
+          "${host.homeDir}/.hermes"
+        ];
+        repo = "/srv/backups/stellyrlab";
+        mountpoint = "/srv/backups";
+      };
+
       services = {
         logind.settings.Login = {
           HandleLidSwitch = "ignore";
