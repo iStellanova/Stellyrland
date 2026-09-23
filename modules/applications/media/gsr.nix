@@ -70,7 +70,7 @@
             "-w ${primary}"
             "-r 120"
             "-c mp4"
-            "-k ${if host.features.hdr then "av1_hdr" else "av1"}"
+            "-k av1"
             "-q very_high"
             "-ac opus"
             "-a default_output|default_input"
