@@ -1,14 +1,17 @@
 {
   modules.nixos.headscale =
-    { pkgs, ... }:
+    {
+      config,
+      host,
+      lib,
+      pkgs,
+      ...
+    }:
     let
       headscalePort = 8080;
       funnelPort = 8443;
       policy = pkgs.writeText "headscale-policy.hujson" ''
         {
-          "tagOwners": {
-            "tag:server": ["stellanova@"]
-          },
           "acls": [
             { "action": "accept", "src": ["stellanova@"], "dst": ["*:*" ] }
           ]
@@ -16,6 +19,47 @@
       '';
     in
     {
+      environment.systemPackages = [ pkgs.tailscale ];
+
+      imports = lib.optional (host.persistence or false) {
+        preservation.preserveAt."/persist".directories = [ "/var/lib/tailscale" ];
+      };
+
+      security.nix-secrets.secrets.tailscale_auth_key = {
+        name = "tailscale_auth_key";
+        recipients = [
+          "stellyrlab"
+        ];
+      };
+
+      services.tailscale = {
+        enable = true;
+        authKeyFile = config.security.nix-secrets.secrets.tailscale_auth_key.path;
+        interfaceName = "tailscale0";
+        useRoutingFeatures = "client";
+        extraUpFlags = [
+          "--accept-dns=true"
+          "--accept-routes=false"
+          "--ssh=false"
+        ];
+        extraSetFlags = [
+          "--accept-dns=true"
+          "--accept-routes=false"
+          "--ssh=false"
+        ];
+      };
+
+      boot.kernel.sysctl = {
+        "net.core.default_qdisc" = "fq";
+        "net.ipv4.tcp_congestion_control" = "bbr";
+      };
+
+      networking.firewall = {
+        enable = true;
+        checkReversePath = "loose";
+        allowedUDPPorts = [ 41641 ];
+      };
+
       services.headscale = {
         enable = true;
         address = "127.0.0.1";
@@ -24,7 +68,8 @@
           server_url = "https://stellyrlab.tailb15b96.ts.net:${toString funnelPort}";
           policy.path = policy;
           dns = {
-            magic_dns = false;
+            magic_dns = true;
+            base_domain = "tailnet.stellyrland";
             override_local_dns = false;
           };
           logtail.enabled = false;
