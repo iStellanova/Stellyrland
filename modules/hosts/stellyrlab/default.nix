@@ -79,7 +79,6 @@
       backup.sender = {
         enable = true;
         paths = [
-          "/var/lib/headscale"
           "/srv/music"
           "${host.homeDir}/.hermes"
         ];

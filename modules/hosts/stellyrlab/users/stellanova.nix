@@ -17,8 +17,14 @@
     };
 
     home-manager.users.stellanova = {
+      programs.ssh.settings.stellyrlab = {
+        HostName = "stellyrlab.tailb15b96.ts.net";
+        User = "stellanova";
+        IdentityFile = "/run/secrets/stellacode";
+        IdentitiesOnly = "yes";
+      };
+
       imports = with self.modules.homeManager; [
-        stellanova
         base
         cmdline
         fastfetch

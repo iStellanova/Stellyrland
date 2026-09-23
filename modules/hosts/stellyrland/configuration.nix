@@ -25,7 +25,7 @@
       # Base
       base
       cmdline
-      intranet-connector
+
       # Desktop-Adjacent
       services-base
       system-tools

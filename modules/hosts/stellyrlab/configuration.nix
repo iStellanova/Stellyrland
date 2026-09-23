@@ -22,7 +22,6 @@
       backup-host
       backup-sender
       binary-cache-server
-      headscale
       hermes
       navidrome
       self.modules.nixos.stellyrlab.stellanova
