@@ -1,4 +1,4 @@
-{ self, ... }: {
+{ self, lib, ... }: {
   modules.nixos.stellyrland.stellanova = {
     imports = [
       (self.factory.user "stellanova").nixos.stellanova
@@ -14,6 +14,12 @@
       path = "/run/secrets/stellacode";
     };
     home-manager.users.stellanova = {
+      programs.ssh.settings.stellyrlab = {
+        HostName = lib.mkForce "172.31.255.1";
+        User = "stellanova";
+        IdentityFile = "/run/secrets/stellacode";
+        IdentitiesOnly = "yes";
+      };
       zenBrowser.personalize = true;
       # Installed desktop files; MIME types are defined in modules/system/mime.nix.
       mimeDefaultApps = {
@@ -26,7 +32,6 @@
         discord = [ "vesktop.desktop" ];
       };
       imports = with self.modules.homeManager; [
-        stellanova
         basics
         fastfetch
         cursor

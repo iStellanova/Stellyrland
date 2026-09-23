@@ -6,6 +6,7 @@
       lix
       nix-settings
       openssh
+      tailnet
       secrets
       users
       avahi
@@ -17,7 +18,7 @@
       lix
       nix-settings
       openssh
-      intranet-connector
+      tailnet
       secrets
       users
     ];

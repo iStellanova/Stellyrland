@@ -6,8 +6,20 @@
     ];
     home-manager.users.stellanova = {
       zenBrowser.personalize = true;
+      programs.ssh.settings = {
+        stellyrlab = {
+          HostName = "stellyrlab.tailb15b96.ts.net";
+          User = "stellanova";
+          IdentityFile = "/run/secrets/stellacode";
+          IdentitiesOnly = "yes";
+        };
+        stellyrland = {
+          HostName = "stellyrland.tailb15b96.ts.net";
+          User = "stellanova";
+          IdentityFile = "~/.ssh/stellacode";
+        };
+      };
       imports = with self.modules.homeManager; [
-        stellanova
         basics
         fastfetch
 
