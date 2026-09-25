@@ -41,21 +41,6 @@ _: {
         method = 0;
         randomisedLength = 7;
       };
-      appleMusicRichPresence = {
-        enable = true;
-        refreshInterval = 5.0;
-        largeImageType = "Album";
-        smallImageType = "Artist";
-        largeTextString = "{album}";
-        smallTextString = "{artist}";
-        enableButtons = true;
-        nameString = "Apple Music";
-        detailsString = "{name}";
-        stateString = "{artist} · {album}";
-        activityType = 0;
-        enableTimestamps = true;
-        statusDisplayType = "off";
-      };
       betterGifPicker.enable = true;
       betterRoleContext.enable = true;
       betterSessions = {
