@@ -1,4 +1,4 @@
-{ host, lib, ... }:
+{ host, ... }:
 {
   desktop = {
     gaming.hdr.enable = host.features.hdr;

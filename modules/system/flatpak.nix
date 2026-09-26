@@ -1,7 +1,6 @@
 { inputs, ... }:
 {
   pins.nix-flatpak.url = "https://github.com/gmodena/nix-flatpak";
-
   modules.nixos.flatpak =
     {
       lib,

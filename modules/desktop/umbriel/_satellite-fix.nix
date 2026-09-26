@@ -20,7 +20,9 @@
   ];
 
   # Keep the compositor and Home Manager schema on the same pinned revision.
-  programs.umbriel.package = inputs.umbriel.packages.${pkgs.stdenv.hostPlatform.system}.default.override {
-    xwayland-satellite = pkgs.xwayland-satellite;
-  };
+  programs.umbriel.package =
+    inputs.umbriel.packages.${pkgs.stdenv.hostPlatform.system}.default.override
+      {
+        inherit (pkgs) xwayland-satellite;
+      };
 }
