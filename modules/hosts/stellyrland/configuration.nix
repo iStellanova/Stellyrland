@@ -46,7 +46,6 @@
       # Boot & Hardware & Storage
       cachyos-kernel
       lanzaboote
-      binfmt
       preservation
 
       # Gaming

@@ -34,12 +34,9 @@
         };
       };
 
-      config.services.borgbackup.repos = lib.mapAttrs (
-        name: repository:
-        {
-          path = "${cfg.root}/${name}";
-          inherit (repository) authorizedKeys authorizedKeysAppendOnly quota;
-        }
-      ) cfg.repositories;
+      config.services.borgbackup.repos = lib.mapAttrs (name: repository: {
+        path = "${cfg.root}/${name}";
+        inherit (repository) authorizedKeys authorizedKeysAppendOnly quota;
+      }) cfg.repositories;
     };
 }

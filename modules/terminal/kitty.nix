@@ -1,5 +1,7 @@
 {
-  modules.darwin.kitty = { homebrew.casks = [ "kitty" ]; };
+  modules.darwin.kitty = {
+    homebrew.casks = [ "kitty" ];
+  };
 
   modules.homeManager.kitty =
     {
