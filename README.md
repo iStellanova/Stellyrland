@@ -111,7 +111,7 @@ flowchart TD
 │   ├── pins.nix              # Input declarations owned by this configuration
 │   ├── system/               # System services, desktop integration, and theming
 │   ├── terminal/             # Shell, CLI, Kitty, and terminal utilities
-│   ├── treefmt.nix           # Repo-wide formatter configuration
+│   ├── treefmt.nix           # Repo-wide Nix lint configuration
 │   └── users/                # Shared user aspect definitions
 ├── LICENSE
 └── README.md
@@ -122,8 +122,8 @@ flowchart TD
 - **Decentralized Inputs:** pnix allows me to declare inputs in module files, eliminating a monolithic flake.nix.
 - **Zero-Boilerplate Imports:** `flake.nix` locally loads non-underscore `.nix`
   files under `modules/` as flake-parts modules.
-- **Multi-System Outputs:** Per-system formatter and check outputs cover x86_64
-  Linux and aarch64 Darwin.
+- **Multi-System Outputs:** Per-system lint checks cover x86_64 Linux and
+  aarch64 Darwin.
 - **BORE Scheduler:** CachyOS kernel with BORE scheduling. Optimized for the X3D
   CPU. It's smarter about which workloads get the extra cache vs extra clock.
 - **ZFS Preservation + Sanoid Snapshots:** Every boot rolls back to a blank

@@ -27,7 +27,6 @@
       home.packages = with pkgs; [
         mcp-nixos
         nixd
-        nixfmt
         pyright
         black
         bash-language-server
@@ -109,12 +108,6 @@
             };
             "Nix" = {
               "language_servers" = [ "nixd" ];
-              "formatter" = {
-                "external" = {
-                  "command" = "nixfmt";
-                  "arguments" = [ ];
-                };
-              };
             };
           };
           "minimap" = {
