@@ -12,31 +12,22 @@
     follows.nixpkgs = "nixpkgs";
   };
 
-  modules.darwin.zen-browser =
-    { pkgs, ... }:
-    {
-      # Register system-wide; Home Manager app-linking is unreliable on macOS.
-      environment.systemPackages = [
-        inputs.zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.default
+  modules.darwin.zen-browser = { pkgs, ... }: {
+    # Register system-wide; Home Manager app-linking is unreliable on macOS.
+    environment.systemPackages = [
+      inputs.zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.default
+    ];
+  };
+
+  modules.nixos.zen-browser = { lib, host, ... }: {
+    imports = lib.optional (host.persistence or false) {
+      preservation.preserveAt."/persist".users.${host.username}.directories = [
+        ".config/zen"
       ];
     };
+  };
 
-  modules.nixos.zen-browser =
-    { lib, host, ... }:
-    {
-      imports = lib.optional (host.persistence or false) {
-        preservation.preserveAt."/persist".users.${host.username}.directories = [ ".config/zen" ];
-      };
-    };
-
-  modules.homeManager.zen-browser =
-    {
-      config,
-      pkgs,
-      lib,
-      ...
-    }:
-    {
+  modules.homeManager.zen-browser = { config, pkgs, lib, ... }: {
       options.zenBrowser.personalize = lib.mkOption {
         type = lib.types.bool;
         default = false;

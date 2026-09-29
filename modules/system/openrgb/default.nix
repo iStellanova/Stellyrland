@@ -16,12 +16,7 @@
       # AF_NETLINK is required by libusb's udev hotplug backend; without it, its
       # socket() call fails and openrgb-1.0rc3 segfaults on startup as root
       # (reproduced 2026-07-14 via systemd-run bisection of this unit's hardening).
-      systemd.services.openrgb.serviceConfig.RestrictAddressFamilies = [
-        "AF_UNIX"
-        "AF_INET"
-        "AF_INET6"
-        "AF_NETLINK"
-      ];
+      systemd.services.openrgb.serviceConfig.RestrictAddressFamilies = [ "AF_UNIX" "AF_INET" "AF_INET6" "AF_NETLINK" ];
 
       # Enable I2C support (required for RAM control and CoolerControl)
       hardware.i2c.enable = true;

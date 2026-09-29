@@ -3,13 +3,7 @@
     homebrew.casks = [ "kitty" ];
   };
 
-  modules.homeManager.kitty =
-    {
-      lib,
-      host,
-      ...
-    }:
-    {
+  modules.homeManager.kitty = { lib, host, ... }: {
       programs.kitty = {
         enable = true;
         package = lib.mkIf (host.class == "darwin") null;

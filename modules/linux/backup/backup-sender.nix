@@ -1,11 +1,5 @@
 {
-  modules.nixos.backup-sender =
-    {
-      lib,
-      config,
-      host,
-      ...
-    }:
+  modules.nixos.backup-sender = { lib, config, host, ... }:
     let
       cfg = config.backup.sender;
       jobName = config.networking.hostName;

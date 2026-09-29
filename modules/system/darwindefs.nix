@@ -1,12 +1,6 @@
 { lib, ... }:
 {
-  modules.darwin.darwindefs =
-    {
-      host,
-      config,
-      ...
-    }:
-    {
+  modules.darwin.darwindefs = { host, config, ... }: {
       options.darwin.system.dockApps = lib.mkOption {
         type = lib.types.listOf lib.types.str;
         default = [

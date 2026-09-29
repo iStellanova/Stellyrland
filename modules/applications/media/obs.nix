@@ -1,12 +1,5 @@
 {
-  modules.nixos.obs =
-    {
-      config,
-      lib,
-      pkgs,
-      ...
-    }:
-    {
+  modules.nixos.obs = { config, lib, pkgs, ... }: {
       options.myModules.programs.obs.nvidia = lib.mkEnableOption "OBS NVIDIA/CUDA support";
 
       config = {

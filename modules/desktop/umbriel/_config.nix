@@ -1,9 +1,7 @@
 { osConfig, ... }:
 {
   programs.umbriel.settings = {
-    general = {
-      show_cheatsheet = false;
-    };
+    general = { show_cheatsheet = false; };
     workspaces.back_and_forth = true;
     appearance = {
       corner_radius = 12;
@@ -32,9 +30,7 @@
         layout = "us";
         numlock_toggle = true;
       };
-      mouse = {
-        accel_profile = "flat";
-      };
+      mouse = { accel_profile = "flat"; };
       cursor = {
         theme = "Bibata-Modern-Ice";
         size = 16;

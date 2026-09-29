@@ -5,143 +5,139 @@
     follows.nixpkgs = "nixpkgs";
   };
 
-  modules.homeManager.nvf-ide =
-    { host, ... }:
-    {
-      imports = [ inputs.nvf.homeManagerModules.default ];
-      programs.nvf = {
-        enable = true;
-        settings.vim = {
-          enableLuaLoader = true;
-          theme = {
-            enable = true;
-            name = "catppuccin";
-            style = "macchiato";
-            transparent = true;
-          };
-
-          # Tree-sitter folding; start unfolded.
-          options = {
-            foldmethod = "expr";
-            foldexpr = "v:lua.vim.treesitter.foldexpr()";
-            foldlevelstart = 99;
-            foldlevel = 99;
-            shiftwidth = 2;
-            tabstop = 2;
-            softtabstop = 2;
-            autoread = true;
-          };
-
-          clipboard = {
-            enable = true;
-            registers = "unnamedplus";
-            providers.wl-copy.enable = true;
-          };
-
-          visuals.nvim-web-devicons.enable = true;
-          filetree.neo-tree = {
-            enable = true;
-            setupOpts.filesystem.use_libuv_file_watcher = true;
-            setupOpts.git_status_async = true;
-          };
-
-          utility.multicursors.enable = true;
-          mini.surround.enable = true;
-          mini.ai.enable = true;
-          telescope.enable = true;
-          binds.whichKey = {
-            enable = true;
-            register = {
-              "<leader>f" = "+Find";
-              "<leader>o" = "+OpenCode";
-            };
-          };
-
-          statusline.lualine = {
-            enable = true;
-          };
-          tabline.nvimBufferline.enable = true;
-          git.enable = true;
-          comments.comment-nvim.enable = true;
-          autopairs.nvim-autopairs.enable = true;
-          utility.motion.flash-nvim.enable = true;
-          visuals.indent-blankline.enable = true;
-          visuals.nvim-scrollbar.enable = true;
-          notify.nvim-notify.enable = true;
-          ui.illuminate.enable = true;
-          ui.colorizer.enable = true;
-
-          # lazygit shells out via its own nix store path, not $PATH — no
-          # extraPackages entry needed.
-          terminal.toggleterm = {
-            enable = true;
-            lazygit.enable = true;
-          };
-
-          autocomplete.blink-cmp.enable = true;
-          lsp = {
-            enable = true;
-            inlayHints.enable = true;
-          };
-
-          languages = {
-            enableTreesitter = true;
-            nix = {
-              enable = true;
-              lsp.servers = [ "nixd" ];
-            };
-
-            lua = {
-              enable = true;
-              extensions.lazydev.enable = true;
-            };
-
-            bash.enable = true;
-            markdown = {
-              enable = true;
-              extensions.render-markdown-nvim.enable = true;
-            };
-          };
-
-          lsp.servers.nixd = {
-            settings.nixd = {
-              nixpkgs.expr = "import (builtins.getFlake (toString ./.)).inputs.nixpkgs.outPath { }";
-              options.nixos.expr = "(builtins.getFlake (toString ./.)).nixosConfigurations.${host.name}.options";
-            };
-          };
-
-          luaConfigRC.filetree-keymaps = ''
-            vim.keymap.set("n", "<leader>e", "<cmd>Neotree toggle<cr>", { desc = "Toggle file explorer" })
-
-            -- "show" not "focus": opens as a persistent sidebar without stealing focus.
-            vim.api.nvim_create_autocmd("VimEnter", {
-              once = true,
-              callback = function()
-                require("neo-tree.command").execute({ action = "show" })
-              end,
-            })
-          '';
-
-          luaConfigRC.autoread-checktime = ''
-            vim.api.nvim_create_autocmd({ "FocusGained", "BufEnter", "CursorHold", "CursorHoldI" }, {
-              command = "checktime",
-            })
-          '';
-
-          # Terminal-mode maps exit terminal-insert first so <C-hjkl> also works
-          # for navigating terminal panes.
-          luaConfigRC.window-nav-keymaps = ''
-            vim.keymap.set("n", "<C-h>", "<C-w>h", { desc = "Window left" })
-            vim.keymap.set("n", "<C-l>", "<C-w>l", { desc = "Window right" })
-            vim.keymap.set("n", "<C-j>", "<C-w>j", { desc = "Window down" })
-            vim.keymap.set("n", "<C-k>", "<C-w>k", { desc = "Window up" })
-
-            vim.keymap.set("t", "<C-h>", [[<C-\><C-n><C-w>h]], { desc = "Window left" })
-            vim.keymap.set("t", "<C-l>", [[<C-\><C-n><C-w>l]], { desc = "Window right" })
-            vim.keymap.set("t", "<C-j>", [[<C-\><C-n><C-w>j]], { desc = "Window down" })
-            vim.keymap.set("t", "<C-k>", [[<C-\><C-n><C-w>k]], { desc = "Window up" })
-          '';
+  modules.homeManager.nvf-ide = { host, ... }: {
+    imports = [ inputs.nvf.homeManagerModules.default ];
+    programs.nvf = {
+      enable = true;
+      settings.vim = {
+        enableLuaLoader = true;
+        theme = {
+          enable = true;
+          name = "catppuccin";
+          style = "macchiato";
+          transparent = true;
         };
+
+        # Tree-sitter folding; start unfolded.
+        options = {
+          foldmethod = "expr";
+          foldexpr = "v:lua.vim.treesitter.foldexpr()";
+          foldlevelstart = 99;
+          foldlevel = 99;
+          shiftwidth = 2;
+          tabstop = 2;
+          softtabstop = 2;
+          autoread = true;
+        };
+
+        clipboard = {
+          enable = true;
+          registers = "unnamedplus";
+          providers.wl-copy.enable = true;
+        };
+
+        visuals.nvim-web-devicons.enable = true;
+        filetree.neo-tree = {
+          enable = true;
+          setupOpts.filesystem.use_libuv_file_watcher = true;
+          setupOpts.git_status_async = true;
+        };
+
+        utility.multicursors.enable = true;
+        mini.surround.enable = true;
+        mini.ai.enable = true;
+        telescope.enable = true;
+        binds.whichKey = {
+          enable = true;
+          register = {
+            "<leader>f" = "+Find";
+            "<leader>o" = "+OpenCode";
+          };
+        };
+
+        statusline.lualine = { enable = true; };
+        tabline.nvimBufferline.enable = true;
+        git.enable = true;
+        comments.comment-nvim.enable = true;
+        autopairs.nvim-autopairs.enable = true;
+        utility.motion.flash-nvim.enable = true;
+        visuals.indent-blankline.enable = true;
+        visuals.nvim-scrollbar.enable = true;
+        notify.nvim-notify.enable = true;
+        ui.illuminate.enable = true;
+        ui.colorizer.enable = true;
+
+        # lazygit shells out via its own nix store path, not $PATH — no
+        # extraPackages entry needed.
+        terminal.toggleterm = {
+          enable = true;
+          lazygit.enable = true;
+        };
+
+        autocomplete.blink-cmp.enable = true;
+        lsp = {
+          enable = true;
+          inlayHints.enable = true;
+        };
+
+        languages = {
+          enableTreesitter = true;
+          nix = {
+            enable = true;
+            lsp.servers = [ "nixd" ];
+          };
+
+          lua = {
+            enable = true;
+            extensions.lazydev.enable = true;
+          };
+
+          bash.enable = true;
+          markdown = {
+            enable = true;
+            extensions.render-markdown-nvim.enable = true;
+          };
+        };
+
+        lsp.servers.nixd = {
+          settings.nixd = {
+            nixpkgs.expr = "import (builtins.getFlake (toString ./.)).inputs.nixpkgs.outPath { }";
+            options.nixos.expr = "(builtins.getFlake (toString ./.)).nixosConfigurations.${host.name}.options";
+          };
+        };
+
+        luaConfigRC.filetree-keymaps = ''
+          vim.keymap.set("n", "<leader>e", "<cmd>Neotree toggle<cr>", { desc = "Toggle file explorer" })
+
+          -- "show" not "focus": opens as a persistent sidebar without stealing focus.
+          vim.api.nvim_create_autocmd("VimEnter", {
+            once = true,
+            callback = function()
+              require("neo-tree.command").execute({ action = "show" })
+            end,
+          })
+        '';
+
+        luaConfigRC.autoread-checktime = ''
+          vim.api.nvim_create_autocmd({ "FocusGained", "BufEnter", "CursorHold", "CursorHoldI" }, {
+            command = "checktime",
+          })
+        '';
+
+        # Terminal-mode maps exit terminal-insert first so <C-hjkl> also works
+        # for navigating terminal panes.
+        luaConfigRC.window-nav-keymaps = ''
+          vim.keymap.set("n", "<C-h>", "<C-w>h", { desc = "Window left" })
+          vim.keymap.set("n", "<C-l>", "<C-w>l", { desc = "Window right" })
+          vim.keymap.set("n", "<C-j>", "<C-w>j", { desc = "Window down" })
+          vim.keymap.set("n", "<C-k>", "<C-w>k", { desc = "Window up" })
+
+          vim.keymap.set("t", "<C-h>", [[<C-\><C-n><C-w>h]], { desc = "Window left" })
+          vim.keymap.set("t", "<C-l>", [[<C-\><C-n><C-w>l]], { desc = "Window right" })
+          vim.keymap.set("t", "<C-j>", [[<C-\><C-n><C-w>j]], { desc = "Window down" })
+          vim.keymap.set("t", "<C-k>", [[<C-\><C-n><C-w>k]], { desc = "Window up" })
+        '';
       };
     };
+  };
 }

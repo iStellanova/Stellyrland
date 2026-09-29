@@ -1,14 +1,6 @@
 { self, ... }:
 {
-  modules.nixos.ItsRedFlame.stellanova =
-    {
-      config,
-      host,
-      lib,
-      pkgs,
-      ...
-    }:
-    {
+  modules.nixos.ItsRedFlame.stellanova = { config, host, lib, pkgs, ... }: {
       imports = [ self.modules.nixos.stellanova ];
       security.nix-secrets.secrets.redflamepsswd.name = "ItsRedFlame/redflamepsswd";
       security.nix-secrets.secrets.stellapsswd = {

@@ -21,18 +21,13 @@
               type = "filesystem";
               format = "vfat";
               mountpoint = "/boot";
-              mountOptions = [
-                "fmask=0022"
-                "dmask=0022"
-              ];
+              mountOptions = [ "fmask=0022" "dmask=0022" ];
             };
           };
           swap = {
             priority = 2;
             size = "8G";
-            content = {
-              type = "swap";
-            };
+            content = { type = "swap"; };
           };
           root = {
             priority = 3;

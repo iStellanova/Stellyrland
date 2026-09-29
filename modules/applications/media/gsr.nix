@@ -4,13 +4,7 @@
     environment.systemPackages = [ pkgs.gpu-screen-recorder-gtk ];
   };
 
-  modules.homeManager.gsr =
-    {
-      host,
-      lib,
-      pkgs,
-      ...
-    }:
+  modules.homeManager.gsr = { host, lib, pkgs, ... }:
     let
       primary = lib.head ((host.monitorPriority or [ ]) ++ [ "" ]);
     in

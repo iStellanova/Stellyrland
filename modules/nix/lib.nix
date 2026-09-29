@@ -1,9 +1,4 @@
-{
-  inputs,
-  self,
-  lib,
-  ...
-}:
+{ inputs, self, lib, ... }:
 let
   mkSystem = class: systemFn: system: name: {
     ${name} = systemFn {

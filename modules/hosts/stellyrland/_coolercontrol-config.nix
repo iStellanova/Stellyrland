@@ -1,9 +1,5 @@
 # Exact hardware snapshot for this machine; IDs will not match another host.
-{
-  host,
-  pkgs,
-  ...
-}:
+{ host, pkgs, ... }:
 let
   bunnyDir =
     if host.dataPath != null then

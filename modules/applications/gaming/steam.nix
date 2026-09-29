@@ -8,19 +8,10 @@
   # For Steam game HDR:
   # PROTON_ENABLE_WAYLAND=1 PROTON_USE_NTSYNC=1 RADV_PERFTEST=gpl %command%
   # Use CachyOS's Proton.
-  modules.nixos.steam =
-    {
-      lib,
-      pkgs,
-      host,
-      ...
-    }:
-    {
+  modules.nixos.steam = { lib, pkgs, host, ... }: {
       nixpkgs.overlays = [ inputs.chaotic.overlays.default ];
       boot.kernelModules = [ "ntsync" ];
-      boot.kernel.sysctl = {
-        "vm.max_map_count" = 2147483642;
-      };
+      boot.kernel.sysctl = { "vm.max_map_count" = 2147483642; };
 
       programs.gamemode.enable = true;
       programs.steam = {

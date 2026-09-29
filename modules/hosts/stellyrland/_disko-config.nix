@@ -23,10 +23,7 @@
                 type = "filesystem";
                 format = "vfat";
                 mountpoint = "/boot";
-                mountOptions = [
-                  "fmask=0022"
-                  "dmask=0022"
-                ];
+                mountOptions = [ "fmask=0022" "dmask=0022" ];
               };
             };
             swap = {
@@ -45,10 +42,7 @@
                 name = "cryptroot";
                 settings = {
                   allowDiscards = true;
-                  crypttabExtraOpts = [
-                    "tpm2-device=auto"
-                    "tpm2-pcrs=0+2+7"
-                  ];
+                  crypttabExtraOpts = [ "tpm2-device=auto" "tpm2-pcrs=0+2+7" ];
                 };
                 content = {
                   type = "zfs";
@@ -72,10 +66,7 @@
                 name = "cryptextra";
                 settings = {
                   allowDiscards = true;
-                  crypttabExtraOpts = [
-                    "tpm2-device=auto"
-                    "tpm2-pcrs=0+2+7"
-                  ];
+                  crypttabExtraOpts = [ "tpm2-device=auto" "tpm2-pcrs=0+2+7" ];
                 };
                 content = {
                   type = "zfs";
@@ -153,11 +144,7 @@
             type = "zfs_fs";
             mountpoint = "/ExtraDisk";
             options.mountpoint = "legacy";
-            mountOptions = [
-              "nofail"
-              "x-gvfs-show"
-              "x-gvfs-name=Extra Disk"
-            ];
+            mountOptions = [ "nofail" "x-gvfs-show" "x-gvfs-name=Extra Disk" ];
           };
         };
       };

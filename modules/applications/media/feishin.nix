@@ -1,12 +1,5 @@
 {
-  modules.nixos.feishin =
-    {
-      lib,
-      host,
-      pkgs,
-      ...
-    }:
-    {
+  modules.nixos.feishin = { lib, host, pkgs, ... }: {
       environment.systemPackages = [ pkgs.feishin ];
 
       imports = lib.optional (host.persistence or false) {

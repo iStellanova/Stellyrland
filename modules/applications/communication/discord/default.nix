@@ -5,34 +5,25 @@
     follows.nixpkgs = "nixpkgs";
   };
 
-  modules.homeManager.discord =
-    { pkgs, lib, ... }:
-    {
-      imports = [
-        inputs.nixcord.homeModules.nixcord
+  modules.homeManager.discord = { pkgs, lib, ... }: {
+    imports = [
+      inputs.nixcord.homeModules.nixcord
+    ];
+
+    programs.nixcord = lib.mkIf pkgs.stdenv.hostPlatform.isLinux (
+      import ./_config.nix { inherit pkgs lib; }
+    );
+  };
+
+  modules.nixos.discord = { lib, host, ... }: {
+    imports = lib.optional (host.persistence or false) {
+      preservation.preserveAt."/persist".users.${host.username}.directories = [
+        ".config/vesktop"
       ];
-
-      programs.nixcord = lib.mkIf pkgs.stdenv.hostPlatform.isLinux (
-        import ./_config.nix { inherit pkgs lib; }
-      );
     };
+  };
 
-  modules.nixos.discord =
-    { lib, host, ... }:
-    {
-      imports = lib.optional (host.persistence or false) {
-        preservation.preserveAt."/persist".users.${host.username}.directories = [ ".config/vesktop" ];
-      };
-    };
-
-  modules.darwin.discord =
-    {
-      host,
-      pkgs,
-      lib,
-      ...
-    }:
-    {
+  modules.darwin.discord = { host, pkgs, lib, ... }: {
       imports = [ inputs.nixcord.darwinModules.default ];
 
       programs.nixcord = (import ./_config.nix { inherit pkgs lib; }) // {

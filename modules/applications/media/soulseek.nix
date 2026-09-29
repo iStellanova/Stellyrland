@@ -1,12 +1,5 @@
 {
-  modules.nixos.soulseek =
-    {
-      lib,
-      host,
-      pkgs,
-      ...
-    }:
-    {
+  modules.nixos.soulseek = { lib, host, pkgs, ... }: {
       environment.systemPackages = [ pkgs.nicotine-plus ];
 
       imports = lib.optional (host.persistence or false) {

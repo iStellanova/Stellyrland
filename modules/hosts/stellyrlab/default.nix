@@ -1,12 +1,5 @@
 {
-  modules.nixos.stellyrlab-host =
-    {
-      config,
-      host,
-      pkgs,
-      ...
-    }:
-    {
+  modules.nixos.stellyrlab-host = { config, host, pkgs, ... }: {
       imports = [
         ./_hardware-configuration.nix
         ./_disko-config.nix
@@ -59,10 +52,7 @@
           luks.devices.stellyrlab-root = {
             device = "/dev/disk/by-partlabel/disk-main-root";
             allowDiscards = true;
-            crypttabExtraOpts = [
-              "tpm2-device=auto"
-              "tpm2-pcrs=0+2+7"
-            ];
+            crypttabExtraOpts = [ "tpm2-device=auto" "tpm2-pcrs=0+2+7" ];
           };
         };
       };

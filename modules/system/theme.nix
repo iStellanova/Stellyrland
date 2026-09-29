@@ -17,12 +17,7 @@
     };
   };
 
-  modules.homeManager.catppuccin =
-    {
-      pkgs,
-      lib,
-      ...
-    }:
+  modules.homeManager.catppuccin = { pkgs, lib, ... }:
     let
       catppuccinGtk = pkgs.catppuccin-gtk.override {
         accents = [ "sapphire" ];

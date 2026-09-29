@@ -1,11 +1,6 @@
 {
 
-  modules.homeManager.nix-tools =
-    {
-      host,
-      ...
-    }:
-    {
+  modules.homeManager.nix-tools = { host, ... }: {
       programs = {
         zsh = {
           shellAliases = {

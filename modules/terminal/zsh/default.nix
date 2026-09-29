@@ -7,14 +7,7 @@ in
   modules.nixos.zsh = zshOsPkg;
   modules.darwin.zsh = zshOsPkg;
 
-  modules.homeManager.zsh =
-    {
-      pkgs,
-      lib,
-      host,
-      ...
-    }:
-    {
+  modules.homeManager.zsh = { pkgs, lib, host, ... }: {
       home.file.".p10k.zsh".text = import ./_p10k.nix { inherit lib; };
 
       programs.zsh = {
@@ -23,23 +16,13 @@ in
         syntaxHighlighting.enable = true;
         historySubstringSearch = {
           enable = true;
-          searchUpKey = [
-            "^[[A"
-            "^P"
-          ];
-          searchDownKey = [
-            "^[[B"
-            "^N"
-          ];
+          searchUpKey = [ "^[[A" "^P" ];
+          searchDownKey = [ "^[[B" "^N" ];
         };
 
         oh-my-zsh = {
           enable = true;
-          plugins = [
-            "git"
-            "copyfile"
-            "copybuffer"
-          ];
+          plugins = [ "git" "copyfile" "copybuffer" ];
         };
 
         initContent = lib.mkMerge [

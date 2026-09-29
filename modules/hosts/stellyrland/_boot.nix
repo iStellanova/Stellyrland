@@ -1,18 +1,10 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}:
+{ config, lib, pkgs, ... }:
 {
   boot.tmp.useTmpfs = true;
   boot.tmp.tmpfsSize = "50%";
 
   boot.initrd.compressor = "zstd";
-  boot.initrd.compressorArgs = [
-    "-19"
-    "-T0"
-  ];
+  boot.initrd.compressorArgs = [ "-19" "-T0" ];
 
   boot.initrd.supportedFilesystems = [ "zfs" ];
   boot.zfs.forceImportRoot = true;
@@ -54,19 +46,13 @@
   boot.initrd.luks.devices."cryptroot" = {
     device = "/dev/disk/by-partlabel/disk-main-root";
     allowDiscards = true;
-    crypttabExtraOpts = [
-      "tpm2-device=auto"
-      "tpm2-pcrs=0+2+7"
-    ];
+    crypttabExtraOpts = [ "tpm2-device=auto" "tpm2-pcrs=0+2+7" ];
   };
 
   boot.initrd.luks.devices."cryptextra" = {
     device = "/dev/disk/by-partlabel/disk-extra-luks";
     allowDiscards = true;
-    crypttabExtraOpts = [
-      "tpm2-device=auto"
-      "tpm2-pcrs=0+2+7"
-    ];
+    crypttabExtraOpts = [ "tpm2-device=auto" "tpm2-pcrs=0+2+7" ];
   };
 
   boot.initrd.systemd.services.rollback = {

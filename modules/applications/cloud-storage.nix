@@ -1,9 +1,6 @@
 {
   modules.darwin.cloud-storage = {
-    homebrew.casks = [
-      "proton-drive"
-      "onedrive"
-    ];
+    homebrew.casks = [ "proton-drive" "onedrive" ];
   };
 
   modules.homeManager.cloud-storage = { pkgs, ... }: {

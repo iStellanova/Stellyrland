@@ -12,12 +12,7 @@ let
     environment.systemPackages = cliPkgs pkgs;
     environment.variables.TERMINFO_DIRS = [ "${pkgs.kitty.terminfo}/share/terminfo" ];
   };
-  cliNixos =
-    {
-      lib,
-      host,
-      ...
-    }:
+  cliNixos = { lib, host, ... }:
     {
       imports = [
         cliOs
@@ -46,13 +41,7 @@ in
   modules.nixos.cli = cliNixos;
   modules.darwin.cli = cliOs;
 
-  modules.homeManager.cli =
-    {
-      config,
-      lib,
-      ...
-    }:
-    {
+  modules.homeManager.cli = { config, lib, ... }: {
       imports = [ inputs.nix-index-database.homeModules.nix-index ];
 
       # Works around an eza bug where theme.yml (vs theme.yaml) is silently
@@ -73,20 +62,13 @@ in
           enable = true;
           enableZshIntegration = true;
           icons = "auto";
-          extraOptions = [
-            "-lha"
-            "--group-directories-first"
-            "--header"
-            "--short-nix"
-          ];
+          extraOptions = [ "-lha" "--group-directories-first" "--header" "--short-nix" ];
         };
 
         tealdeer = {
           enable = true;
           settings = {
-            updates = {
-              auto_update = true;
-            };
+            updates = { auto_update = true; };
           };
         };
 

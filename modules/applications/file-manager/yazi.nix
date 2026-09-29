@@ -1,11 +1,5 @@
 {
-  modules.homeManager.yazi =
-    {
-      host,
-      pkgs,
-      lib,
-      ...
-    }:
+  modules.homeManager.yazi = { host, pkgs, lib, ... }:
     let
       openCmd =
         if host.class == "darwin" then
@@ -21,11 +15,7 @@
 
         plugins = {
           inherit (pkgs.yaziPlugins)
-            git
-            rsync
-            chmod
-            full-border
-            ;
+            git rsync chmod full-border;
         };
 
         initLua = ''
@@ -41,10 +31,7 @@
               desc = "Copy files using rsync";
             }
             {
-              on = [
-                "c"
-                "m"
-              ];
+              on = [ "c" "m" ];
               run = "plugin chmod";
               desc = "Chmod on selected files";
             }
@@ -123,31 +110,19 @@
           open.rules = [
             {
               mime = "video/*";
-              use = [
-                "play"
-                "open"
-              ];
+              use = [ "play" "open" ];
             }
             {
               mime = "audio/*";
-              use = [
-                "play"
-                "open"
-              ];
+              use = [ "play" "open" ];
             }
             {
               mime = "image/*";
-              use = [
-                "view"
-                "open"
-              ];
+              use = [ "view" "open" ];
             }
             {
               mime = "application/epub+zip";
-              use = [
-                "book"
-                "edit"
-              ];
+              use = [ "book" "edit" ];
             }
             {
               mime = "application/pdf";
@@ -155,31 +130,19 @@
             }
             {
               mime = "application/{octet-stream,x-executable,x-sharedlib,x-pie-executable}";
-              use = [
-                "hex"
-                "open"
-              ];
+              use = [ "hex" "open" ];
             }
             {
               mime = "application/{zip,rar,7z*,tar*,x-tar,x-bzip*,x-gzip,x-xz}";
-              use = [
-                "exfil"
-                "open"
-              ];
+              use = [ "exfil" "open" ];
             }
             {
               mime = "text/*";
-              use = [
-                "edit"
-                "open"
-              ];
+              use = [ "edit" "open" ];
             }
             {
               mime = "*";
-              use = [
-                "edit"
-                "open"
-              ];
+              use = [ "edit" "open" ];
             }
           ];
 

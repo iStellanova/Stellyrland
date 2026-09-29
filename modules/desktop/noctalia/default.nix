@@ -1,14 +1,10 @@
 {
-  modules.nixos.noctalia =
-    {
-      lib,
-      host,
-      ...
-    }:
-    {
+  modules.nixos.noctalia = { lib, host, ... }: {
       imports = lib.optional (host.persistence or false) {
         preservation.preserveAt."/persist" = {
-          directories = [ "/var/lib/noctalia-greeter" ];
+          directories = [
+            "/var/lib/noctalia-greeter"
+          ];
           users.${host.username}.files = [
             {
               file = ".local/state/noctalia/screen_time.json";
@@ -31,12 +27,7 @@
       };
     };
 
-  modules.homeManager.noctalia =
-    {
-      host,
-      lib,
-      ...
-    }:
+  modules.homeManager.noctalia = { host, lib, ... }:
     let
       wallpaperDir = "${host.homeDir}/Pictures/wallpapers";
       defaultWallpaper = "${wallpaperDir}/wallpaper.png";
@@ -87,16 +78,8 @@
             community_palette = "Catppuccin Macchiato Lavender";
             source = "community";
             templates = {
-              builtin_ids = [
-                "btop"
-                "cava"
-                "kitty"
-                "umbriel"
-              ];
-              community_ids = [
-                "yazi"
-                "hyprtoolkit"
-              ];
+              builtin_ids = [ "btop" "cava" "kitty" "umbriel" ];
+              community_ids = [ "yazi" "hyprtoolkit" ];
             };
           };
 
@@ -115,10 +98,7 @@
             monitors = lib.optional (primary != "") primary;
           };
 
-          plugins.enabled = [
-            "lucasoe/proton-pass"
-            "avivbintangaringga/nix-monitor"
-          ];
+          plugins.enabled = [ "lucasoe/proton-pass" "avivbintangaringga/nix-monitor" ];
 
           plugin_settings."avivbintangaringga/nix-monitor" = {
             branch = "nixos-unstable";
@@ -147,12 +127,7 @@
             ];
             margin_ends = 5;
             margin_edge = 5;
-            start = [
-              "launcher"
-              "workspaces"
-              "audio_visualizer"
-              "active_window"
-            ];
+            start = [ "launcher" "workspaces" "audio_visualizer" "active_window" ];
             widget_spacing = 13;
           };
 
@@ -195,9 +170,7 @@
               glyph = "brand-snowflake";
             };
 
-            media = {
-              title_scroll = "on_hover";
-            };
+            media = { title_scroll = "on_hover"; };
 
             network.show_label = false;
             nix-monitor.type = "avivbintangaringga/nix-monitor:nix-monitor";

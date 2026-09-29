@@ -5,10 +5,7 @@
       self.modules.nixos.stellanova
     ];
     security.nix-secrets.secrets.stellacode = {
-      recipients = [
-        "stellanova"
-        "stellyrland"
-      ];
+      recipients = [ "stellanova" "stellyrland" ];
       owner = "stellanova";
       mode = "0600";
       path = "/run/secrets/stellacode";

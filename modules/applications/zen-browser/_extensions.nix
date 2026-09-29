@@ -1,10 +1,4 @@
-{
-  inputs,
-  pkgs,
-  config,
-  lib,
-  ...
-}:
+{ inputs, pkgs, config, lib, ... }:
 {
   config = lib.mkIf config.zenBrowser.personalize {
     programs.zen-browser.profiles.default.extensions.packages =

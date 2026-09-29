@@ -1,10 +1,5 @@
 # Hardware and runtime mounts for stellyrlab (Dell OptiPlex 7060).
-{
-  config,
-  lib,
-  modulesPath,
-  ...
-}:
+{ config, lib, modulesPath, ... }:
 {
   imports = [
     (modulesPath + "/installer/scan/not-detected.nix")
@@ -43,10 +38,7 @@
   fileSystems."/boot" = {
     device = "/dev/disk/by-partlabel/STELLYRBOOT";
     fsType = "vfat";
-    options = [
-      "fmask=0077"
-      "dmask=0077"
-    ];
+    options = [ "fmask=0077" "dmask=0077" ];
   };
 
   swapDevices = [

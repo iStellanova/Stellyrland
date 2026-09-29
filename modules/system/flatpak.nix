@@ -1,29 +1,25 @@
 { inputs, ... }:
 {
   pins.nix-flatpak.url = "https://github.com/gmodena/nix-flatpak";
-  modules.nixos.flatpak =
-    {
-      lib,
-      host,
-      ...
-    }:
-    {
+  modules.nixos.flatpak = { lib, host, ... }: {
       imports = [
         inputs.nix-flatpak.nixosModules.nix-flatpak
       ]
       ++ lib.optional (host.persistence or false) {
         preservation.preserveAt."/persist" = {
-          directories = [ "/var/lib/flatpak" ];
-          users.${host.username}.directories = [ ".var/app" ];
+          directories = [
+            "/var/lib/flatpak"
+          ];
+          users.${host.username}.directories = [
+            ".var/app"
+          ];
         };
       };
 
       services.flatpak = {
         enable = true;
         update.onActivation = true;
-        packages = [
-          "io.github.kolunmi.Bazaar"
-        ];
+        packages = [ "io.github.kolunmi.Bazaar" ];
       };
       # nix-flatpak's own unit only orders after multi-user.target, so a flatpak
       # install can run before the network is up and fail.
