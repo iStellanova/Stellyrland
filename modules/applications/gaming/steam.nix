@@ -39,6 +39,7 @@
         preservation.preserveAt."/persist".users.${host.username}.directories = [
           ".local/share/Steam"
           ".steam"
+          ".local/share/Paradox Interactive"
         ];
       };
     };

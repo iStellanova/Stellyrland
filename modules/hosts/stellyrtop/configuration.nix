@@ -24,7 +24,7 @@
       fonts
 
       # Gaming
-      game-launchers
+      prism
       steam
 
       # Media

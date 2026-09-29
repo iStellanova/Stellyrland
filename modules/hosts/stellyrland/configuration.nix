@@ -49,7 +49,8 @@
       preservation
 
       # Gaming
-      game-launchers
+      prism
+      r2modman
       gamescope
       steam
       vr

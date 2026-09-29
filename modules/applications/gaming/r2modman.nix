@@ -1,12 +1,5 @@
-let
-  osShared = { pkgs, ... }: {
-    environment.systemPackages = with pkgs; [
-      prismlauncher
-    ];
-  };
-in
 {
-  modules.nixos.game-launchers =
+  modules.nixos.r2modman =
     {
       lib,
       host,
@@ -42,15 +35,12 @@ in
       environment.systemPackages =
         with pkgs;
         [
-          prismlauncher
           r2modman
         ]
         ++ lib.optional (pkgs.stdenv.hostPlatform.system == "x86_64-linux") rpcBridge;
 
       imports = lib.optional (host.persistence or false) {
         preservation.preserveAt."/persist".users.${host.username}.directories = [
-          ".local/share/Paradox Interactive"
-          ".local/share/PrismLauncher"
           ".local/share/r2modman"
           ".config/r2modman"
           ".config/r2modmanPlus-local"
@@ -58,5 +48,4 @@ in
       };
     };
 
-  modules.darwin.game-launchers = osShared;
 }

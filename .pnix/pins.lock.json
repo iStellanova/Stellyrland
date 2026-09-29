@@ -93,25 +93,7 @@
         "hash": "sha256-uZkBR7yHdIKUFB5SZdfgh1qkGfI3XmYmI/lTiquxbck="
       }
     },
-    "freesmlauncher": {
-      "type": "github",
-      "host": "github.com",
-      "owner": "FreesmTeam",
-      "repo": "FreesmLauncher",
-      "url": "https://github.com/FreesmTeam/FreesmLauncher",
-      "rev": "434d367ee0f0d03dd7b955d5019b202e27a77c4d",
-      "ref": "HEAD",
-      "hash": "sha256-Sf9irg7E3IGnIbb+ZWJX0ZhOMQilxRusQyePfYBEgao=",
-      "lastModified": 1790333884,
-      "follows": {
-        "nixpkgs": "nixpkgs"
-      },
-      "fetch": {
-        "kind": "tarball",
-        "url": "https://github.com/FreesmTeam/FreesmLauncher/archive/434d367ee0f0d03dd7b955d5019b202e27a77c4d.tar.gz",
-        "hash": "sha256-Sf9irg7E3IGnIbb+ZWJX0ZhOMQilxRusQyePfYBEgao="
-      }
-    },
+
     "home-manager": {
       "type": "github",
       "host": "github.com",
