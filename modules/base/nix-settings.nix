@@ -26,7 +26,7 @@ let
     ];
   };
   osShared = {
-    nix.nixPath = [ ];
+    nix.settings.nix-path = [ ];
     nixpkgs.config = {
       allowUnfree = true;
     };
