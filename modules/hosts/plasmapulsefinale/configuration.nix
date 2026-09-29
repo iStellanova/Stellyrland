@@ -34,7 +34,7 @@
       # Gaming
       steam
       roblox
-      freesm
+      prism
 
       # Host Specific Config
       plasmapulsefinale-host

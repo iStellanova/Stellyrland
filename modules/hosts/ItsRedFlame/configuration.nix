@@ -43,7 +43,7 @@
       steam
       roblox
       flatpak
-      freesm
+      prism
       xclicker
 
       # Host Specific Config
