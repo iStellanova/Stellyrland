@@ -17,7 +17,6 @@
     {
       imports = [
         ./_options.nix
-        ./_satellite-fix.nix
         inputs.umbriel.nixosModules.default
       ]
       ++ lib.optional (host.persistence or false) {
