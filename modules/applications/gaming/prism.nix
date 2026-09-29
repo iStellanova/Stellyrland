@@ -1,10 +1,3 @@
-let
-  osShared =
-    { pkgs, ... }:
-    {
-      environment.systemPackages = [ pkgs.prismlauncher ];
-    };
-in
 {
   modules.nixos.prism =
     {
@@ -15,7 +8,6 @@ in
     }:
     {
       environment.systemPackages = [ pkgs.prismlauncher ];
-
       imports = lib.optional (host.persistence or false) {
         preservation.preserveAt."/persist".users.${host.username}.directories = [
           ".local/share/PrismLauncher"
@@ -23,5 +15,7 @@ in
       };
     };
 
-  modules.darwin.prism = osShared;
+  modules.darwin.prism = { pkgs, ... }: {
+    environment.systemPackages = [ pkgs.prismlauncher ];
+  };
 }

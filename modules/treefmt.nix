@@ -15,7 +15,6 @@ let
     inputs.treefmt-nix.lib.evalModule inputs.nixpkgs.legacyPackages.${system} {
       projectRootFile = "flake.nix";
       programs = {
-        nixfmt.enable = true;
         deadnix.enable = true;
         statix.enable = true;
       };
@@ -28,8 +27,7 @@ in
     follows.nixpkgs = "nixpkgs";
   };
 
-  formatter = lib.genAttrs systems (system: treefmtEval.${system}.config.build.wrapper);
   checks = lib.genAttrs systems (system: {
-    formatting = treefmtEval.${system}.config.build.check self;
+    linting = treefmtEval.${system}.config.build.check self;
   });
 }

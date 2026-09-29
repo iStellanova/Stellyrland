@@ -79,22 +79,16 @@
           };
 
           autocomplete.blink-cmp.enable = true;
-          formatter.conform-nvim.enable = true;
           lsp = {
             enable = true;
             inlayHints.enable = true;
-            formatOnSave = true;
           };
 
           languages = {
             enableTreesitter = true;
-            enableFormat = true;
-
-            # nixd/nixfmt, not NVF's alejandra default, to match Zed.
             nix = {
               enable = true;
               lsp.servers = [ "nixd" ];
-              format.type = [ "nixfmt" ];
             };
 
             lua = {
