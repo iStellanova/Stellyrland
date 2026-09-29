@@ -10,7 +10,6 @@
     {
       imports = [
         inputs.nixcord.homeModules.nixcord
-        ./_music-rpc.nix
       ];
 
       programs.nixcord = lib.mkIf pkgs.stdenv.hostPlatform.isLinux (
