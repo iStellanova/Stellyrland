@@ -1,18 +1,10 @@
 let
   osShared =
-    { pkgs, lib, ... }:
+    { pkgs, ... }:
     {
       environment.systemPackages = with pkgs; [
         jetbrains.clion
-        (
-          if stdenv.hostPlatform.isDarwin then
-            # TODO(pycharm): remove when the Darwin package restores its Cython helper path.
-            jetbrains.pycharm.overrideAttrs (old: {
-              nativeBuildInputs = lib.remove jetbrains.cythonDebugSpeedupsHook old.nativeBuildInputs;
-            })
-          else
-            jetbrains.pycharm
-        )
+        jetbrains.pycharm
       ];
     };
 in
