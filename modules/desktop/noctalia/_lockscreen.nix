@@ -1,9 +1,7 @@
 { primary, secondary, ... }:
 {
   programs.noctalia.settings = {
-    lockscreen = {
-      blur_intensity = 0.0;
-    };
+    lockscreen = { blur_intensity = 0.0; };
 
     lockscreen_widgets = {
       enabled = true;

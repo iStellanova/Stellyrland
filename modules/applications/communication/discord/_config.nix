@@ -21,12 +21,8 @@ _: {
     autoUpdate = true;
     autoUpdateNotification = true;
 
-    themeLinks = [
-      "https://catppuccin.github.io/discord/dist/catppuccin-macchiato-sapphire.theme.css"
-    ];
-    enabledThemeLinks = [
-      "https://catppuccin.github.io/discord/dist/catppuccin-macchiato-sapphire.theme.css"
-    ];
+    themeLinks = [ "https://catppuccin.github.io/discord/dist/catppuccin-macchiato-sapphire.theme.css" ];
+    enabledThemeLinks = [ "https://catppuccin.github.io/discord/dist/catppuccin-macchiato-sapphire.theme.css" ];
 
     # Plugins with typed nixcord options (checked against shared.json/vencord.json/equicord.json).
     plugins = {

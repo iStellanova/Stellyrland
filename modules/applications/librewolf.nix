@@ -1,13 +1,9 @@
 {
-  modules.nixos.librewolf =
-    {
-      lib,
-      host,
-      ...
-    }:
-    {
+  modules.nixos.librewolf = { lib, host, ... }: {
       imports = lib.optional (host.persistence or false) {
-        preservation.preserveAt."/persist".users.${host.username}.directories = [ ".librewolf" ];
+        preservation.preserveAt."/persist".users.${host.username}.directories = [
+          ".librewolf"
+        ];
       };
     };
 

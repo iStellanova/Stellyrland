@@ -1,67 +1,53 @@
 _: {
-  modules.nixos.hermes =
-    { config, host, ... }:
-    {
-      nix.settings = {
-        extra-substituters = [ "https://cache.numtide.com" ];
-        extra-trusted-public-keys = [
-          "nixs3.numtide.com-1:DTx8wZduET09hRmMtKdQDxNNthLQETkc/yaX7M4qK0g="
+  modules.nixos.hermes = { config, host, ... }: {
+    nix.settings = {
+      extra-substituters = [ "https://cache.numtide.com" ];
+      extra-trusted-public-keys = [ "nixs3.numtide.com-1:DTx8wZduET09hRmMtKdQDxNNthLQETkc/yaX7M4qK0g=" ];
+    };
+    security.nix-secrets.secrets = {
+      hermes-searxng-env = {
+        recipients = [
+          "stellanova"
+          host.name
         ];
+        owner = "root";
+        mode = "0400";
+        path = "/run/secrets/hermes-searxng.env";
       };
-      security.nix-secrets.secrets = {
-        hermes-searxng-env = {
-          recipients = [
-            "stellanova"
-            host.name
-          ];
-          owner = "root";
-          mode = "0400";
-          path = "/run/secrets/hermes-searxng.env";
-        };
-        hermes-discord-env = {
-          recipients = [
-            "stellanova"
-            "stellyrlab"
-            "stellyrland"
-          ];
-          owner = host.username;
-          mode = "0400";
-          path = "/run/secrets/hermes-discord.env";
-        };
-        stellxie-github-auth = {
-          recipients = [
-            "stellanova"
-            "stellyrlab"
-          ];
-          owner = host.username;
-          mode = "0600";
-          path = "/run/secrets/stellxie-github-auth";
-        };
-        stellxie-github-signing = {
-          recipients = [
-            "stellanova"
-            "stellyrlab"
-          ];
-          owner = host.username;
-          mode = "0600";
-          path = "/run/secrets/stellxie-github-signing";
-        };
+      hermes-discord-env = {
+        recipients = [ "stellanova" "stellyrlab" "stellyrland" ];
+        owner = host.username;
+        mode = "0400";
+        path = "/run/secrets/hermes-discord.env";
       };
-
-      services.searx = {
-        enable = true;
-        domain = "localhost";
-        environmentFile = config.security.nix-secrets.secrets.hermes-searxng-env.path;
-        settings = {
-          server = {
-            bind_address = "127.0.0.1";
-            port = 8088;
-            secret_key = "$SEARXNG_SECRET_KEY";
-          };
-          search.formats = [ "json" ];
-        };
+      stellxie-github-auth = {
+        recipients = [ "stellanova" "stellyrlab" ];
+        owner = host.username;
+        mode = "0600";
+        path = "/run/secrets/stellxie-github-auth";
+      };
+      stellxie-github-signing = {
+        recipients = [ "stellanova" "stellyrlab" ];
+        owner = host.username;
+        mode = "0600";
+        path = "/run/secrets/stellxie-github-signing";
       };
     };
+
+    services.searx = {
+      enable = true;
+      domain = "localhost";
+      environmentFile = config.security.nix-secrets.secrets.hermes-searxng-env.path;
+      settings = {
+        server = {
+          bind_address = "127.0.0.1";
+          port = 8088;
+          secret_key = "$SEARXNG_SECRET_KEY";
+        };
+        search.formats = [ "json" ];
+      };
+    };
+  };
 
   pins = {
     llm-agents = {
@@ -74,12 +60,7 @@ _: {
     };
   };
 
-  modules.homeManager.hermes =
-    {
-      inputs,
-      pkgs,
-      ...
-    }:
+  modules.homeManager.hermes = { inputs, pkgs, ... }:
     let
       hermesPackage = inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.hermes-agent;
       theme = import ./_theme.nix;
@@ -131,9 +112,7 @@ _: {
         SEARXNG_URL = "http://127.0.0.1:8088";
         LD_LIBRARY_PATH = "${pkgs.libopus}/lib";
       };
-      systemd.user.sessionVariables = {
-        SEARXNG_URL = "http://127.0.0.1:8088";
-      };
+      systemd.user.sessionVariables = { SEARXNG_URL = "http://127.0.0.1:8088"; };
       home.file = {
         ".hermes/config.yaml".text = builtins.toJSON hermesConfig;
         ".hermes/SOUL.md".text = ''

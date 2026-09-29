@@ -1,15 +1,10 @@
 {
-  modules.nixos.protonvpn =
-    {
-      lib,
-      host,
-      pkgs,
-      ...
-    }:
-    {
+  modules.nixos.protonvpn = { lib, host, pkgs, ... }: {
       environment.systemPackages = [ pkgs.proton-vpn ];
       imports = lib.optional (host.persistence or false) {
-        preservation.preserveAt."/persist".users.${host.username}.directories = [ ".config/Proton/VPN" ];
+        preservation.preserveAt."/persist".users.${host.username}.directories = [
+          ".config/Proton/VPN"
+        ];
       };
     };
 

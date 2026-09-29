@@ -9,13 +9,7 @@
 
   };
 
-  modules.nixos.secrets =
-    {
-      host,
-      config,
-      ...
-    }:
-    {
+  modules.nixos.secrets = { host, config, ... }: {
       imports = [
         inputs.nix-secrets.nixosModules.default
       ];
@@ -44,12 +38,7 @@
             path = "/run/secrets/github-token";
             owner = host.username;
             mode = "0400";
-            recipients = [
-              "stellanova"
-              "stellyrlab"
-              "stellyrland"
-              "stellyrtop"
-            ];
+            recipients = [ "stellanova" "stellyrlab" "stellyrland" "stellyrtop" ];
           };
           secrets.${host.passwordSecret} = {
             neededForUsers = true;
@@ -65,12 +54,7 @@
       };
     };
 
-  modules.darwin.secrets =
-    {
-      host,
-      ...
-    }:
-    {
+  modules.darwin.secrets = { host, ... }: {
       imports = [ inputs.nix-secrets.darwinModules.default ];
 
       security.nix-secrets = {
@@ -85,10 +69,7 @@
           path = "${host.homeDir}/.config/github-token";
           owner = host.username;
           mode = "0400";
-          recipients = [
-            "stellanova"
-            "stellyrtop"
-          ];
+          recipients = [ "stellanova" "stellyrtop" ];
         };
       };
     };

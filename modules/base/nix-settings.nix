@@ -1,12 +1,7 @@
 { lib, ... }:
 let
   commonNixSettings = {
-    experimental-features = [
-      "nix-command"
-      "flakes"
-      "flake-self-attrs"
-      "pipe-operator"
-    ];
+    experimental-features = [ "nix-command" "flakes" "flake-self-attrs" "pipe-operator" ];
     log-lines = 25;
     auto-optimise-store = true;
     warn-dirty = false;
@@ -27,9 +22,7 @@ let
   };
   osShared = {
     nix.settings.nix-path = [ ];
-    nixpkgs.config = {
-      allowUnfree = true;
-    };
+    nixpkgs.config = { allowUnfree = true; };
     nix.extraOptions = ''
       !include /etc/nix/access-tokens.conf
     '';
@@ -44,9 +37,7 @@ in
           nix.enable = lib.mkDefault true;
           nix.settings = commonNixSettings;
           programs.nix-ld.enable = true;
-          environment.variables = {
-            NIXOS_OZONE_WL = "1";
-          };
+          environment.variables = { NIXOS_OZONE_WL = "1"; };
         };
       }
     ];

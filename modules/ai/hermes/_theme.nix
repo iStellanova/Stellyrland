@@ -72,12 +72,7 @@
 
   spinner = {
     waiting_faces = [ "·" ];
-    thinking_faces = [
-      "·"
-      "∙"
-      "●"
-      "∙"
-    ];
+    thinking_faces = [ "·" "∙" "●" "∙" ];
     thinking_verbs = [ "working" ];
     wings = [ ];
   };

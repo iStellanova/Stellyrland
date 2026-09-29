@@ -18,9 +18,7 @@ in
     imports = [
       osShared
       {
-        homebrew.casks = [
-          "intellij-idea"
-        ];
+        homebrew.casks = [ "intellij-idea" ];
       }
     ];
   };

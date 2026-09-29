@@ -1,12 +1,5 @@
 _: {
-  modules.nixos.noctalia-greeter =
-    {
-      host,
-      lib,
-      pkgs,
-      ...
-    }:
-    {
+  modules.nixos.noctalia-greeter = { host, lib, pkgs, ... }: {
       services.displayManager.noctalia-greeter = {
         enable = true;
         settings = {

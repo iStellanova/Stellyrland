@@ -1,9 +1,4 @@
-{
-  lib,
-  host,
-  osConfig,
-  ...
-}:
+{ lib, host, osConfig, ... }:
 let
   outputs = osConfig.desktop.umbriel.outputs;
   xwayland = pattern: "^(\\[Xwayland\\] )?${pattern}$";

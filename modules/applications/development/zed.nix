@@ -3,23 +3,15 @@
     homebrew.casks = [ "zed" ];
   };
 
-  modules.nixos.zed =
-    { lib, host, ... }:
-    {
-      imports = lib.optional (host.persistence or false) {
-        preservation.preserveAt."/persist".users.${host.username}.directories = [
-          ".local/share/zed"
-        ];
-      };
+  modules.nixos.zed = { lib, host, ... }: {
+    imports = lib.optional (host.persistence or false) {
+      preservation.preserveAt."/persist".users.${host.username}.directories = [
+        ".local/share/zed"
+      ];
     };
+  };
 
-  modules.homeManager.zed =
-    {
-      host,
-      pkgs,
-      lib,
-      ...
-    }:
+  modules.homeManager.zed = { host, pkgs, lib, ... }:
     let
       nixosHost = if host.class == "darwin" then "stellyrlab" else host.name;
     in
@@ -51,22 +43,13 @@
         mutableUserSettings = false;
         mutableUserKeymaps = false;
         mutableUserTasks = false;
-        extensions = [
-          "catppuccin"
-          "catppuccin-icons"
-          "catppuccin-blur"
-          "nix"
-        ];
+        extensions = [ "catppuccin" "catppuccin-icons" "catppuccin-blur" "nix" ];
         userSettings = {
-          "edit_predictions" = {
-            "provider" = "none";
-          };
+          "edit_predictions" = { "provider" = "none"; };
           "format_on_save" = "off";
           "font_family" = "JetBrainsMono Nerd Font Mono";
           "base_keymap" = "JetBrains";
-          "session" = {
-            "trust_all_worktrees" = true;
-          };
+          "session" = { "trust_all_worktrees" = true; };
           "helix_mode" = true;
           "font_weight" = 300.0;
           "ui_font_weight" = 300.0;
@@ -78,15 +61,9 @@
             "hide_gitignore" = true;
             "default_width" = 200.0;
           };
-          "outline_panel" = {
-            "dock" = "left";
-          };
-          "collaboration_panel" = {
-            "dock" = "left";
-          };
-          "git_panel" = {
-            "dock" = "left";
-          };
+          "outline_panel" = { "dock" = "left"; };
+          "collaboration_panel" = { "dock" = "left"; };
+          "git_panel" = { "dock" = "left"; };
           "icon_theme" = "Catppuccin Macchiato";
           "telemetry" = {
             "diagnostics" = false;
@@ -100,32 +77,20 @@
             "dark" = "Catppuccin Macchiato (Blur)";
           };
           "languages" = {
-            "C" = {
-              "language_servers" = [ "clangd" ];
-            };
-            "C++" = {
-              "language_servers" = [ "clangd" ];
-            };
-            "Nix" = {
-              "language_servers" = [ "nixd" ];
-            };
+            "C" = { "language_servers" = [ "clangd" ]; };
+            "C++" = { "language_servers" = [ "clangd" ]; };
+            "Nix" = { "language_servers" = [ "nixd" ]; };
           };
-          "minimap" = {
-            "show" = "always";
-          };
+          "minimap" = { "show" = "always"; };
           "lsp" = {
             "clangd" = {
               "binary" = {
                 "path" = "${pkgs.clang-tools}/bin/clangd";
-                "arguments" = [
-                  "--query-driver=${pkgs.gcc}/bin/gcc,${pkgs.gcc}/bin/g++"
-                ];
+                "arguments" = [ "--query-driver=${pkgs.gcc}/bin/gcc,${pkgs.gcc}/bin/g++" ];
               };
             };
             "nixd" = {
-              "binary" = {
-                "path" = "nixd";
-              };
+              "binary" = { "path" = "nixd"; };
               "settings" = {
                 "nixd" = {
                   "nixpkgs" = {
@@ -141,9 +106,7 @@
             };
           };
 
-          "agent" = {
-            "dock" = "right";
-          };
+          "agent" = { "dock" = "right"; };
           "agent_servers" = {
             "hermes-agent" = {
               "type" = "custom";

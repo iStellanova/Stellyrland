@@ -1,28 +1,24 @@
 {
-  modules.nixos.binary-cache-server =
-    { config, host, ... }:
-    {
-      security.nix-secrets.secrets.harmonia-signing-key = {
-        recipients = [
-          "stellanova"
-          host.name
-        ];
-        owner = "root";
-        mode = "0400";
-      };
-
-      nix.settings.secret-key-files = [
-        config.security.nix-secrets.secrets.harmonia-signing-key.path
+  modules.nixos.binary-cache-server = { config, host, ... }: {
+    security.nix-secrets.secrets.harmonia-signing-key = {
+      recipients = [
+        "stellanova"
+        host.name
       ];
-
-      services.harmonia.cache = {
-        enable = true;
-        signKeyPaths = [ config.security.nix-secrets.secrets.harmonia-signing-key.path ];
-        settings.bind = "[::]:5000";
-      };
-
-      networking.firewall.interfaces = {
-        tailscale0.allowedTCPPorts = [ 5000 ];
-      };
+      owner = "root";
+      mode = "0400";
     };
+
+    nix.settings.secret-key-files = [
+      config.security.nix-secrets.secrets.harmonia-signing-key.path
+    ];
+
+    services.harmonia.cache = {
+      enable = true;
+      signKeyPaths = [ config.security.nix-secrets.secrets.harmonia-signing-key.path ];
+      settings.bind = "[::]:5000";
+    };
+
+    networking.firewall.interfaces = { tailscale0.allowedTCPPorts = [ 5000 ]; };
+  };
 }

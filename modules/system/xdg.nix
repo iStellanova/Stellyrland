@@ -6,14 +6,7 @@
     ];
   };
 
-  modules.homeManager.xdg =
-    {
-      config,
-      pkgs,
-      lib,
-      ...
-    }:
-    {
+  modules.homeManager.xdg = { config, pkgs, lib, ... }: {
       config = lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
         xdg.userDirs = {
           enable = true;
@@ -26,9 +19,7 @@
           videos = "${config.home.homeDirectory}/Videos";
         };
 
-        xdg.systemDirs.data = [
-          "${config.home.homeDirectory}/.local/state/nix/profiles/scratch/share"
-        ];
+        xdg.systemDirs.data = [ "${config.home.homeDirectory}/.local/state/nix/profiles/scratch/share" ];
       };
     };
 }

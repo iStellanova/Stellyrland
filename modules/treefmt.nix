@@ -1,15 +1,6 @@
-{
-  inputs,
-  lib,
-  self,
-  ...
-}:
+{ inputs, lib, self, ... }:
 let
-  systems = [
-    "x86_64-linux"
-    "aarch64-linux"
-    "aarch64-darwin"
-  ];
+  systems = [ "x86_64-linux" "aarch64-linux" "aarch64-darwin" ];
   treefmtEval = lib.genAttrs systems (
     system:
     inputs.treefmt-nix.lib.evalModule inputs.nixpkgs.legacyPackages.${system} {

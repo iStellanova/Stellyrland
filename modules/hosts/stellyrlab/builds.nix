@@ -1,12 +1,6 @@
 { inputs, ... }:
 {
-  modules.homeManager.fleet-build =
-    {
-      host,
-      lib,
-      pkgs,
-      ...
-    }:
+  modules.homeManager.fleet-build = { host, lib, pkgs, ... }:
     let
       hermes = inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.hermes-agent;
       pnix = inputs.pnix.packages.${pkgs.stdenv.hostPlatform.system}.default;

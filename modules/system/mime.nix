@@ -1,12 +1,5 @@
 {
-  modules.homeManager.mime =
-    {
-      pkgs,
-      lib,
-      config,
-      ...
-    }:
-    {
+  modules.homeManager.mime = { pkgs, lib, config, ... }: {
       # Category -> .desktop file(s) actually installed on this host. The
       # mime-type mapping below is universal; only these bindings vary.
       options.mimeDefaultApps = lib.mkOption {
@@ -62,10 +55,7 @@
                   "audio/mp4"
                   "audio/x-flac"
                 ];
-                pdfViewer = [
-                  "application/pdf"
-                  "application/x-pdf"
-                ];
+                pdfViewer = [ "application/pdf" "application/x-pdf" ];
                 videoPlayer = [
                   "video/mp4"
                   "video/x-matroska"

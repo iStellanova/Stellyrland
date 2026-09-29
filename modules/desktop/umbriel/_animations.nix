@@ -15,9 +15,7 @@
       style = "fade";
     };
 
-    windows_move = {
-      curve = "snappy";
-    };
+    windows_move = { curve = "snappy"; };
 
     workspaces = {
       enabled = true;

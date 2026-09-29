@@ -21,12 +21,7 @@ let
     POWERLEVEL9K_ICON_BEFORE_CONTENT = "";
     POWERLEVEL9K_PROMPT_ADD_NEWLINE = true;
 
-    POWERLEVEL9K_LEFT_PROMPT_ELEMENTS = [
-      "os_icon"
-      "dir"
-      "vcs"
-      "newline"
-    ];
+    POWERLEVEL9K_LEFT_PROMPT_ELEMENTS = [ "os_icon" "dir" "vcs" "newline" ];
 
     POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS = [
       "status"
@@ -201,11 +196,7 @@ let
     # Asdf
     POWERLEVEL9K_ASDF_FOREGROUND = 0;
     POWERLEVEL9K_ASDF_BACKGROUND = 7;
-    POWERLEVEL9K_ASDF_SOURCES = [
-      "shell"
-      "local"
-      "global"
-    ];
+    POWERLEVEL9K_ASDF_SOURCES = [ "shell" "local" "global" ];
     POWERLEVEL9K_ASDF_PROMPT_ALWAYS_SHOW = false;
     POWERLEVEL9K_ASDF_SHOW_SYSTEM = true;
     POWERLEVEL9K_ASDF_SHOW_ON_UPGLOB = "";
@@ -342,11 +333,7 @@ let
     # Pyenv
     POWERLEVEL9K_PYENV_FOREGROUND = 0;
     POWERLEVEL9K_PYENV_BACKGROUND = 4;
-    POWERLEVEL9K_PYENV_SOURCES = [
-      "shell"
-      "local"
-      "global"
-    ];
+    POWERLEVEL9K_PYENV_SOURCES = [ "shell" "local" "global" ];
     POWERLEVEL9K_PYENV_PROMPT_ALWAYS_SHOW = false;
     POWERLEVEL9K_PYENV_SHOW_SYSTEM = true;
     POWERLEVEL9K_PYENV_CONTENT_EXPANSION = "'\${P9K_CONTENT}\${\${P9K_CONTENT:#$P9K_PYENV_PYTHON_VERSION(|/*)}:+ $P9K_PYENV_PYTHON_VERSION}'";
@@ -354,22 +341,14 @@ let
     # Goenv
     POWERLEVEL9K_GOENV_FOREGROUND = 0;
     POWERLEVEL9K_GOENV_BACKGROUND = 4;
-    POWERLEVEL9K_GOENV_SOURCES = [
-      "shell"
-      "local"
-      "global"
-    ];
+    POWERLEVEL9K_GOENV_SOURCES = [ "shell" "local" "global" ];
     POWERLEVEL9K_GOENV_PROMPT_ALWAYS_SHOW = false;
     POWERLEVEL9K_GOENV_SHOW_SYSTEM = true;
 
     # Nodenv
     POWERLEVEL9K_NODENV_FOREGROUND = 2;
     POWERLEVEL9K_NODENV_BACKGROUND = 0;
-    POWERLEVEL9K_NODENV_SOURCES = [
-      "shell"
-      "local"
-      "global"
-    ];
+    POWERLEVEL9K_NODENV_SOURCES = [ "shell" "local" "global" ];
     POWERLEVEL9K_NODENV_PROMPT_ALWAYS_SHOW = false;
     POWERLEVEL9K_NODENV_SHOW_SYSTEM = true;
 
@@ -389,11 +368,7 @@ let
     # Rbenv
     POWERLEVEL9K_RBENV_FOREGROUND = 0;
     POWERLEVEL9K_RBENV_BACKGROUND = 1;
-    POWERLEVEL9K_RBENV_SOURCES = [
-      "shell"
-      "local"
-      "global"
-    ];
+    POWERLEVEL9K_RBENV_SOURCES = [ "shell" "local" "global" ];
     POWERLEVEL9K_RBENV_PROMPT_ALWAYS_SHOW = false;
     POWERLEVEL9K_RBENV_SHOW_SYSTEM = true;
 
@@ -410,33 +385,21 @@ let
     # Luaenv
     POWERLEVEL9K_LUAENV_FOREGROUND = 0;
     POWERLEVEL9K_LUAENV_BACKGROUND = 4;
-    POWERLEVEL9K_LUAENV_SOURCES = [
-      "shell"
-      "local"
-      "global"
-    ];
+    POWERLEVEL9K_LUAENV_SOURCES = [ "shell" "local" "global" ];
     POWERLEVEL9K_LUAENV_PROMPT_ALWAYS_SHOW = false;
     POWERLEVEL9K_LUAENV_SHOW_SYSTEM = true;
 
     # Jenv
     POWERLEVEL9K_JENV_FOREGROUND = 1;
     POWERLEVEL9K_JENV_BACKGROUND = 7;
-    POWERLEVEL9K_JENV_SOURCES = [
-      "shell"
-      "local"
-      "global"
-    ];
+    POWERLEVEL9K_JENV_SOURCES = [ "shell" "local" "global" ];
     POWERLEVEL9K_JENV_PROMPT_ALWAYS_SHOW = false;
     POWERLEVEL9K_JENV_SHOW_SYSTEM = true;
 
     # Plenv
     POWERLEVEL9K_PLENV_FOREGROUND = 0;
     POWERLEVEL9K_PLENV_BACKGROUND = 4;
-    POWERLEVEL9K_PLENV_SOURCES = [
-      "shell"
-      "local"
-      "global"
-    ];
+    POWERLEVEL9K_PLENV_SOURCES = [ "shell" "local" "global" ];
     POWERLEVEL9K_PLENV_PROMPT_ALWAYS_SHOW = false;
     POWERLEVEL9K_PLENV_SHOW_SYSTEM = true;
 
@@ -448,40 +411,26 @@ let
     # Phpenv
     POWERLEVEL9K_PHPENV_FOREGROUND = 0;
     POWERLEVEL9K_PHPENV_BACKGROUND = 5;
-    POWERLEVEL9K_PHPENV_SOURCES = [
-      "shell"
-      "local"
-      "global"
-    ];
+    POWERLEVEL9K_PHPENV_SOURCES = [ "shell" "local" "global" ];
     POWERLEVEL9K_PHPENV_PROMPT_ALWAYS_SHOW = false;
     POWERLEVEL9K_PHPENV_SHOW_SYSTEM = true;
 
     # Scalaenv
     POWERLEVEL9K_SCALAENV_FOREGROUND = 0;
     POWERLEVEL9K_SCALAENV_BACKGROUND = 1;
-    POWERLEVEL9K_SCALAENV_SOURCES = [
-      "shell"
-      "local"
-      "global"
-    ];
+    POWERLEVEL9K_SCALAENV_SOURCES = [ "shell" "local" "global" ];
     POWERLEVEL9K_SCALAENV_PROMPT_ALWAYS_SHOW = false;
     POWERLEVEL9K_SCALAENV_SHOW_SYSTEM = true;
 
     # Haskell stack
     POWERLEVEL9K_HASKELL_STACK_FOREGROUND = 0;
     POWERLEVEL9K_HASKELL_STACK_BACKGROUND = 3;
-    POWERLEVEL9K_HASKELL_STACK_SOURCES = [
-      "shell"
-      "local"
-    ];
+    POWERLEVEL9K_HASKELL_STACK_SOURCES = [ "shell" "local" ];
     POWERLEVEL9K_HASKELL_STACK_ALWAYS_SHOW = true;
 
     # Terraform
     POWERLEVEL9K_TERRAFORM_SHOW_DEFAULT = false;
-    POWERLEVEL9K_TERRAFORM_CLASSES = [
-      "'*'"
-      "OTHER"
-    ];
+    POWERLEVEL9K_TERRAFORM_CLASSES = [ "'*'" "OTHER" ];
     POWERLEVEL9K_TERRAFORM_OTHER_FOREGROUND = 4;
     POWERLEVEL9K_TERRAFORM_OTHER_BACKGROUND = 0;
     POWERLEVEL9K_TERRAFORM_VERSION_FOREGROUND = 4;
@@ -489,10 +438,7 @@ let
 
     # Kubecontext
     POWERLEVEL9K_KUBECONTEXT_SHOW_ON_COMMAND = "kubectl|helm|kubens|kubectx|oc|istioctl|kogito|k9s|helmfile|flux|fluxctl|stern|kubeseal|skaffold|kubent|kubecolor|cmctl|sparkctl";
-    POWERLEVEL9K_KUBECONTEXT_CLASSES = [
-      "'*'"
-      "DEFAULT"
-    ];
+    POWERLEVEL9K_KUBECONTEXT_CLASSES = [ "'*'" "DEFAULT" ];
     POWERLEVEL9K_KUBECONTEXT_DEFAULT_FOREGROUND = 7;
     POWERLEVEL9K_KUBECONTEXT_DEFAULT_BACKGROUND = 5;
     # Combined from the two += assignments in the original
@@ -500,10 +446,7 @@ let
 
     # AWS
     POWERLEVEL9K_AWS_SHOW_ON_COMMAND = "aws|awless|cdk|terraform|tofu|pulumi|terragrunt";
-    POWERLEVEL9K_AWS_CLASSES = [
-      "'*'"
-      "DEFAULT"
-    ];
+    POWERLEVEL9K_AWS_CLASSES = [ "'*'" "DEFAULT" ];
     POWERLEVEL9K_AWS_DEFAULT_FOREGROUND = 7;
     POWERLEVEL9K_AWS_DEFAULT_BACKGROUND = 1;
     POWERLEVEL9K_AWS_CONTENT_EXPANSION = "'\${P9K_AWS_PROFILE//\\%/%%}\${P9K_AWS_REGION:+ \${P9K_AWS_REGION//\\%/%%}}'";
@@ -514,10 +457,7 @@ let
 
     # Azure
     POWERLEVEL9K_AZURE_SHOW_ON_COMMAND = "az|terraform|tofu|pulumi|terragrunt";
-    POWERLEVEL9K_AZURE_CLASSES = [
-      "'*'"
-      "OTHER"
-    ];
+    POWERLEVEL9K_AZURE_CLASSES = [ "'*'" "OTHER" ];
     POWERLEVEL9K_AZURE_OTHER_FOREGROUND = 7;
     POWERLEVEL9K_AZURE_OTHER_BACKGROUND = 4;
 
@@ -531,10 +471,7 @@ let
 
     # Google App Cred
     POWERLEVEL9K_GOOGLE_APP_CRED_SHOW_ON_COMMAND = "terraform|tofu|pulumi|terragrunt";
-    POWERLEVEL9K_GOOGLE_APP_CRED_CLASSES = [
-      "'*'"
-      "DEFAULT"
-    ];
+    POWERLEVEL9K_GOOGLE_APP_CRED_CLASSES = [ "'*'" "DEFAULT" ];
     POWERLEVEL9K_GOOGLE_APP_CRED_DEFAULT_FOREGROUND = 7;
     POWERLEVEL9K_GOOGLE_APP_CRED_DEFAULT_BACKGROUND = 4;
     POWERLEVEL9K_GOOGLE_APP_CRED_DEFAULT_CONTENT_EXPANSION = "'\${P9K_GOOGLE_APP_CRED_PROJECT_ID//\\%/%%}'";

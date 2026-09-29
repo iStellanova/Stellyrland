@@ -1,12 +1,5 @@
 {
-  modules.nixos.vr =
-    {
-      lib,
-      host,
-      pkgs,
-      ...
-    }:
-    {
+  modules.nixos.vr = { lib, host, pkgs, ... }: {
       hardware.steam-hardware.enable = true;
       services.wivrn = {
         enable = true;

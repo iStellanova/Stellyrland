@@ -1,11 +1,5 @@
 {
-  modules.homeManager.fastfetch =
-    {
-      host,
-      lib,
-      ...
-    }:
-    {
+  modules.homeManager.fastfetch = { host, lib, ... }: {
       programs.zsh.shellAliases.pf = "fastfetch";
       programs.zsh.initContent = lib.mkAfter ''
         if [[ $(tty) == *"pts"* ]]; then
@@ -15,9 +9,7 @@
       programs.fastfetch = {
         enable = true;
         settings = {
-          display = {
-            separator = " ";
-          };
+          display = { separator = " "; };
           modules = [
             "break"
             {

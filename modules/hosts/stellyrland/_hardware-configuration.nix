@@ -1,9 +1,5 @@
 # Manually maintained hardware configuration for stellyrland (x86_64-linux).
-{
-  lib,
-  modulesPath,
-  ...
-}:
+{ lib, modulesPath, ... }:
 {
   imports = [ (modulesPath + "/installer/scan/not-detected.nix") ];
 
@@ -39,10 +35,7 @@
   fileSystems."/boot" = {
     device = "/dev/disk/by-label/STELLYRBOOT";
     fsType = "vfat";
-    options = [
-      "fmask=0022"
-      "dmask=0022"
-    ];
+    options = [ "fmask=0022" "dmask=0022" ];
   };
 
   swapDevices = [

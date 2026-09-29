@@ -1,10 +1,5 @@
 # Hardware facts for plasmapulsefinale (Dell Latitude E5520); maintained manually.
-{
-  config,
-  lib,
-  modulesPath,
-  ...
-}:
+{ config, lib, modulesPath, ... }:
 {
   imports = [
     (modulesPath + "/installer/scan/not-detected.nix")

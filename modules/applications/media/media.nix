@@ -8,18 +8,10 @@
   };
 
   modules.darwin.media = {
-    homebrew.casks = [
-      "background-music"
-      "vlc"
-    ];
+    homebrew.casks = [ "background-music" "vlc" ];
   };
 
-  modules.homeManager.media =
-    {
-      pkgs,
-      ...
-    }:
-    {
+  modules.homeManager.media = { pkgs, ... }: {
       home.packages = with pkgs; [
         ani-cli
         mpv

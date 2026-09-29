@@ -6,15 +6,7 @@
     follows.nixpkgs = "nixpkgs";
   };
 
-  modules.nixos.umbriel =
-    {
-      inputs,
-      host,
-      lib,
-      pkgs,
-      ...
-    }:
-    {
+  modules.nixos.umbriel = { inputs, host, lib, pkgs, ... }: {
       imports = [
         ./_options.nix
         inputs.umbriel.nixosModules.default
@@ -50,19 +42,11 @@
         enable = true;
         xdgOpenUsePortal = true;
         extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
-        config.umbriel.default = [
-          "umbriel"
-          "gtk"
-        ];
+        config.umbriel.default = [ "umbriel" "gtk" ];
       };
     };
 
-  modules.homeManager.umbriel =
-    {
-      inputs,
-      ...
-    }:
-    {
+  modules.homeManager.umbriel = { inputs, ... }: {
       imports = [
         inputs.umbriel.homeModules.default
         ./_animations.nix

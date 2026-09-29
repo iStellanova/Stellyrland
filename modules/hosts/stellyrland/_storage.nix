@@ -3,16 +3,10 @@
   fileSystems."/ExtraDisk" = {
     device = "zextra/data";
     fsType = "zfs";
-    options = [
-      "nofail"
-      "x-gvfs-show"
-      "x-gvfs-name=Extra Disk"
-    ];
+    options = [ "nofail" "x-gvfs-show" "x-gvfs-name=Extra Disk" ];
   };
 
-  systemd.tmpfiles.rules = [
-    "d /ExtraDisk 0755 ${host.username} users -"
-  ];
+  systemd.tmpfiles.rules = [ "d /ExtraDisk 0755 ${host.username} users -" ];
 
   services = {
     sanoid = {
@@ -35,10 +29,7 @@
     zfs.autoScrub = {
       enable = true;
       interval = "monthly";
-      pools = [
-        "zroot"
-        "zextra"
-      ];
+      pools = [ "zroot" "zextra" ];
     };
 
     fstrim.enable = true;

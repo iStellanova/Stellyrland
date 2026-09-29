@@ -1,11 +1,5 @@
 {
-  modules.nixos.pipewire =
-    {
-      lib,
-      host,
-      ...
-    }:
-    {
+  modules.nixos.pipewire = { lib, host, ... }: {
 
       security.rtkit.enable = true;
 
@@ -21,9 +15,7 @@
                 {
                   matches = [ { "media.class" = "Audio/Source"; } ];
                   actions = {
-                    update-props = {
-                      "node.ignore-session-volume" = true;
-                    };
+                    update-props = { "node.ignore-session-volume" = true; };
                   };
                 }
               ];

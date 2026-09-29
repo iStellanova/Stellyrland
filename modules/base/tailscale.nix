@@ -11,15 +11,12 @@ in
     imports = [
       osShared
       (
-        {
-          config,
-          lib,
-          host,
-          ...
-        }:
+        { config, lib, host, ... }:
         {
           imports = lib.optional (host.persistence or false) {
-            preservation.preserveAt."/persist".directories = [ "/var/lib/tailscale" ];
+            preservation.preserveAt."/persist".directories = [
+              "/var/lib/tailscale"
+            ];
           };
 
           security.nix-secrets.secrets.tailscale_auth_key = {
@@ -37,16 +34,8 @@ in
             authKeyFile = config.security.nix-secrets.secrets.tailscale_auth_key.path;
             interfaceName = "tailscale0";
             useRoutingFeatures = "client";
-            extraUpFlags = [
-              "--accept-dns=true"
-              "--accept-routes=false"
-              "--ssh=false"
-            ];
-            extraSetFlags = [
-              "--accept-dns=true"
-              "--accept-routes=false"
-              "--ssh=false"
-            ];
+            extraUpFlags = [ "--accept-dns=true" "--accept-routes=false" "--ssh=false" ];
+            extraSetFlags = [ "--accept-dns=true" "--accept-routes=false" "--ssh=false" ];
           };
 
           boot.kernel.sysctl = {

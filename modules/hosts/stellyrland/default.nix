@@ -1,11 +1,5 @@
 {
-  modules.nixos.stellyrland-host =
-    {
-      host,
-      pkgs,
-      ...
-    }:
-    {
+  modules.nixos.stellyrland-host = { host, pkgs, ... }: {
       imports = [
         ./_hardware-configuration.nix
         ./_disko-config.nix
@@ -34,9 +28,7 @@
       };
 
       systemd = {
-        tmpfiles.rules = [
-          "w /sys/bus/platform/drivers/amd_x3d_vcache/AMDI0101:00/amd_x3d_mode - - - - cache"
-        ];
+        tmpfiles.rules = [ "w /sys/bus/platform/drivers/amd_x3d_vcache/AMDI0101:00/amd_x3d_mode - - - - cache" ];
       };
 
       hardware = {

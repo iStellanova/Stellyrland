@@ -1,11 +1,6 @@
 # Hardware facts for ItsRedFlame; filesystems/swap match Disko because the pool
 # did not exist when this was generated.
-{
-  config,
-  lib,
-  modulesPath,
-  ...
-}:
+{ config, lib, modulesPath, ... }:
 {
   imports = [
     (modulesPath + "/installer/scan/not-detected.nix")
@@ -44,10 +39,7 @@
   fileSystems."/boot" = {
     device = "/dev/disk/by-partlabel/REDFLAMEBOOT";
     fsType = "vfat";
-    options = [
-      "fmask=0022"
-      "dmask=0022"
-    ];
+    options = [ "fmask=0022" "dmask=0022" ];
   };
 
   swapDevices = [

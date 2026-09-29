@@ -1,11 +1,5 @@
 {
-  modules.nixos.nautilus =
-    {
-      pkgs,
-      lib,
-      ...
-    }:
-    {
+  modules.nixos.nautilus = { pkgs, lib, ... }: {
       environment.systemPackages = with pkgs; [
         nautilus
         file-roller
@@ -44,21 +38,12 @@
             migrated-gtk-settings = true;
           };
           # nautilus 50+: show-hidden moved here; old show-hidden-files key is ignored
-          settings."org/gtk/gtk4/settings/file-chooser" = {
-            show-hidden = true;
-          };
+          settings."org/gtk/gtk4/settings/file-chooser" = { show-hidden = true; };
         }
       ];
     };
 
-  modules.homeManager.nautilus =
-    {
-      host,
-      pkgs,
-      lib,
-      ...
-    }:
-    {
+  modules.homeManager.nautilus = { host, pkgs, lib, ... }: {
       home.file.".config/gtk-3.0/bookmarks" = lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
         text = ''
           file://${host.homeDir}/Downloads

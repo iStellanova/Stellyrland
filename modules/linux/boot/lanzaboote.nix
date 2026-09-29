@@ -5,19 +5,14 @@
     follows.nixpkgs = "nixpkgs";
   };
 
-  modules.nixos.lanzaboote =
-    {
-      lib,
-      host,
-      pkgs,
-      ...
-    }:
-    {
+  modules.nixos.lanzaboote = { lib, host, pkgs, ... }: {
       imports = [
         inputs.lanzaboote.nixosModules.lanzaboote
       ]
       ++ lib.optional (host.persistence or false) {
-        preservation.preserveAt."/persist".directories = [ "/var/lib/sbctl" ];
+        preservation.preserveAt."/persist".directories = [
+          "/var/lib/sbctl"
+        ];
       };
 
       config = {
