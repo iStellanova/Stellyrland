@@ -50,11 +50,12 @@
           "font_family" = "JetBrainsMono Nerd Font Mono";
           "base_keymap" = "JetBrains";
           "session" = { "trust_all_worktrees" = true; };
-          "helix_mode" = true;
+          "vim_mode" = true;
           "font_weight" = 300.0;
           "ui_font_weight" = 300.0;
           "ui_font_family" = "JetBrainsMono Nerd Font Propo";
           "line_height" = "comfortable";
+          "cursor_animation" = { "enabled" = true; };
           "project_panel" = {
             "dock" = "left";
             "entry_spacing" = "comfortable";
