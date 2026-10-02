@@ -27,7 +27,7 @@
       };
     };
 
-  modules.homeManager.noctalia = { host, lib, ... }:
+  modules.homeManager.noctalia = { host, lib, pkgs, ... }:
     let
       wallpaperDir = "${host.homeDir}/Pictures/wallpapers";
       defaultWallpaper = "${wallpaperDir}/wallpaper.png";
@@ -41,6 +41,8 @@
       ];
 
       _module.args = { inherit primary secondary; };
+
+      home.packages = [ pkgs.nix-search-tv ];
 
       home.file = lib.mkIf (host.dataPath != null) {
         "Pictures/wallpapers/wallpaper.png".source = "${host.dataPath}/wallpapers/wallpaper.png";
@@ -61,7 +63,11 @@
             polkit_agent = true;
             launch_apps_as_systemd_services = true;
             screen_time_enabled = true;
+            umbriel_overview_type_to_launch_enabled = true;
             launcher.providers.session.global = true;
+            launcher.compact = true;
+            launcher.providers.emoji.global = true;
+            greeter_sync.auto_sync = true;
             panel = {
               transparency_mode = "glass";
               session_placement = "floating";
@@ -95,17 +101,22 @@
 
           notification = {
             background_opacity = 0.5;
+            layer = "overlay";
             monitors = lib.optional (primary != "") primary;
           };
-
-          plugins.enabled = [ "lucasoe/proton-pass" "avivbintangaringga/nix-monitor" ];
+          control_center.width = 850;
+          osd.background_opacity = 0.5999999865889549;
+          plugins.enabled = [
+            "avivbintangaringga/nix-monitor"
+            "knyrps/nix-search"
+            "rylos/tailnet"
+          ];
 
           plugin_settings."avivbintangaringga/nix-monitor" = {
             branch = "nixos-unstable";
             clean_command = "zsh -ic 'clean'";
             update_command = "zsh -ic 'upgrade'";
           };
-
           bar.main = {
             enabled = false;
             monitor = lib.optionalAttrs (primary != "") { "${primary}".enabled = true; };
@@ -115,9 +126,9 @@
             center = [ "media" ];
             end = [
               "tray"
+              "tail"
               "nix-monitor"
               "weather"
-              "network"
               "temp"
               "cpu"
               "ram"
@@ -172,6 +183,7 @@
 
             media = { title_scroll = "on_hover"; };
 
+            tail.type = "rylos/tailnet:bar";
             network.show_label = false;
             nix-monitor.type = "avivbintangaringga/nix-monitor:nix-monitor";
             ram = {
