@@ -3,6 +3,7 @@
 {
   patchPkgs,
   fetchPatch,
+  system,
 }:
 {
   name,
@@ -11,8 +12,9 @@
 }:
 let
   patches = node.patches or [ ];
+  hash = node.patchedHash or null;
 
-  applied = patchPkgs.applyPatches {
+  args = {
     name = "${name}-patched";
     inherit src;
     patches = map fetchPatch patches;
@@ -23,6 +25,29 @@ let
       "--no-backup-if-mismatch"
     ];
   };
+
+  fixed =
+    (patchPkgs.applyPatches (
+      args
+      // {
+        outputHash = hash;
+        outputHashAlgo = "sha256";
+        outputHashMode = "recursive";
+      }
+    )).overrideAttrs
+      (_: {
+        allowSubstitutes = true;
+      });
+
+  legacy =
+    if system == null then
+      throw "pnix: '${name}' is patched and its lock has no patchedHash, so applying it needs a system to build for -- and this evaluation is pure, so it has none. Run `pnix update` to record a patchedHash, or pass `system`, e.g. `import ./.pnix { system = \"x86_64-linux\"; }`."
+    else
+      builtins.trace "pnix: '${name}' is patched but its lock has no patchedHash, so its store path depends on which nixpkgs applied the patch. Re-run `pnix update`." (
+        patchPkgs.applyPatches args
+      );
+
+  applied = if hash == null then legacy else fixed;
 in
 if patches == [ ] then
   {
