@@ -12,6 +12,8 @@
   nixpkgsPin ? "nixpkgs",
 
   system ? builtins.currentSystem or null,
+
+  patchedOnly ? false,
 }:
 let
   fetchers = import ./fetchers.nix { };
@@ -26,10 +28,10 @@ let
     else
       fetchers.file {
         inherit (patch) url;
-        inherit (patch) hash;
+        hash = patch.hash;
       };
 
-  SCHEMA = 4;
+  SCHEMA = 5;
 
   doc = builtins.fromJSON (builtins.readFile lockFile);
   schema = doc.schema or (throw "pnix: ${toString lockFile} has no `schema`");
@@ -56,19 +58,19 @@ let
 
   rawSources = builtins.mapAttrs (_: pathOf) fetched;
 
+  buildSystem = if system == null then "x86_64-linux" else system;
+
   patchPkgs =
     if !(rawSources ? ${nixpkgsPin}) then
       throw "pnix: a pin declares patches, which need a nixpkgs to apply them, but there is no pin called '${nixpkgsPin}'. Pass `nixpkgsPin` to name it."
-    else if system == null then
-      throw "pnix: a pin declares patches, which have to be built, but this evaluation is pure and so has no `builtins.currentSystem` to build them for. Pass `system`, e.g. `import ./.pnix { system = \"x86_64-linux\"; }`."
     else
       import rawSources.${nixpkgsPin} {
-        inherit system;
+        system = buildSystem;
         config = { };
         overlays = [ ];
       };
 
-  applyTo = import ./patch.nix { inherit patchPkgs fetchPatch; };
+  applyTo = import ./patch.nix { inherit patchPkgs fetchPatch system; };
 
   patchedSources = builtins.mapAttrs (
     name: src:
@@ -103,14 +105,17 @@ let
       else
         { }
     )
-    // (if node ? narHash then { inherit (node) narHash; } else { })
-    // (if node ? version then { inherit (node) version; } else { })
     // (
-      if node ? fetch && node.fetch ? hash && !(node ? narHash) then
+      if node ? patchedHash then
+        { narHash = node.patchedHash; }
+      else if node ? narHash then
+        { inherit (node) narHash; }
+      else if node ? fetch && node.fetch ? hash then
         { narHash = node.fetch.hash; }
       else
         { }
     )
+    // (if node ? version then { inherit (node) version; } else { })
     // (if node ? flake then { inherit (node) flake; } else { });
 
   flakeDirOf = outPath: node: if node ? dir then outPath + ("/" + node.dir) else outPath;
@@ -224,4 +229,20 @@ let
       sourceInfo
   ) pins;
 in
-allInputs
+if patchedOnly then
+  builtins.listToAttrs (
+    builtins.concatMap (
+      name:
+      if patchedSources.${name}.patched then
+        [
+          {
+            inherit name;
+            value = patchedSources.${name}.outPath;
+          }
+        ]
+      else
+        [ ]
+    ) (builtins.attrNames pins)
+  )
+else
+  allInputs
