@@ -62,6 +62,7 @@ in
           enable = true;
           enableZshIntegration = true;
           icons = "auto";
+          git = true;
           extraOptions = [ "-lha" "--group-directories-first" "--header" "--short-nix" ];
         };
 
