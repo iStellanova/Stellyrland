@@ -12,7 +12,7 @@
       enabled = true;
       duration_ms = 250;
       curve = "easeout";
-      style = "fade";
+      style = "popin";
     };
 
     windows_move = { curve = "snappy"; };
