@@ -46,8 +46,7 @@ in
     "Print" = "spawn:noctalia msg screenshot-region";
     "Shift+Print" = "spawn:noctalia msg screenshot-fullscreen";
     "Mod+Shift+R" = "spawn:pkill -SIGUSR1 gpu-screen-rec";
-    "Mod+X" = "overview-toggle";
-    "Mod+O" = "overview-toggle";
+    "Mod" = "overview-toggle";
     "Mod+Space" = "workspace-set-layout:toggle";
     "Mod+Left" = "workspace-previous";
     "Mod+Right" = "workspace-next";
@@ -63,7 +62,6 @@ in
     "Mod+Alt+Right" = "window-modify-primary-extent:0.05";
     "Mod+Alt+Left" = "window-modify-primary-extent:-0.05";
     "Mod+MouseMiddle" = "overview-toggle";
-    "Mod" = "spawn:noctalia msg panel-toggle launcher";
   }
   // workspaceBinds;
 }
