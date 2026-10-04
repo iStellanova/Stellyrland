@@ -31,7 +31,7 @@
       media-editing
       obs
       media
-      feishin
+      sonora
       soulseek
       background-sounds
 
