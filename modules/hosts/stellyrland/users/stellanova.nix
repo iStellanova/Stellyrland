@@ -10,6 +10,13 @@
       mode = "0600";
       path = "/run/secrets/stellacode";
     };
+
+    security.nix-secrets.secrets.github-token = {
+      path = "/run/secrets/github-token";
+      owner = "stellanova";
+      mode = "0400";
+      recipients = [ "stellanova" "stellyrlab" "stellyrland" "stellyrtop" ];
+    };
     home-manager.users.stellanova = {
       programs.ssh.settings.stellyrlab = {
         HostName = lib.mkForce "172.31.255.1";
