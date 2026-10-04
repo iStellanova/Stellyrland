@@ -21,7 +21,6 @@
       system-tools
       maintenance
       xdg
-
       zfs-snapshots-builtin
 
       # Desktop
@@ -38,6 +37,7 @@
       blender
       psswdmgr
       protonvpn
+      ydotool
 
       # Gaming
       steam
