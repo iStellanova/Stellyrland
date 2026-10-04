@@ -360,6 +360,25 @@
         "hash": "sha256-mMI9IanU+Xw+pVogD2oT0I2kTmvz2Un/Apc5+CwUpEY="
       }
     },
+    "sonora": {
+      "type": "github",
+      "host": "github.com",
+      "owner": "sonorahq",
+      "repo": "sonora",
+      "url": "https://github.com/sonorahq/sonora",
+      "rev": "9f6567874582749b675a59ee705a8447191da6b6",
+      "ref": "HEAD",
+      "hash": "sha256-RDh/GgVwYk1C10ZlalX0GwYHxlb4Jrab5Wob3sNyNWk=",
+      "lastModified": 1790968365,
+      "follows": {
+        "nixpkgs": "nixpkgs"
+      },
+      "fetch": {
+        "kind": "tarball",
+        "url": "https://github.com/sonorahq/sonora/archive/9f6567874582749b675a59ee705a8447191da6b6.tar.gz",
+        "hash": "sha256-RDh/GgVwYk1C10ZlalX0GwYHxlb4Jrab5Wob3sNyNWk="
+      }
+    },
     "treefmt-nix": {
       "type": "github",
       "host": "github.com",
