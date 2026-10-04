@@ -34,12 +34,7 @@
             stellyrland = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAPDq0bTLCKn1lKqYn+22wRYiEsNFoMvMlRh1Klm8edA";
             stellyrtop = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAID23408QRe02peABnmkDcmpu2DVSwN3H+Jm7kcVenTDr topcoat.graver.7c@icloud.com";
           };
-          secrets.github-token = {
-            path = "/run/secrets/github-token";
-            owner = host.username;
-            mode = "0400";
-            recipients = [ "stellanova" "stellyrlab" "stellyrland" "stellyrtop" ];
-          };
+
           secrets.${host.passwordSecret} = {
             neededForUsers = true;
             recipients = [
