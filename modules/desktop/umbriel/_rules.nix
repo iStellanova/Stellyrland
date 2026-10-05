@@ -23,7 +23,7 @@ in
       ++ [
         {
           blur = true;
-          opacity = 0.8;
+          opacity = 0.85;
         }
         (floatRule "(zenity|xdg-desktop-portal|qalculate-gtk|org\\.pulseaudio\\.pavucontrol)")
         (floatRule "(org\\.gnome\\.Sushi|sushi|org\\.gnome\\.NautilusPreviewer)")
@@ -53,7 +53,7 @@ in
         ((appRule "(org\\.gnome\\.Sushi|sushi|org\\.gnome\\.NautilusPreviewer)") // { opacity = 1.0; })
         ((appRule "(xdg-desktop-portal-gtk)") // { opacity = 1.0; })
         ((appRule "(kitty)") // { opacity = 1.0; })
-        ((appRule "(org\\.gnome\\.Nautilus)") // { opacity = 0.85; })
+        ((appRule "(sonora)") // { opacity = 1.0; })
         ((appRule "(nvim)") // { opacity = 0.3; })
         ((appRule "(zen-.*)") // { opacity = 1.0; })
         ((appRule "(vesktop)") // { opacity = 1.0; })
