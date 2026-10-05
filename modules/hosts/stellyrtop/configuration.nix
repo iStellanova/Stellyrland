@@ -22,6 +22,7 @@
       omniwm
       kitty
       fonts
+      vorssaint
 
       # Gaming
       prism
