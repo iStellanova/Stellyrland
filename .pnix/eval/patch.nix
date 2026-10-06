@@ -9,6 +9,8 @@
   name,
   src,
   node,
+
+  overridden ? false,
 }:
 let
   patches = node.patches or [ ];
@@ -48,12 +50,17 @@ let
       );
 
   applied = if hash == null then legacy else fixed;
-in
-if patches == [ ] then
-  {
+
+  verbatim = {
     outPath = src;
     patched = false;
-  }
+  };
+in
+if patches == [ ] then
+  verbatim
+
+else if overridden then
+  builtins.trace "pnix: '${name}' is overridden, so its ${toString (builtins.length patches)} declared patch${if builtins.length patches == 1 then "" else "es"} ${if builtins.length patches == 1 then "is" else "are"} not applied" verbatim
 else
   {
     outPath = applied;
