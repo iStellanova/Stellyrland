@@ -77,6 +77,7 @@ let
     applyTo {
       inherit name src;
       node = pins.${name};
+      overridden = envOverrides ? ${name};
     }
   ) rawSources;
 
@@ -210,7 +211,9 @@ let
       extra = builtins.removeAttrs (if builtins.isAttrs fetched.${name} then fetched.${name} else { }) [
         "outPath"
       ];
-      sourceInfo = sourceInfoFrom src (node // extra);
+      sourceInfo = sourceInfoFrom src (
+        (if patch.patched then node else builtins.removeAttrs node [ "patchedHash" ]) // extra
+      );
       dir = flakeDirOf src node;
 
       mayProbe = !patch.patched || patch.importable;
