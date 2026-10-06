@@ -13,6 +13,8 @@
     imports = lib.optional (host.persistence or false) {
       preservation.preserveAt."/persist".users.${host.username}.directories = [
         ".config/sonora"
+        ".local/share/sonora"
+        ".cache/sonora"
       ];
     };
   };
