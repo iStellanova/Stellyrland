@@ -1,7 +1,7 @@
 {
   pins.umbriel = {
     # TODO(umbriel): drop this input once nixpkgs provides a Home Manager module.
-    type = "git";
+    type = "github";
     url = "https://github.com/noctalia-dev/umbriel";
     follows.nixpkgs = "nixpkgs";
   };

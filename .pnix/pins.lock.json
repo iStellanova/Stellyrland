@@ -399,18 +399,21 @@
       }
     },
     "umbriel": {
-      "type": "git",
+      "type": "github",
+      "host": "github.com",
+      "owner": "noctalia-dev",
+      "repo": "umbriel",
       "url": "https://github.com/noctalia-dev/umbriel",
       "rev": "6adcbc043c7462871874e87d12587082f77d78f3",
-      "ref": "HEAD",
+      "hash": "sha256-vhaVNM/GM1fZcY3lsggNcr+NrwUmoCd/zBJz09vwjc8=",
+      "lastModified": 1791162319,
       "follows": {
         "nixpkgs": "nixpkgs"
       },
       "fetch": {
-        "kind": "git",
-        "url": "https://github.com/noctalia-dev/umbriel",
-        "rev": "6adcbc043c7462871874e87d12587082f77d78f3",
-        "ref": "HEAD"
+        "kind": "tarball",
+        "url": "https://github.com/noctalia-dev/umbriel/archive/6adcbc043c7462871874e87d12587082f77d78f3.tar.gz",
+        "hash": "sha256-vhaVNM/GM1fZcY3lsggNcr+NrwUmoCd/zBJz09vwjc8="
       }
     },
     "zen-browser": {
