@@ -4,6 +4,7 @@ let
     experimental-features = [ "nix-command" "flakes" "flake-self-attrs" "pipe-operator" ];
     log-lines = 25;
     auto-optimise-store = true;
+    fallback = true;
     warn-dirty = false;
     keep-outputs = true;
     min-free = 2147483648; # 2GB
