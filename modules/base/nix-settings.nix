@@ -35,7 +35,6 @@ in
       osShared
       {
         config = {
-          nix.enable = lib.mkDefault true;
           nix.settings = commonNixSettings;
           programs.nix-ld.enable = true;
           environment.variables = { NIXOS_OZONE_WL = "1"; };

@@ -25,9 +25,6 @@
           listen_on = "unix:/tmp/kitty";
           hide_window_decorations = lib.mkIf (host.class == "darwin") "titlebar-only";
         };
-        extraConfig = lib.mkIf (host.class != "darwin") ''
-          include themes/noctalia.conf
-        '';
       };
 
       xdg.terminal-exec = lib.mkIf (host.class != "darwin") {

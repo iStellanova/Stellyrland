@@ -35,11 +35,6 @@
             flavor = "macchiato";
             accent = "sapphire";
             bat.enable = true;
-          };
-        }
-        (lib.mkIf pkgs.stdenv.hostPlatform.isDarwin {
-          # Noctalia owns these on Linux; catppuccin manages them on Darwin instead.
-          catppuccin = {
             kitty.enable = true;
             eza.enable = true;
             fzf.enable = true;
@@ -47,17 +42,13 @@
             yazi.enable = true;
             zsh-syntax-highlighting.enable = true;
             cava.enable = true;
+            zed.enable = true;
+            zed.icons.enable = true;
           };
-        })
+        }
         (lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
           catppuccin = {
             kvantum.enable = true;
-
-            # Apps handled by Noctalia — keep disabled here to avoid conflicts.
-            btop.enable = false;
-            kitty.enable = false;
-            yazi.enable = false;
-            zsh-syntax-highlighting.enable = false;
           };
 
           gtk = {
@@ -80,7 +71,6 @@
             };
           };
 
-          # platformTheme omitted — Umbriel owns QT_QPA_PLATFORMTHEME.
           # style.name = "kvantum" satisfies catppuccin.kvantum's assertStyle guard.
           qt = {
             enable = true;
