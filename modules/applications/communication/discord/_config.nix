@@ -1,4 +1,4 @@
-_: {
+{
   enable = true;
   discord.enable = false; # using vesktop below instead
 

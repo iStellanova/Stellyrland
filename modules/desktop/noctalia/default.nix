@@ -81,11 +81,11 @@
 
           theme = {
             builtin = "Catppuccin";
-            community_palette = "Catppuccin Macchiato Lavender";
+            community_palette = "Catppuccin Macchiato Sapphire";
             source = "community";
             templates = {
-              builtin_ids = [ "btop" "cava" "kitty" "umbriel" ];
-              community_ids = [ "yazi" "hyprtoolkit" ];
+              builtin_ids = [ "umbriel" ];
+              community_ids = [ "sonora" "neovim" "fastfetch" "obs" "lazygit" ];
             };
           };
 

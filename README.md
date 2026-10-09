@@ -60,9 +60,9 @@ that host.
 ```mermaid
 flowchart TD
     PNIX["pnix inputs + resolver"] --> FLAKE["flake.nix"]
-    FLAKE --> MODULES["modules/"]
-    MODULES --> PARTS["flake-parts"]
-    PARTS --> BUILD["system builders"]
+    FLAKE --> LOADER["direct module loader"]
+    LOADER --> MODULES["modules/"]
+    MODULES --> BUILD["system outputs"]
 
     BUILD --> STELLYRLAND["stellyrland"]
     BUILD --> STELLYRLAB["stellyrlab"]
@@ -73,7 +73,6 @@ flowchart TD
     style PNIX fill:#363a4f,color:#cad3f5,stroke:#5b6078
     style FLAKE fill:#363a4f,color:#cad3f5,stroke:#5b6078
     style MODULES fill:#24273a,color:#f5a97f,stroke:#494d64
-    style PARTS fill:#24273a,color:#c6a0f6,stroke:#494d64
     style BUILD fill:#24273a,color:#7dc4e4,stroke:#494d64
     style STELLYRLAND fill:#1e2030,color:#8aadf4,stroke:#8aadf4
     style STELLYRLAB fill:#1e2030,color:#8aadf4,stroke:#8aadf4
@@ -121,7 +120,7 @@ flowchart TD
 
 - **Decentralized Inputs:** pnix allows me to declare inputs in module files, eliminating a monolithic flake.nix.
 - **Zero-Boilerplate Imports:** `flake.nix` locally loads non-underscore `.nix`
-  files under `modules/` as flake-parts modules.
+  files under `modules/` as nix modules.
 - **Multi-System Outputs:** Per-system lint checks cover x86_64 Linux and
   aarch64 Darwin.
 - **BORE Scheduler:** CachyOS kernel with BORE scheduling. Optimized for the X3D
@@ -136,7 +135,6 @@ flowchart TD
 
 - **Architecture:** Dendritic (Keeps things separate and maintainable as aspects
   that can be toggled.)
-- **Framework:** Flake-Parts
 - **OS:** NixOS (Unstable) & macOS (Darwin)
 - **Package Manager:** Lix (Community-created Nix variant)
 - **WM:** Hyprland
@@ -149,11 +147,6 @@ flowchart TD
 
 AI code is utilized in the development of this system, largely for learning, review, and debugging. I'm still actively learning Nix! More elaboration on my AI morals
 [here](https://github.com/iStellanova/Stellyrland/blob/assets/docs/ai.md).
-
-## 🐇 Personal AI
-
-I have my own personal assistant, Stellxie. You will see her assist me with
-commits and audits from time to time.
 
 ## 💻 Hosts
 

@@ -11,7 +11,7 @@
     ];
 
     programs.nixcord = lib.mkIf pkgs.stdenv.hostPlatform.isLinux (
-      import ./_config.nix { inherit pkgs lib; }
+      import ./_config.nix
     );
   };
 
@@ -23,10 +23,10 @@
     };
   };
 
-  modules.darwin.discord = { host, pkgs, lib, ... }: {
+  modules.darwin.discord = { host, ... }: {
       imports = [ inputs.nixcord.darwinModules.default ];
 
-      programs.nixcord = (import ./_config.nix { inherit pkgs lib; }) // {
+      programs.nixcord = (import ./_config.nix) // {
         user = host.username;
       };
     };

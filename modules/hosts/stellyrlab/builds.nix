@@ -29,7 +29,7 @@
         ${pnix}/bin/pnix update --root modules
 
         while :; do
-          if NIX_CONFIG="extra-experimental-features = pipe-operators" ${pkgs.nix-fast-build}/bin/nix-fast-build \
+          if NIX_CONFIG="extra-experimental-features = pipe-operator" ${pkgs.nix-fast-build}/bin/nix-fast-build \
             --flake "$checkout#nixosConfigurations" \
             --systems x86_64-linux \
             --no-link \
