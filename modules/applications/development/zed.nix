@@ -43,7 +43,7 @@
         mutableUserSettings = false;
         mutableUserKeymaps = false;
         mutableUserTasks = false;
-        extensions = [ "catppuccin" "catppuccin-icons" "catppuccin-blur" "nix" ];
+        extensions = [ "catppuccin-icons" "catppuccin-blur" "nix" ];
         userSettings = {
           "edit_predictions" = { "provider" = "none"; };
           "format_on_save" = "off";

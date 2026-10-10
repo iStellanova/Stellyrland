@@ -28,6 +28,7 @@
       pipewire
       librewolf
       media
+      picard
       soulseek
       obs
 

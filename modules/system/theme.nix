@@ -42,8 +42,6 @@
             yazi.enable = true;
             zsh-syntax-highlighting.enable = true;
             cava.enable = true;
-            zed.enable = true;
-            zed.icons.enable = true;
           };
         }
         (lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
