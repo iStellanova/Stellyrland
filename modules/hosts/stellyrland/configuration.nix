@@ -59,6 +59,7 @@
       sonora
       soulseek
       gsr
+      picard
 
       # Desktop Applications
       nautilus
