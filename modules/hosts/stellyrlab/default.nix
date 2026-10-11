@@ -3,6 +3,7 @@
       imports = [
         ./_hardware-configuration.nix
         ./_disko-config.nix
+        ./_homepage.nix
       ];
 
       networking = {

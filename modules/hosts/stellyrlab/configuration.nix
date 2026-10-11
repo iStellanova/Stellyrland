@@ -24,6 +24,7 @@
       binary-cache-server
       hermes
       navidrome
+      homepage
       self.modules.nixos.stellyrlab.stellanova
     ];
   };
