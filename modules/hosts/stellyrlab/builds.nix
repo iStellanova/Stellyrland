@@ -71,7 +71,7 @@
         Service = {
           Type = "oneshot";
           WorkingDirectory = host.flakePath;
-          ExecStartPre = "${pnix}/bin/pnix update --root modules";
+          ExecStartPre = "${pnix}/bin/pnix update";
           ExecStart = "${pkgs.nix-fast-build}/bin/nix-fast-build ${lib.escapeShellArgs [
             "--flake"
             "${host.flakePath}#nixosConfigurations"
