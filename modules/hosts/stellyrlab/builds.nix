@@ -3,6 +3,14 @@
   modules.homeManager.fleet-build = { host, lib, pkgs, ... }:
     let
       pnix = inputs.pnix.packages.${pkgs.stdenv.hostPlatform.system}.default;
+      commitPins = pkgs.writeShellScript "nix-fleet-build-commit-pins" ''
+        set -euo pipefail
+        cd ${lib.escapeShellArg host.flakePath}
+        ${pkgs.git}/bin/git add -- .pnix/pins.lock.json
+        if ! ${pkgs.git}/bin/git diff --cached --quiet -- .pnix/pins.lock.json; then
+          ${pkgs.git}/bin/git commit --only .pnix/pins.lock.json --message 'chore(pins): Update pins.'
+        fi
+      '';
       statusApi = pkgs.writeShellScript "nix-fleet-build-status-api" ''
         exec ${pkgs.python3}/bin/python3 - <<'PY'
         import json
@@ -83,10 +91,10 @@
             "--select"
             "configs: builtins.mapAttrs (name: config: config.config.system.build.toplevel) configs"
           ]}";
+          ExecStartPost = commitPins;
           TimeoutStartSec = "infinity";
           Environment = [
             "HOME=${host.homeDir}"
-            "NIX_CONFIG=extra-experimental-features = pipe-operator"
             "PATH=${
               lib.makeBinPath [
                 pkgs.coreutils
