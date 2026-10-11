@@ -29,6 +29,7 @@
       pipewire
       librewolf
       media
+      ffmpeg
       soulseek
       media-editing
       audacity
