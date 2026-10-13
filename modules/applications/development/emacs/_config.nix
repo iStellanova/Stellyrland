@@ -28,6 +28,35 @@
             (lambda ()
               (flymake-mode 1)))
 
+  (require 'markdown-mode)
+  (require 'eww)
+  (defvar-local stellyr-markdown-preview-file nil)
+  (defun stellyr-markdown-preview ()
+    (interactive)
+    (when (and stellyr-markdown-preview-file
+               (file-exists-p stellyr-markdown-preview-file))
+      (delete-file stellyr-markdown-preview-file))
+    (let ((file (make-temp-file "stellyr-markdown-" nil ".html"))
+          (output "*stellyr-markdown-preview*"))
+      (markdown-standalone output (buffer-name))
+      (with-current-buffer output
+        (write-region (point-min) (point-max) file nil 'silent))
+      (setq stellyr-markdown-preview-file file)
+      (add-hook 'kill-buffer-hook
+                (lambda ()
+                  (when (and stellyr-markdown-preview-file
+                             (file-exists-p stellyr-markdown-preview-file))
+                    (delete-file stellyr-markdown-preview-file)))
+                nil t)
+      (eww-open-file file)))
+  (define-key markdown-mode-map (kbd "C-c C-c p")
+              #'stellyr-markdown-preview)
+  (add-hook 'markdown-mode-hook #'visual-line-mode)
+  (add-hook 'markdown-mode-hook #'flyspell-mode)
+  (add-hook 'markdown-mode-hook
+            (lambda ()
+              (setq-local markdown-command "markdown_py")))
+
   (require 'treemacs)
   (setq treemacs-width 32
         treemacs-follow-mode t
@@ -50,10 +79,10 @@
   (define-key term-raw-escape-map (kbd "k") #'term-char-mode)
   (define-key term-raw-escape-map (kbd "o") #'other-window)
   (define-key term-raw-escape-map (kbd "b") #'switch-to-buffer)
-  (defun stellxie-open-terminal ()
+  (defun stellyr-open-terminal ()
     (interactive)
     (term (getenv "SHELL")))
-  (global-set-key (kbd "C-c e") #'stellxie-open-terminal)
+  (global-set-key (kbd "C-c e") #'stellyr-open-terminal)
 
   (require 'project)
   (require 'vc)

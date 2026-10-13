@@ -9,6 +9,7 @@
       clojure-lsp
       clang-tools
       jdt-language-server
+      python3Packages.markdown
     ];
 
     programs.emacs = {
