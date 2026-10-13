@@ -1,6 +1,7 @@
 { ... }:
 {
-  modules.homeManager.emacs = { pkgs, ... }: {
+  modules.homeManager.emacs = { pkgs, ... }:
+  {
     programs.emacs = {
       enable = true;
       package = pkgs.emacs-nox.override {
@@ -8,6 +9,8 @@
         withMailutils = false;
         withGpm = false;
       };
+      extraPackages = epkgs: [ epkgs.catppuccin-theme ];
+      extraConfig = import ./_config.nix;
     };
   };
 }
