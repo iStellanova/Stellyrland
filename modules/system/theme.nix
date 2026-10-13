@@ -17,7 +17,7 @@
     };
   };
 
-  modules.homeManager.catppuccin = { pkgs, lib, ... }:
+  modules.homeManager.catppuccin = { config, pkgs, lib, ... }:
     let
       catppuccinGtk = pkgs.catppuccin-gtk.override {
         accents = [ "sapphire" ];
@@ -25,6 +25,12 @@
       };
     in
     {
+      options.catppuccin.gui = lib.mkOption {
+        type = lib.types.bool;
+        default = false;
+        description = "Enable GUI-specific Catppuccin theming.";
+      };
+
       imports = [ inputs.catppuccin.homeModules.catppuccin ];
 
       config = lib.mkMerge [
@@ -44,7 +50,7 @@
             cava.enable = true;
           };
         }
-        (lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
+        (lib.mkIf (config.catppuccin.gui && pkgs.stdenv.hostPlatform.isLinux) {
           catppuccin = {
             kvantum.enable = true;
           };

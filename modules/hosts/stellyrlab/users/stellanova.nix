@@ -35,6 +35,7 @@
         git
         emacs
         hermes
+        catppuccin
         zed
         fleet-build
         nvf-ide

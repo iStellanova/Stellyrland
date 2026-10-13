@@ -6,6 +6,7 @@
     ];
     home-manager.users.stellanova = {
       zenBrowser.personalize = true;
+      catppuccin.gui = true;
       programs.ssh.settings = {
         stellyrlab = {
           HostName = "stellyrlab.tailb15b96.ts.net";

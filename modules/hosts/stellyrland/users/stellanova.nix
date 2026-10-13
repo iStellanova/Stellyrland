@@ -35,6 +35,7 @@
         videoPlayer = [ "mpv.desktop" ];
         discord = [ "vesktop.desktop" ];
       };
+      catppuccin.gui = true;
       imports = with self.modules.homeManager; [
         basics
         fastfetch
