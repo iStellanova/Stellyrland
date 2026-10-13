@@ -38,6 +38,23 @@
             #'treemacs-add-and-display-current-project-exclusively)
   (global-set-key (kbd "C-c t") #'treemacs)
 
+  (require 'diff-hl)
+  (global-diff-hl-mode 1)
+  (add-hook 'diff-hl-mode-hook
+            (lambda ()
+              (unless (display-graphic-p)
+                (diff-hl-margin-mode 1))))
+
+  (require 'term)
+  (define-key term-raw-escape-map (kbd "j") #'term-line-mode)
+  (define-key term-raw-escape-map (kbd "k") #'term-char-mode)
+  (define-key term-raw-escape-map (kbd "o") #'other-window)
+  (define-key term-raw-escape-map (kbd "b") #'switch-to-buffer)
+  (defun stellxie-open-terminal ()
+    (interactive)
+    (term (getenv "SHELL")))
+  (global-set-key (kbd "C-c e") #'stellxie-open-terminal)
+
   (require 'project)
   (require 'vc)
   (require 'xref)

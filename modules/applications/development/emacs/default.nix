@@ -26,6 +26,7 @@
         clojure-mode
         treemacs
         magit
+        diff-hl
       ];
       extraConfig = import ./_config.nix;
     };
