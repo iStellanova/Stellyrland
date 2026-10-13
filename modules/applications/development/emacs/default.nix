@@ -2,6 +2,15 @@
 {
   modules.homeManager.emacs = { pkgs, ... }:
   {
+    home.packages = with pkgs; [
+      nixd
+      lua-language-server
+      bash-language-server
+      clojure-lsp
+      clang-tools
+      jdt-language-server
+    ];
+
     programs.emacs = {
       enable = true;
       package = pkgs.emacs-nox.override {
@@ -9,7 +18,13 @@
         withMailutils = false;
         withGpm = false;
       };
-      extraPackages = epkgs: [ epkgs.catppuccin-theme ];
+      extraPackages = epkgs: with epkgs; [
+        catppuccin-theme
+        markdown-mode
+        nix-mode
+        lua-mode
+        clojure-mode
+      ];
       extraConfig = import ./_config.nix;
     };
   };
