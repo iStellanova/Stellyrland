@@ -24,8 +24,14 @@
   (setq completion-cycle-threshold 3
         tab-always-indent 'complete)
   (tab-bar-mode -1)
+  (require 'tab-line)
+  (setq tab-line-close-tab-function 'kill-buffer)
   (add-hook 'prog-mode-hook #'tab-line-mode)
   (add-hook 'text-mode-hook #'tab-line-mode)
+  (add-hook 'find-file-hook
+            (lambda ()
+              (when buffer-file-name
+                (tab-line-mode 1))))
   (global-set-key (kbd "C-c ]") #'tab-line-switch-to-next-tab)
   (global-set-key (kbd "C-c [") #'tab-line-switch-to-prev-tab)
 
@@ -73,6 +79,7 @@
   (global-set-key (kbd "C-c t") #'treemacs)
 
   (require 'diff-hl)
+  (require 'diff-hl-margin)
   (global-diff-hl-mode 1)
   (add-hook 'diff-hl-mode-hook
             (lambda ()
