@@ -1,7 +1,6 @@
 {
   description = "Stellyrland System Configurations.";
-  outputs =
-    { self }:
+  outputs = { self }:
     let
       inputs = (import ./.pnix { }) // {
         inherit self;
