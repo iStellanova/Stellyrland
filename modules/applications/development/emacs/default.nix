@@ -35,7 +35,10 @@
         diff-hl
         fzf
       ];
-      extraConfig = import ./_config.nix;
+      extraConfig =
+        (import ./_startup.nix) +
+        (import ./_functions.nix) +
+        (import ./_keys.nix);
     };
   };
 }
