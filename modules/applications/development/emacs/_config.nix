@@ -99,7 +99,30 @@
   (require 'project)
   (require 'vc)
   (require 'xref)
-  (require 'magit)
+  (require 'fzf)
+  (setq fzf/window-height 20
+        fzf/args "-x --ansi --color=dark --print-query --margin=1,0 --no-hscroll"
+        fzf/args-for-preview
+        "--preview 'bat --color=always --theme=\"Catppuccin Macchiato\" --paging=never --style=numbers --line-range=:500 {}'"
+        fzf/grep-command "rg --no-heading --color never --line-number")
+  (defun stellyr-fzf-find-file ()
+    (interactive)
+    (let ((window
+           (get-window-with-predicate
+            (lambda (candidate)
+              (and (not (window-minibuffer-p candidate))
+                   (not (window-parameter candidate 'window-side)))))))
+      (unless window
+        (user-error "No main editor window available"))
+      (select-window window)
+      (let ((process-environment (copy-sequence process-environment)))
+        (setenv "FZF_DEFAULT_COMMAND"
+                "fd --type f --hidden --exclude .git")
+        (fzf t))))
+  (global-set-key (kbd "C-c b") #'fzf-switch-buffer)
+  (global-set-key (kbd "C-c f") #'stellyr-fzf-find-file)
+  (global-set-key (kbd "C-c r") #'fzf-grep)
+  (global-set-key (kbd "C-c l") #'fzf-find-in-buffer)
   (global-set-key (kbd "C-c p") project-prefix-map)
   (global-set-key (kbd "C-c g") #'magit-status)
 ''

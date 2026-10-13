@@ -10,6 +10,10 @@
       clang-tools
       jdt-language-server
       python3Packages.markdown
+      fd
+      ripgrep
+      fzf
+      bat
     ];
 
     programs.emacs = {
@@ -28,6 +32,7 @@
         treemacs
         magit
         diff-hl
+        fzf
       ];
       extraConfig = import ./_config.nix;
     };
