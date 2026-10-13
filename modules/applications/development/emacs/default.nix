@@ -29,6 +29,7 @@
         lua-mode
         clojure-mode
         treemacs
+        treemacs-nerd-icons
         magit
         diff-hl
         fzf

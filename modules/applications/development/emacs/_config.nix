@@ -28,10 +28,12 @@
   (setq tab-line-close-tab-function 'kill-buffer)
   (add-hook 'prog-mode-hook #'tab-line-mode)
   (add-hook 'text-mode-hook #'tab-line-mode)
+  (add-hook 'term-mode-hook #'tab-line-mode)
   (add-hook 'find-file-hook
             (lambda ()
               (when buffer-file-name
                 (tab-line-mode 1))))
+  (global-set-key (kbd "C-x k") #'kill-buffer-and-window)
   (global-set-key (kbd "C-c ]") #'tab-line-switch-to-next-tab)
   (global-set-key (kbd "C-c [") #'tab-line-switch-to-prev-tab)
 
@@ -40,6 +42,11 @@
   (add-hook 'markdown-mode-hook #'flyspell-mode)
 
   (require 'treemacs)
+  (require 'treemacs-nerd-icons)
+  (treemacs-nerd-icons-config)
+  (set-face-attribute 'treemacs-git-modified-face nil
+                      :foreground (catppuccin-get-color 'peach))
+  (treemacs-filewatch-mode 1)
   (setq treemacs-width 32
         treemacs-follow-mode t
         treemacs-project-follow-mode t
@@ -84,7 +91,11 @@
       (unless window
         (user-error "No main editor window available"))
       (select-window window)
-      (let ((process-environment (copy-sequence process-environment)))
+      (let ((default-directory
+             (if-let ((project (project-current)))
+                 (project-root project)
+               default-directory))
+            (process-environment (copy-sequence process-environment)))
         (setenv "FZF_DEFAULT_COMMAND"
                 "fd --type f --hidden --exclude .git")
         (fzf t))))
