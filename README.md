@@ -188,6 +188,5 @@ AI code is utilized in the development of this system, largely for learning, rev
 ## 📜 Credits & Inspiration
 
 - **Vimjoyer:** For inspiring my adoption of the dendritic pattern.
-- **[Hand7s](https://github.com/s0me1newithhand7s):** For inspiring many
   features I adopted.
 - **Bunny Systems:** For resources like pnix. :stupid_cat:
