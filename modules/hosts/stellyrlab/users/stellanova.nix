@@ -38,7 +38,6 @@
         catppuccin
         zed
         fleet-build
-        nvf-ide
       ];
     };
   };

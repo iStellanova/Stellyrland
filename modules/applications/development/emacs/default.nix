@@ -9,7 +9,6 @@
       clojure-lsp
       clang-tools
       jdt-language-server
-      python3Packages.markdown
       fd
       ripgrep
       fzf

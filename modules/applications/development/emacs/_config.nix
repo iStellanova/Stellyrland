@@ -36,33 +36,8 @@
   (global-set-key (kbd "C-c [") #'tab-line-switch-to-prev-tab)
 
   (require 'markdown-mode)
-  (require 'eww)
-  (defvar-local stellyr-markdown-preview-file nil)
-  (defun stellyr-markdown-preview ()
-    (interactive)
-    (when (and stellyr-markdown-preview-file
-               (file-exists-p stellyr-markdown-preview-file))
-      (delete-file stellyr-markdown-preview-file))
-    (let ((file (make-temp-file "stellyr-markdown-" nil ".html"))
-          (output "*stellyr-markdown-preview*"))
-      (markdown-standalone output (buffer-name))
-      (with-current-buffer output
-        (write-region (point-min) (point-max) file nil 'silent))
-      (setq stellyr-markdown-preview-file file)
-      (add-hook 'kill-buffer-hook
-                (lambda ()
-                  (when (and stellyr-markdown-preview-file
-                             (file-exists-p stellyr-markdown-preview-file))
-                    (delete-file stellyr-markdown-preview-file)))
-                nil t)
-      (eww-open-file file)))
-  (define-key markdown-mode-map (kbd "C-c C-c p")
-              #'stellyr-markdown-preview)
   (add-hook 'markdown-mode-hook #'visual-line-mode)
   (add-hook 'markdown-mode-hook #'flyspell-mode)
-  (add-hook 'markdown-mode-hook
-            (lambda ()
-              (setq-local markdown-command "markdown_py")))
 
   (require 'treemacs)
   (setq treemacs-width 32
@@ -87,10 +62,10 @@
   (define-key term-raw-escape-map (kbd "k") #'term-char-mode)
   (define-key term-raw-escape-map (kbd "o") #'other-window)
   (define-key term-raw-escape-map (kbd "b") #'switch-to-buffer)
-  (defun stellyr-open-terminal ()
+  (defun macs-open-terminal ()
     (interactive)
     (term (getenv "SHELL")))
-  (global-set-key (kbd "C-c e") #'stellyr-open-terminal)
+  (global-set-key (kbd "C-c e") #'macs-open-terminal)
 
   (require 'project)
   (require 'fzf)
@@ -99,7 +74,7 @@
         fzf/args-for-preview
         "--preview 'bat --color=always --theme=\"Catppuccin Macchiato\" --paging=never --style=numbers --line-range=:500 {}'"
         fzf/grep-command "rg --no-heading --color never --line-number")
-  (defun stellyr-fzf-find-file ()
+  (defun macs-fzf-find-file ()
     (interactive)
     (let ((window
            (get-window-with-predicate
@@ -114,7 +89,7 @@
                 "fd --type f --hidden --exclude .git")
         (fzf t))))
   (global-set-key (kbd "C-c b") #'fzf-switch-buffer)
-  (global-set-key (kbd "C-c f") #'stellyr-fzf-find-file)
+  (global-set-key (kbd "C-c f") #'macs-fzf-find-file)
   (global-set-key (kbd "C-c r") #'fzf-grep)
   (global-set-key (kbd "C-c l") #'fzf-find-in-buffer)
   (global-set-key (kbd "C-c p") project-prefix-map)

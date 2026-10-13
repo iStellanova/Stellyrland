@@ -30,7 +30,6 @@
         # Dev / CLI Tools
         git
         emacs
-        nvf-writing
         yazi
         zed
 
