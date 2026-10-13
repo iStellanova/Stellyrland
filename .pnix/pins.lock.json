@@ -151,6 +151,22 @@
         "hash": "sha256-lvEyxEmXv/8gwiWE2+rxTuL59EFq5wwXxX+rtbxjwLo="
       }
     },
+    "mattpocock-skills": {
+      "type": "github",
+      "host": "github.com",
+      "owner": "mattpocock",
+      "repo": "skills",
+      "url": "https://github.com/mattpocock/skills",
+      "rev": "49dd158",
+      "hash": "sha256-NljCSZNI3sZ+vbCw7pRdrwR7try4BxOFp4gdjuWYtzs=",
+      "lastModified": 1791543409,
+      "flake": false,
+      "fetch": {
+        "kind": "tarball",
+        "url": "https://github.com/mattpocock/skills/archive/49dd158.tar.gz",
+        "hash": "sha256-NljCSZNI3sZ+vbCw7pRdrwR7try4BxOFp4gdjuWYtzs="
+      }
+    },
     "my-assets": {
       "type": "github",
       "host": "github.com",

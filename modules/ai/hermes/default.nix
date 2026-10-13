@@ -54,6 +54,11 @@ _: {
       url = "https://github.com/numtide/llm-agents.nix";
       follows.nixpkgs = "nixpkgs";
     };
+    mattpocock-skills = {
+      url = "https://github.com/mattpocock/skills";
+      rev = "49dd158";
+      flake = false;
+    };
     ponytail = {
       url = "https://github.com/DietrichGebert/ponytail";
       flake = false;
@@ -133,6 +138,10 @@ _: {
           source = inputs.ponytail;
           recursive = true;
         };
+        ".hermes/skills/mattpocock/engineering".source =
+          "${inputs."mattpocock-skills"}/skills/engineering";
+        ".hermes/skills/mattpocock/productivity".source =
+          "${inputs."mattpocock-skills"}/skills/productivity";
       };
       systemd.user.services = {
         hermes-gateway = {
