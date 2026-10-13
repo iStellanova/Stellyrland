@@ -28,17 +28,20 @@
             (lambda ()
               (flymake-mode 1)))
 
-  (require 'neotree)
-  (setq neo-window-width 32
-        neo-smart-open t
-        neo-theme 'nerd)
+  (require 'treemacs)
+  (setq treemacs-width 32
+        treemacs-follow-mode t
+        treemacs-project-follow-mode t
+        treemacs-width-is-initially-locked t)
   (setq initial-buffer-choice (lambda () (get-buffer-create "*scratch*")))
-  (add-hook 'emacs-startup-hook #'neotree-show)
-  (global-set-key (kbd "C-c t") #'neotree-toggle)
+  (add-hook 'emacs-startup-hook
+            #'treemacs-add-and-display-current-project-exclusively)
+  (global-set-key (kbd "C-c t") #'treemacs)
 
   (require 'project)
   (require 'vc)
   (require 'xref)
+  (require 'magit)
   (global-set-key (kbd "C-c p") project-prefix-map)
-  (global-set-key (kbd "C-c g") #'vc-dir)
+  (global-set-key (kbd "C-c g") #'magit-status)
 ''

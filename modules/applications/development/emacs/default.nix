@@ -24,7 +24,8 @@
         nix-mode
         lua-mode
         clojure-mode
-        neotree
+        treemacs
+        magit
       ];
       extraConfig = import ./_config.nix;
     };
