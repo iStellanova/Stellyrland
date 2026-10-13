@@ -35,10 +35,6 @@
   (global-set-key (kbd "C-c ]") #'tab-line-switch-to-next-tab)
   (global-set-key (kbd "C-c [") #'tab-line-switch-to-prev-tab)
 
-  (add-hook 'eglot-managed-mode-hook
-            (lambda ()
-              (flymake-mode 1)))
-
   (require 'markdown-mode)
   (require 'eww)
   (defvar-local stellyr-markdown-preview-file nil)
@@ -97,8 +93,6 @@
   (global-set-key (kbd "C-c e") #'stellyr-open-terminal)
 
   (require 'project)
-  (require 'vc)
-  (require 'xref)
   (require 'fzf)
   (setq fzf/window-height 20
         fzf/args "-x --ansi --color=dark --print-query --margin=1,0 --no-hscroll"
