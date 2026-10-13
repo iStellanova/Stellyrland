@@ -24,6 +24,7 @@
         nix-mode
         lua-mode
         clojure-mode
+        neotree
       ];
       extraConfig = import ./_config.nix;
     };

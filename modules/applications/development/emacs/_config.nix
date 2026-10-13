@@ -20,4 +20,25 @@
   (add-hook 'c-mode-hook #'eglot-ensure)
   (add-hook 'c++-mode-hook #'eglot-ensure)
   (add-hook 'java-mode-hook #'eglot-ensure)
+
+  (setq completion-cycle-threshold 3
+        tab-always-indent 'complete)
+
+  (add-hook 'eglot-managed-mode-hook
+            (lambda ()
+              (flymake-mode 1)))
+
+  (require 'neotree)
+  (setq neo-window-width 32
+        neo-smart-open t
+        neo-theme 'nerd)
+  (setq initial-buffer-choice (lambda () (get-buffer-create "*scratch*")))
+  (add-hook 'emacs-startup-hook #'neotree-show)
+  (global-set-key (kbd "C-c t") #'neotree-toggle)
+
+  (require 'project)
+  (require 'vc)
+  (require 'xref)
+  (global-set-key (kbd "C-c p") project-prefix-map)
+  (global-set-key (kbd "C-c g") #'vc-dir)
 ''
