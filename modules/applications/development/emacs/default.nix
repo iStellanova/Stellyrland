@@ -23,6 +23,7 @@
         withGpm = false;
       };
       extraPackages = epkgs: with epkgs; [
+        hermes
         catppuccin-theme
         markdown-mode
         nix-mode
