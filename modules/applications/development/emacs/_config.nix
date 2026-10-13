@@ -23,6 +23,11 @@
 
   (setq completion-cycle-threshold 3
         tab-always-indent 'complete)
+  (tab-bar-mode -1)
+  (add-hook 'prog-mode-hook #'tab-line-mode)
+  (add-hook 'text-mode-hook #'tab-line-mode)
+  (global-set-key (kbd "C-c ]") #'tab-line-switch-to-next-tab)
+  (global-set-key (kbd "C-c [") #'tab-line-switch-to-prev-tab)
 
   (add-hook 'eglot-managed-mode-hook
             (lambda ()
