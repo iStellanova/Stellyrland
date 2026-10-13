@@ -33,6 +33,7 @@
         cmdline
         fastfetch
         git
+        emacs
         hermes
         zed
         fleet-build

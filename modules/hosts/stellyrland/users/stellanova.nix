@@ -49,6 +49,7 @@
 
         # Dev / CLI Tools
         git
+        emacs
         nvf-ide
         nvf-writing
         yazi
