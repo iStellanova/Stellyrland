@@ -5,6 +5,9 @@
   (setq catppuccin-flavor 'macchiato)
   (load-theme 'catppuccin t)
 
+  (require 'vertico)
+  (vertico-mode 1)
+
   (require 'eglot)
   (add-to-list 'eglot-server-programs '(nix-mode . ("nixd")))
   (add-to-list 'eglot-server-programs '(lua-mode . ("lua-language-server")))

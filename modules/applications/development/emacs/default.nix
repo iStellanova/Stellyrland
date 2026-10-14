@@ -25,6 +25,7 @@
       extraPackages = epkgs: with epkgs; [
         hermes
         catppuccin-theme
+        vertico
         markdown-mode
         nix-mode
         lua-mode
