@@ -8,6 +8,13 @@
   (require 'vertico)
   (vertico-mode 1)
 
+  (require 'completion-preview)
+  (global-completion-preview-mode 1)
+
+  (savehist-mode 1)
+  (recentf-mode 1)
+  (save-place-mode 1)
+
   (require 'eglot)
   (add-to-list 'eglot-server-programs '(nix-mode . ("nixd")))
   (add-to-list 'eglot-server-programs '(lua-mode . ("lua-language-server")))
