@@ -22,15 +22,29 @@
   (add-hook 'c++-mode-hook #'eglot-ensure)
   (add-hook 'java-mode-hook #'eglot-ensure)
 
+  (require 'display-line-numbers)
+  (set-face-attribute 'line-number nil
+                      :foreground (catppuccin-get-color 'overlay1)
+                      :background (catppuccin-get-color 'base))
+  (set-face-attribute 'line-number-major-tick nil
+                      :foreground (catppuccin-get-color 'subtext1)
+                      :background (catppuccin-get-color 'base))
   (setq completion-cycle-threshold 3
-        tab-always-indent 'complete)
+        tab-always-indent 'complete
+        display-line-numbers-type nil
+        scroll-conservatively 101
+        scroll-step 1)
+  (global-display-line-numbers-mode 1)
+  (setq-default display-line-numbers t)
+  (setq display-line-numbers t)
   (tab-bar-mode -1)
   (require 'tab-line)
   (setq tab-line-close-tab-function 'kill-buffer)
   (add-hook 'prog-mode-hook #'tab-line-mode)
   (add-hook 'text-mode-hook #'tab-line-mode)
   (add-hook 'term-mode-hook #'tab-line-mode)
-  (add-hook 'find-file-hook #'tab-line-mode)
+  (add-hook 'find-file-hook
+            (lambda () (setq display-line-numbers t)))
 
   (require 'markdown-mode)
   (add-hook 'markdown-mode-hook #'visual-line-mode)
@@ -51,12 +65,7 @@
             #'treemacs-add-and-display-current-project-exclusively)
 
   (require 'diff-hl)
-  (require 'diff-hl-margin)
   (global-diff-hl-mode 1)
-  (add-hook 'diff-hl-mode-hook
-            (lambda ()
-              (unless (display-graphic-p)
-                (diff-hl-margin-mode 1))))
 
   (require 'term)
   (require 'project)
