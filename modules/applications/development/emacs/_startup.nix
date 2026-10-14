@@ -41,9 +41,6 @@
   (set-face-attribute 'line-number nil
                       :foreground (catppuccin-get-color 'overlay1)
                       :background (catppuccin-get-color 'base))
-  (set-face-attribute 'line-number-major-tick nil
-                      :foreground (catppuccin-get-color 'subtext1)
-                      :background (catppuccin-get-color 'base))
   (setq completion-cycle-threshold 3
         tab-always-indent 'complete
         display-line-numbers-type nil
@@ -68,14 +65,15 @@
   (add-hook 'markdown-mode-hook #'flyspell-mode)
 
   (require 'treemacs)
+  (require 'treemacs-project-follow-mode)
   (require 'treemacs-nerd-icons)
   (treemacs-nerd-icons-config)
   (set-face-attribute 'treemacs-git-modified-face nil
                       :foreground (catppuccin-get-color 'peach))
   (treemacs-filewatch-mode 1)
+  (treemacs-follow-mode 1)
+  (treemacs-project-follow-mode 1)
   (setq treemacs-width 32
-        treemacs-follow-mode t
-        treemacs-project-follow-mode t
         treemacs-width-is-initially-locked t)
   (setq initial-buffer-choice (lambda () (get-buffer-create "*scratch*")))
   (add-hook 'emacs-startup-hook
