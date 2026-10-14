@@ -23,6 +23,7 @@
           cursor_trail_start_threshold = 0;
           allow_remote_control = "yes";
           listen_on = "unix:/tmp/kitty";
+          macos_option_as_alt = "yes";
           hide_window_decorations = lib.mkIf (host.class == "darwin") "titlebar-only";
         };
       };
