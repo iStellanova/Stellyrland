@@ -25,14 +25,8 @@
         (pop-to-buffer buffer macs-hermes-side-window-action norecord)
       (funcall original buffer norecord)))
   (advice-add 'pop-to-buffer-same-window :around #'macs-hermes-pop-to-buffer)
-  (add-to-list
-   'display-buffer-alist
-   '("\\`\\*Hermes"
-     (display-buffer-in-side-window)
-     (side . right)
-     (slot . 0)
-     (window-width . 0.25)
-     (preserve-size . (t . nil))))
+  (add-to-list 'display-buffer-alist
+               (cons "\\`\\*Hermes" macs-hermes-side-window-action))
 
   (defun macs-fzf-find-file ()
     (interactive)
