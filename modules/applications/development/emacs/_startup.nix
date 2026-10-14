@@ -11,12 +11,17 @@
   (require 'completion-preview)
   (global-completion-preview-mode 1)
 
+  (when-let ((grammar-path (getenv "EMACS_TREESIT_GRAMMAR_PATH")))
+    (add-to-list 'treesit-extra-load-path grammar-path))
+  (require 'nix-ts-mode)
+  (add-to-list 'auto-mode-alist '("\\.nix\\'" . nix-ts-mode))
+
   (savehist-mode 1)
   (recentf-mode 1)
   (save-place-mode 1)
 
   (require 'eglot)
-  (add-to-list 'eglot-server-programs '(nix-mode . ("nixd")))
+  (add-to-list 'eglot-server-programs '(nix-ts-mode . ("nixd")))
   (add-to-list 'eglot-server-programs '(lua-mode . ("lua-language-server")))
   (add-to-list 'eglot-server-programs '(sh-mode . ("bash-language-server" "start")))
   (add-to-list 'eglot-server-programs '(clojure-mode . ("clojure-lsp")))
@@ -24,7 +29,7 @@
   (add-to-list 'eglot-server-programs '(c++-mode . ("clangd")))
   (add-to-list 'eglot-server-programs '(java-mode . ("jdtls")))
 
-  (add-hook 'nix-mode-hook #'eglot-ensure)
+  (add-hook 'nix-ts-mode-hook #'eglot-ensure)
   (add-hook 'lua-mode-hook #'eglot-ensure)
   (add-hook 'sh-mode-hook #'eglot-ensure)
   (add-hook 'clojure-mode-hook #'eglot-ensure)
@@ -49,8 +54,10 @@
   (setq display-line-numbers t)
   (tab-bar-mode -1)
   (require 'tab-line)
+  (require 'indent-bars)
   (setq tab-line-close-tab-function 'kill-buffer)
   (add-hook 'prog-mode-hook #'tab-line-mode)
+  (add-hook 'prog-mode-hook #'indent-bars-mode)
   (add-hook 'text-mode-hook #'tab-line-mode)
   (add-hook 'term-mode-hook #'tab-line-mode)
   (add-hook 'find-file-hook

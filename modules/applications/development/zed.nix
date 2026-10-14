@@ -50,7 +50,7 @@
           "font_family" = "JetBrainsMono Nerd Font Mono";
           "base_keymap" = "JetBrains";
           "session" = { "trust_all_worktrees" = true; };
-          "vim_mode" = true;
+          "emacs_mode" = true;
           "font_weight" = 300.0;
           "ui_font_weight" = 300.0;
           "ui_font_family" = "JetBrainsMono Nerd Font Propo";
