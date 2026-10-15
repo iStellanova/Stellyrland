@@ -27,23 +27,4 @@
   (advice-add 'pop-to-buffer-same-window :around #'macs-hermes-pop-to-buffer)
   (add-to-list 'display-buffer-alist
                (cons "\\`\\*Hermes" macs-hermes-side-window-action))
-
-  (defun macs-fzf-find-file ()
-    (interactive)
-    (let ((window
-           (get-window-with-predicate
-            (lambda (candidate)
-              (and (not (window-minibuffer-p candidate))
-                   (not (window-parameter candidate 'window-side)))))))
-      (unless window
-        (user-error "No main editor window available"))
-      (select-window window)
-      (let ((default-directory
-             (if-let* ((project (project-current)))
-                 (project-root project)
-               default-directory))
-            (process-environment (copy-sequence process-environment)))
-        (setenv "FZF_DEFAULT_COMMAND"
-                "fd --type f --hidden --exclude .git")
-        (fzf t))))
 ''

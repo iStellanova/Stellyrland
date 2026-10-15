@@ -10,10 +10,6 @@
   (global-set-key (kbd "C-c t") #'treemacs)
   (global-set-key (kbd "C-c e") #'macs-open-terminal)
   (global-set-key (kbd "C-c h") #'hermes-project-chat)
-  (global-set-key (kbd "C-c b") #'fzf-switch-buffer)
-  (global-set-key (kbd "C-c f") #'macs-fzf-find-file)
-  (global-set-key (kbd "C-c r") #'fzf-grep)
-  (global-set-key (kbd "C-c l") #'fzf-find-in-buffer)
   (global-set-key (kbd "C-c p") project-prefix-map)
   (global-set-key (kbd "C-c g") #'magit-status)
 ''

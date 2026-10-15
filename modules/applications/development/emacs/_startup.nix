@@ -76,10 +76,4 @@
 
   (require 'term)
   (require 'hermes)
-  (require 'fzf)
-  (setq fzf/window-height 20
-        fzf/args "-x --ansi --color=dark --print-query --margin=1,0 --no-hscroll"
-        fzf/args-for-preview
-        "--preview 'bat --color=always --theme=\"Catppuccin Macchiato\" --paging=never --style=numbers --line-range=:500 {}'"
-        fzf/grep-command "rg --no-heading --color never --line-number")
 ''

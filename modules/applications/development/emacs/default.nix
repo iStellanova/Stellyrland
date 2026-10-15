@@ -22,10 +22,6 @@
       clojure-lsp
       clang-tools
       jdt-language-server
-      fd
-      ripgrep
-      fzf
-      bat
     ];
 
     programs.emacs = {
@@ -45,7 +41,6 @@
         treemacs-nerd-icons
         magit
         diff-hl
-        fzf
       ];
       extraConfig =
         (import ./_startup.nix) +
