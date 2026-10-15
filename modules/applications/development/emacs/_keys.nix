@@ -10,6 +10,5 @@
   (global-set-key (kbd "C-c t") #'treemacs)
   (global-set-key (kbd "C-c e") #'macs-open-terminal)
   (global-set-key (kbd "C-c h") #'hermes-project-chat)
-  (global-set-key (kbd "C-c p") project-prefix-map)
   (global-set-key (kbd "C-c g") #'magit-status)
 ''
