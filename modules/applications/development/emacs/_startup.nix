@@ -52,6 +52,8 @@
                     (and display-line-numbers-mode 'relative))))
   (add-hook 'prog-mode-hook #'display-line-numbers-mode)
   (add-hook 'text-mode-hook #'display-line-numbers-mode)
+  (add-hook 'prog-mode-hook #'hl-line-mode)
+  (add-hook 'text-mode-hook #'hl-line-mode)
   (add-hook 'special-mode-hook (lambda () (display-line-numbers-mode -1)))
   (tab-bar-mode -1)
   (require 'tab-line)
