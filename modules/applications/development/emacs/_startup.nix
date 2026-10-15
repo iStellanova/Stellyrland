@@ -43,12 +43,21 @@
                       :background (catppuccin-get-color 'base))
   (setq completion-cycle-threshold 3
         tab-always-indent 'complete
-        display-line-numbers-type nil
         scroll-conservatively 101
         scroll-step 1)
-  (global-display-line-numbers-mode 1)
-  (setq-default display-line-numbers t)
-  (setq display-line-numbers t)
+  (global-display-line-numbers-mode -1)
+  (add-hook 'display-line-numbers-mode-hook
+            (lambda ()
+              (setq display-line-numbers
+                    (and display-line-numbers-mode 'relative))))
+  (defun macs-configure-line-numbers ()
+    (display-line-numbers-mode
+     (if (derived-mode-p 'prog-mode 'text-mode) 1 -1)))
+  (add-hook 'after-change-major-mode-hook #'macs-configure-line-numbers)
+  (mapc (lambda (buffer)
+          (with-current-buffer buffer
+            (macs-configure-line-numbers)))
+        (buffer-list))
   (tab-bar-mode -1)
   (require 'tab-line)
   (require 'indent-bars)
@@ -57,8 +66,6 @@
   (add-hook 'prog-mode-hook #'indent-bars-mode)
   (add-hook 'text-mode-hook #'tab-line-mode)
   (add-hook 'term-mode-hook #'tab-line-mode)
-  (add-hook 'find-file-hook
-            (lambda () (setq display-line-numbers t)))
 
   (require 'markdown-mode)
   (add-hook 'markdown-mode-hook #'visual-line-mode)
