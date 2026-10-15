@@ -50,14 +50,9 @@
             (lambda ()
               (setq display-line-numbers
                     (and display-line-numbers-mode 'relative))))
-  (defun macs-configure-line-numbers ()
-    (display-line-numbers-mode
-     (if (derived-mode-p 'prog-mode 'text-mode) 1 -1)))
-  (add-hook 'after-change-major-mode-hook #'macs-configure-line-numbers)
-  (mapc (lambda (buffer)
-          (with-current-buffer buffer
-            (macs-configure-line-numbers)))
-        (buffer-list))
+  (add-hook 'prog-mode-hook #'display-line-numbers-mode)
+  (add-hook 'text-mode-hook #'display-line-numbers-mode)
+  (add-hook 'special-mode-hook (lambda () (display-line-numbers-mode -1)))
   (tab-bar-mode -1)
   (require 'tab-line)
   (require 'indent-bars)
