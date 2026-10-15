@@ -8,7 +8,6 @@
   (require 'vertico)
   (vertico-mode 1)
 
-  (require 'completion-preview)
   (global-completion-preview-mode 1)
 
   (when-let ((grammar-path (getenv "EMACS_TREESIT_GRAMMAR_PATH")))
@@ -22,12 +21,6 @@
 
   (require 'eglot)
   (add-to-list 'eglot-server-programs '(nix-ts-mode . ("nixd")))
-  (add-to-list 'eglot-server-programs '(lua-mode . ("lua-language-server")))
-  (add-to-list 'eglot-server-programs '(sh-mode . ("bash-language-server" "start")))
-  (add-to-list 'eglot-server-programs '(clojure-mode . ("clojure-lsp")))
-  (add-to-list 'eglot-server-programs '(c-mode . ("clangd")))
-  (add-to-list 'eglot-server-programs '(c++-mode . ("clangd")))
-  (add-to-list 'eglot-server-programs '(java-mode . ("jdtls")))
 
   (add-hook 'nix-ts-mode-hook #'eglot-ensure)
   (add-hook 'lua-mode-hook #'eglot-ensure)
@@ -37,7 +30,6 @@
   (add-hook 'c++-mode-hook #'eglot-ensure)
   (add-hook 'java-mode-hook #'eglot-ensure)
 
-  (require 'display-line-numbers)
   (set-face-attribute 'line-number nil
                       :foreground (catppuccin-get-color 'overlay1)
                       :background (catppuccin-get-color 'base))
@@ -45,7 +37,6 @@
         tab-always-indent 'complete
         scroll-conservatively 101
         scroll-step 1)
-  (global-display-line-numbers-mode -1)
   (add-hook 'display-line-numbers-mode-hook
             (lambda ()
               (setq display-line-numbers
@@ -55,8 +46,6 @@
   (add-hook 'prog-mode-hook #'hl-line-mode)
   (add-hook 'text-mode-hook #'hl-line-mode)
   (add-hook 'special-mode-hook (lambda () (display-line-numbers-mode -1)))
-  (tab-bar-mode -1)
-  (require 'tab-line)
   (require 'indent-bars)
   (setq tab-line-close-tab-function 'kill-buffer)
   (add-hook 'prog-mode-hook #'tab-line-mode)
@@ -68,7 +57,6 @@
   (add-hook 'markdown-mode-hook #'visual-line-mode)
   (add-hook 'markdown-mode-hook #'flyspell-mode)
 
-  (require 'treemacs)
   (require 'treemacs-project-follow-mode)
   (require 'treemacs-nerd-icons)
   (treemacs-nerd-icons-config)
@@ -87,7 +75,6 @@
   (global-diff-hl-mode 1)
 
   (require 'term)
-  (require 'project)
   (require 'hermes)
   (require 'fzf)
   (setq fzf/window-height 20
