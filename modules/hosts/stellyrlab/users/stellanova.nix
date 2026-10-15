@@ -36,7 +36,6 @@
         emacs
         hermes
         catppuccin
-        zed
         fleet-build
       ];
     };

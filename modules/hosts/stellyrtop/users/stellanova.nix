@@ -31,7 +31,6 @@
         git
         emacs
         yazi
-        zed
 
         # Desktop Applications
         zen-browser
