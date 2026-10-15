@@ -23,12 +23,8 @@
   (add-to-list 'eglot-server-programs '(nix-ts-mode . ("nixd")))
 
   (add-hook 'nix-ts-mode-hook #'eglot-ensure)
-  (add-hook 'lua-mode-hook #'eglot-ensure)
   (add-hook 'sh-mode-hook #'eglot-ensure)
   (add-hook 'clojure-mode-hook #'eglot-ensure)
-  (add-hook 'c-mode-hook #'eglot-ensure)
-  (add-hook 'c++-mode-hook #'eglot-ensure)
-  (add-hook 'java-mode-hook #'eglot-ensure)
 
   (set-face-attribute 'line-number nil
                       :foreground (catppuccin-get-color 'overlay1)

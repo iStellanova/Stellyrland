@@ -17,11 +17,8 @@
 
     home.packages = with pkgs; [
       nixd
-      lua-language-server
       bash-language-server
       clojure-lsp
-      clang-tools
-      jdt-language-server
     ];
 
     programs.emacs = {
