@@ -73,6 +73,11 @@ in
           };
         };
 
+	direnv = {
+	  enable = true;
+	  enableZshIntegration = true;
+	};
+
         zsh = {
           shellAliases = {
             cat = "bat";
