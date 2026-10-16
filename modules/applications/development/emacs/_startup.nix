@@ -47,7 +47,6 @@
   (add-hook 'prog-mode-hook #'tab-line-mode)
   (add-hook 'prog-mode-hook #'indent-bars-mode)
   (add-hook 'text-mode-hook #'tab-line-mode)
-  (add-hook 'term-mode-hook #'tab-line-mode)
 
   (require 'markdown-mode)
   (add-hook 'markdown-mode-hook #'visual-line-mode)
@@ -70,6 +69,5 @@
   (require 'diff-hl)
   (global-diff-hl-mode 1)
 
-  (require 'term)
-  (require 'hermes)
+  (require 'agent-shell)
 ''

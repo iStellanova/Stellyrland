@@ -21,7 +21,7 @@
       enable = true;
       package = pkgs.emacs-pgtk;
       extraPackages = epkgs: with epkgs; [
-        hermes
+        agent-shell
         catppuccin-theme
         vertico
         nix-ts-mode
