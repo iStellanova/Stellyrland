@@ -1,9 +1,8 @@
-{ ... }:
+_:
 {
   modules.homeManager.emacs = { pkgs, ... }:
   let
-    emacs-packages = pkgs.emacsPackagesFor pkgs.emacs-pgtk;
-    nix-treesit-grammars = emacs-packages.treesit-grammars.with-grammars (
+    nix-treesit-grammars = (pkgs.emacsPackagesFor pkgs.emacs-pgtk).treesit-grammars.with-grammars (
       p: [ p.tree-sitter-nix ]
     );
   in
