@@ -2,7 +2,7 @@
   modules.homeManager.fastfetch = { host, lib, ... }: {
       programs.zsh.shellAliases.pf = "fastfetch";
       programs.zsh.initContent = lib.mkAfter ''
-        if [[ $(tty) == *"pts"* ]]; then
+        if [[ "''${TERM:-}" != "dumb" && $(tty) == *"pts"* ]]; then
           fastfetch
         fi
       '';

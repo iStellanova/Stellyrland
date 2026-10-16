@@ -83,6 +83,10 @@
   (require 'diff-hl)
   (global-diff-hl-mode 1)
 
+  ;; Remote programs through TRAMP
+  (require 'tramp)
+  (add-to-list 'tramp-remote-path 'tramp-own-remote-path)
+
   ;; Agent integration
   (require 'agent-shell)
 ''

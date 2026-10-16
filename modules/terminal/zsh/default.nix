@@ -27,12 +27,23 @@ in
 
         initContent = lib.mkMerge [
           (lib.mkBefore ''
-            if [[ -r "''${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-''${(%):-%n}.zsh" ]]; then
+            if [[ -n "''${TERM:-}" && "''${TERM}" != "dumb" \
+              && -r "''${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-''${(%):-%n}.zsh" ]]; then
               source "''${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-''${(%):-%n}.zsh"
             fi
           '')
           ''
-            [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+            if [[ -n "''${TERM:-}" && "''${TERM}" != "dumb" \
+              && -r ~/.p10k.zsh ]]; then
+              source ~/.p10k.zsh
+            fi
+
+            if [[ "''${TERM:-}" == "dumb" ]]; then
+              precmd_functions=()
+              preexec_functions=()
+              PROMPT='% '
+              RPROMPT='''
+            fi
 
             # Fix for fzf-tab and other completion-related plugins
             zstyle ':completion:*:descriptions' format '[%d]'
