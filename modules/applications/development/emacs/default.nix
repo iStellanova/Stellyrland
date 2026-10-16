@@ -2,12 +2,7 @@
 {
   modules.homeManager.emacs = { pkgs, ... }:
   let
-    emacs-package = pkgs.emacs-nox.override {
-      withNativeCompilation = false;
-      withMailutils = false;
-      withGpm = false;
-    };
-    emacs-packages = pkgs.emacsPackagesFor emacs-package;
+    emacs-packages = pkgs.emacsPackagesFor pkgs.emacs-pgtk;
     nix-treesit-grammars = emacs-packages.treesit-grammars.with-grammars (
       p: [ p.tree-sitter-nix ]
     );
@@ -16,6 +11,7 @@
     home.sessionVariables.EMACS_TREESIT_GRAMMAR_PATH = "${nix-treesit-grammars}/lib";
 
     home.packages = with pkgs; [
+      nerd-fonts.symbols-only
       nixd
       bash-language-server
       clojure-lsp
@@ -23,7 +19,7 @@
 
     programs.emacs = {
       enable = true;
-      package = emacs-package;
+      package = pkgs.emacs-pgtk;
       extraPackages = epkgs: with epkgs; [
         hermes
         catppuccin-theme
