@@ -53,7 +53,6 @@
       programs.noctalia = {
         enable = true;
         systemd.enable = true;
-
         settings = {
           shell = {
             font_family = "JetBrainsMono Nerd Font";
@@ -67,7 +66,6 @@
             launcher.providers.session.global = true;
             launcher.compact = true;
             launcher.providers.emoji.global = true;
-            greeter_sync.auto_sync = true;
             panel = {
               transparency_mode = "glass";
               session_placement = "floating";
