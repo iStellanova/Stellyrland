@@ -73,7 +73,7 @@ _: {
         _config_version = 39;
         model = {
           provider = "openai-codex";
-          default = "gpt-5.6-luna-900k";
+          default = "gpt-6-luna-900k";
         };
         display = {
           interface = "tui";
