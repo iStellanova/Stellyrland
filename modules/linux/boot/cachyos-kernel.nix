@@ -7,7 +7,8 @@
 
   modules.nixos.cachyos-kernel = {
     nixpkgs.overlays = [ inputs.cachyos-kernel.overlays.pinned ];
-    nix.settings.substituters = [ "https://attic.xuyh0120.win/lantian" ];
-    nix.settings.trusted-public-keys = [ "lantian:EeAUQ+W+6r7EtwnmYjeVwx5kOGEBpjlBfPlzGlTNvHc=" ];
+# TODO: Remove comments and reinstate code when the damn cache is functional again. Remove on oct. 25th if cache doesn't return.
+#     nix.settings.substituters = [ "https://attic.xuyh0120.win/lantian" ];
+#     nix.settings.trusted-public-keys = [ "lantian:EeAUQ+W+6r7EtwnmYjeVwx5kOGEBpjlBfPlzGlTNvHc=" ];
   };
 }
