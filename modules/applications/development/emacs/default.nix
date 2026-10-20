@@ -39,5 +39,7 @@ _:
         (import ./_functions.nix) +
         (import ./_keys.nix);
     };
+    services.emacs.enable = true;
   };
+
 }
