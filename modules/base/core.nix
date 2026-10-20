@@ -1,5 +1,5 @@
 {
-  modules.nixos.core = _: {
+  modules.nixos.core = { lib, ... }: {
     time.timeZone = "America/Indianapolis";
     i18n.defaultLocale = "en_US.UTF-8";
 
@@ -17,6 +17,11 @@
       TimeoutStartSec = "10s";
       TimeoutStopSec = "10s";
     };
+    environment.defaultPackages = lib.mkForce [];
+    programs.nano.enable = lib.mkForce false;
+    services.speechd.enable = lib.mkForce false;
+    programs.command-not-found.enable = false;
+    system.tools.nixos-rebuild.enable = false;
   };
 
   modules.homeManager.core = {
