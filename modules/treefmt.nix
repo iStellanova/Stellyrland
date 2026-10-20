@@ -18,6 +18,8 @@ in
     follows.nixpkgs = "nixpkgs";
   };
 
+  formatter = lib.genAttrs systems (system: treefmtEval.${system}.config.build.wrapper);
+
   checks = lib.genAttrs systems (system: {
     linting = treefmtEval.${system}.config.build.check self;
   });

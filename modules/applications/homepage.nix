@@ -1,4 +1,4 @@
-{ ... }:
+_:
 {
   modules.nixos.homepage = {
     services.homepage-dashboard = {

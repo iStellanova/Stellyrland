@@ -1,4 +1,4 @@
-{ ... }:
+_:
 {
   services.homepage-dashboard = {
     listenPort = 8082;
