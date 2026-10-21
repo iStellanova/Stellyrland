@@ -54,10 +54,21 @@
   (add-hook 'special-mode-hook (lambda () (display-line-numbers-mode -1)))
 
   ;; Tabs and indentation
-  (require 'indent-bars)
+  (use-package indent-bars
+    :custom
+    (indent-bars-display-on-blank-lines t)
+    (indent-bars-prefer-character t)
+    (indent-bars-defer-setup t)
+    :hook
+    (prog-mode . indent-bars-mode))
+  ;; Nix uses spaces and a two-column indent; set both before bars initialize.
+  (add-hook 'nix-ts-mode-hook
+            (lambda ()
+              (setq-local indent-tabs-mode nil
+                          indent-bars-spacing-override
+                          nix-ts-mode-indent-offset)))
   (setq tab-line-close-tab-function 'kill-buffer)
   (add-hook 'prog-mode-hook #'tab-line-mode)
-  (add-hook 'prog-mode-hook #'indent-bars-mode)
   (add-hook 'text-mode-hook #'tab-line-mode)
 
   ;; Markdown
