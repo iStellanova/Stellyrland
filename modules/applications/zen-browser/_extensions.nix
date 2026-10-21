@@ -9,6 +9,7 @@
         rycee.ublock-origin
         rycee.sponsorblock
         rycee.proton-pass
+        rycee."mal-sync"
       ];
   };
 }
