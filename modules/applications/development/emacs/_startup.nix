@@ -43,10 +43,7 @@
                       :background (catppuccin-get-color 'base))
   (setq scroll-conservatively 101
         scroll-step 1)
-  (add-hook 'display-line-numbers-mode-hook
-            (lambda ()
-              (setq display-line-numbers
-                    (and display-line-numbers-mode 'relative))))
+  (setq display-line-numbers-type 'relative)
   (add-hook 'prog-mode-hook #'display-line-numbers-mode)
   (add-hook 'text-mode-hook #'display-line-numbers-mode)
   (add-hook 'prog-mode-hook #'hl-line-mode)
@@ -71,11 +68,7 @@
   (add-hook 'prog-mode-hook #'tab-line-mode)
   (add-hook 'text-mode-hook #'tab-line-mode)
 
-  ;; Markdown
-  (require 'markdown-mode)
-  (add-hook 'markdown-mode-hook #'visual-line-mode)
-  (add-hook 'markdown-mode-hook #'flyspell-mode)
-
+  ;; Markdown highlighting loads on demand via markdown-mode's .md autoload.
   ;; Project tree
   (require 'treemacs-project-follow-mode)
   (require 'treemacs-nerd-icons)
@@ -93,10 +86,6 @@
   ;; Diff indicators
   (require 'diff-hl)
   (global-diff-hl-mode 1)
-
-  ;; Remote programs through TRAMP
-  (require 'tramp)
-  (add-to-list 'tramp-remote-path 'tramp-own-remote-path)
 
   ;; Agent integration
   (require 'agent-shell)
