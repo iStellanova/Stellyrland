@@ -31,6 +31,7 @@ _:
         clojure-mode
         treemacs
         treemacs-nerd-icons
+        wc-mode
         magit
         diff-hl
       ];

@@ -5,6 +5,10 @@
         initial-scratch-message nil)
   (setq backup-directory-alist
         `(("." . ,(expand-file-name "backups/" user-emacs-directory))))
+  (let ((autosave-dir (expand-file-name "autosave/" user-emacs-directory)))
+    (make-directory autosave-dir t)
+    (setq auto-save-file-name-transforms
+          (append auto-save-file-name-transforms `((".*" ,autosave-dir t)))))
 
   (add-to-list 'custom-theme-load-path
                (file-name-directory (locate-library "catppuccin-theme")))
@@ -43,6 +47,8 @@
   (add-hook 'text-mode-hook #'display-line-numbers-mode)
   (add-hook 'prog-mode-hook #'hl-line-mode)
   (add-hook 'text-mode-hook #'hl-line-mode)
+  (add-hook 'org-mode-hook #'visual-line-mode)
+  (add-hook 'org-mode-hook (lambda () (wc-mode 1)))
   (add-hook 'special-mode-hook (lambda () (display-line-numbers-mode -1)))
 
   (use-package indent-bars
