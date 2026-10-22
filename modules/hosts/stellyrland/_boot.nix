@@ -77,8 +77,9 @@
     '';
   };
 
-  # TODO: Swap back to the cachyOS kernel when it fixes its cache and mondule.cer issues.
-  boot.kernelPackages = pkgs.linuxPackages_latest;
+  # TODO: Retry CachyOS when #111 is fixed in the pinned input, this host's exact kernel output
+  # is cached, and its matching ZFS module evaluates: https://github.com/xddxdd/nix-cachyos-kernel/issues/111
+  boot.kernelPackages = pkgs.linuxPackages_7_2;
   boot.kernelParams = [
     "acpi_enforce_resources=lax"
     "amdgpu.sg_display=0"

@@ -32,8 +32,9 @@
       system.stateVersion = "26.05";
 
       boot = {
-        # TODO: Swap back to the cachyOS kernel when the modules.cer issue is fixed and cache is back up.
-        kernelPackages = pkgs.linuxPackages_latest;
+        # TODO: Retry CachyOS when #111 is fixed in the pinned input, this host's exact kernel output
+        # is cached, and its matching ZFS module evaluates: https://github.com/xddxdd/nix-cachyos-kernel/issues/111
+        kernelPackages = pkgs.linuxPackages_7_2;
         zfs = {
           devNodes = "/dev/mapper";
           forceImportRoot = true;

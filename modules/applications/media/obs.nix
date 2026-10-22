@@ -55,6 +55,35 @@
                     '';
                 });
           })
+          (_final: prev:
+            let
+              fixV4l2loopback = kernelPackages:
+                kernelPackages.extend (kernelFinal: kernelPrev: {
+                  v4l2loopback = kernelPrev.v4l2loopback.overrideAttrs (old: {
+                    # TODO: Drop only when the Nixpkgs v4l2loopback output no longer has `modules.*` indexes
+                    # that conflict with the matching kernel modules closure; recheck the package:
+                    # https://github.com/NixOS/nixpkgs/blob/master/pkgs/os-specific/linux/v4l2loopback/default.nix
+                    postInstall = (old.postInstall or "") + ''
+                      moduleDir="$out/lib/modules/${kernelFinal.kernel.modDirVersion}"
+                      rm -f "$moduleDir"/modules.alias \
+                        "$moduleDir"/modules.alias.bin \
+                        "$moduleDir"/modules.builtin.alias.bin \
+                        "$moduleDir"/modules.builtin.bin \
+                        "$moduleDir"/modules.dep \
+                        "$moduleDir"/modules.dep.bin \
+                        "$moduleDir"/modules.devname \
+                        "$moduleDir"/modules.softdep \
+                        "$moduleDir"/modules.symbols \
+                        "$moduleDir"/modules.symbols.bin
+                    '';
+                  });
+                });
+            in
+            {
+              linuxPackages = fixV4l2loopback prev.linuxPackages;
+              linuxPackages_6_12 = fixV4l2loopback prev.linuxPackages_6_12;
+              linuxPackages_7_2 = fixV4l2loopback prev.linuxPackages_7_2;
+            })
         ];
 
         programs.obs-studio = {
