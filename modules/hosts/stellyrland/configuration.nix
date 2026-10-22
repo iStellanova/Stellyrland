@@ -41,7 +41,6 @@
       openrgb
 
       # Boot & Hardware & Storage
-      cachyos-kernel
       lanzaboote
       preservation
 

@@ -32,9 +32,9 @@
       system.stateVersion = "26.05";
 
       boot = {
-        kernelPackages = pkgs.cachyosKernels.linuxPackages-cachyos-bore-lto-x86_64-v3;
+        # TODO: Swap back to the cachyOS kernel when the modules.cer issue is fixed and cache is back up.
+        kernelPackages = pkgs.linuxPackages_latest;
         zfs = {
-          package = config.boot.kernelPackages.zfs_cachyos;
           devNodes = "/dev/mapper";
           forceImportRoot = true;
           extraPools = [ "zhdd" ];

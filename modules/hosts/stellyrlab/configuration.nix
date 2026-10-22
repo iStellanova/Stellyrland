@@ -16,7 +16,6 @@
       base
       cmdline
       maintenance
-      cachyos-kernel
       lanzaboote
       stellyrlab-host
       backup-host

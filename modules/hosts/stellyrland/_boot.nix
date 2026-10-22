@@ -77,9 +77,8 @@
     '';
   };
 
-  boot.kernelPackages = pkgs.cachyosKernels.linuxPackages-cachyos-bore-lto-x86_64-v4;
-  boot.zfs.package = config.boot.kernelPackages.zfs_cachyos;
-
+  # TODO: Swap back to the cachyOS kernel when it fixes its cache and mondule.cer issues.
+  boot.kernelPackages = pkgs.linuxPackages_latest;
   boot.kernelParams = [
     "acpi_enforce_resources=lax"
     "amdgpu.sg_display=0"
