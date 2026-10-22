@@ -28,7 +28,7 @@ let
     else
       fetchers.file {
         inherit (patch) url;
-        inherit (patch) hash;
+        hash = patch.hash;
       };
 
   SCHEMA = 5;
