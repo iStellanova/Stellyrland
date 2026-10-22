@@ -12,4 +12,11 @@
         '((display-buffer-in-side-window)
           (side . right)
           (window-width . 0.25)))
+
+  (defun macs-kill-other-buffers ()
+    (interactive)
+    (dolist (buffer (buffer-list))
+      (when (and (not (eq buffer (current-buffer)))
+                 (not (string-match-p "\\`[ *]" (buffer-name buffer))))
+        (kill-buffer buffer))))
 ''

@@ -6,4 +6,5 @@
   (global-set-key (kbd "C-c t") #'treemacs)
   (global-set-key (kbd "C-c h") #'agent-shell-hermes-start-agent)
   (global-set-key (kbd "C-c g") #'magit-status)
+  (global-set-key (kbd "C-c k") #'macs-kill-other-buffers)
 ''

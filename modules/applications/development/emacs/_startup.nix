@@ -1,35 +1,31 @@
 ''
   ;;; -*- lexical-binding: t; -*-
-  ;; Startup
   (setq inhibit-startup-screen t
         initial-buffer-choice t
         initial-scratch-message nil)
+  (setq backup-directory-alist
+        `(("." . ,(expand-file-name "backups/" user-emacs-directory))))
 
-  ;; Theme
   (add-to-list 'custom-theme-load-path
                (file-name-directory (locate-library "catppuccin-theme")))
   (setq catppuccin-flavor 'macchiato)
   (load-theme 'catppuccin t)
 
-  ;; Completion
   (require 'vertico)
   (vertico-mode 1)
   (setq completion-cycle-threshold 3
         tab-always-indent 'complete)
   (global-completion-preview-mode 1)
 
-  ;; Nix and tree-sitter
   (when-let ((grammar-path (getenv "EMACS_TREESIT_GRAMMAR_PATH")))
     (add-to-list 'treesit-extra-load-path grammar-path))
   (require 'nix-ts-mode)
   (add-to-list 'auto-mode-alist '("\\.nix\\'" . nix-ts-mode))
 
-  ;; Persistent editor state
   (savehist-mode 1)
   (recentf-mode 1)
   (save-place-mode 1)
 
-  ;; Language servers
   (require 'eglot)
   (add-to-list 'eglot-server-programs '(nix-ts-mode . ("nixd")))
 
@@ -37,7 +33,6 @@
   (add-hook 'sh-mode-hook #'eglot-ensure)
   (add-hook 'clojure-mode-hook #'eglot-ensure)
 
-  ;; Editor display and scrolling
   (set-face-attribute 'line-number nil
                       :foreground (catppuccin-get-color 'overlay1)
                       :background (catppuccin-get-color 'base))
@@ -50,7 +45,6 @@
   (add-hook 'text-mode-hook #'hl-line-mode)
   (add-hook 'special-mode-hook (lambda () (display-line-numbers-mode -1)))
 
-  ;; Tabs and indentation
   (use-package indent-bars
     :custom
     (indent-bars-display-on-blank-lines t)
@@ -69,7 +63,6 @@
   (add-hook 'text-mode-hook #'tab-line-mode)
 
   ;; Markdown highlighting loads on demand via markdown-mode's .md autoload.
-  ;; Project tree
   (require 'treemacs-project-follow-mode)
   (require 'treemacs-nerd-icons)
   (treemacs-nerd-icons-config)
@@ -82,11 +75,12 @@
         treemacs-width-is-initially-locked t)
   (add-hook 'emacs-startup-hook
             #'treemacs-add-and-display-current-project-exclusively)
+  (add-hook 'server-after-make-frame-hook
+            #'treemacs-add-and-display-current-project-exclusively)
+  (add-hook 'server-switch-hook
+            #'treemacs-add-and-display-current-project-exclusively)
 
-  ;; Diff indicators
   (require 'diff-hl)
   (global-diff-hl-mode 1)
 
-  ;; Agent integration
-  (require 'agent-shell)
 ''
