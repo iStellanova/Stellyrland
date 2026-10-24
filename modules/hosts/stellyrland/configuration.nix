@@ -42,6 +42,7 @@
 
       # Boot & Hardware & Storage
       lanzaboote
+      cachyos-kernel
       preservation
 
       # Gaming

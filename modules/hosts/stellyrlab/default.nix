@@ -32,10 +32,9 @@
       system.stateVersion = "26.05";
 
       boot = {
-        # TODO: Retry CachyOS when #111 is fixed in the pinned input, this host's exact kernel output
-        # is cached, and its matching ZFS module evaluates: https://github.com/xddxdd/nix-cachyos-kernel/issues/111
-        kernelPackages = pkgs.linuxPackages_7_2;
+        kernelPackages = pkgs.cachyosKernels.linuxPackages-cachyos-bore-lto-x86_64-v3;
         zfs = {
+          package = config.boot.kernelPackages.zfs_cachyos;
           devNodes = "/dev/mapper";
           forceImportRoot = true;
           extraPools = [ "zhdd" ];

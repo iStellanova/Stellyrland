@@ -15,6 +15,7 @@
     imports = with self.modules.nixos; [
       base
       cmdline
+      cachyos-kernel
       maintenance
       lanzaboote
       stellyrlab-host

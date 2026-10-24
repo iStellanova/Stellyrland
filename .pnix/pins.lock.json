@@ -8,14 +8,14 @@
       "owner": "xddxdd",
       "repo": "nix-cachyos-kernel",
       "url": "https://github.com/xddxdd/nix-cachyos-kernel",
-      "rev": "b1332396df6e880d7e3b6b451c6a74132ce8cf66",
+      "rev": "e5f3b46dde090718a7a02d4ea1e1cc64feb2d758",
       "ref": "release",
-      "hash": "sha256-ANcKKTLB5oitjAYPp+iWts5clpbowVbDPVvt03P7Hes=",
-      "lastModified": 1790564970,
+      "hash": "sha256-4OhFUWfxbhGDARlbudsp2XWXdEsvyU2zRS0U2LNYV2M=",
+      "lastModified": 1792825458,
       "fetch": {
         "kind": "tarball",
-        "url": "https://github.com/xddxdd/nix-cachyos-kernel/archive/b1332396df6e880d7e3b6b451c6a74132ce8cf66.tar.gz",
-        "hash": "sha256-ANcKKTLB5oitjAYPp+iWts5clpbowVbDPVvt03P7Hes="
+        "url": "https://github.com/xddxdd/nix-cachyos-kernel/archive/e5f3b46dde090718a7a02d4ea1e1cc64feb2d758.tar.gz",
+        "hash": "sha256-4OhFUWfxbhGDARlbudsp2XWXdEsvyU2zRS0U2LNYV2M="
       }
     },
     "catppuccin": {
