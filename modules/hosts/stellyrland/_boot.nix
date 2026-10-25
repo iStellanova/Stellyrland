@@ -8,7 +8,6 @@
 
   boot.initrd.supportedFilesystems = [ "zfs" ];
   boot.zfs.forceImportRoot = true;
-  boot.initrd.systemd.enable = true;
   boot.initrd.systemd.emergencyAccess = false;
 
   boot.initrd.systemd.services."systemd-udevd".serviceConfig = {

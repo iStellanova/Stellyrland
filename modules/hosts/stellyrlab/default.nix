@@ -49,7 +49,6 @@
         };
         initrd = {
           supportedFilesystems = [ "zfs" ];
-          systemd.enable = true;
           luks.devices.stellyrlab-root = {
             device = "/dev/disk/by-partlabel/disk-main-root";
             allowDiscards = true;

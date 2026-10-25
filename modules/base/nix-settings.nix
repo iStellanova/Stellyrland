@@ -35,6 +35,18 @@ in
       osShared
       {
         config = {
+          nixpkgs.overlays = [
+            (_final: prev: {
+              mcp-nixos = prev.mcp-nixos.override {
+                python3Packages = prev.python3Packages.overrideScope (
+                  finalPy: _prevPy: {
+                    # TODO: Drop once nixpkgs' fastmcp-slim supports MCP SDK 2.
+                    mcp = finalPy.mcp_1;
+                  }
+                );
+              };
+            })
+          ];
           nix.settings = commonNixSettings;
           programs.nix-ld.enable = true;
           environment.variables = { NIXOS_OZONE_WL = "1"; };
