@@ -8,6 +8,7 @@
       blur = {
         optimized = false;
         radius = 12;
+        passes = 3;
         noise = 0.0;
         contrast = 1.25;
         saturation = 1.0;
