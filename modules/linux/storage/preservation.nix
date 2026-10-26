@@ -1,10 +1,9 @@
+
 { inputs, ... }:
 {
   pins.preservation = {
     url = "https://github.com/nix-community/preservation";
     follows.nixpkgs = "nixpkgs";
-    patches = [ { pr = 36; } ];
-    importable = true;
   };
 
   modules.nixos.preservation = { host, ... }: {
