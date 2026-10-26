@@ -47,6 +47,7 @@
   (add-hook 'text-mode-hook #'display-line-numbers-mode)
   (add-hook 'prog-mode-hook #'hl-line-mode)
   (add-hook 'text-mode-hook #'hl-line-mode)
+  (require 'ox-epub)
   (add-hook 'org-mode-hook #'visual-line-mode)
   (add-hook 'org-mode-hook (lambda () (wc-mode 1)))
   (add-hook 'special-mode-hook (lambda () (display-line-numbers-mode -1)))

@@ -27,6 +27,7 @@ _:
         indent-bars
         nix-treesit-grammars
         markdown-mode
+        ox-epub
         lua-mode
         clojure-mode
         treemacs
