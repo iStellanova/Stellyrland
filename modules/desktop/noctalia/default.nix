@@ -62,7 +62,9 @@
             polkit_agent = true;
             launch_apps_as_systemd_services = true;
             screen_time_enabled = true;
+            umbriel_audio_provider_enabled = true;
             umbriel_overview_type_to_launch_enabled = true;
+            umbriel_overview_close_on_launch_enabled = true;
             launcher.providers.session.global = true;
             launcher.compact = true;
             launcher.providers.emoji.global = true;
@@ -88,7 +90,7 @@
           };
 
           wallpaper = {
-            enabled = false;
+            enabled = true;
             directory = wallpaperDir;
             default.path = defaultWallpaper;
             last.path = defaultWallpaper;

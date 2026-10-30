@@ -2,7 +2,7 @@ _:
 {
   modules.homeManager.emacs = { pkgs, ... }:
   let
-    nix-treesit-grammars = (pkgs.emacsPackagesFor pkgs.emacs-pgtk).treesit-grammars.with-grammars (
+    nix-treesit-grammars = (pkgs.emacsPackagesFor pkgs.emacs-nox).treesit-grammars.with-grammars (
       p: [ p.tree-sitter-nix ]
     );
   in
@@ -18,7 +18,7 @@ _:
 
     programs.emacs = {
       enable = true;
-      package = pkgs.emacs-pgtk;
+      package = pkgs.emacs-nox;
       extraPackages = epkgs: with epkgs; [
         agent-shell
         catppuccin-theme
