@@ -13,7 +13,6 @@ _:
       nerd-fonts.symbols-only
       nixd
       bash-language-server
-      clojure-lsp
     ];
 
     programs.emacs = {
@@ -28,7 +27,6 @@ _:
         nix-treesit-grammars
         markdown-mode
         ox-epub
-        clojure-mode
         treemacs
         treemacs-nerd-icons
         wc-mode

@@ -35,7 +35,6 @@
 
   (add-hook 'nix-ts-mode-hook #'eglot-ensure)
   (add-hook 'sh-mode-hook #'eglot-ensure)
-  (add-hook 'clojure-mode-hook #'eglot-ensure)
 
   (set-face-attribute 'line-number nil
                       :foreground (catppuccin-get-color 'overlay1)
