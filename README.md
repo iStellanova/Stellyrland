@@ -139,7 +139,7 @@ flowchart TD
 - **Package Manager:** Lix (Community-created Nix variant)
 - **WM:** Hyprland
 - **Shell:** Zsh
-- **Editor:** Neovim (NVF IDE + writing), Zed
+- **Editor:** Emacs
 - **Terminal:** Kitty
 - **Bar/Shell:** Noctalia
 

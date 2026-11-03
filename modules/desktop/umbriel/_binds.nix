@@ -18,7 +18,6 @@ in
     "Mod+Q" = "spawn kitty";
     "Mod+E" = "spawn nautilus --new-window";
     "Mod+B" = "spawn zen-beta";
-    "Mod+V" = "spawn zeditor";
     "Mod+Shift+L" = "spawn noctalia msg lock";
     "Mod+C" = "window-close";
     "Alt+F4" = "window-close";

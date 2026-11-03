@@ -39,7 +39,6 @@
       # Desktop Applications
       hermes-desktop
       zen-browser
-      zed
 
       # Productivity
       finance

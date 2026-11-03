@@ -74,7 +74,6 @@
       # Persistence companions for Home Manager applications
       hermes-desktop
       discord
-      zed
 
       # Host Specific Config
       stellyrland-host
