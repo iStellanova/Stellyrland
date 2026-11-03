@@ -45,7 +45,7 @@
       school
       office-suite
       email
-      ide-suite
+      intellij
       cloud-storage
       protonvpn
       psswdmgr
