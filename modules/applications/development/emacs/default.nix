@@ -28,7 +28,6 @@ _:
         nix-treesit-grammars
         markdown-mode
         ox-epub
-        lua-mode
         clojure-mode
         treemacs
         treemacs-nerd-icons
