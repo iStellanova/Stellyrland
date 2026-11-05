@@ -27,8 +27,8 @@ _:
         nix-treesit-grammars
         markdown-mode
         ox-epub
-        treemacs
-        treemacs-nerd-icons
+        neotree
+        nerd-icons
         wc-mode
         magit
         diff-hl

@@ -68,23 +68,63 @@
   (add-hook 'prog-mode-hook #'tab-line-mode)
   (add-hook 'text-mode-hook #'tab-line-mode)
 
-  ;; Markdown highlighting loads on demand via markdown-mode's .md autoload.
-  (require 'treemacs-project-follow-mode)
-  (require 'treemacs-nerd-icons)
-  (treemacs-nerd-icons-config)
-  (set-face-attribute 'treemacs-git-modified-face nil
-                      :foreground (catppuccin-get-color 'peach))
-  (treemacs-filewatch-mode 1)
-  (treemacs-follow-mode 1)
-  (treemacs-project-follow-mode 1)
-  (setq treemacs-width 32
-        treemacs-width-is-initially-locked t)
-  (add-hook 'emacs-startup-hook
-            #'treemacs-add-and-display-current-project-exclusively)
-  (add-hook 'server-after-make-frame-hook
-            #'treemacs-add-and-display-current-project-exclusively)
-  (add-hook 'server-switch-hook
-            #'treemacs-add-and-display-current-project-exclusively)
+  (setq neo-theme 'nerd-icons
+        neo-vc-integration '(char face)
+        neo-show-hidden-files t
+        neo-window-width 32
+        neo-window-fixed-size t)
+  (defun emacs-neotree-show-current-project (&rest _)
+    (interactive)
+    (let* ((window (selected-window))
+           (file (buffer-file-name))
+           (project (project-current))
+           (root (when project (project-root project))))
+      (if root
+          (progn
+            (neotree-dir root)
+            (when (and file (file-in-directory-p file root))
+              (with-current-buffer neo-global--buffer
+                (setq neo-buffer--expanded-node-list nil))
+              (neotree-find file)))
+        (neotree-show))
+      (when (window-live-p window)
+        (select-window window))))
+  (unless (daemonp)
+    (add-hook 'emacs-startup-hook #'emacs-neotree-show-current-project))
+  (add-hook 'server-after-make-frame-hook #'emacs-neotree-show-current-project)
+  (add-hook 'server-switch-hook #'emacs-neotree-show-current-project)
+  (add-hook 'project-switch-project-hook #'emacs-neotree-show-current-project)
+  (defvar emacs-neotree-followed-location nil)
+  (defun emacs-neotree-follow-current-buffer (&optional frame)
+    (let* ((window (if (framep frame) (frame-selected-window frame) (selected-window)))
+           (buffer (window-buffer window))
+           (file (buffer-file-name buffer)))
+      (when (and file
+                 (not (eq buffer neo-global--buffer))
+                 (not (window-parameter window 'no-neotree-follow)))
+        (with-current-buffer buffer
+          (when-let* ((project (project-current nil))
+                      (root (project-root project))
+                      ((file-in-directory-p file root))
+                      ((not (equal emacs-neotree-followed-location (cons root file)))))
+            (setq emacs-neotree-followed-location (cons root file))
+            (when (window-live-p neo-global--window)
+              (with-selected-window neo-global--window
+                (neotree-dir root)))
+            (when (window-live-p neo-global--window)
+              (with-current-buffer neo-global--buffer
+                (setq neo-buffer--expanded-node-list nil))
+              (neotree-find file))
+            (when (window-live-p window)
+              (select-window window)))))))
+  (add-hook 'window-buffer-change-functions #'emacs-neotree-follow-current-buffer)
+  (add-hook 'window-selection-change-functions #'emacs-neotree-follow-current-buffer)
+  (defun emacs-neotree-refresh-after-save ()
+    (when (and (fboundp 'neo-global--window-exists-p)
+               (neo-global--window-exists-p))
+      (with-selected-window neo-global--window
+        (neotree-refresh))))
+  (add-hook 'after-save-hook #'emacs-neotree-refresh-after-save)
 
   (require 'diff-hl)
   (global-diff-hl-mode 1)
