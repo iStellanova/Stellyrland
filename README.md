@@ -8,8 +8,8 @@
   <img src="https://img.shields.io/badge/Home_Manager-Master-c6a0f6?style=for-the-badge&logo=nixos&logoColor=24273a" />&nbsp;
   <img src="https://img.shields.io/badge/Nix-Lix-d690e0?style=for-the-badge&logo=nixos&logoColor=24273a" />
   <br/>
-  <img src="https://img.shields.io/badge/Dendritic-flake--parts-f5a97f?style=for-the-badge&logoColor=24273a" />&nbsp;
-  <img src="https://img.shields.io/badge/Hyprland-Nixpkgs-7dc4e4?style=for-the-badge&logoColor=24273a" />&nbsp;
+  <img src="https://img.shields.io/badge/Dendritic-Flake-f5a97f?style=for-the-badge&logoColor=24273a" />&nbsp;
+  <img src="https://img.shields.io/badge/Umbriel-Flake-7dc4e4?style=for-the-badge&logoColor=24273a" />&nbsp;
   <img src="https://img.shields.io/badge/nix--darwin-Master-a6da95?style=for-the-badge&logoColor=24273a" />&nbsp;
 </p>
 
