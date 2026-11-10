@@ -38,6 +38,7 @@
       prism
 
       # Host Specific Config
+      bootvine
       plasmapulsefinale-host
       self.modules.nixos.plasmapulsefinale.tan13
       self.modules.nixos.plasmapulsefinale.stellanova

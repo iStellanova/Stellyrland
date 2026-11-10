@@ -42,6 +42,7 @@
 
       # Boot & Hardware & Storage
       lanzaboote
+      bootvine
       cachyos-kernel
       preservation
 

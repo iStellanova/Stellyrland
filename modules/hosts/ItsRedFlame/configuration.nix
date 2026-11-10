@@ -48,6 +48,7 @@
       xclicker
 
       # Host Specific Config
+      bootvine
       ItsRedFlame-host
       self.modules.nixos.ItsRedFlame.RedFlame
       self.modules.nixos.ItsRedFlame.stellanova

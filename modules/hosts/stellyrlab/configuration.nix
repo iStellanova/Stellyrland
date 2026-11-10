@@ -18,6 +18,7 @@
       cachyos-kernel
       maintenance
       lanzaboote
+      bootvine
       stellyrlab-host
       backup-host
       backup-sender
