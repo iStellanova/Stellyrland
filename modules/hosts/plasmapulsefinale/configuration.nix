@@ -4,7 +4,7 @@
     username = "tan13";
     homeDir = "/home/tan13";
     flakePath = "/home/tan13/Projects/stellyrland";
-    passwordSecret = "tan13psswd";
+    passwordSecret = "plasmapulsefinale/tan13psswd";
 
   };
 
