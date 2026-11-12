@@ -17,8 +17,6 @@
       settings = {
         Address = "0.0.0.0";
         MusicFolder = "/srv/music";
-        # TODO: Re-enable once nixpkgs provides a writable empty plugin directory.
-        Plugins.Enabled = false;
       };
     };
 

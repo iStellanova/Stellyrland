@@ -3,11 +3,6 @@
     nixpkgs = {
       url = "https://github.com/nixos/nixpkgs";
       ref = "nixos-unstable";
-      # TODO: Remove when nixos-unstable includes the primp system-libraries fix.
-      importable = true;
-      patches = [
-        { commit = "b9eb668f72ae56cfbb69190682086d82ca73f61b"; }
-      ];
     };
     pnix.url = "https://github.com/bunny-systems/pnix";
     home-manager = {

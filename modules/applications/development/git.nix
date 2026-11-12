@@ -1,7 +1,5 @@
 {
   modules.homeManager.git = { host, pkgs, ... }: {
-      home.packages = [ pkgs.lazygit ];
-
       programs.ssh = {
         enable = true;
         enableDefaultConfig = false;
