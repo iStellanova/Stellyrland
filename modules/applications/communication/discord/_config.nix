@@ -126,7 +126,7 @@
         noiseSuppression = true;
       };
       youtubeAdblock.enable = true;
-      expressionCloner.enable = true;
+      expressionManager.enable = true;
       webKeybinds.enable = true;
       webScreenShareFixes.enable = true;
       disableDeepLinks.enable = true;
