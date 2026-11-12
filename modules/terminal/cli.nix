@@ -82,6 +82,7 @@ in
             cat = "bat";
             grep = "rg";
             man = "tldr";
+            cd = "z";
           };
 
           initContent = lib.mkAfter ''
