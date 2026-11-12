@@ -50,14 +50,16 @@ in
 
       programs = {
         fzf.enable = true;
-        zoxide.enable = true;
+        zoxide = {
+          enableZshIntegration = true;
+          enable = true;
+        };
         jq.enable = true;
         ripgrep.enable = true;
         bat.enable = true;
         fd.enable = true;
         nix-index.enable = true;
         nix-index-database.comma.enable = true;
-
         eza = {
           enable = true;
           enableZshIntegration = true;
@@ -65,19 +67,16 @@ in
           git = true;
           extraOptions = [ "-lha" "--group-directories-first" "--header" "--short-nix" ];
         };
-
         tealdeer = {
           enable = true;
           settings = {
             updates = { auto_update = true; };
           };
         };
-
 	direnv = {
 	  enable = true;
 	  enableZshIntegration = true;
 	};
-
         zsh = {
           shellAliases = {
             cat = "bat";
