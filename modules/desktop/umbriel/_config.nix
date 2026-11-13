@@ -36,7 +36,7 @@
         theme = "Bibata-Modern-Ice";
         size = 16;
       };
-      focus.follows_mouse = true;
+      focus.follows_mouse = "sloppy";
     };
 
     output = osConfig.desktop.umbriel.outputs;
