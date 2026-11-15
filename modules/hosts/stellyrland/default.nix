@@ -58,14 +58,7 @@
         irqbalance.enable = true;
         ananicy = {
           enable = true;
-          # Remove when an ananicy-cpp release includes these standard headers.
-          package = pkgs.ananicy-cpp.overrideAttrs (old: {
-            postPatch = (old.postPatch or "") + ''
-              sed -i '1i#include <cstdint>' src/platform/linux/backtrace.cpp
-              sed -i '1i#include <cstring>' src/utility/argument_parsing/argument.cpp
-              sed -i '1i#include <cstring>' src/platform/linux/singleton_process.cpp
-            '';
-          });
+          package = pkgs.ananicy-cpp;
           rulesProvider = pkgs.ananicy-rules-cachyos;
         };
       };
