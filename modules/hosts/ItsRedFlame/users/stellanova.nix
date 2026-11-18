@@ -11,6 +11,7 @@
         ];
       };
       users.users.RedFlame.extraGroups = lib.mkForce [
+        "wheel"
         "networkmanager"
         "video"
         "render"

@@ -46,6 +46,7 @@
       flatpak
       prism
       xclicker
+      scratch
 
       # Host Specific Config
       bootvine
