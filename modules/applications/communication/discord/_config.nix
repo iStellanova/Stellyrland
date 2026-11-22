@@ -55,7 +55,6 @@
         timestampMode = 0;
       };
       fixSpotifyEmbeds.enable = true;
-      fixYoutubeEmbeds.enable = true;
       gameActivityToggle = {
         enable = true;
         oldIcon = false;
@@ -125,7 +124,6 @@
         echoCancellation = true;
         noiseSuppression = true;
       };
-      youtubeAdblock.enable = true;
       expressionManager.enable = true;
       webKeybinds.enable = true;
       webScreenShareFixes.enable = true;
