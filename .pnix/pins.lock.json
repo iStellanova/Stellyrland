@@ -8,18 +8,18 @@
       "owner": "wvhulle",
       "repo": "bootvine",
       "url": "https://codeberg.org/wvhulle/bootvine",
-      "rev": "958cfa1b54451a7481f315de76bcf5a4400e2793",
+      "rev": "0e7acf85f85084b30c681658a4b8fc1c3a90b0a3",
       "ref": "HEAD",
-      "hash": "sha256-sRE3N7Wl1M3kQ2v9UX+skYbG3GK+fQ9JANn9MjJV5ZQ=",
-      "lastModified": 1795177966,
+      "hash": "sha256-YZhRJqsSuwA/Xh5RSELzVh1j7q9d+gwCc4iQs6cd4J0=",
+      "lastModified": 1795417174,
       "importable": true,
       "follows": {
         "nixpkgs": "nixpkgs"
       },
       "fetch": {
         "kind": "tarball",
-        "url": "https://codeberg.org/wvhulle/bootvine/archive/958cfa1b54451a7481f315de76bcf5a4400e2793.tar.gz",
-        "hash": "sha256-sRE3N7Wl1M3kQ2v9UX+skYbG3GK+fQ9JANn9MjJV5ZQ="
+        "url": "https://codeberg.org/wvhulle/bootvine/archive/0e7acf85f85084b30c681658a4b8fc1c3a90b0a3.tar.gz",
+        "hash": "sha256-YZhRJqsSuwA/Xh5RSELzVh1j7q9d+gwCc4iQs6cd4J0="
       }
     },
     "cachyos-kernel": {
@@ -28,14 +28,14 @@
       "owner": "xddxdd",
       "repo": "nix-cachyos-kernel",
       "url": "https://github.com/xddxdd/nix-cachyos-kernel",
-      "rev": "3547834022c7faca65918abbd8645c855d20cc35",
+      "rev": "306480b9096055a06503167f975c027e244dd839",
       "ref": "release",
-      "hash": "sha256-ofoSHbSWiP+muOkvTD/moBIAwYeo2m4rQoAGLaW34IA=",
-      "lastModified": 1795299643,
+      "hash": "sha256-+bXH64eCZhRm6MaMlB4lwTjUjax2aDy6yWsfTSCZlas=",
+      "lastModified": 1795387629,
       "fetch": {
         "kind": "tarball",
-        "url": "https://github.com/xddxdd/nix-cachyos-kernel/archive/3547834022c7faca65918abbd8645c855d20cc35.tar.gz",
-        "hash": "sha256-ofoSHbSWiP+muOkvTD/moBIAwYeo2m4rQoAGLaW34IA="
+        "url": "https://github.com/xddxdd/nix-cachyos-kernel/archive/306480b9096055a06503167f975c027e244dd839.tar.gz",
+        "hash": "sha256-+bXH64eCZhRm6MaMlB4lwTjUjax2aDy6yWsfTSCZlas="
       }
     },
     "catppuccin": {
@@ -63,17 +63,17 @@
       "owner": "chaotic-cx",
       "repo": "nyx",
       "url": "https://github.com/chaotic-cx/nyx",
-      "rev": "509339e8afc339c0673aee8c357a0ec3aa8dc371",
+      "rev": "36fc7d2578d5dc2432b107f502a0b0e0ed9623e8",
       "ref": "nyxpkgs-unstable",
-      "hash": "sha256-cnmO6ZfNRY24s57a+izdkQhQ3SkVq3CdFaEFFZog/FA=",
-      "lastModified": 1795312229,
+      "hash": "sha256-Z3frlGU9YvdtIl4+5L5dbvibHLqA6gI9Qx5YRip0368=",
+      "lastModified": 1795430815,
       "follows": {
         "nixpkgs": "nixpkgs"
       },
       "fetch": {
         "kind": "tarball",
-        "url": "https://github.com/chaotic-cx/nyx/archive/509339e8afc339c0673aee8c357a0ec3aa8dc371.tar.gz",
-        "hash": "sha256-cnmO6ZfNRY24s57a+izdkQhQ3SkVq3CdFaEFFZog/FA="
+        "url": "https://github.com/chaotic-cx/nyx/archive/36fc7d2578d5dc2432b107f502a0b0e0ed9623e8.tar.gz",
+        "hash": "sha256-Z3frlGU9YvdtIl4+5L5dbvibHLqA6gI9Qx5YRip0368="
       }
     },
     "darwin": {
@@ -82,17 +82,17 @@
       "owner": "LnL7",
       "repo": "nix-darwin",
       "url": "https://github.com/LnL7/nix-darwin",
-      "rev": "f673885103fa92c1c5b1d16b8bf2b858906809e2",
+      "rev": "663d8b962a11cda261b6e9f14e03911fac94baf0",
       "ref": "HEAD",
-      "hash": "sha256-xpgrKyUvEMz0yCb+zklEpOFd0VnHyH0oBYce4Umj4e8=",
-      "lastModified": 1795309925,
+      "hash": "sha256-Gd1+Oaj8nS+p1qLpKk4MGv/qGh62+lTkX4262e2UDgc=",
+      "lastModified": 1795373241,
       "follows": {
         "nixpkgs": "nixpkgs"
       },
       "fetch": {
         "kind": "tarball",
-        "url": "https://github.com/LnL7/nix-darwin/archive/f673885103fa92c1c5b1d16b8bf2b858906809e2.tar.gz",
-        "hash": "sha256-xpgrKyUvEMz0yCb+zklEpOFd0VnHyH0oBYce4Umj4e8="
+        "url": "https://github.com/LnL7/nix-darwin/archive/663d8b962a11cda261b6e9f14e03911fac94baf0.tar.gz",
+        "hash": "sha256-Gd1+Oaj8nS+p1qLpKk4MGv/qGh62+lTkX4262e2UDgc="
       }
     },
     "disko": {
@@ -120,17 +120,17 @@
       "owner": "nix-community",
       "repo": "home-manager",
       "url": "https://github.com/nix-community/home-manager",
-      "rev": "03885bcd0b477bdecebebc57b213b0f8f0826d51",
+      "rev": "3b8140d21fa0a70b1b38c2ed29853dfe686234a6",
       "ref": "master",
-      "hash": "sha256-RtgZbV+4BDtJqMImbiPJri3fmVDbCbrz/B0cuPQUJQY=",
-      "lastModified": 1795340038,
+      "hash": "sha256-Tp4Kh4R7ID1f2mMCDlb2PiFQ/DZZsnXB2u2juWN+TT4=",
+      "lastModified": 1795366757,
       "follows": {
         "nixpkgs": "nixpkgs"
       },
       "fetch": {
         "kind": "tarball",
-        "url": "https://github.com/nix-community/home-manager/archive/03885bcd0b477bdecebebc57b213b0f8f0826d51.tar.gz",
-        "hash": "sha256-RtgZbV+4BDtJqMImbiPJri3fmVDbCbrz/B0cuPQUJQY="
+        "url": "https://github.com/nix-community/home-manager/archive/3b8140d21fa0a70b1b38c2ed29853dfe686234a6.tar.gz",
+        "hash": "sha256-Tp4Kh4R7ID1f2mMCDlb2PiFQ/DZZsnXB2u2juWN+TT4="
       }
     },
     "lanzaboote": {
@@ -158,17 +158,17 @@
       "owner": "numtide",
       "repo": "llm-agents.nix",
       "url": "https://github.com/numtide/llm-agents.nix",
-      "rev": "3ba11af458c6b66a83447bc6bf6fe180b237d0da",
+      "rev": "45e6e554481f962d4134021d3a63c96d8755f395",
       "ref": "HEAD",
-      "hash": "sha256-5KruClwP+Sseafmf4xFksKJA1eYajegMkAbTHIcv2CY=",
-      "lastModified": 1795341226,
+      "hash": "sha256-hhROWq9062PdIznKMqiQuy3L9F7l4LHwofEVrcncfZM=",
+      "lastModified": 1795495638,
       "follows": {
         "nixpkgs": "nixpkgs"
       },
       "fetch": {
         "kind": "tarball",
-        "url": "https://github.com/numtide/llm-agents.nix/archive/3ba11af458c6b66a83447bc6bf6fe180b237d0da.tar.gz",
-        "hash": "sha256-5KruClwP+Sseafmf4xFksKJA1eYajegMkAbTHIcv2CY="
+        "url": "https://github.com/numtide/llm-agents.nix/archive/45e6e554481f962d4134021d3a63c96d8755f395.tar.gz",
+        "hash": "sha256-hhROWq9062PdIznKMqiQuy3L9F7l4LHwofEVrcncfZM="
       }
     },
     "mattpocock-skills": {
@@ -242,17 +242,17 @@
       "owner": "nix-community",
       "repo": "nix-index-database",
       "url": "https://github.com/nix-community/nix-index-database",
-      "rev": "9bd074026d6db75b59aae8cd6071b5f2fe27a36c",
+      "rev": "905f3e6f1e78165e79457c0bbe7ec4b885a5fce1",
       "ref": "HEAD",
-      "hash": "sha256-PCGNIyAydZcdUXCxEXTjrS1+wWS+k9E+ENqBkUK2Mpg=",
-      "lastModified": 1794739050,
+      "hash": "sha256-p1dA8lUFQTLJfDI2gaTZQ+CcMKw3nxvyHNbwpVMy2rY=",
+      "lastModified": 1795345257,
       "follows": {
         "nixpkgs": "nixpkgs"
       },
       "fetch": {
         "kind": "tarball",
-        "url": "https://github.com/nix-community/nix-index-database/archive/9bd074026d6db75b59aae8cd6071b5f2fe27a36c.tar.gz",
-        "hash": "sha256-PCGNIyAydZcdUXCxEXTjrS1+wWS+k9E+ENqBkUK2Mpg="
+        "url": "https://github.com/nix-community/nix-index-database/archive/905f3e6f1e78165e79457c0bbe7ec4b885a5fce1.tar.gz",
+        "hash": "sha256-p1dA8lUFQTLJfDI2gaTZQ+CcMKw3nxvyHNbwpVMy2rY="
       }
     },
     "nix-secrets": {
@@ -261,17 +261,17 @@
       "owner": "unnamed-systems",
       "repo": "nix-secrets",
       "url": "https://github.com/unnamed-systems/nix-secrets",
-      "rev": "c451d665f43c0edb7402d8699714956e6509b002",
+      "rev": "837a8f06a8b6d819149e15a1d2782dd32a354810",
       "ref": "master",
-      "hash": "sha256-MIltvL1t7PQsZhrqJHkBCSxHyuXVcZq6wls0ahIQB/4=",
-      "lastModified": 1795264911,
+      "hash": "sha256-ULXB9cWnPQ7MNY4rmy4VTYNRozLOS93KDPV63Txpi8s=",
+      "lastModified": 1795452146,
       "follows": {
         "nixpkgs": "nixpkgs"
       },
       "fetch": {
         "kind": "tarball",
-        "url": "https://github.com/unnamed-systems/nix-secrets/archive/c451d665f43c0edb7402d8699714956e6509b002.tar.gz",
-        "hash": "sha256-MIltvL1t7PQsZhrqJHkBCSxHyuXVcZq6wls0ahIQB/4="
+        "url": "https://github.com/unnamed-systems/nix-secrets/archive/837a8f06a8b6d819149e15a1d2782dd32a354810.tar.gz",
+        "hash": "sha256-ULXB9cWnPQ7MNY4rmy4VTYNRozLOS93KDPV63Txpi8s="
       }
     },
     "nixcord": {
@@ -280,17 +280,17 @@
       "owner": "4evy",
       "repo": "nixcord",
       "url": "https://github.com/4evy/nixcord",
-      "rev": "55c4acd100c04505644c189ff7a1bfdfa4befe3c",
+      "rev": "30826fa4157dc9d2753fc1b0e2d0cc83c4efa0ce",
       "ref": "HEAD",
-      "hash": "sha256-2/K+oIxtvJYth0hL1xBxDY4ENgK6yh8C2ok76MyxJzg=",
-      "lastModified": 1795299153,
+      "hash": "sha256-a9C8FwAhs3iywcUemPHji1LbFIVqN/g+urTSiTOSYQ8=",
+      "lastModified": 1795497561,
       "follows": {
         "nixpkgs": "nixpkgs"
       },
       "fetch": {
         "kind": "tarball",
-        "url": "https://github.com/4evy/nixcord/archive/55c4acd100c04505644c189ff7a1bfdfa4befe3c.tar.gz",
-        "hash": "sha256-2/K+oIxtvJYth0hL1xBxDY4ENgK6yh8C2ok76MyxJzg="
+        "url": "https://github.com/4evy/nixcord/archive/30826fa4157dc9d2753fc1b0e2d0cc83c4efa0ce.tar.gz",
+        "hash": "sha256-a9C8FwAhs3iywcUemPHji1LbFIVqN/g+urTSiTOSYQ8="
       }
     },
     "nixpkgs": {
@@ -315,17 +315,17 @@
       "owner": "nix-community",
       "repo": "NUR",
       "url": "https://github.com/nix-community/NUR",
-      "rev": "f3a3ee34543a27d2b477a44bbba9f9851cc4f666",
+      "rev": "7e4456efbe68cae86d62f6504e08b694c1c60ecb",
       "ref": "HEAD",
-      "hash": "sha256-AI6d3SBElK+ZSlJ/MPXcZ9ft5NwB2kFI+WVbjZcq618=",
-      "lastModified": 1795341551,
+      "hash": "sha256-G7DgNjjnJYKl4Fnf0eJ/lK1vEURwv635LOz+P+3Dty8=",
+      "lastModified": 1795512851,
       "follows": {
         "nixpkgs": "nixpkgs"
       },
       "fetch": {
         "kind": "tarball",
-        "url": "https://github.com/nix-community/NUR/archive/f3a3ee34543a27d2b477a44bbba9f9851cc4f666.tar.gz",
-        "hash": "sha256-AI6d3SBElK+ZSlJ/MPXcZ9ft5NwB2kFI+WVbjZcq618="
+        "url": "https://github.com/nix-community/NUR/archive/7e4456efbe68cae86d62f6504e08b694c1c60ecb.tar.gz",
+        "hash": "sha256-G7DgNjjnJYKl4Fnf0eJ/lK1vEURwv635LOz+P+3Dty8="
       }
     },
     "pnix": {
@@ -386,17 +386,17 @@
       "owner": "sonorahq",
       "repo": "sonora",
       "url": "https://github.com/sonorahq/sonora",
-      "rev": "8f01fd7fd59103bf0103906712955ddea392d135",
+      "rev": "45243e2feb9ed85d5dda5789023669603dab0f8f",
       "ref": "HEAD",
-      "hash": "sha256-08u2aMRJdAzUKb/3sGJYePTWx+Gt62drWqmvLJPaAMs=",
-      "lastModified": 1795299415,
+      "hash": "sha256-H24DLIha7SszW23CUwgEVtQPXEQG2FwDWiscZ5b2Irg=",
+      "lastModified": 1795480540,
       "follows": {
         "nixpkgs": "nixpkgs"
       },
       "fetch": {
         "kind": "tarball",
-        "url": "https://github.com/sonorahq/sonora/archive/8f01fd7fd59103bf0103906712955ddea392d135.tar.gz",
-        "hash": "sha256-08u2aMRJdAzUKb/3sGJYePTWx+Gt62drWqmvLJPaAMs="
+        "url": "https://github.com/sonorahq/sonora/archive/45243e2feb9ed85d5dda5789023669603dab0f8f.tar.gz",
+        "hash": "sha256-H24DLIha7SszW23CUwgEVtQPXEQG2FwDWiscZ5b2Irg="
       }
     },
     "treefmt-nix": {
@@ -424,17 +424,17 @@
       "owner": "noctalia-dev",
       "repo": "umbriel",
       "url": "https://github.com/noctalia-dev/umbriel",
-      "rev": "1b2f89fa3791cef47a7266087e5ae144171ae2c8",
+      "rev": "a909081a934a80bb7685080884ffaaa30c857e4c",
       "ref": "HEAD",
-      "hash": "sha256-FeMGxm+UQeP1mP3ACrVgfeniwe3Sr+le3C2/3ay/8+g=",
-      "lastModified": 1795331569,
+      "hash": "sha256-MGbhwBptD1DPIS9M48hpwRnYUOmeW0H+48yWXAdzPZY=",
+      "lastModified": 1795398579,
       "follows": {
         "nixpkgs": "nixpkgs"
       },
       "fetch": {
         "kind": "tarball",
-        "url": "https://github.com/noctalia-dev/umbriel/archive/1b2f89fa3791cef47a7266087e5ae144171ae2c8.tar.gz",
-        "hash": "sha256-FeMGxm+UQeP1mP3ACrVgfeniwe3Sr+le3C2/3ay/8+g="
+        "url": "https://github.com/noctalia-dev/umbriel/archive/a909081a934a80bb7685080884ffaaa30c857e4c.tar.gz",
+        "hash": "sha256-MGbhwBptD1DPIS9M48hpwRnYUOmeW0H+48yWXAdzPZY="
       }
     },
     "zen-browser": {
@@ -443,18 +443,18 @@
       "owner": "0xc000022070",
       "repo": "zen-browser-flake",
       "url": "https://github.com/0xc000022070/zen-browser-flake",
-      "rev": "81376950ac382a96b965f9d6f8bf60354ad99c2f",
+      "rev": "21385ea8b9e0c32b0962029b0836af2b621b7800",
       "ref": "HEAD",
-      "hash": "sha256-xJaT+L8DeMR0TJjAOlrjGqaRG2AjZrjivQfCtiLRtlY=",
-      "lastModified": 1795333741,
+      "hash": "sha256-rGtp5IIchBAs1SL6UCWRpSJOGNnSwQwV0beeQcd8emc=",
+      "lastModified": 1795509874,
       "follows": {
         "home-manager": "home-manager",
         "nixpkgs": "nixpkgs"
       },
       "fetch": {
         "kind": "tarball",
-        "url": "https://github.com/0xc000022070/zen-browser-flake/archive/81376950ac382a96b965f9d6f8bf60354ad99c2f.tar.gz",
-        "hash": "sha256-xJaT+L8DeMR0TJjAOlrjGqaRG2AjZrjivQfCtiLRtlY="
+        "url": "https://github.com/0xc000022070/zen-browser-flake/archive/21385ea8b9e0c32b0962029b0836af2b621b7800.tar.gz",
+        "hash": "sha256-rGtp5IIchBAs1SL6UCWRpSJOGNnSwQwV0beeQcd8emc="
       }
     }
   }
