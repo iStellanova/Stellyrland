@@ -22,7 +22,7 @@
         ];
         extraCompatPackages = with pkgs; [
           proton-ge-bin
-          proton-cachyos
+          proton-cachyos-bin_edge
         ];
       };
 
